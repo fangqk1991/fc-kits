@@ -40,8 +40,6 @@ importers:
 
   packages/eslint:
     specifiers:
-      '@types/mocha': ^10.0.1
-      '@types/node': ^18.11.19
       '@typescript-eslint/eslint-plugin': ^5.50.0
       '@typescript-eslint/parser': ^5.50.0
       '@vue/eslint-config-typescript': ^11.0.2
@@ -52,12 +50,8 @@ importers:
       eslint-plugin-prettier: ^4.2.1
       eslint-plugin-promise: ^6.1.1
       eslint-plugin-react: ^7.32.2
-      eslint-plugin-standard: ^5.0.0
       eslint-plugin-vue: ^9.9.0
-      mocha: ^10.2.0
-      nyc: ^15.1.0
       prettier: ^2.8.3
-      ts-node-dev: ^2.0.0
       typescript: ^4.9.5
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.50.0_go4drrxstycfikanvu45pi4vgq
@@ -70,15 +64,9 @@ importers:
       eslint-plugin-prettier: 4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq
       eslint-plugin-promise: 6.1.1_eslint@8.33.0
       eslint-plugin-react: 7.32.2_eslint@8.33.0
-      eslint-plugin-standard: 5.0.0_eslint@8.33.0
       eslint-plugin-vue: 9.9.0_eslint@8.33.0
       prettier: 2.8.3
     devDependencies:
-      '@types/mocha': 10.0.1
-      '@types/node': 18.11.19
-      mocha: 10.2.0
-      nyc: 15.1.0
-      ts-node-dev: 2.0.0_qqdszkrtcshgbphghj7vnvrrby
       typescript: 4.9.5
 
 packages:
@@ -1276,15 +1264,6 @@ packages:
       resolve: 2.0.0-next.4
       semver: 6.3.0
       string.prototype.matchall: 4.0.8
-    dev: false
-
-  /eslint-plugin-standard/5.0.0_eslint@8.33.0:
-    resolution: {integrity: sha512-eSIXPc9wBM4BrniMzJRBm2uoVuXz2EPa+NXPk2+itrVt+r5SbKFERx/IgrK/HmfjddyKVz2f+j+7gBRvu19xLg==}
-    deprecated: 'standard 16.0.0 and eslint-config-standard 16.0.0 no longer require the eslint-plugin-standard package. You can remove it from your dependencies with ''npm rm eslint-plugin-standard''. More info here: https://github.com/standard/standard/issues/1316'
-    peerDependencies:
-      eslint: '>=5.0.0'
-    dependencies:
-      eslint: 8.33.0
     dev: false
 
   /eslint-plugin-vue/9.9.0_eslint@8.33.0:
