@@ -1,0 +1,32 @@
+{
+  "name": "@fangcha/app-error",
+  "version": "1.6.0",
+  "description": "An error class contains statusCode, extras.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "scripts": {
+    "test": "mocha --require ts-node/register tests/**/*.test.ts --timeout 100000 --exit",
+    "build": "rm -rf ./lib/ && tsc"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "keywords": [
+    "error",
+    "app-error",
+    "exception"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@fangcha/eslint": "workspace:^*"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ],
+  "nyc": {
+    "sourceMap": false
+  }
+}

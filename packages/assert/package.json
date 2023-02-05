@@ -1,0 +1,36 @@
+{
+  "name": "@fangcha/assert",
+  "version": "1.2.0",
+  "description": "Assert functions.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "scripts": {
+    "test": "mocha --require ts-node/register tests/**/*.test.ts --timeout 100000 --exit",
+    "build": "rm -rf ./lib/ && tsc"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "keywords": [
+    "error",
+    "app-error",
+    "exception",
+    "assert"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "files": [
+    "lib/*",
+    "src/*"
+  ],
+  "nyc": {
+    "sourceMap": false
+  },
+  "dependencies": {
+    "@fangcha/app-error": "workspace:^*"
+  },
+  "devDependencies": {
+    "@fangcha/eslint": "workspace:^*"
+  }
+}
