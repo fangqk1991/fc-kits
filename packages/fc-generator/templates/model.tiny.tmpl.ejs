@@ -1,0 +1,5 @@
+export interface <%-mapperName%> {
+<% propList.forEach((item) => { -%>
+  <%-item.propKey%>: <%-item.propAttr%>
+<% }) -%>
+}
