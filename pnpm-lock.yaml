@@ -167,7 +167,7 @@ importers:
   packages/event-stat:
     specifiers:
       '@fangcha/assert': workspace:^*
-      '@fangcha/backend-kit': ^0.51.0
+      '@fangcha/backend-kit': workspace:^*
       '@fangcha/generator': workspace:^*
       '@fangcha/router': workspace:^*
       '@fangcha/tools': workspace:^*
@@ -249,7 +249,7 @@ importers:
     specifiers:
       '@fangcha/app-error': workspace:^*
       '@fangcha/assert': workspace:^*
-      '@fangcha/backend-kit': ^0.50.0
+      '@fangcha/backend-kit': workspace:^*
       '@fangcha/logger': workspace:^*
       '@fangcha/swagger': workspace:^*
       '@fangcha/tools': workspace:^*
@@ -277,7 +277,7 @@ importers:
       koa-compose: 4.1.0
     devDependencies:
       '@fangcha/assert': link:../assert
-      '@fangcha/backend-kit': 0.50.0
+      '@fangcha/backend-kit': link:../backend-kit
       '@fangcha/logger': link:../fc-logger
       log4js: 6.7.1
       typescript: 4.9.5
@@ -431,7 +431,7 @@ importers:
       '@fangcha/ali-oss': workspace:^*
       '@fangcha/app-request': workspace:^*
       '@fangcha/assert': workspace:^*
-      '@fangcha/backend-kit': ^0.51.0
+      '@fangcha/backend-kit': workspace:^*
       '@fangcha/generator': workspace:^*
       '@fangcha/logger': workspace:^*
       '@fangcha/resque': workspace:^*
@@ -726,62 +726,10 @@ packages:
       - supports-color
     dev: true
 
-  /@fangcha/app-error/1.6.0:
-    resolution: {integrity: sha512-8X/WE1W+YRePXzlK8hALIkMNPsfB7fOydzsDHdjj9Gd19YWTF5Z4A8NTSQDAKvDrngFkh73aPWKUq12EXo2a7g==}
-    dev: true
-
-  /@fangcha/app-request/1.7.0:
-    resolution: {integrity: sha512-0xyYB/zSfPUClzVG1xFzbnXw2B1POsXBBVi/tbD7s5EiUQW1xX+6dl2OiWJ6kIHWrJUPOZAe/DNJ3VKNU8Jh1Q==}
-    dependencies:
-      '@fangcha/app-error': 1.6.0
-      axios: 1.3.2
-      form-data: 4.0.0
-      qs: 6.11.0
-    transitivePeerDependencies:
-      - debug
-    dev: true
-
-  /@fangcha/assert/1.2.0:
-    resolution: {integrity: sha512-4nXyDzSv3lqXUVrsKjknNVsUJhuSJFrZggz+Q/ioH+eynTYNY0gctWCMBS0EBrrOYbT58TYvhuEOjxBBFhczWw==}
-    dependencies:
-      '@fangcha/app-error': 1.6.0
-    dev: true
-
-  /@fangcha/backend-kit/0.50.0:
-    resolution: {integrity: sha512-7eteS3k/3S+OROQhvoThMVyQcROABH6qTzVlMe+mXiYjkarALt3VyFEjdwrU5y0sM5pvcAaoUh6lC+n5/sRliw==}
-    dependencies:
-      '@fangcha/app-error': 1.6.0
-      '@fangcha/app-request': 1.7.0
-      '@fangcha/assert': 1.2.0
-      '@fangcha/router': 0.24.0
-      '@fangcha/tools': 1.23.1
-    transitivePeerDependencies:
-      - debug
-    dev: true
-
-  /@fangcha/router/0.24.0:
-    resolution: {integrity: sha512-L1PcOUh216gLa7KOxwMgpFL8Rrnql1rgDpQkdD2/PM0/IrFwHJVc6Ic9Q6F3RA7/YJ3iHW09n7uw6e0Y8JxkhQ==}
-    dependencies:
-      '@fangcha/app-error': 1.6.0
-      '@fangcha/swagger': 0.1.1
-      '@fangcha/tools': 1.23.1
-    dev: true
-
   /@fangcha/sso-server/0.14.0:
     resolution: {integrity: sha512-pLBb+BIBj0XFa46Tzr+HWO7b1mvVuV8lW2l8uO1u5F2ArTy1XBovVZWU7dwepyVMM9hfzJmEQRUnOk6ihm2OSQ==}
     dependencies:
       oauth2-server: 3.1.1
-    dev: true
-
-  /@fangcha/swagger/0.1.1:
-    resolution: {integrity: sha512-NOTpGTPvp2aLCD8EJ+cG/oCd17nl3nmsNV9leVSTq8/M+wNXiYbv21ftZSqHP7/pf9tA5gr9JghizkZI2z5Ing==}
-    dev: true
-
-  /@fangcha/tools/1.23.1:
-    resolution: {integrity: sha512-Gw929Qdwz+bEl6AGm9MDNwPxzF2IvmCj4LvznUIBwPYafZ89nzL1UJplHrLYQnTa7qQYWNMAsKrYYxVhe2D85w==}
-    dependencies:
-      moment: 2.29.4
-      uuid: 9.0.0
     dev: true
 
   /@fast-csv/format/4.3.5:
@@ -4570,6 +4518,7 @@ packages:
 
   /object-inspect/1.12.3:
     resolution: {integrity: sha512-geUvdk7c+eizMNUDkRpW1wJwgfOiOeHbxBR/hLXK1aT6zmVSO0jsQcs7fj6MGw89jC/cjGfLcNOrtMYtGqm81g==}
+    dev: false
 
   /object-keys/1.1.1:
     resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
@@ -4948,6 +4897,7 @@ packages:
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.0.4
+    dev: false
 
   /qs/6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
@@ -5311,6 +5261,7 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.0
       object-inspect: 1.12.3
+    dev: false
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
@@ -5957,6 +5908,7 @@ packages:
   /uuid/9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
+    dev: false
 
   /v8-compile-cache-lib/3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}

@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@fangcha/assert": "workspace:^*",
-    "@fangcha/backend-kit": "^0.50.0",
+    "@fangcha/backend-kit": "workspace:^*",
     "@fangcha/logger": "workspace:^*",
     "log4js": "^6.7.0",
     "typescript": "^4.8.4"

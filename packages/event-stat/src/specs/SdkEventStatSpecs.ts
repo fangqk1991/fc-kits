@@ -1,5 +1,5 @@
 import { SpecFactory } from '@fangcha/router'
-import { FangchaSession } from '@fangcha/backend-kit'
+import { FangchaSession } from '@fangcha/router/lib/session'
 import { SdkEventStatApis } from '../common/apis'
 import { _EventStat } from '../services/_EventStat'
 import assert from '@fangcha/assert'

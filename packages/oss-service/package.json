@@ -22,7 +22,7 @@
     "@fangcha/ali-oss": "workspace:^*",
     "@fangcha/app-request": "workspace:^*",
     "@fangcha/assert": "workspace:^*",
-    "@fangcha/backend-kit": "^0.51.0",
+    "@fangcha/backend-kit": "workspace:^*",
     "@fangcha/generator": "workspace:^*",
     "@fangcha/logger": "workspace:^*",
     "@fangcha/resque": "workspace:^*",
