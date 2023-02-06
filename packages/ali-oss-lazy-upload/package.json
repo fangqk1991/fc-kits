@@ -1,0 +1,21 @@
+{
+  "name": "ali-oss-lazy-upload",
+  "version": "0.4.0",
+  "description": "Ali OSS Lazy Upload, if a file exists in remote space, it will be ignored.",
+  "main": "index.js",
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "keywords": [
+    "ali-oss"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "bin": {
+    "ali-oss-lazy-upload": "upload-cli.js",
+    "ali-oss-download": "download-cli.js"
+  },
+  "dependencies": {
+    "@fangcha/tools": "workspace:^*",
+    "@fangcha/ali-oss": "^1.2.0",
+    "shelljs": "^0.8.5"
+  }
+}
