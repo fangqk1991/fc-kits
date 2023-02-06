@@ -1,0 +1,61 @@
+{
+  "name": "@fangcha/backend-kit",
+  "version": "0.51.0",
+  "description": "Backend Kit.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "web-auth-demo": "ts-node-dev --no-notify --ignore-watch node_modules demo/apps/web-auth-demo.ts",
+    "sso-demo": "ts-node-dev --no-notify --ignore-watch node_modules demo/apps/sso-demo.ts",
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "WebApp",
+    "SSO"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fangcha/app-error": "workspace:^*",
+    "@fangcha/app-request": "workspace:^*",
+    "@fangcha/assert": "workspace:^*",
+    "@fangcha/tools": "workspace:^*",
+    "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "@fangcha/ali-oss": "workspace:^*",
+    "@fangcha/general-job": "workspace:^*",
+    "@fangcha/generator": "workspace:^*",
+    "@fangcha/logger": "workspace:^*",
+    "@fangcha/resque": "workspace:^*",
+    "@fangcha/router": "workspace:^*",
+    "@fangcha/swagger": "workspace:^*",
+    "fc-feed": "workspace:^*",
+    "fc-model": "workspace:^*",
+    "fc-sql": "workspace:^*",
+    "@fangcha/account": "^0.13.0",
+    "@fangcha/sso-server": "^0.14.0",
+    "@types/ali-oss": "^6.16.6",
+    "@types/assert": "^1.5.6",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/shelljs": "^0.8.11",
+    "@types/tunnel": "^0.0.3",
+    "@types/koa": "2.13.5",
+    "fc-config": "^0.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "log4js": "^6.7.0",
+    "shelljs": "^0.8.5",
+    "tunnel": "^0.0.6",
+    "typescript": "4.6.4"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}
