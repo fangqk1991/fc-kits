@@ -1,0 +1,23 @@
+{
+  "name": "@fangcha/swagger",
+  "version": "0.1.1",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "Swagger"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}
