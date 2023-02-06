@@ -26,13 +26,36 @@ importers:
       tslib: 2.5.0
       typescript: 4.9.5
 
+  packages/ali-oss:
+    specifiers:
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/tools': workspace:^*
+      '@types/ali-oss': ^6.0.5
+      '@types/shelljs': ^0.8.11
+      ali-oss: ^6.17.1
+      md5-file: ^5.0.0
+      shelljs: ^0.8.5
+      tslib: ^2.5.0
+      typescript: 4.6.4
+    dependencies:
+      ali-oss: 6.17.1
+      md5-file: 5.0.0
+      shelljs: 0.8.5
+      tslib: 2.5.0
+    devDependencies:
+      '@fangcha/app-request': link:../http-request
+      '@fangcha/tools': link:../fc-tools
+      '@types/ali-oss': 6.16.7
+      '@types/shelljs': 0.8.11
+      typescript: 4.6.4
+
   packages/ali-oss-lazy-upload:
     specifiers:
       '@fangcha/ali-oss': ^1.2.0
       '@fangcha/tools': workspace:^*
       shelljs: ^0.8.5
     dependencies:
-      '@fangcha/ali-oss': 1.2.0
+      '@fangcha/ali-oss': link:../ali-oss
       '@fangcha/tools': link:../fc-tools
       shelljs: 0.8.5
 
@@ -421,17 +444,6 @@ packages:
       - supports-color
     dev: false
 
-  /@fangcha/ali-oss/1.2.0:
-    resolution: {integrity: sha512-x2TV6Vqs3jrItAbGd8D27U6Q8O642pleGhsK9oCr/BgXqI1JJf0hJ39kH4ukYKGNWL1X/qFm+VohC6GChbOglQ==}
-    dependencies:
-      ali-oss: 6.17.1
-      md5-file: 5.0.0
-      shelljs: 0.8.5
-      tslib: 2.5.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@fangcha/logger/0.1.0:
     resolution: {integrity: sha512-8Ry6XJ/TEsqDZbYNO+SK76ka7BcpoUEJhk6LqpMcBGq+Zba4d1YlV8yCTY+P8vW1YRDCX0zS1Y39oINdWCwHCg==}
     dependencies:
@@ -583,6 +595,10 @@ packages:
 
   /@tsconfig/node16/1.0.3:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
+    dev: true
+
+  /@types/ali-oss/6.16.7:
+    resolution: {integrity: sha512-o3jORqeXEgooIkOfXk1r77BaIZtPHaPRJvTus/yvFDrjRVt65POGalmt9w72d1amGq39mag/t7Rd99MLs3nasw==}
     dev: true
 
   /@types/bluebird/3.5.38:
