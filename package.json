@@ -6,8 +6,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm"
+  },
   "dependencies": {
     "@fangcha/eslint": "workspace:^*",
+    "only-allow": "^1.1.1",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
