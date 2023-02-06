@@ -1,0 +1,26 @@
+{
+  "name": "fc-model",
+  "version": "0.5.0",
+  "description": "A simple model framework for node.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@fangcha/tools": "^1.21.1"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}
