@@ -66,6 +66,14 @@ importers:
     devDependencies:
       typescript: 4.9.5
 
+  packages/fc-feed:
+    specifiers:
+      fc-model: workspace:^*
+      fc-sql: workspace:^*
+    dependencies:
+      fc-model: link:../fc-model
+      fc-sql: link:../fc-sql
+
   packages/fc-model:
     specifiers:
       '@fangcha/tools': workspace:^*

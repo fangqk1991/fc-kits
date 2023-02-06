@@ -1,0 +1,27 @@
+{
+  "name": "fc-feed",
+  "version": "0.19.0",
+  "description": "A feed-model use fc-model & fc-sql",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fc-model": "workspace:^*",
+    "fc-sql": "workspace:^*"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}
