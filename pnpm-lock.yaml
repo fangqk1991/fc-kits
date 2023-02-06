@@ -80,6 +80,9 @@ importers:
     devDependencies:
       '@fangcha/tools': link:../fc-tools
 
+  packages/fc-queue:
+    specifiers: {}
+
   packages/fc-sql:
     specifiers:
       '@types/sequelize': ^4.28.9
@@ -109,7 +112,7 @@ importers:
       axios: ^1.3.2
       cron: ^1.8.2
       exceljs: ^3.3.1
-      fc-queue: ^0.4.0
+      fc-queue: workspace:^*
       fc-sql: workspace:^*
       file-type: ^12.4.0
       ioredis: ^4.28.5
@@ -138,7 +141,7 @@ importers:
       axios: 1.3.2
       cron: 1.8.2
       exceljs: 3.10.0
-      fc-queue: 0.4.0
+      fc-queue: link:../fc-queue
       fc-sql: link:../fc-sql
       file-type: 12.4.2
       ioredis: 4.28.5
@@ -2034,10 +2037,6 @@ packages:
     dependencies:
       reusify: 1.0.4
     dev: false
-
-  /fc-queue/0.4.0:
-    resolution: {integrity: sha512-PJlpsjAOCg0RUbekTuJZlyBArs1/hMQnan0LeGLP57+wYXClZ0WJ7J7XeCaCXlkO9NZI05pu+4Xl58DUsyQKeg==}
-    dev: true
 
   /file-entry-cache/6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
