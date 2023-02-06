@@ -1,0 +1,11 @@
+export interface <%-className%> {
+<% sqlCols.forEach((item) => { -%>
+  <%-getPropName(item.columnName)%>: <%-item.columnType%>
+<% }) -%>
+<% if (extendPropertyList.length) { -%>
+  // Extend properties
+<% extendPropertyList.forEach((item) => { -%>
+  <%-getPropName(item.name)%>: <%-item.type%>
+<% }) -%>
+<% } -%>
+}

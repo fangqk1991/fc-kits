@@ -1,0 +1,34 @@
+{
+  "name": "@fangcha/general-group",
+  "version": "0.2.0",
+  "description": "General Group.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build",
+    "rebuild-models": "ts-node ./tools/rebuild-models.ts && yarn rebuild-tiny-models",
+    "rebuild-tiny-models": "ts-node ./tools/rebuild-tiny-models.ts"
+  },
+  "keywords": [
+    "tools"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@fangcha/generator": "workspace:^*",
+    "@fangcha/tools": "workspace:^*",
+    "@fangcha/assert": "workspace:^*",
+    "@fangcha/logger": "workspace:^*",
+    "fc-feed": "workspace:^*",
+    "fc-sql": "workspace:^*"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}

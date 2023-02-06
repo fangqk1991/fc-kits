@@ -261,6 +261,22 @@ importers:
       tunnel: 0.0.6
       typescript: 4.6.4
 
+  packages/general-group:
+    specifiers:
+      '@fangcha/assert': workspace:^*
+      '@fangcha/generator': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/tools': workspace:^*
+      fc-feed: workspace:^*
+      fc-sql: workspace:^*
+    devDependencies:
+      '@fangcha/assert': link:../assert
+      '@fangcha/generator': link:../fc-generator
+      '@fangcha/logger': link:../fc-logger
+      '@fangcha/tools': link:../fc-tools
+      fc-feed: link:../fc-feed
+      fc-sql: link:../fc-sql
+
   packages/http-request:
     specifiers:
       '@fangcha/app-error': workspace:^*
