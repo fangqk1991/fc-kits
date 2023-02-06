@@ -7,6 +7,7 @@ importers:
       '@fangcha/eslint': workspace:^*
       '@types/mocha': ^10.0.1
       '@types/node': ^18.11.19
+      fc-config: ^0.13.0
       mocha: ^10.2.0
       nyc: ^15.1.0
       only-allow: ^1.1.1
@@ -18,6 +19,7 @@ importers:
       '@fangcha/eslint': link:packages/eslint
       '@types/mocha': 10.0.1
       '@types/node': 18.11.19
+      fc-config: 0.13.0
       mocha: 10.2.0
       nyc: 15.1.0
       only-allow: 1.1.1
@@ -2930,6 +2932,12 @@ packages:
 
   /fc-config/0.11.0:
     resolution: {integrity: sha512-7H8WpQH5ZSDcFGSMgjhWvhWJ4uj8omJhTlazOHZTv60UBThbx8SaZpneqir8hZ3/XcCJof9eokaMiOLdlnx/6A==}
+    dependencies:
+      lodash: 4.17.21
+    dev: true
+
+  /fc-config/0.13.0:
+    resolution: {integrity: sha512-Jxy2Uda1v69eja0d4oyT7UNAML6Yxi7VmNreW2WR5W8ApLM52Q3pOfNl0IlPZRKRYDVXTIHVrbzFsCjaGb1SMg==}
     dependencies:
       lodash: 4.17.21
     dev: true
