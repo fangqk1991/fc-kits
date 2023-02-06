@@ -68,7 +68,7 @@ importers:
 
   packages/fc-model:
     specifiers:
-      '@fangcha/tools': ^1.21.1
+      '@fangcha/tools': workspace:^*
     devDependencies:
       '@fangcha/tools': link:../fc-tools
 
