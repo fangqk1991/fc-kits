@@ -1,0 +1,57 @@
+{
+  "name": "@fangcha/tools",
+  "version": "1.22.0",
+  "description": "Some tools.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "tools"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^3.4.0",
+    "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "@fangcha/app-error": "workspace:^*",
+    "exceljs": "^3.3.1",
+    "fc-queue": "^0.4.0",
+    "@fangcha/app-request": "^1.2.0",
+    "axios": "^1.3.2",
+    "@fangcha/logger": "^0.1.0",
+    "log4js": "^6.1.0",
+    "shelljs": "^0.8.5",
+    "@types/shelljs": "^0.8.11",
+    "aws-sdk": "^2.1087.0",
+    "file-type": "^12.4.0",
+    "read-chunk": "^3.2.0",
+    "spark-md5": "^3.0.2",
+    "@types/spark-md5": "^3.0.2",
+    "fc-sql": "^0.24.1",
+    "sequelize": "^5.21.2",
+    "cron": "^1.8.2",
+    "@types/cron": "^1.7.2",
+    "tunnel": "^0.0.6",
+    "@types/tunnel": "^0.0.2",
+    "ioredis": "^4.28.5",
+    "@types/ioredis": "^4.28.10",
+    "ts-node": "^10.9.1",
+    "@types/node": "^18.11.19",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "4.6.2"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}

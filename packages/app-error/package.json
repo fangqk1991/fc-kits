@@ -23,8 +23,5 @@
   "files": [
     "lib/*",
     "src/*"
-  ],
-  "nyc": {
-    "sourceMap": false
-  }
+  ]
 }

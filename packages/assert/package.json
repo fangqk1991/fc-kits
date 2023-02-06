@@ -25,9 +25,6 @@
     "lib/*",
     "src/*"
   ],
-  "nyc": {
-    "sourceMap": false
-  },
   "dependencies": {
     "@fangcha/app-error": "workspace:^*"
   }
