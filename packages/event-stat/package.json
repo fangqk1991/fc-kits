@@ -1,0 +1,43 @@
+{
+  "name": "@fangcha/event-stat",
+  "version": "0.6.0",
+  "description": "Event Stat.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build",
+    "rebuild-models": "ts-node ./tools/rebuild-models.ts"
+  },
+  "keywords": [
+    "tools"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "tslib": "^2.5.0"
+  },
+  "devDependencies": {
+    "@fangcha/assert": "workspace:^*",
+    "@fangcha/backend-kit": "^0.51.0",
+    "@fangcha/generator": "workspace:^*",
+    "@fangcha/router": "workspace:^*",
+    "@fangcha/tools": "workspace:^*",
+    "fc-feed": "workspace:^*",
+    "fc-model": "workspace:^*",
+    "fc-sql": "workspace:^*",
+    "@types/koa": "^2.13.5",
+    "typescript": "4.6.4",
+    "@types/assert": "^1.5.4",
+    "@types/koa-joi-router": "^8.0.4"
+  },
+  "files": [
+    "lib/*",
+    "tools/*"
+  ]
+}
