@@ -24,9 +24,9 @@
   },
   "devDependencies": {
     "@fangcha/app-error": "workspace:^*",
+    "@fangcha/app-request": "workspace:^*",
     "exceljs": "^3.3.1",
     "fc-queue": "^0.4.0",
-    "@fangcha/app-request": "^1.2.0",
     "axios": "^1.3.2",
     "@fangcha/logger": "^0.1.0",
     "log4js": "^6.1.0",
