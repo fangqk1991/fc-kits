@@ -307,6 +307,48 @@ importers:
   packages/notification-center:
     specifiers: {}
 
+  packages/oss-service:
+    specifiers:
+      '@fangcha/ali-oss': workspace:^*
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/backend-kit': ^0.51.0
+      '@fangcha/generator': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/resque': workspace:^*
+      '@fangcha/router': workspace:^*
+      '@fangcha/swagger': workspace:^*
+      '@fangcha/tools': workspace:^*
+      '@types/ali-oss': ^6.16.6
+      '@types/koa': ^2.13.5
+      '@types/shelljs': ^0.8.11
+      fc-feed: workspace:^*
+      fc-model: workspace:^*
+      fc-sql: workspace:^*
+      koa: ^2.13.4
+      shelljs: ^0.8.5
+      typescript: 4.6.4
+    devDependencies:
+      '@fangcha/ali-oss': link:../ali-oss
+      '@fangcha/app-request': link:../http-request
+      '@fangcha/assert': link:../assert
+      '@fangcha/backend-kit': 0.51.0
+      '@fangcha/generator': link:../fc-generator
+      '@fangcha/logger': link:../fc-logger
+      '@fangcha/resque': link:../resque
+      '@fangcha/router': link:../fc-router
+      '@fangcha/swagger': link:../fc-swagger
+      '@fangcha/tools': link:../fc-tools
+      '@types/ali-oss': 6.16.7
+      '@types/koa': 2.13.5
+      '@types/shelljs': 0.8.11
+      fc-feed: link:../fc-feed
+      fc-model: link:../fc-model
+      fc-sql: link:../fc-sql
+      koa: 2.14.1
+      shelljs: 0.8.5
+      typescript: 4.6.4
+
   packages/resque:
     specifiers:
       '@types/ioredis': ^4.14.8
@@ -584,6 +626,17 @@ packages:
       '@fangcha/app-request': 1.7.0
       '@fangcha/assert': 1.2.0
       '@fangcha/router': 0.24.0
+      '@fangcha/tools': 1.23.1
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@fangcha/backend-kit/0.51.0:
+    resolution: {integrity: sha512-6Ggwvhpm/ZFGAd/TQGf8saMg14MptGvXr/VnnNGh1Zsi01+aOO78CJh9wtxnOuzymLiQ77g73JFt+1FRKaoXkw==}
+    dependencies:
+      '@fangcha/app-error': 1.6.0
+      '@fangcha/app-request': 1.7.0
+      '@fangcha/assert': 1.2.0
       '@fangcha/tools': 1.23.1
     transitivePeerDependencies:
       - debug
