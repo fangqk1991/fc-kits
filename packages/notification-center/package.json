@@ -1,6 +1,6 @@
 {
   "name": "notification-center-js",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "NotificationCenter as iOS.",
   "main": "src/index.ts",
   "publishConfig": {

@@ -7,7 +7,7 @@ class DummyObservable {
     this.mList = []
   }
 
-  addObserver(observer: Function) {
+  public addObserver(observer: Function) {
     if (typeof observer !== 'function') {
       throw new Error('observer must be a function')
     }
@@ -21,7 +21,7 @@ class DummyObservable {
     this.mList.push(observer)
   }
 
-  removeObserver(observer: Function) {
+  public removeObserver(observer: Function) {
     for (let i = 0, max = this.mList.length; i < max; ++i) {
       if (this.mList[i] === observer) {
         this.mList.splice(i, 1)
@@ -30,7 +30,7 @@ class DummyObservable {
     }
   }
 
-  notifyObservers(object: any) {
+  public notifyObservers(object: any) {
     for (let i = 0, max = this.mList.length; i < max; ++i) {
       let observer = this.mList[i]
       observer && observer(object)
