@@ -1,0 +1,33 @@
+{
+  "name": "@fangcha/resque",
+  "version": "1.3.0",
+  "description": "Node resque.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "resque"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ioredis": "^4.28.5",
+    "moment": "^2.29.4",
+    "shelljs": "^0.8.5",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.14.8",
+    "@types/shelljs": "^0.8.8",
+    "typescript": "4.6.4",
+    "@types/uuid": "^9.0.0"
+  }
+}
