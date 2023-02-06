@@ -1,11 +1,17 @@
 import * as assert from 'assert'
-import { addSlashes, bitArray2Integer, integer2BitArray, makeRandomStr } from '../src'
+import { addSlashes, bitArray2Integer, integer2BitArray, makeRandomStr, makeUUID } from '../src'
 
 describe('Test FuncUtils', () => {
   it(`addSlashes`, async () => {
     assert.strictEqual(addSlashes('fangcha 888'), 'fangcha 888')
     assert.strictEqual(addSlashes('fangcha "888"'), 'fangcha \\"888\\"')
     assert.strictEqual(addSlashes(`fangcha "888" '999'`), `fangcha \\"888\\" \\'999\\'`)
+  })
+
+  it(`makeUUID`, async () => {
+    console.info(makeUUID())
+    console.info(makeUUID())
+    console.info(makeUUID())
   })
 
   it(`makeRandomStr`, async () => {

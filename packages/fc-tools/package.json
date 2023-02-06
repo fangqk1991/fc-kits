@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/tools",
-  "version": "1.23.0",
+  "version": "1.23.1",
   "description": "Some tools.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -19,7 +19,7 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "uuid": "^3.4.0",
+    "uuid": "^9.0.0",
     "moment": "^2.29.4"
   },
   "devDependencies": {
@@ -45,6 +45,7 @@
     "@types/tunnel": "^0.0.2",
     "ioredis": "^4.28.5",
     "@types/ioredis": "^4.28.10",
+    "@types/uuid": "^9.0.0",
     "typescript": "4.6.4"
   },
   "files": [

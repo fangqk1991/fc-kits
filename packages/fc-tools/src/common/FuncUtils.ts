@@ -1,5 +1,5 @@
 import * as crypto from 'crypto'
-const uuid = require('uuid/v4')
+import { v4 as uuid } from 'uuid'
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
