@@ -8,7 +8,8 @@
   "license": "ISC",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "pnpm --filter \"./packages/**\" build"
+    "build": "pnpm --filter \"./packages/**\" build",
+    "test": "pnpm --filter \"./packages/**\" test"
   },
   "dependencies": {
     "@fangcha/eslint": "workspace:^*",

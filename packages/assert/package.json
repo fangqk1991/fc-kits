@@ -8,7 +8,7 @@
     "typings": "lib/index.d.ts"
   },
   "scripts": {
-    "test": "mocha --require ts-node/register tests/**/*.test.ts --timeout 100000 --exit",
+    "test": "nyc mocha --exit",
     "build": "rm -rf ./lib/ && tsc",
     "prepublish": "pnpm build"
   },
@@ -30,8 +30,5 @@
   },
   "dependencies": {
     "@fangcha/app-error": "workspace:^*"
-  },
-  "devDependencies": {
-    "@fangcha/eslint": "workspace:^*"
   }
 }

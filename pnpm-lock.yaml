@@ -26,19 +26,13 @@ importers:
       typescript: 4.9.5
 
   packages/app-error:
-    specifiers:
-      '@fangcha/eslint': workspace:^*
-    devDependencies:
-      '@fangcha/eslint': link:../eslint
+    specifiers: {}
 
   packages/assert:
     specifiers:
       '@fangcha/app-error': workspace:^*
-      '@fangcha/eslint': workspace:^*
     dependencies:
       '@fangcha/app-error': link:../app-error
-    devDependencies:
-      '@fangcha/eslint': link:../eslint
 
   packages/eslint:
     specifiers:
@@ -70,6 +64,9 @@ importers:
       prettier: 2.8.3
     devDependencies:
       typescript: 4.9.5
+
+  packages/notification-center:
+    specifiers: {}
 
 packages:
 
