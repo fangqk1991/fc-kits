@@ -1,0 +1,32 @@
+{
+  "name": "fc-sql",
+  "version": "0.29.0",
+  "description": "A simple sql framework for node.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/sequelize": "^4.28.9",
+    "typescript": "4.6.4"
+  },
+  "dependencies": {
+    "moment": "^2.29.4",
+    "mysql2": "^3.1.0",
+    "sequelize": ">=4"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}
