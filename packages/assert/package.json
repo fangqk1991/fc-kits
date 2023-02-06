@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha --require ts-node/register tests/**/*.test.ts --timeout 100000 --exit",
-    "build": "rm -rf ./lib/ && tsc"
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
   },
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
