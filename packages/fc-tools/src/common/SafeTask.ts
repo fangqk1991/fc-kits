@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid'
+import { makeUUID } from './FuncUtils'
 
 type Handler = () => Promise<void>
 type ErrorHandler = (err: Error) => any
@@ -8,7 +8,7 @@ export class SafeTask {
   private _errHandler?: ErrorHandler
 
   public constructor() {
-    this.taskId = uuid()
+    this.taskId = makeUUID()
   }
 
   public static async run(handler: Handler) {
