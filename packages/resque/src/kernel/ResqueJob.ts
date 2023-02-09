@@ -1,7 +1,7 @@
 import { Resque } from './Resque'
 import { TaskCenter } from '../job/TaskCenter'
 import { ResqueQueue } from './ResqueQueue'
-import { v4 as uuid } from 'uuid'
+import { makeUUID } from '@fangcha/tools'
 
 interface JobPayload {
   id: string
@@ -23,7 +23,7 @@ export class ResqueJob {
     }
 
     if (!payload.id) {
-      this.payload.id = uuid().replace(/-/g, '')
+      this.payload.id = makeUUID().replace(/-/g, '')
     }
   }
 
@@ -61,7 +61,7 @@ export class ResqueJob {
     return new ResqueJob(queue, {
       class: className,
       args: args,
-      id: uuid().replace(/-/g, ''),
+      id: makeUUID(),
       queue_time: Date.now(),
     })
   }
@@ -84,7 +84,7 @@ export class ResqueJob {
     return new ResqueJob(queue, {
       class: className,
       args: args,
-      id: uuid().replace(/-/g, ''),
+      id: makeUUID(),
       queue_time: Date.now(),
     })
   }
