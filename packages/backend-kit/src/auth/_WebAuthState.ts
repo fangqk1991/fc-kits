@@ -1,6 +1,6 @@
 import { WebAuthProtocol } from './WebAuthProtocol'
 import assert from '@fangcha/assert'
-import { AuthMode } from '@fangcha/account/lib/common/models'
+import { AuthMode } from '@fangcha/account-models'
 
 class __WebAuthState {
   public authProtocol!: WebAuthProtocol
