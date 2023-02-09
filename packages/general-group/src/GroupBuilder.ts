@@ -4,7 +4,7 @@ import { _CommonGroup } from './models/extensions/_CommonGroup'
 import { _CommonMember } from './models/extensions/_CommonMember'
 import { _CommonPermission } from './models/extensions/_CommonPermission'
 import { GroupLevel, GroupSpace } from './common/models'
-const uuid = require('uuid/v4')
+import { makeUUID } from '@fangcha/tools'
 
 export class GroupBuilder {
   public readonly groupApp: GeneralGroupApp
@@ -14,7 +14,7 @@ export class GroupBuilder {
   constructor(groupApp: GeneralGroupApp, space: GroupSpace, operator: string) {
     this.groupApp = groupApp
     const group = new groupApp.CommonGroup()
-    group.groupId = uuid()
+    group.groupId = makeUUID()
     group.space = space
     group.groupLevel = GroupLevel.Protected
     this.group = group
