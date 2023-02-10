@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const tsImportPluginFactory = require('ts-import-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
