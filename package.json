@@ -14,7 +14,7 @@
   "devDependencies": {
     "@fangcha/eslint": "workspace:*",
     "@fangcha/webpack": "workspace:*",
-    "@fangcha/vue": "^0.75.0",
+    "@fangcha/vue": "workspace:*",
     "fc-config": "^0.13.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.19",

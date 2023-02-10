@@ -1,0 +1,8 @@
+.file-input .el-input-group__append,
+.file-input .el-input-group__prepend {
+  background: #405ec0;
+  color: white;
+}
+.file-input.el-input.is-disabled .el-input__inner {
+  color: #333333;
+}

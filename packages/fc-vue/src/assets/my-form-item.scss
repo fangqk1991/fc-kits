@@ -1,0 +1,33 @@
+.my-form-item.el-form-item {
+  margin-bottom: 4px !important;
+}
+
+.fc-typical-form.el-form {
+  &.el-form--label-top {
+    .el-form-item {
+      .el-form-item__label {
+        padding: 0;
+      }
+    }
+  }
+
+  .el-form-item {
+    margin-bottom: 4px;
+  }
+  @media (max-width: 767.98px) {
+    .el-form-item {
+      margin-bottom: 8px;
+
+      .el-form-item__label {
+        display: block;
+        float: none;
+        width: auto !important;
+        text-align: left;
+        font-weight: bold;
+      }
+      .el-form-item__content {
+        margin-left: auto !important;
+      }
+    }
+  }
+}
