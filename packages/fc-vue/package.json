@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/vue",
-  "version": "0.76.0",
+  "version": "0.76.1",
   "main": "src/index.ts",
   "scripts": {
     "start": "webpack-dev-server --config webpack.admin-dev.js",
@@ -8,7 +8,7 @@
     "build": "rm -rf dist && webpack --config webpack.test.js",
     "test": "rm -rf dist && webpack --config webpack.test.js"
   },
-  "repository": "https://github.com/fangqk1991/fc-vue.git",
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
     "vue",
     "tools"
