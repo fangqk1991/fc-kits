@@ -129,16 +129,3 @@ app
     └── Page404.ts
 ```
 
-```
-app-admin
-├── AdminApp.ts
-├── AdminAppConfig.ts
-├── index.ts
-├── kit.d.ts
-└── views
-    ├── AppDropdownMenu.ts
-    ├── AppMenu.ts
-    ├── AppSidebar.ts
-    ├── AppView.ts
-    └── Page403.ts
-```
