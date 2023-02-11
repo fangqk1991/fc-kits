@@ -1,0 +1,27 @@
+{
+  "name": "@fangcha/admin-vue",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "rm -rf dist && webpack --config webpack.test.js",
+    "test": "rm -rf dist && webpack --config webpack.test.js"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "keywords": [
+    "vue",
+    "admin"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fangcha/tools": "workspace:*",
+    "notification-center-js": "workspace:*"
+  },
+  "peerDependencies": {
+    "@fangcha/vue": "*"
+  },
+  "files": [
+    "src/*"
+  ]
+}

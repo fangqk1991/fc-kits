@@ -1,19 +1,19 @@
-import { AdminApp } from '../app-admin'
 import { Red_View } from './admin/Red_View'
 import { Blue_View } from './admin/Blue_View'
 import { I18nCode, sleep, VisitorInfo } from '@fangcha/tools'
 import { HomeView } from './admin/HomeView'
 import { DialogDemoView } from './admin/DialogDemoView'
 import { TableDemoView } from './table/TableDemoView'
-import '../fangcha/fc-styles.scss'
+import '@fangcha/vue/fangcha/fc-styles.scss'
 import { GridDemoView } from './table/GridDemoView'
 import { BootstrapDemoView } from './admin/BootstrapDemoView'
 import { WidgetsDemoView } from './admin/WidgetsDemoView'
 import { Green_View } from './admin/Green_View'
-import { VisibleLevel } from '../src/sidebars'
+import { VisibleLevel } from '@fangcha/vue'
 import { TextEditorDemoView } from './admin/TextEditorDemoView'
-import { LoadingView } from '../src/loading'
+import { LoadingView } from '@fangcha/vue'
 import { ChartDemoView } from './admin/ChartDemoView'
+import { AdminApp } from '../src'
 
 const app = new AdminApp({
   appName: 'Fangcha Admin',

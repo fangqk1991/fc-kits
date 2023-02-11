@@ -32,6 +32,16 @@ importers:
       tslib: 2.5.0
       typescript: 4.9.5
 
+  packages/admin-vue:
+    specifiers:
+      '@fangcha/tools': workspace:*
+      '@fangcha/vue': workspace:*
+      notification-center-js: workspace:*
+    dependencies:
+      '@fangcha/tools': link:../fc-tools
+      '@fangcha/vue': link:../fc-vue
+      notification-center-js: link:../notification-center
+
   packages/ali-oss:
     specifiers:
       '@fangcha/app-request': workspace:^*

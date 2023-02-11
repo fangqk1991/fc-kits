@@ -3,8 +3,7 @@
   "version": "0.76.2",
   "main": "src/index.ts",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.admin-dev.js",
-    "start-tiny": "webpack-dev-server --config webpack.dev.js",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "build": "rm -rf dist && webpack --config webpack.test.js",
     "test": "rm -rf dist && webpack --config webpack.test.js"
   },
@@ -54,7 +53,6 @@
   "files": [
     "src/*",
     "app/*",
-    "app-admin/*",
     "auth/*",
     "basic/*",
     "bootstrap/*",
