@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/webpack",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "main": "./src/index.js",
   "description": "Webpack configs",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "typescript": "^4.8.4",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "@types/node": "^18.11.19"
   }
 }
