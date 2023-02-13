@@ -1,0 +1,29 @@
+{
+  "name": "@fangcha/react",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "rm -rf dist && webpack --config webpack.test.js",
+    "test": "rm -rf dist && webpack --config webpack.test.js"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "keywords": [
+    "react",
+    "tools"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.5.0",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@types/react-dom": "^18.0.10",
+    "typescript": "^4.9.5"
+  },
+  "files": [
+    "src/*"
+  ]
+}
