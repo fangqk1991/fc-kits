@@ -195,28 +195,26 @@ class WebpackOptionsFactory {
   }
 
   static cssDevRules(forVue) {
-    const extraLoaders = forVue ? ['vue-style-loader'] : []
+    const cssLoaders = [forVue ? 'vue-style-loader' : 'style-loader', 'css-loader', postcss]
     return [
       {
         test: /\.css$/,
-        use: [...extraLoaders, 'css-loader', postcss],
+        use: cssLoaders,
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [...extraLoaders, 'css-loader', postcss, 'sass-loader'],
+        use: [...cssLoaders, 'sass-loader'],
       },
       {
         test: /\.less$/,
         exclude: /node_modules/,
-        use: [...extraLoaders, 'css-loader', postcss, 'less-loader'],
+        use: [...cssLoaders, 'less-loader'],
       },
       {
         test: /\.less$/,
         include: /node_modules\/antd/,
         use: [
-          'style-loader',
-          'css-loader',
-          postcss,
+          ...cssLoaders,
           // {
           //   loader: 'less-loader',
           //   options: {
