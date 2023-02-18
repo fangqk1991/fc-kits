@@ -1,5 +1,5 @@
 import * as moment from 'moment'
-import { FeishuBot } from '../../src/alert/FeishuBot'
+import { FeishuBot } from '../../src/alert'
 
 describe('Test FeishuBot.test.ts', () => {
   const feishuBot = new FeishuBot({})

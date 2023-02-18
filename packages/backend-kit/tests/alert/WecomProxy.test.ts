@@ -1,8 +1,9 @@
 import * as moment from 'moment'
 import { WecomProxy } from '../../src/alert'
+import { CustomRequestFollower } from '../../src'
 
 describe('Test WecomProxy.test.ts', () => {
-  const wecomProxy = new WecomProxy({})
+  const wecomProxy = new WecomProxy({}, CustomRequestFollower)
 
   it(`Test sendMessage`, async () => {
     await wecomProxy.sendMessage(
