@@ -1,6 +1,7 @@
 import { WecomProxy } from '../alert'
 import { logger } from '@fangcha/logger'
 import * as os from 'os'
+import { BotCore } from '../alert/BotCore'
 
 class __FangchaState {
   appName: string = ''
@@ -12,7 +13,7 @@ class __FangchaState {
   runningMachine: string = ''
   retainHealthWord: string = ''
 
-  botProxy: WecomProxy = new WecomProxy({})
+  botProxy: BotCore = new WecomProxy({})
 
   _checkHealthHandler = async () => {}
 

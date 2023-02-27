@@ -11,6 +11,7 @@ export interface AppProtocol {
   appDidLoad?: () => Promise<void>
 
   wecomBotKey?: string
+  feishuBotKey?: string
   retainHealthWord?: string
 }
 

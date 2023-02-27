@@ -1,6 +1,6 @@
 import { AppProtocol } from '../basic'
 import { _FangchaState } from './_FangchaState'
-import { WecomProxy } from '../alert'
+import { FeishuBot, WecomProxy } from '../alert'
 import { CustomRequestFollower } from './CustomRequestFollower'
 import { initLoggerForApp } from '@fangcha/logger'
 
@@ -20,7 +20,17 @@ export class FangchaApp {
 
     initLoggerForApp(this.protocol.appName)
 
-    if (this.protocol.wecomBotKey) {
+    if (this.protocol.feishuBotKey) {
+      const proxy = new FeishuBot({})
+      if (!['staging', 'production'].includes(this.protocol.env)) {
+        proxy.setMuteMode(true)
+      }
+      proxy.setTag(this.protocol.env)
+      proxy.setRetainedBotKey(this.protocol.feishuBotKey)
+      proxy.setAppName(this.protocol.appName)
+      _FangchaState.botProxy = proxy
+      CustomRequestFollower.botProxy = proxy
+    } else if (this.protocol.wecomBotKey) {
       const proxy = new WecomProxy({})
       if (!['staging', 'production'].includes(this.protocol.env)) {
         proxy.setMuteMode(true)
