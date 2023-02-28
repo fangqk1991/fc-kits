@@ -168,6 +168,15 @@ class WebpackOptionsFactory {
             },
           },
           {
+            test: /\.tsx?$/,
+            loader: 'ts-loader',
+            include: /node_modules\/@fangcha\/react/,
+            exclude: /node_modules/,
+            options: {
+              happyPackMode: true,
+            },
+          },
+          {
             test: /\.js$/,
             exclude: /node_modules/,
             loader: 'babel-loader',

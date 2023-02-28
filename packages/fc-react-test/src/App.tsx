@@ -2,7 +2,7 @@ import React from 'react'
 import { ErrorBoundary } from '@ant-design/pro-components'
 import { RouterProvider } from 'react-router-dom'
 import { MyRouter } from './core/MyRouter'
-import { VisitorProvider } from '../src'
+import { VisitorProvider } from '@fangcha/react'
 
 export const App: React.FC = () => {
   return (

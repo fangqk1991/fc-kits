@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import React from 'react'
 import { MainLayout } from './MainLayout'
+import { RouteErrorBoundary } from '@fangcha/react'
 import { Button } from 'antd'
-import { RouteErrorBoundary } from '../../src'
 
 export const MyRouter = createBrowserRouter([
   {
