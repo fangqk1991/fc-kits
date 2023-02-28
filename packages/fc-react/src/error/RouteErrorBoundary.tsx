@@ -2,10 +2,6 @@ import React from 'react'
 import { Button, Result } from 'antd'
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
 
-interface ErrorBoundaryState {
-  error: Error | null
-}
-
 export const RouteErrorBoundary = () => {
   const error = useRouteError()
   let statusCode = 500
