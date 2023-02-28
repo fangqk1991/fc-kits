@@ -171,7 +171,6 @@ class WebpackOptionsFactory {
             test: /\.tsx?$/,
             loader: 'ts-loader',
             include: /node_modules\/@fangcha\/react/,
-            exclude: /node_modules/,
             options: {
               happyPackMode: true,
             },
