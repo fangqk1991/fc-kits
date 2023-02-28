@@ -4,7 +4,7 @@
     "jsx": "react-jsx",
     "importHelpers": true,
     "noEmitHelpers": true,
-    "declaration": true,
+    "declaration": false,
     "moduleResolution": "node",
     "strict": true,
     "noImplicitAny": true,
@@ -15,11 +15,11 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "es2015"],
     "module": "esnext",
-    "outDir": "lib",
+    "outDir": "build",
     "target": "es6",
     "sourceMap": true,
     "inlineSourceMap": false
   },
-  "include": ["src/**/*.ts", "src/**/*.json", "src/**/*.tsx", "./tests"],
+  "include": ["./src", "./tests"],
   "exclude": ["node_modules"]
 }

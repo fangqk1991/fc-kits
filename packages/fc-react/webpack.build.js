@@ -1,13 +1,13 @@
 const { WebpackBuilder } = require('@fangcha/webpack')
 
 module.exports = new WebpackBuilder()
+  .useReact()
   .setDevMode(false)
   .setPublicPath('/')
   .setEntry('./tests/index.tsx')
-  .setHtmlTitle('Fangcha Test')
-  .setExtras({
-    optimization: {
-      minimize: false,
-    },
-  })
+  // .setExtras({
+  //   optimization: {
+  //     minimize: false,
+  //   },
+  // })
   .build()

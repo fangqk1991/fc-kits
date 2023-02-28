@@ -1,7 +1,15 @@
 const { WebpackBuilder } = require('@fangcha/webpack')
 
 module.exports = new WebpackBuilder()
-  .setPort(8090)
+  .useReact()
   .setDevMode(true)
+  .setPort(2399)
   .setEntry('./tests/index.tsx')
+  .setExtras({
+    devServer: {
+      proxy: {
+        '/api': `http://localhost:2400`,
+      },
+    },
+  })
   .build()
