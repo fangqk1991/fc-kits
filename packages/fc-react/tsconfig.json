@@ -20,6 +20,6 @@
     "sourceMap": true,
     "inlineSourceMap": false
   },
-  "include": ["./src", "./tests"],
+  "include": ["./src"],
   "exclude": ["node_modules"]
 }

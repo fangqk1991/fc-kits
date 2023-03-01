@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/react",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
@@ -10,12 +10,15 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
+    "@ant-design/pro-components": "^2.3.58",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@types/react-dom": "^18.0.11",
-    "antd": "^5.2.2",
-    "@ant-design/pro-components": "^2.3.57",
-    "react-router-dom": "^6.8.1"
+    "antd": "^5.2.3",
+    "react-router": "^6.8.2",
+    "react-router-dom": "^6.8.2",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6"
   },
   "devDependencies": {
     "@fangcha/app-error": "workspace:*",
