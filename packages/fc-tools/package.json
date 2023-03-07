@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/tools",
-  "version": "1.23.2",
+  "version": "1.23.3",
   "description": "Some tools.",
   "main": "src/index.ts",
   "publishConfig": {
