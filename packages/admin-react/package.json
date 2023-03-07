@@ -1,28 +1,23 @@
 {
-  "name": "@fangcha/react",
-  "version": "0.5.0",
+  "name": "@fangcha/admin-react",
+  "version": "0.1.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
     "react",
-    "tools"
+    "admin"
   ],
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@types/react-dom": "^18.0.11",
-    "antd": "^5.2.3",
-    "react-router": "^6.8.2",
-    "react-router-dom": "^6.8.2",
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6"
+    "@ant-design/pro-components": "^2.3.58"
   },
   "devDependencies": {
     "@fangcha/app-error": "workspace:*",
     "@fangcha/app-request": "workspace:*",
     "@fangcha/backend-kit": "workspace:*",
+    "@fangcha/react": "workspace:*",
+    "@fangcha/tools": "workspace:*",
     "@fangcha/auth-basic": "^0.7.1",
     "@types/assert": "^1.5.6",
     "@types/mocha": "^10.0.0",
