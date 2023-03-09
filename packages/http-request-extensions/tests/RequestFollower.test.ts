@@ -1,5 +1,5 @@
 import { axiosGET } from '@fangcha/app-request'
-import { RequestFollower } from '../../src/request'
+import { RequestFollower } from '../src'
 
 describe('Test RequestFollower.test.ts', () => {
   it(`Test useLogger`, async () => {

@@ -1,7 +1,7 @@
-import { RequestFollower } from '@fangcha/tools/lib/request'
 import { AxiosBuilder } from '@fangcha/app-request'
 import AppError from '@fangcha/app-error'
 import { BotCore } from '../alert/BotCore'
+import { RequestFollower } from '@fangcha/app-request-extensions'
 
 export class CustomRequestFollower extends RequestFollower {
   public static botProxy: BotCore

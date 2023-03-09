@@ -1,7 +1,7 @@
 import { AxiosBuilder } from '@fangcha/app-request'
 import AppError from '@fangcha/app-error'
 import * as moment from 'moment'
-import { RequestFollower, ServiceProxy } from '@fangcha/tools/lib/request'
+import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 const os = require('os')
 
 interface ApiErrorParams {

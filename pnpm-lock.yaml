@@ -121,19 +121,20 @@ importers:
     specifiers:
       '@fangcha/account': ^0.17.0
       '@fangcha/account-models': ^0.1.0
-      '@fangcha/ali-oss': workspace:^*
-      '@fangcha/app-error': workspace:^*
-      '@fangcha/app-request': workspace:^*
-      '@fangcha/assert': workspace:^*
-      '@fangcha/general-job': workspace:^*
-      '@fangcha/generator': workspace:^*
-      '@fangcha/logger': workspace:^*
-      '@fangcha/resque': workspace:^*
-      '@fangcha/router': workspace:^*
+      '@fangcha/ali-oss': workspace:*
+      '@fangcha/app-error': workspace:*
+      '@fangcha/app-request': workspace:*
+      '@fangcha/app-request-extensions': workspace:*
+      '@fangcha/assert': workspace:*
+      '@fangcha/general-job': workspace:*
+      '@fangcha/generator': workspace:*
+      '@fangcha/logger': workspace:*
+      '@fangcha/resque': workspace:*
+      '@fangcha/router': workspace:*
       '@fangcha/sso-models': ^0.1.0
       '@fangcha/sso-server': ^0.25.0
-      '@fangcha/swagger': workspace:^*
-      '@fangcha/tools': workspace:^*
+      '@fangcha/swagger': workspace:*
+      '@fangcha/tools': workspace:*
       '@types/ali-oss': ^6.16.6
       '@types/assert': ^1.5.6
       '@types/jsonwebtoken': ^8.5.9
@@ -141,9 +142,9 @@ importers:
       '@types/shelljs': ^0.8.11
       '@types/tunnel': ^0.0.3
       fc-config: ^0.11.0
-      fc-feed: workspace:^*
-      fc-model: workspace:^*
-      fc-sql: workspace:^*
+      fc-feed: workspace:*
+      fc-model: workspace:*
+      fc-sql: workspace:*
       jsonwebtoken: ^8.5.1
       log4js: ^6.7.0
       moment: ^2.29.4
@@ -153,6 +154,7 @@ importers:
     dependencies:
       '@fangcha/app-error': link:../app-error
       '@fangcha/app-request': link:../http-request
+      '@fangcha/app-request-extensions': link:../http-request-extensions
       '@fangcha/assert': link:../assert
       '@fangcha/tools': link:../fc-tools
       moment: 2.29.4
