@@ -340,7 +340,8 @@ importers:
       '@ant-design/pro-components': ^2.3.57
       '@fangcha/app-error': workspace:*
       '@fangcha/app-request': workspace:*
-      '@fangcha/auth-basic': ^0.7.1
+      '@fangcha/auth-basic': ^0.8.0
+      '@fangcha/auth-react': ^0.5.0
       '@fangcha/backend-kit': workspace:*
       '@fangcha/react': workspace:*
       '@types/assert': ^1.5.6
@@ -366,7 +367,8 @@ importers:
     devDependencies:
       '@fangcha/app-error': link:../app-error
       '@fangcha/app-request': link:../http-request
-      '@fangcha/auth-basic': 0.7.1_4xwsbnejflvfqvlugnigct5sua
+      '@fangcha/auth-basic': 0.8.0_4xwsbnejflvfqvlugnigct5sua
+      '@fangcha/auth-react': 0.5.0
       '@fangcha/backend-kit': link:../backend-kit
       '@fangcha/react': link:../fc-react
       '@types/assert': 1.5.6
@@ -2756,6 +2758,24 @@ packages:
       '@fangcha/app-request': link:packages/http-request
     dev: true
 
+  /@fangcha/auth-basic/0.8.0_4xwsbnejflvfqvlugnigct5sua:
+    resolution: {integrity: sha512-2OxkR+HvSrN15G1dmuGPYVZY9n6dS/BKCadl0GOD1mJ6aHVE6yBlI8tqnSnUpTolXu3BX6ax7DCu2HkachJKrw==}
+    peerDependencies:
+      '@fangcha/app-error': '*'
+      '@fangcha/app-request': '*'
+    dependencies:
+      '@fangcha/app-error': link:packages/app-error
+      '@fangcha/app-request': link:packages/http-request
+    dev: true
+
+  /@fangcha/auth-react/0.5.0:
+    resolution: {integrity: sha512-aDOsvHKSxouh+xUknyaniZ+HpT98N7F+PMbSd2+SQI2WIJvV+nlB8pBTiGnSw0du2wYFbD578+w81RpYKaZdhA==}
+    dependencies:
+      bootstrap: 5.2.3
+    transitivePeerDependencies:
+      - '@popperjs/core'
+    dev: true
+
   /@fast-csv/format/4.3.5:
     resolution: {integrity: sha512-8iRn6QF3I8Ak78lNAa+Gdl5MJJBM5vRHivFtMRUWINdevNo00K7OXxS2PshawLKTejVwieIlPmK5YlLu6w4u8A==}
     dependencies:
@@ -4458,6 +4478,12 @@ packages:
   /boolbase/1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: false
+
+  /bootstrap/5.2.3:
+    resolution: {integrity: sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==}
+    peerDependencies:
+      '@popperjs/core': ^2.11.6
+    dev: true
 
   /bootstrap/5.2.3_@popperjs+core@2.11.6:
     resolution: {integrity: sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==}

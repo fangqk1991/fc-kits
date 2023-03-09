@@ -3,7 +3,7 @@ import { PageContainer, ProLayout } from '@ant-design/pro-layout'
 import React from 'react'
 import { ConfigProvider, Dropdown } from 'antd'
 import { MyMenu } from './MyMenu'
-import { useVisitorCtx } from '@fangcha/react'
+import { useVisitorCtx } from '@fangcha/auth-react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 export const MainLayout: React.FC = () => {
