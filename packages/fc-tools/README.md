@@ -68,11 +68,6 @@ yarn add @fangcha/tools
 │   ├── FrontendFile.ts
 │   └── index.ts
 ├── index.ts
-├── oauth-client
-│   ├── OAuthClient.ts
-│   ├── OAuthClientConfig.ts
-│   ├── OAuthModels.ts
-│   └── index.ts
 ├── queue
 │   ├── MutexManager.ts
 │   └── index.ts
