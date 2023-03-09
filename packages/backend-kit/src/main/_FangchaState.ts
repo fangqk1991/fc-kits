@@ -44,6 +44,8 @@ class __FangchaState {
   }
 
   public frontendConfig: any = {}
+
+  public transferSessionUserInfo = async (userInfo: any) => userInfo
 }
 
 export const _FangchaState = new __FangchaState()

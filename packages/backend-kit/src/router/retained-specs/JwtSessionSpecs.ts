@@ -16,14 +16,14 @@ factory.prepare(RetainedSessionApis.SessionInfoGet, async (ctx) => {
     userInfo: null,
   }
   if (session.checkLogin()) {
-    data.userInfo = session.getAuthInfo()
+    data.userInfo = await _FangchaState.transferSessionUserInfo(session.getAuthInfo())
   }
   ctx.body = data
 })
 
 factory.prepare(RetainedSessionApis.UserInfoGet, async (ctx) => {
   const session = ctx.session as FangchaJwtSession
-  ctx.body = session.curUserInfo()
+  ctx.body = await _FangchaState.transferSessionUserInfo(session.curUserInfo())
 })
 
 export const JwtSessionSpecs = factory.buildSpecs()
