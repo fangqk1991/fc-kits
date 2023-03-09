@@ -629,6 +629,27 @@ importers:
       tunnel: 0.0.6
       typescript: 4.6.2
 
+  packages/http-request-extensions:
+    specifiers:
+      '@fangcha/app-error': workspace:*
+      '@fangcha/app-request': workspace:*
+      '@fangcha/logger': workspace:*
+      '@fangcha/tools': workspace:*
+      '@types/tunnel': ^0.0.3
+      log4js: ^6.7.1
+      tunnel: ^0.0.6
+      typescript: 4.6.2
+    dependencies:
+      '@fangcha/app-error': link:../app-error
+      '@fangcha/app-request': link:../http-request
+      '@fangcha/logger': link:../fc-logger
+      '@fangcha/tools': link:../fc-tools
+      log4js: 6.7.1
+    devDependencies:
+      '@types/tunnel': 0.0.3
+      tunnel: 0.0.6
+      typescript: 4.6.2
+
   packages/notification-center:
     specifiers: {}
 
@@ -5571,7 +5592,6 @@ packages:
   /date-format/4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
     engines: {node: '>=4.0'}
-    dev: true
 
   /dateformat/2.2.0:
     resolution: {integrity: sha512-GODcnWq3YGoTnygPfi02ygEiRxqUxpJwuRHjdhJYuxpcZmDq4rjBiXYmbCCzStxo176ixfLT6i4NPwQooRySnw==}
@@ -8368,7 +8388,6 @@ packages:
       streamroller: 3.1.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /long/5.2.1:
     resolution: {integrity: sha512-GKSNGeNAtw8IryjjkhZxuKB3JzlcLTwjtiQCHKvqQet81I93kXslhDQruGI/QsddO83mcDToBVy7GqGS/zYf/A==}
@@ -10919,7 +10938,6 @@ packages:
 
   /rfdc/1.3.0:
     resolution: {integrity: sha512-V2hovdzFbOi77/WajaSMXk2OLm+xNIeQdMMuB7icj7bk6zi2F8GGAxigcnDFpJHbNyNcgyJDiP+8nOrY5cZGrA==}
-    dev: true
 
   /rimraf/2.7.1:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
@@ -11437,7 +11455,6 @@ packages:
       fs-extra: 8.1.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /string-convert/0.2.1:
     resolution: {integrity: sha512-u/1tdPl4yQnPBjnVrmdLo9gtuLvELKsAoRapekWggdiQNvvvum+jYF329d84NAa660KQw7pB2n36KrIKVoXa3A==}

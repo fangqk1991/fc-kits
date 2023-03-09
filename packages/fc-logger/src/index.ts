@@ -1,6 +1,6 @@
 import * as log4js from 'log4js'
-import * as _ from 'lodash'
 import { Configuration } from 'log4js'
+import * as _ from 'lodash'
 export { Logger } from 'log4js'
 
 const _defaultOptions: Configuration = {
@@ -59,6 +59,7 @@ export const logger = log4js.getLogger()
 export const loggerForDev = log4js.getLogger('forDev')
 
 export default log4js
+export { log4js }
 
 export const initLoggerForApp = (appName: string) => {
   const extras: Partial<Configuration> = {
