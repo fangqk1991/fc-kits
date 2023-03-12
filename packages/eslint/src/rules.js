@@ -14,6 +14,7 @@ module.exports = {
   '@typescript-eslint/no-object-literal-type-assertion': 'off',
   '@typescript-eslint/no-this-alias': 'off',
   '@typescript-eslint/ban-types': 'off',
+  '@typescript-eslint/no-empty-interface': 'off',
   '@typescript-eslint/no-inferrable-types': ['error', { ignoreProperties: true }],
   'no-console': ['error', { allow: ['error', 'info'] }],
   'no-empty': 'off',

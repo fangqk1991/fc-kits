@@ -23,7 +23,6 @@ module.exports = {
     '@vue/typescript',
     'plugin:vue/recommended',
     'prettier',
-    'prettier/vue',
   ],
   rules: {
     ...rules,

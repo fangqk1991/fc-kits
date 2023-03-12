@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/eslint",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "main": "./src/index.js",
   "description": "Webpack configs",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
