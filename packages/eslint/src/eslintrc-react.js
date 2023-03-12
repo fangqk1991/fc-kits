@@ -24,13 +24,12 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
-  rules: Object.assign(
-    {
-      'react/jsx-uses-react': 'error',
-      'react/jsx-uses-vars': 'error',
-      'react/prop-types': 'off',
-      'react/display-name': 'off',
-    },
-    rules
-  ),
+  rules: {
+    ...rules,
+    'react/jsx-uses-react': 'error',
+    'react/jsx-uses-vars': 'error',
+    'react/prop-types': 'off',
+    'react/display-name': 'off',
+    'react/react-in-jsx-scope': 'off',
+  },
 }

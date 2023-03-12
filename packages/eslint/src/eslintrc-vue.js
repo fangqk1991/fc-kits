@@ -25,7 +25,8 @@ module.exports = {
     'prettier',
     'prettier/vue',
   ],
-  rules: Object.assign({}, rules, {
+  rules: {
+    ...rules,
     'no-irregular-whitespace': 'off',
     'no-prototype-builtins': 'off',
     'vue/no-v-html': 'off',
@@ -36,5 +37,5 @@ module.exports = {
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-empty-function': 'off',
-  }),
+  },
 }
