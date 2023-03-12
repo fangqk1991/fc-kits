@@ -1,0 +1,39 @@
+{
+  "name": "@fangcha/session",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "router"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fangcha/router": "workspace:*",
+    "@fangcha/tools": "workspace:*"
+  },
+  "devDependencies": {
+    "@fangcha/assert": "workspace:*",
+    "@fangcha/logger": "workspace:*",
+    "log4js": "^6.7.0",
+    "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "@fangcha/backend-kit": "*"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ],
+  "nyc": {
+    "sourceMap": false
+  }
+}
