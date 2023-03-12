@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/app-request-extensions",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple networking framework for node.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -22,10 +22,10 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/app-error": "workspace:*",
-    "@fangcha/app-request": "workspace:*",
-    "@fangcha/tools": "workspace:*",
-    "@fangcha/logger": "workspace:*",
+    "@fangcha/app-error": "workspace:^*",
+    "@fangcha/app-request": "workspace:^*",
+    "@fangcha/tools": "workspace:^*",
+    "@fangcha/logger": "workspace:^*",
     "log4js": "^6.7.1"
   },
   "devDependencies": {

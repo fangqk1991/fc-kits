@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/admin-vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "src/index.ts",
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
@@ -14,8 +14,8 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/tools": "workspace:*",
-    "notification-center-js": "workspace:*"
+    "@fangcha/tools": "workspace:^*",
+    "notification-center-js": "workspace:^*"
   },
   "peerDependencies": {
     "@fangcha/vue": "*"
