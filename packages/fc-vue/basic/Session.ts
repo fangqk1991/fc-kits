@@ -1,7 +1,6 @@
-import { SessionInfo } from '@fangcha/backend-kit/lib/common/models'
 import { SessionUserInfo } from './SessionHTTP'
 import { MyAxios } from './MyAxios'
-import { RetainedSessionApis } from '@fangcha/backend-kit/lib/common/apis'
+import { RetainedSessionApis, SessionInfo } from '@fangcha/app-models'
 
 export interface EmptyConfig {}
 
