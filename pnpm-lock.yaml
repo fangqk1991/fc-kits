@@ -4,9 +4,9 @@ importers:
 
   .:
     specifiers:
-      '@fangcha/eslint': workspace:*
-      '@fangcha/vue': workspace:*
-      '@fangcha/webpack': workspace:*
+      '@fangcha/eslint': workspace:^*
+      '@fangcha/vue': workspace:^*
+      '@fangcha/webpack': workspace:^*
       '@types/mocha': ^10.0.1
       '@types/node': ^18.11.19
       fc-config: ^0.13.0
@@ -35,12 +35,12 @@ importers:
   packages/admin-react:
     specifiers:
       '@ant-design/pro-components': ^2.3.58
-      '@fangcha/app-error': workspace:*
-      '@fangcha/app-request': workspace:*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-request': workspace:^*
       '@fangcha/auth-basic': ^0.7.1
-      '@fangcha/backend-kit': workspace:*
-      '@fangcha/react': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/backend-kit': workspace:^*
+      '@fangcha/react': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@types/assert': ^1.5.6
       '@types/mocha': ^10.0.0
       '@types/node': ^18.11.9
@@ -69,8 +69,8 @@ importers:
 
   packages/admin-vue:
     specifiers:
-      '@fangcha/tools': workspace:*
-      notification-center-js: workspace:*
+      '@fangcha/tools': workspace:^*
+      notification-center-js: workspace:^*
     dependencies:
       '@fangcha/tools': link:../fc-tools
       notification-center-js: link:../notification-center
@@ -111,6 +111,14 @@ importers:
   packages/app-error:
     specifiers: {}
 
+  packages/app-models:
+    specifiers:
+      '@fangcha/swagger': workspace:*
+      typescript: 4.6.4
+    devDependencies:
+      '@fangcha/swagger': link:../fc-swagger
+      typescript: 4.6.4
+
   packages/assert:
     specifiers:
       '@fangcha/app-error': workspace:^*
@@ -119,19 +127,20 @@ importers:
 
   packages/backend-kit:
     specifiers:
-      '@fangcha/ali-oss': workspace:*
-      '@fangcha/app-error': workspace:*
-      '@fangcha/app-request': workspace:*
-      '@fangcha/app-request-extensions': workspace:*
-      '@fangcha/assert': workspace:*
-      '@fangcha/general-job': workspace:*
-      '@fangcha/generator': workspace:*
-      '@fangcha/logger': workspace:*
-      '@fangcha/resque': workspace:*
-      '@fangcha/router': workspace:*
-      '@fangcha/session': workspace:*
-      '@fangcha/swagger': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/ali-oss': workspace:^*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-models': workspace:^*
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/app-request-extensions': workspace:^*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/general-job': workspace:^*
+      '@fangcha/generator': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/resque': workspace:^*
+      '@fangcha/router': workspace:^*
+      '@fangcha/session': workspace:^*
+      '@fangcha/swagger': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@types/ali-oss': ^6.16.6
       '@types/assert': ^1.5.6
       '@types/jsonwebtoken': ^8.5.9
@@ -139,9 +148,9 @@ importers:
       '@types/shelljs': ^0.8.11
       '@types/tunnel': ^0.0.3
       fc-config: ^0.11.0
-      fc-feed: workspace:*
-      fc-model: workspace:*
-      fc-sql: workspace:*
+      fc-feed: workspace:^*
+      fc-model: workspace:^*
+      fc-sql: workspace:^*
       jsonwebtoken: ^8.5.1
       log4js: ^6.7.0
       moment: ^2.29.4
@@ -150,6 +159,7 @@ importers:
       typescript: 4.6.4
     dependencies:
       '@fangcha/app-error': link:../app-error
+      '@fangcha/app-models': link:../app-models
       '@fangcha/app-request': link:../http-request
       '@fangcha/app-request-extensions': link:../http-request-extensions
       '@fangcha/assert': link:../assert
@@ -213,18 +223,18 @@ importers:
 
   packages/event-stat:
     specifiers:
-      '@fangcha/assert': workspace:*
-      '@fangcha/backend-kit': workspace:*
-      '@fangcha/generator': workspace:*
-      '@fangcha/router': workspace:*
-      '@fangcha/session': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/backend-kit': workspace:^*
+      '@fangcha/generator': workspace:^*
+      '@fangcha/router': workspace:^*
+      '@fangcha/session': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@types/assert': ^1.5.4
       '@types/koa': ^2.13.5
       '@types/koa-joi-router': ^8.0.4
-      fc-feed: workspace:*
-      fc-model: workspace:*
-      fc-sql: workspace:*
+      fc-feed: workspace:^*
+      fc-model: workspace:^*
+      fc-sql: workspace:^*
       tslib: ^2.5.0
       typescript: 4.6.4
     dependencies:
@@ -298,10 +308,10 @@ importers:
     specifiers:
       '@emotion/react': ^11.10.6
       '@emotion/styled': ^11.10.6
-      '@fangcha/app-error': workspace:*
-      '@fangcha/app-request': workspace:*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-request': workspace:^*
       '@fangcha/auth-basic': ^0.7.1
-      '@fangcha/backend-kit': workspace:*
+      '@fangcha/backend-kit': workspace:^*
       '@types/assert': ^1.5.6
       '@types/mocha': ^10.0.0
       '@types/node': ^18.11.9
@@ -342,12 +352,12 @@ importers:
   packages/fc-react-test:
     specifiers:
       '@ant-design/pro-components': ^2.3.57
-      '@fangcha/app-error': workspace:*
-      '@fangcha/app-request': workspace:*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-request': workspace:^*
       '@fangcha/auth-basic': ^0.8.0
       '@fangcha/auth-react': ^0.5.0
-      '@fangcha/backend-kit': workspace:*
-      '@fangcha/react': workspace:*
+      '@fangcha/backend-kit': workspace:^*
+      '@fangcha/react': workspace:^*
       '@types/assert': ^1.5.6
       '@types/mocha': ^10.0.0
       '@types/node': ^18.11.9
@@ -386,11 +396,11 @@ importers:
 
   packages/fc-router:
     specifiers:
-      '@fangcha/app-error': workspace:*
-      '@fangcha/assert': workspace:*
-      '@fangcha/logger': workspace:*
-      '@fangcha/swagger': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/swagger': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@koa/router': ^12.0.0
       '@types/jsonwebtoken': ^9.0.1
       '@types/koa': 2.13.5
@@ -421,10 +431,10 @@ importers:
 
   packages/fc-session:
     specifiers:
-      '@fangcha/assert': workspace:*
-      '@fangcha/logger': workspace:*
-      '@fangcha/router': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/router': workspace:^*
+      '@fangcha/tools': workspace:^*
       log4js: ^6.7.0
       typescript: ^4.8.4
     dependencies:
@@ -513,15 +523,16 @@ importers:
 
   packages/fc-vue:
     specifiers:
-      '@fangcha/app-error': workspace:*
-      '@fangcha/app-request': workspace:*
-      '@fangcha/assert': workspace:*
-      '@fangcha/backend-kit': workspace:*
-      '@fangcha/event-stat': workspace:*
-      '@fangcha/oss-service': workspace:*
-      '@fangcha/router': workspace:*
-      '@fangcha/swagger': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-models': workspace:^*
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/backend-kit': workspace:^*
+      '@fangcha/event-stat': workspace:^*
+      '@fangcha/oss-service': workspace:^*
+      '@fangcha/router': workspace:^*
+      '@fangcha/swagger': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@popperjs/core': ^2.11.5
       '@types/assert': ^1.5.6
       '@types/mocha': ^10.0.0
@@ -532,7 +543,7 @@ importers:
       echarts: ^5.4.0
       element-ui: ^2.13.0
       mocha: ^10.1.0
-      notification-center-js: workspace:*
+      notification-center-js: workspace:^*
       nyc: ^15.1.0
       quill: ^1.3.7
       ts-node-dev: ^2.0.0
@@ -560,6 +571,7 @@ importers:
       vue-router: 3.6.5_vue@2.7.14
     devDependencies:
       '@fangcha/app-error': link:../app-error
+      '@fangcha/app-models': link:../app-models
       '@fangcha/app-request': link:../http-request
       '@fangcha/assert': link:../assert
       '@fangcha/backend-kit': link:../backend-kit
@@ -648,10 +660,10 @@ importers:
 
   packages/http-request-extensions:
     specifiers:
-      '@fangcha/app-error': workspace:*
-      '@fangcha/app-request': workspace:*
-      '@fangcha/logger': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@types/tunnel': ^0.0.3
       log4js: ^6.7.1
       tunnel: ^0.0.6
@@ -672,23 +684,23 @@ importers:
 
   packages/oss-service:
     specifiers:
-      '@fangcha/ali-oss': workspace:*
-      '@fangcha/app-request': workspace:*
-      '@fangcha/assert': workspace:*
-      '@fangcha/backend-kit': workspace:*
-      '@fangcha/generator': workspace:*
-      '@fangcha/logger': workspace:*
-      '@fangcha/resque': workspace:*
-      '@fangcha/router': workspace:*
-      '@fangcha/session': workspace:*
-      '@fangcha/swagger': workspace:*
-      '@fangcha/tools': workspace:*
+      '@fangcha/ali-oss': workspace:^*
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/backend-kit': workspace:^*
+      '@fangcha/generator': workspace:^*
+      '@fangcha/logger': workspace:^*
+      '@fangcha/resque': workspace:^*
+      '@fangcha/router': workspace:^*
+      '@fangcha/session': workspace:^*
+      '@fangcha/swagger': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@types/ali-oss': ^6.16.6
       '@types/koa': ^2.13.5
       '@types/shelljs': ^0.8.11
-      fc-feed: workspace:*
-      fc-model: workspace:*
-      fc-sql: workspace:*
+      fc-feed: workspace:^*
+      fc-model: workspace:^*
+      fc-sql: workspace:^*
       koa: ^2.13.4
       shelljs: ^0.8.5
       typescript: 4.6.4
@@ -716,7 +728,7 @@ importers:
 
   packages/resque:
     specifiers:
-      '@fangcha/tools': workspace:*
+      '@fangcha/tools': workspace:^*
       '@types/ioredis': ^4.14.8
       '@types/shelljs': ^0.8.8
       '@types/uuid': ^9.0.0
