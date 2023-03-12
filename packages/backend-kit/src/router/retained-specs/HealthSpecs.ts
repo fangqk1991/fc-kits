@@ -1,6 +1,6 @@
 import { SpecFactory } from '@fangcha/router'
+import { RetainedHealthApis } from '@fangcha/app-models'
 import { _FangchaState } from '../../main'
-import { RetainedHealthApis } from '../../common/apis'
 
 const factory = new SpecFactory('Health Apis')
 
