@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "rm -rf dist && webpack --config webpack.build.js",
     "test": "rm -rf dist && webpack --config webpack.build.js"
   },
   "author": "fang <me@fangqk.com>",

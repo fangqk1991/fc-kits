@@ -129,6 +129,7 @@ importers:
       '@fangcha/logger': workspace:*
       '@fangcha/resque': workspace:*
       '@fangcha/router': workspace:*
+      '@fangcha/session': workspace:*
       '@fangcha/swagger': workspace:*
       '@fangcha/tools': workspace:*
       '@types/ali-oss': ^6.16.6
@@ -161,6 +162,7 @@ importers:
       '@fangcha/logger': link:../fc-logger
       '@fangcha/resque': link:../resque
       '@fangcha/router': link:../fc-router
+      '@fangcha/session': link:../fc-session
       '@fangcha/swagger': link:../fc-swagger
       '@types/ali-oss': 6.16.7
       '@types/assert': 1.5.6
@@ -211,17 +213,18 @@ importers:
 
   packages/event-stat:
     specifiers:
-      '@fangcha/assert': workspace:^*
-      '@fangcha/backend-kit': workspace:^*
-      '@fangcha/generator': workspace:^*
-      '@fangcha/router': workspace:^*
-      '@fangcha/tools': workspace:^*
+      '@fangcha/assert': workspace:*
+      '@fangcha/backend-kit': workspace:*
+      '@fangcha/generator': workspace:*
+      '@fangcha/router': workspace:*
+      '@fangcha/session': workspace:*
+      '@fangcha/tools': workspace:*
       '@types/assert': ^1.5.4
       '@types/koa': ^2.13.5
       '@types/koa-joi-router': ^8.0.4
-      fc-feed: workspace:^*
-      fc-model: workspace:^*
-      fc-sql: workspace:^*
+      fc-feed: workspace:*
+      fc-model: workspace:*
+      fc-sql: workspace:*
       tslib: ^2.5.0
       typescript: 4.6.4
     dependencies:
@@ -231,6 +234,7 @@ importers:
       '@fangcha/backend-kit': link:../backend-kit
       '@fangcha/generator': link:../fc-generator
       '@fangcha/router': link:../fc-router
+      '@fangcha/session': link:../fc-session
       '@fangcha/tools': link:../fc-tools
       '@types/assert': 1.5.6
       '@types/koa': 2.13.5
@@ -382,11 +386,11 @@ importers:
 
   packages/fc-router:
     specifiers:
-      '@fangcha/app-error': workspace:^*
-      '@fangcha/assert': workspace:^*
-      '@fangcha/logger': workspace:^*
-      '@fangcha/swagger': workspace:^*
-      '@fangcha/tools': workspace:^*
+      '@fangcha/app-error': workspace:*
+      '@fangcha/assert': workspace:*
+      '@fangcha/logger': workspace:*
+      '@fangcha/swagger': workspace:*
+      '@fangcha/tools': workspace:*
       '@koa/router': ^12.0.0
       '@types/jsonwebtoken': ^9.0.1
       '@types/koa': 2.13.5
@@ -409,6 +413,23 @@ importers:
       koa: 2.14.1
       koa-body: 5.0.0
       koa-compose: 4.1.0
+    devDependencies:
+      '@fangcha/assert': link:../assert
+      '@fangcha/logger': link:../fc-logger
+      log4js: 6.7.1
+      typescript: 4.9.5
+
+  packages/fc-session:
+    specifiers:
+      '@fangcha/assert': workspace:*
+      '@fangcha/logger': workspace:*
+      '@fangcha/router': workspace:*
+      '@fangcha/tools': workspace:*
+      log4js: ^6.7.0
+      typescript: ^4.8.4
+    dependencies:
+      '@fangcha/router': link:../fc-router
+      '@fangcha/tools': link:../fc-tools
     devDependencies:
       '@fangcha/assert': link:../assert
       '@fangcha/logger': link:../fc-logger
@@ -651,22 +672,23 @@ importers:
 
   packages/oss-service:
     specifiers:
-      '@fangcha/ali-oss': workspace:^*
-      '@fangcha/app-request': workspace:^*
-      '@fangcha/assert': workspace:^*
-      '@fangcha/backend-kit': workspace:^*
-      '@fangcha/generator': workspace:^*
-      '@fangcha/logger': workspace:^*
-      '@fangcha/resque': workspace:^*
-      '@fangcha/router': workspace:^*
-      '@fangcha/swagger': workspace:^*
-      '@fangcha/tools': workspace:^*
+      '@fangcha/ali-oss': workspace:*
+      '@fangcha/app-request': workspace:*
+      '@fangcha/assert': workspace:*
+      '@fangcha/backend-kit': workspace:*
+      '@fangcha/generator': workspace:*
+      '@fangcha/logger': workspace:*
+      '@fangcha/resque': workspace:*
+      '@fangcha/router': workspace:*
+      '@fangcha/session': workspace:*
+      '@fangcha/swagger': workspace:*
+      '@fangcha/tools': workspace:*
       '@types/ali-oss': ^6.16.6
       '@types/koa': ^2.13.5
       '@types/shelljs': ^0.8.11
-      fc-feed: workspace:^*
-      fc-model: workspace:^*
-      fc-sql: workspace:^*
+      fc-feed: workspace:*
+      fc-model: workspace:*
+      fc-sql: workspace:*
       koa: ^2.13.4
       shelljs: ^0.8.5
       typescript: 4.6.4
@@ -679,6 +701,7 @@ importers:
       '@fangcha/logger': link:../fc-logger
       '@fangcha/resque': link:../resque
       '@fangcha/router': link:../fc-router
+      '@fangcha/session': link:../fc-session
       '@fangcha/swagger': link:../fc-swagger
       '@fangcha/tools': link:../fc-tools
       '@types/ali-oss': 6.16.7

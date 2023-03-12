@@ -4,7 +4,7 @@ import { Context } from 'koa'
 import { _OSSResource, OSSService } from '../main'
 import { OssApis } from '../common/apis'
 import { RemoteFile } from '@fangcha/ali-oss'
-import { FangchaSession } from '@fangcha/router/lib/session'
+import { FangchaSession } from '@fangcha/session'
 
 const prepareResource = async (ctx: Context) => {
   const resourceId = ctx.params.resourceId

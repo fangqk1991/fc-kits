@@ -1,7 +1,7 @@
 import * as Koa from 'koa'
 import { WriteLogMiddlewareBuilder } from '@fangcha/logger/lib/koa'
 import { BasicAuthProtocol, JWTProtocol, RouterApp } from '@fangcha/router'
-import { FangchaSession } from '@fangcha/router/lib/session'
+import { FangchaSession } from '@fangcha/session'
 
 export interface RouterSdkOptions {
   baseURL: string

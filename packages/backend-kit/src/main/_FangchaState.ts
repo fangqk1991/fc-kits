@@ -3,6 +3,8 @@ import { logger } from '@fangcha/logger'
 import * as os from 'os'
 import { BotCore } from '../alert/BotCore'
 
+type UserInfoTransfer = (item: any) => any
+
 class __FangchaState {
   appName: string = ''
 
@@ -45,7 +47,18 @@ class __FangchaState {
 
   public frontendConfig: any = {}
 
-  public transferSessionUserInfo = async (userInfo: any) => userInfo
+  private _transferHandlers: UserInfoTransfer[] = []
+
+  public addUserInfoTransfer(handler: UserInfoTransfer) {
+    this._transferHandlers.push(handler)
+  }
+
+  public transferSessionUserInfo = async (userInfo: any) => {
+    for (const handler of this._transferHandlers) {
+      userInfo = handler(userInfo)
+    }
+    return userInfo
+  }
 }
 
 export const _FangchaState = new __FangchaState()

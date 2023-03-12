@@ -1,5 +1,5 @@
 import { SpecFactory, SwaggerDocItem } from '@fangcha/router'
-import { FangchaJwtSession } from '@fangcha/router/lib/session'
+import { FangchaJwtSession } from '@fangcha/session'
 import { RetainedSessionApis } from '../../common/apis'
 import { SessionInfo } from '../../common/models'
 import { _FangchaState } from '../../main'
