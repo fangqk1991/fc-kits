@@ -7,11 +7,12 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Route } from '@ant-design/pro-layout/es/typing'
 
 interface Props {
+  appName: string
   menu: Route
   logoutUrl?: string
 }
 
-export const MainLayout: React.FC<Props> = ({ menu, logoutUrl = '/api-302/auth-sdk/v1/logout' }) => {
+export const MainLayout: React.FC<Props> = ({ appName, menu, logoutUrl = '/api-302/auth-sdk/v1/logout' }) => {
   const visitorCtx = useVisitorCtx()
 
   const { userInfo } = visitorCtx
@@ -29,7 +30,7 @@ export const MainLayout: React.FC<Props> = ({ menu, logoutUrl = '/api-302/auth-s
     >
       <ProLayout
         logo={null}
-        title='Tools'
+        title={appName}
         fixSiderbar={true}
         layout='mix'
         splitMenus={false}
