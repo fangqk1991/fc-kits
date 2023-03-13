@@ -18,7 +18,6 @@
     "@fangcha/backend-kit": "workspace:^*",
     "@fangcha/react": "workspace:^*",
     "@fangcha/tools": "workspace:^*",
-    "@fangcha/auth-basic": "^0.7.1",
     "@types/assert": "^1.5.6",
     "@types/mocha": "^10.0.0",
     "@types/node": "^18.11.9",
