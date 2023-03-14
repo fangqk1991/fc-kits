@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import React from 'react'
 import { MainLayout } from './MainLayout'
 import { RouteErrorBoundary } from '@fangcha/react'
-import { Button } from 'antd'
+import { TestTableView } from '../pages/TestTableView'
 
 export const MyRouter = createBrowserRouter([
   {
@@ -11,22 +11,8 @@ export const MyRouter = createBrowserRouter([
     errorElement: <RouteErrorBoundary />,
     children: [
       {
-        path: '/v1/page-1',
-        children: [
-          {
-            path: '/v1/page-1/sub-page-1',
-            element: (
-              <div>
-                <h3>sub page 1 main</h3>
-                <Button type='primary'>Button</Button>
-              </div>
-            ),
-          },
-          {
-            path: '/v1/page-1/sub-page-2',
-            element: <div>sub page 2 main</div>,
-          },
-        ],
+        path: '/v1/table-view',
+        element: <TestTableView />,
       },
       {
         path: '*',

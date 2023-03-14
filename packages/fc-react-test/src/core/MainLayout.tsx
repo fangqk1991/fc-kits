@@ -22,7 +22,7 @@ export const MainLayout: React.FC = () => {
         title='React Tests'
         fixSiderbar={true}
         layout='mix'
-        splitMenus={true}
+        splitMenus={false}
         route={MyMenu}
         location={{
           pathname: location.pathname,
