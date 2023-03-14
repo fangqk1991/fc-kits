@@ -1,0 +1,24 @@
+{
+  "name": "@fangcha/react-test",
+  "private": true,
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "test": "rm -rf dist && webpack --config webpack.build.js"
+  },
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@fangcha/app-error": "workspace:^*",
+    "@fangcha/app-request": "workspace:^*",
+    "@fangcha/backend-kit": "workspace:^*",
+    "@fangcha/react": "workspace:^*",
+    "@types/assert": "^1.5.6",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18.11.9",
+    "mocha": "^10.1.0",
+    "nyc": "^15.1.0",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.8.4"
+  }
+}
