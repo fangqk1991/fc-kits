@@ -89,7 +89,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           throw e
         })
     }
-  }, [curPageNum, pageSize, props.version])
+  }, [curPageNum, pageSize, props.version, props.loadData, props.loadOnePageItems])
 
   return (
     <Table
