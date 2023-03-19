@@ -305,6 +305,7 @@ importers:
       '@fangcha/app-error': workspace:^*
       '@fangcha/app-request': workspace:^*
       '@fangcha/backend-kit': workspace:^*
+      '@fangcha/tools': workspace:^*
       '@types/assert': ^1.5.6
       '@types/mocha': ^10.0.0
       '@types/node': ^18.11.9
@@ -333,6 +334,7 @@ importers:
       '@fangcha/app-error': link:../app-error
       '@fangcha/app-request': link:../http-request
       '@fangcha/backend-kit': link:../backend-kit
+      '@fangcha/tools': link:../fc-tools
       '@types/assert': 1.5.6
       '@types/mocha': 10.0.1
       '@types/node': 18.11.19
