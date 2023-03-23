@@ -12,6 +12,10 @@ export const MyMenu: Route = {
           path: '/v1/table-view',
           name: 'TableView',
         },
+        {
+          path: '/v1/dialogs-view',
+          name: 'DialogsView',
+        },
       ],
     },
   ],

@@ -1,56 +1,56 @@
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components'
-import { Form } from 'antd'
 import React from 'react'
+import { DialogProps, ReactDialog } from './ReactDialog'
+import { Form } from 'antd'
+import { ProForm, ProFormDigit, ProFormText, ProFormTextArea } from '@ant-design/pro-components'
 
 interface SimpleData {
   content: string
 }
 
-interface Props {
-  trigger: JSX.Element
-  onSubmit: (text: string) => Promise<void>
-  title?: string
+interface Props extends DialogProps<string> {
+  type?: 'number' | 'text' | 'textarea' | 'password'
+  placeholder?: string
   description?: string
-  content?: string
-  type?: 'text' | 'textarea' | 'password'
 }
 
-export const SimpleInputDialog: React.FC<Props> = (props) => {
-  const [form] = Form.useForm<SimpleData>()
-  const title = props.title || '请输入'
-  const type = props.type || 'text'
-  return (
-    <ModalForm<SimpleData>
-      // open={true}
-      title={title}
-      trigger={props.trigger}
-      form={form}
-      autoFocusFirstInput
-      initialValues={{ content: props.content }}
-      modalProps={{
-        destroyOnClose: true,
-        maskClosable: false,
-        forceRender: true,
-      }}
-      onFinish={async (data) => {
-        if (props.onSubmit) {
-          await props.onSubmit(data.content)
-        }
-        return true
-      }}
-    >
-      {type === 'text' && <ProFormText name='content' label={title} />}
-      {type === 'textarea' && (
-        <ProFormTextArea
-          name='content'
-          label={title}
-          fieldProps={{
-            rows: 10,
-          }}
-        />
-      )}
-      {type === 'password' && <ProFormText.Password name='content' label='Password' />}
-      {props.description && <p>{props.description}</p>}
-    </ModalForm>
-  )
+export class SimpleInputDialog extends ReactDialog<Props, string> {
+  title = '请输入'
+
+  public rawComponent(): React.FC<Props> {
+    return (props) => {
+      const [form] = Form.useForm<SimpleData>()
+
+      const type = props.type || 'text'
+
+      props.context.handleResult = () => {
+        return form.getFieldValue('content')
+      }
+
+      return (
+        <ProForm form={form} autoFocusFirstInput initialValues={{ content: props.curValue }} submitter={false}>
+          {(() => {
+            switch (type) {
+              case 'number':
+                return <ProFormDigit name='content' placeholder={props.placeholder} />
+              case 'text':
+                return <ProFormText name='content' placeholder={props.placeholder} />
+              case 'textarea':
+                return (
+                  <ProFormTextArea
+                    name='content'
+                    fieldProps={{
+                      rows: 10,
+                    }}
+                    placeholder={props.placeholder}
+                  />
+                )
+              case 'password':
+                return <ProFormText.Password name='content' label='Password' placeholder={props.placeholder} />
+            }
+          })()}
+          {props.description && <div>{props.description}</div>}
+        </ProForm>
+      )
+    }
+  }
 }

@@ -1,14 +1,7 @@
-import { ModalForm } from '@ant-design/pro-components'
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-
-interface Props {
-  trigger: JSX.Element
-  title?: string
-  content?: string
-  loadData?: () => Promise<{}>
-  json?: {}
-}
+import { DialogProps, ReactDialog } from './ReactDialog'
+import { JsonPre } from './JsonPre'
 
 const Pre = styled.pre(`
   white-space: pre-wrap;
@@ -16,30 +9,36 @@ const Pre = styled.pre(`
   margin-top: 0;
   margin-bottom: 0;
   line-height: 1.5;
+  padding: 8px;
+  border: 1px solid #e0e5e8;
 `)
 
-export const TextPreviewDialog: React.FC<Props> = (props) => {
-  const title = props.title || 'Preview'
-  const [content, setContent] = useState(() => (props.json ? JSON.stringify(props.json, null, 2) : props.content) || '')
-  useEffect(() => {
-    if (props.loadData) {
-      props.loadData().then((data) => {
-        setContent(JSON.stringify(data, null, 2))
-      })
+interface Props extends DialogProps<any> {
+  loadData?: () => Promise<{}>
+}
+
+export class TextPreviewDialog extends ReactDialog<Props> {
+  title = 'Preview'
+  width = 800
+  hideButtons = true
+
+  public static previewData(data: any) {
+    new TextPreviewDialog({
+      curValue: data,
+    }).show()
+  }
+
+  public rawComponent(): React.FC<Props> {
+    return (props) => {
+      const [content, setContent] = useState(props.curValue)
+      useEffect(() => {
+        if (props.loadData) {
+          props.loadData().then((data) => {
+            setContent(data)
+          })
+        }
+      }, [])
+      return <JsonPre value={content} />
     }
-  }, [])
-  return (
-    <ModalForm
-      // open={true}
-      title={title}
-      trigger={props.trigger}
-      modalProps={{
-        destroyOnClose: true,
-        forceRender: true,
-      }}
-      submitter={{ render: () => null }}
-    >
-      <Pre>{content}</Pre>
-    </ModalForm>
-  )
+  }
 }
