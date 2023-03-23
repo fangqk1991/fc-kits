@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, message, Space, Divider } from 'antd'
+import { Button, Divider, message, Space } from 'antd'
 import {
   ConfirmDialog,
   JsonEditorDialog,
@@ -121,6 +121,24 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           Dialog Submitting
+        </Button>
+
+        <Button
+          onClick={() => {
+            TextPreviewDialog.loadDataAndPreview(async () => {
+              await sleep(2000)
+              return {
+                a: Math.random(),
+                abc: {
+                  a: Math.random(),
+                  b: Math.random(),
+                  c: Math.random(),
+                },
+              }
+            })
+          }}
+        >
+          TextPreviewDialog.loadData
         </Button>
       </Space>
     </>

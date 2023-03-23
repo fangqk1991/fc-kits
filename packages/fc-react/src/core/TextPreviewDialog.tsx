@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { DialogProps, ReactDialog } from './ReactDialog'
 import { JsonPre } from './JsonPre'
+import { LoadingView } from './LoadingView'
 
 const Pre = styled.pre(`
   white-space: pre-wrap;
@@ -28,16 +29,36 @@ export class TextPreviewDialog extends ReactDialog<Props> {
     }).show()
   }
 
+  public static loadDataAndPreview(loadData: () => Promise<{}>) {
+    new TextPreviewDialog({
+      loadData: loadData,
+    }).show()
+  }
+
   public rawComponent(): React.FC<Props> {
     return (props) => {
+      const [loading, setLoading] = useState(false)
       const [content, setContent] = useState(props.curValue)
       useEffect(() => {
         if (props.loadData) {
-          props.loadData().then((data) => {
-            setContent(data)
-          })
+          setLoading(true)
+          props
+            .loadData()
+            .then((data) => {
+              setLoading(false)
+              setContent(data)
+            })
+            .catch((err) => {
+              setLoading(false)
+              throw err
+            })
         }
       }, [])
+
+      if (loading) {
+        return <LoadingView />
+      }
+
       return <JsonPre value={content} />
     }
   }
