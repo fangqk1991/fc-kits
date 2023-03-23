@@ -3,12 +3,15 @@ import { Button, message, Space } from 'antd'
 import {
   ConfirmDialog,
   JsonEditorDialog,
+  ReactDialogTheme,
   SimpleInputDialog,
   SimplePickerDialog,
   TextPreviewDialog,
 } from '@fangcha/react'
 
 export const TestDialogsView: React.FC = () => {
+  ReactDialogTheme.colorPrimary = 'rgb(221 115 164)'
+
   return (
     <>
       <Space>

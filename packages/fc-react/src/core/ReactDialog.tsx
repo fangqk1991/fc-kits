@@ -79,7 +79,11 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: 'rgb(221 115 164)',
+            ...(ReactDialogTheme.colorPrimary
+              ? {
+                  colorPrimary: ReactDialogTheme.colorPrimary,
+                }
+              : {}),
           },
         }}
       >
@@ -96,4 +100,8 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
       </ConfigProvider>
     )
   }
+}
+
+export const ReactDialogTheme = {
+  colorPrimary: '',
 }
