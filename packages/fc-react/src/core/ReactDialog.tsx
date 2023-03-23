@@ -71,9 +71,6 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
 
   public constructor(props: Omit<T, 'context'>) {
     this.props = props
-    if (props.title) {
-      this.title = props.title
-    }
   }
 
   public abstract rawComponent(): React.FC<T>
@@ -99,7 +96,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
         }}
       >
         <BaseDialog
-          title={this.title}
+          title={this.props.title || this.title}
           width={this.width}
           dom={dom}
           context={context}
