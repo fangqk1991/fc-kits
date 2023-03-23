@@ -23,6 +23,7 @@ interface Props extends DialogProps {
 
 export const BaseDialog: React.FC<Props> = (props) => {
   const [isOpen, setOpen] = useState(true)
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (!isOpen) {
       props.dom.remove()
@@ -36,10 +37,20 @@ export const BaseDialog: React.FC<Props> = (props) => {
       open={isOpen}
       destroyOnClose={true}
       onCancel={() => setOpen(false)}
+      okButtonProps={{
+        loading: loading,
+      }}
       onOk={async () => {
         if (props.callback) {
+          setLoading(true)
           const result = await props.context.handleResult()
-          await props.callback(result)
+          try {
+            await props.callback(result)
+            setLoading(false)
+          } catch (e) {
+            setLoading(false)
+            throw e
+          }
         }
         setOpen(false)
       }}

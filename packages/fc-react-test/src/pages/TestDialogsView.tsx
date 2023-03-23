@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, message, Space } from 'antd'
+import { Button, message, Space, Divider } from 'antd'
 import {
   ConfirmDialog,
   JsonEditorDialog,
@@ -8,6 +8,7 @@ import {
   SimplePickerDialog,
   TextPreviewDialog,
 } from '@fangcha/react'
+import { sleep } from '@fangcha/tools'
 
 export const TestDialogsView: React.FC = () => {
   ReactDialogTheme.colorPrimary = 'rgb(221 115 164)'
@@ -101,6 +102,25 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           JsonEditorDialog
+        </Button>
+      </Space>
+      <Divider />
+      <Space>
+        <Button
+          type={'primary'}
+          onClick={() => {
+            const dialog = new ConfirmDialog({
+              title: 'Confirm Title',
+              content: '这是一条确认信息',
+            })
+            dialog.show(async () => {
+              message.info('等待 2s...')
+              await sleep(2000)
+              message.success('已点击「确认」')
+            })
+          }}
+        >
+          Dialog Submitting
         </Button>
       </Space>
     </>
