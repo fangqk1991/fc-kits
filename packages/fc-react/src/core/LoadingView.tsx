@@ -10,9 +10,9 @@ const Loading = styled.div({
   alignItems: 'center',
 })
 
-export const LoadingView: React.FC<{ text?: string }> = (props) => {
+export const LoadingView: React.FC<{ text?: string; [p: string]: any }> = (props) => {
   return (
-    <Loading>
+    <Loading {...props}>
       <Spin size='large' tip={props.text || 'Loading……'} />
     </Loading>
   )
