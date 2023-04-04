@@ -1,7 +1,6 @@
-import { WecomProxy } from '../alert'
 import { logger } from '@fangcha/logger'
 import * as os from 'os'
-import { BotCore } from '../alert/BotCore'
+import { BotCore, WecomProxy } from '@fangcha/bot-kit'
 
 type UserInfoTransfer = (item: any) => any
 

@@ -1,8 +1,8 @@
 import { AppProtocol } from '../basic'
 import { _FangchaState } from './_FangchaState'
-import { FeishuBot, WecomProxy } from '../alert'
 import { CustomRequestFollower } from './CustomRequestFollower'
 import { initLoggerForApp } from '@fangcha/logger'
+import { FeishuBot, WecomProxy } from '@fangcha/bot-kit'
 
 export class FangchaApp {
   public protocol: AppProtocol

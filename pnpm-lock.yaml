@@ -126,6 +126,7 @@ importers:
       '@fangcha/app-request': workspace:^*
       '@fangcha/app-request-extensions': workspace:^*
       '@fangcha/assert': workspace:^*
+      '@fangcha/bot-kit': workspace:^*
       '@fangcha/general-job': workspace:^*
       '@fangcha/generator': workspace:^*
       '@fangcha/logger': workspace:^*
@@ -160,6 +161,7 @@ importers:
       moment: 2.29.4
     devDependencies:
       '@fangcha/ali-oss': link:../ali-oss
+      '@fangcha/bot-kit': link:../bot-kit
       '@fangcha/general-job': link:../general-job
       '@fangcha/generator': link:../fc-generator
       '@fangcha/logger': link:../fc-logger

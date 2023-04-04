@@ -1,6 +1,6 @@
 import * as moment from 'moment'
-import { WecomProxy } from '../../src/alert'
 import { CustomRequestFollower } from '../../src'
+import { WecomProxy } from '@fangcha/bot-kit'
 
 describe('Test WecomProxy.test.ts', () => {
   const wecomProxy = new WecomProxy({}, CustomRequestFollower)

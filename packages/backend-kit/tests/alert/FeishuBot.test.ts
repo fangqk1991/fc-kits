@@ -1,5 +1,5 @@
 import * as moment from 'moment'
-import { FeishuBot } from '../../src/alert'
+import { FeishuBot } from '@fangcha/bot-kit'
 
 describe('Test FeishuBot.test.ts', () => {
   const feishuBot = new FeishuBot({})

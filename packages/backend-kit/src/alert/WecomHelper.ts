@@ -1,5 +1,5 @@
-import { WecomProxy } from './WecomProxy'
 import { _FangchaState } from '../main'
+import { WecomProxy } from '@fangcha/bot-kit'
 
 export class WecomHelper {
   public static makeWecomProxy(botKey: string, env?: string) {

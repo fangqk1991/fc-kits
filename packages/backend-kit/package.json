@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/backend-kit",
-  "version": "0.59.0",
+  "version": "0.60.0",
   "description": "Backend Kit.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -27,6 +27,7 @@
     "@fangcha/app-request": "workspace:^*",
     "@fangcha/app-request-extensions": "workspace:^*",
     "@fangcha/assert": "workspace:^*",
+    "@fangcha/bot-kit": "workspace:^*",
     "@fangcha/tools": "workspace:^*",
     "moment": "^2.29.4"
   },
