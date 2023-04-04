@@ -183,6 +183,29 @@ importers:
       tunnel: 0.0.6
       typescript: 4.6.4
 
+  packages/bot-kit:
+    specifiers:
+      '@fangcha/app-error': workspace:^*
+      '@fangcha/app-request': workspace:^*
+      '@fangcha/app-request-extensions': workspace:^*
+      '@fangcha/assert': workspace:^*
+      '@fangcha/tools': workspace:^*
+      jsonwebtoken: ^8.5.1
+      moment: ^2.29.4
+      tunnel: ^0.0.6
+      typescript: 4.6.4
+    dependencies:
+      '@fangcha/app-error': link:../app-error
+      '@fangcha/app-request': link:../http-request
+      '@fangcha/app-request-extensions': link:../http-request-extensions
+      '@fangcha/assert': link:../assert
+      '@fangcha/tools': link:../fc-tools
+      moment: 2.29.4
+    devDependencies:
+      jsonwebtoken: 8.5.1
+      tunnel: 0.0.6
+      typescript: 4.6.4
+
   packages/eslint:
     specifiers:
       '@typescript-eslint/eslint-plugin': ^5.54.1
