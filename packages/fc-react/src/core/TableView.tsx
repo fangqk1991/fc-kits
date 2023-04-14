@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
+import { TableProps } from 'antd/es/table'
 import { PageResult } from '@fangcha/tools'
 
 interface DefaultSettings {
@@ -24,6 +25,7 @@ type TableViewProtocol<T = any> = {
   defaultSettings?: DefaultSettings
   version?: number
   rowKey?: string | ((record: any, index?: number) => string)
+  tableProps?: TableProps<any>
 }
 
 export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
@@ -96,6 +98,10 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       loading={loading}
       columns={props.columns}
       rowKey={props.rowKey}
+      scroll={{
+        x: 'max-content',
+        ...(props.tableProps?.scroll || {}),
+      }}
       pagination={
         pageResult.totalCount > pageResult.length && {
           position: ['bottomRight'],
@@ -112,6 +118,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
         }
       }
       dataSource={pageResult.items}
+      {...(props.tableProps || {})}
     />
   )
 }

@@ -81,6 +81,56 @@ export const TestTableView: React.FC = () => {
               />
             ),
           },
+          {
+            label: `Wide Table`,
+            key: 'wideTable',
+            children: (
+              <TableView
+                tableProps={{
+                  size: 'small',
+                }}
+                version={version}
+                rowKey={(item: SomeData) => {
+                  return item.uid
+                }}
+                columns={[
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                  {
+                    title: 'UID',
+                    render: (item: SomeData) => <span>{item.uid}</span>,
+                  },
+                ]}
+                loadOnePageItems={async () => {
+                  const items = makeDataList()
+                  await sleep(1000)
+                  return items
+                }}
+              />
+            ),
+          },
         ]}
       />
     </div>
