@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 import { DialogProps, ReactDialog } from './ReactDialog'
 import { JsonPre } from './JsonPre'
 import { LoadingView } from './LoadingView'
-
-const Pre = styled.pre(`
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 1.5;
-  padding: 8px;
-  border: 1px solid #e0e5e8;
-`)
 
 interface Props extends DialogProps<any> {
   loadData?: () => Promise<{}>

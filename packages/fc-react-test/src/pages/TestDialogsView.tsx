@@ -1,7 +1,8 @@
 import React from 'react'
-import { Button, Divider, message, Space } from 'antd'
+import { Button, Divider, message, Space, Tag } from 'antd'
 import {
   ConfirmDialog,
+  InformationDialog,
   JsonEditorDialog,
   ReactDialogTheme,
   SimpleInputDialog,
@@ -103,8 +104,42 @@ export const TestDialogsView: React.FC = () => {
         >
           JsonEditorDialog
         </Button>
+
+        <Button
+          onClick={() => {
+            InformationDialog.previewData({
+              title: `${Math.random()}`,
+              infos: [
+                {
+                  label: 'A',
+                  value: Math.random(),
+                },
+                {
+                  label: 'B',
+                  render: () => <Tag color={'red'}>{Math.random()}</Tag>,
+                },
+                {
+                  label: 'C',
+                  value: Math.random(),
+                },
+                {
+                  label: 'D',
+                  value: Math.random(),
+                },
+                {
+                  label: 'E',
+                  value: Math.random(),
+                },
+              ],
+            })
+          }}
+        >
+          InformationDialog
+        </Button>
       </Space>
+
       <Divider />
+
       <Space>
         <Button
           type={'primary'}
