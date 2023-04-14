@@ -24,9 +24,11 @@ export class InformationDialog extends ReactDialog<Props> {
     return (props) => (
       <Descriptions bordered>
         {props.infos.map((option) => (
-          <Descriptions.Item label={option.label}>
-            {option.render ? option.render(option.value) : option.value}
-          </Descriptions.Item>
+          <>
+            <Descriptions.Item label={option.label}>
+              {option.render ? option.render(option.value) : option.value}
+            </Descriptions.Item>
+          </>
         ))}
       </Descriptions>
     )
