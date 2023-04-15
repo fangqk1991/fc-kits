@@ -4,6 +4,7 @@ import {
   ConfirmDialog,
   InformationDialog,
   JsonEditorDialog,
+  MultiplePickerDialog,
   ReactDialogTheme,
   SimpleInputDialog,
   SimplePickerDialog,
@@ -67,6 +68,34 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           SimplePickerDialog
+        </Button>
+
+        <Button
+          type={'primary'}
+          onClick={() => {
+            const dialog = new MultiplePickerDialog({
+              options: [
+                {
+                  label: 'A*',
+                  value: 'A',
+                },
+                {
+                  label: 'B*',
+                  value: 'B',
+                },
+                {
+                  label: 'C*',
+                  value: 'C',
+                },
+              ],
+              checkedList: ['B'],
+            })
+            dialog.show((value) => {
+              message.success(`提交 ${JSON.stringify(value)}`)
+            })
+          }}
+        >
+          MultiplePickerDialog
         </Button>
 
         <Button
