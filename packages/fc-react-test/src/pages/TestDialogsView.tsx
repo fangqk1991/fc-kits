@@ -76,15 +76,15 @@ export const TestDialogsView: React.FC = () => {
             const dialog = new MultiplePickerDialog({
               options: [
                 {
-                  label: 'A*',
+                  label: `A: ${Math.random()}`,
                   value: 'A',
                 },
                 {
-                  label: 'B*',
+                  label: `B: ${Math.random()}`,
                   value: 'B',
                 },
                 {
-                  label: 'C*',
+                  label: `C: ${Math.random()}`,
                   value: 'C',
                 },
               ],

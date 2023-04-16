@@ -35,6 +35,7 @@ export class MultiplePickerDialog extends ReactDialog<Props, (string | number | 
       }
       return (
         <Checkbox.Group
+          style={{ display: 'block' }}
           options={props.options}
           value={checkedList}
           onChange={(checkedValues) => setCheckedList(checkedValues)}
