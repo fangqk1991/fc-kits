@@ -8,7 +8,7 @@ interface DefaultSettings {
   pageNumber?: number
   pageSize?: number
   sortKey?: string
-  sortDirection?: 'ascending' | 'descending'
+  sortDirection?: 'ascend' | 'descend' | 'ascending' | 'descending'
 }
 
 interface RetainParams {
@@ -43,7 +43,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   const [pageSize, setPageSize] = useState(defaultSettings.pageSize)
   const [loading, setLoading] = useState(true)
 
-  const convertParams = (pageNumber: number, pageSize: number) => {
+  const convertPageParams = (pageNumber: number, pageSize: number) => {
     const params: Partial<RetainParams> = {}
     if (pageNumber && pageSize) {
       params._offset = (pageNumber - 1) * pageSize
@@ -52,14 +52,20 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     return params
   }
 
+  const sortKey = defaultSettings.sortKey || ''
+  let sortDirection = defaultSettings.sortDirection || ''
+  if (sortDirection && ['ascend', 'descend'].includes(sortDirection)) {
+    sortDirection = `${sortDirection}ing`
+  }
+
   useEffect(() => {
     if (props.loadOnePageItems) {
       setLoading(true)
       props
         .loadOnePageItems({
-          ...convertParams(curPageNum, pageSize),
-          _sortKey: defaultSettings.sortKey,
-          _sortDirection: defaultSettings.sortDirection,
+          ...convertPageParams(curPageNum, pageSize),
+          _sortKey: sortKey,
+          _sortDirection: sortDirection,
         })
         .then((items) => {
           setPageResult({
@@ -78,9 +84,9 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       setLoading(true)
       props
         .loadData({
-          ...convertParams(curPageNum, pageSize),
-          _sortKey: defaultSettings.sortKey,
-          _sortDirection: defaultSettings.sortDirection,
+          ...convertPageParams(curPageNum, pageSize),
+          _sortKey: sortKey,
+          _sortDirection: sortDirection,
         })
         .then((pageResult) => {
           setPageResult(pageResult)
