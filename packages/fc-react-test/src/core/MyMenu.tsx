@@ -20,6 +20,10 @@ export const MyMenu: Route = {
           path: '/v1/loading-view',
           name: 'LoadingView',
         },
+        {
+          path: '/v1/widgets',
+          name: 'Widgets',
+        },
       ],
     },
   ],

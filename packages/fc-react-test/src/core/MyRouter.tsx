@@ -4,6 +4,7 @@ import { MainLayout } from './MainLayout'
 import { LoadingView, RouteErrorBoundary } from '@fangcha/react'
 import { TestTableView } from '../pages/TestTableView'
 import { TestDialogsView } from '../pages/TestDialogsView'
+import { TestWidgetsView } from '../pages/TestWidgetsView'
 
 export const MyRouter = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const MyRouter = createBrowserRouter([
       {
         path: '/v1/loading-view',
         element: <LoadingView style={{ height: '100vh' }} />,
+      },
+      {
+        path: '/v1/widgets',
+        element: <TestWidgetsView />,
       },
       {
         path: '*',
