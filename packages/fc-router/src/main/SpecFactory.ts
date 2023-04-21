@@ -112,7 +112,7 @@ class SpecBuilder {
       infos.push(`**需要 ${this.extras.require} 权限**`)
     }
     if (this.extras.skipAuth) {
-      infos.push(`无需 jwt 验证`)
+      infos.push(`无需验证`)
     }
     if (this._description) {
       infos.push(this._description)
