@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableProps } from 'antd/es/table'
@@ -38,21 +38,26 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     return props.namespace ? `${props.namespace}.${key}` : key
   }
 
-  const defaultSettings: DefaultSettings = props.defaultSettings || {}
-  if (props.reactiveQuery) {
-    for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
-      const targetKey = getTargetKey(key)
-      if (queryParams[targetKey]) {
-        defaultSettings[key] = queryParams[targetKey]
+  const settings: DefaultSettings = useMemo(() => {
+    const defaultSettings = props.defaultSettings || {}
+    if (props.reactiveQuery) {
+      for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
+        const targetKey = getTargetKey(key)
+        if (queryParams[targetKey]) {
+          defaultSettings[key] = queryParams[targetKey]
+        }
       }
     }
-  }
-  defaultSettings.pageNumber = Number(defaultSettings.pageNumber || 0) || 1
-  defaultSettings.pageSize = Number(defaultSettings.pageSize || 10)
-  defaultSettings.sortKey = defaultSettings.sortKey || ''
-  defaultSettings.sortDirection = defaultSettings.sortDirection || ''
+    defaultSettings.pageNumber = Number(defaultSettings.pageNumber || 0) || 1
+    defaultSettings.pageSize = Number(defaultSettings.pageSize || 10)
+    defaultSettings.sortKey = defaultSettings.sortKey || ''
+    defaultSettings.sortDirection = defaultSettings.sortDirection || ''
+    return defaultSettings
+  }, [props.defaultSettings, queryParams])
 
-  const [settings, setSettings] = useState(defaultSettings)
+  const [settingsStorage, setSettingsStorage] = useState(settings)
+
+  const realSettings = props.reactiveQuery ? settings : settingsStorage
 
   const [pageResult, setPageResult] = useState<PageResult>({
     offset: 0,
@@ -63,16 +68,16 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   const [loading, setLoading] = useState(true)
 
   const getRetainedParams = () => {
-    const pageNumber = settings.pageNumber
-    const pageSize = settings.pageSize
+    const pageNumber = realSettings.pageNumber
+    const pageSize = realSettings.pageSize
     const params: Partial<RetainParams> = {}
     if (pageNumber && pageSize) {
       params._offset = (pageNumber - 1) * pageSize
       params._length = pageSize
     }
-    if (settings.sortKey) {
-      params._sortKey = settings.sortKey
-      params._sortDirection = settings.sortDirection
+    if (realSettings.sortKey) {
+      params._sortKey = realSettings.sortKey
+      params._sortDirection = realSettings.sortDirection
     }
     if (params._sortDirection) {
       if (['ascend', 'descend'].includes(params._sortDirection)) {
@@ -83,19 +88,19 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   }
 
   const updateSettings = (params: Partial<DefaultSettings>) => {
-    setSettings({
-      ...settings,
-      ...params,
-    })
+    const newParams = ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']
+      .filter((key) => key in params)
+      .reduce((result, key) => {
+        result[getTargetKey(key)] = params[key]
+        return result
+      }, {})
     if (props.reactiveQuery) {
-      updateQueryParams(
-        ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']
-          .filter((key) => key in params)
-          .reduce((result, key) => {
-            result[getTargetKey(key)] = params[key]
-            return result
-          }, {})
-      )
+      updateQueryParams(newParams)
+    } else {
+      setSettingsStorage({
+        ...settingsStorage,
+        ...newParams,
+      })
     }
   }
 
@@ -135,7 +140,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
 
   useEffect(() => {
     reloadData()
-  }, [settings, props.version, props.loadData, props.loadOnePageItems])
+  }, [realSettings, props.version, props.loadData, props.loadOnePageItems])
 
   return (
     <Table
@@ -156,8 +161,8 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           //     pageSize: pageSize,
           //   })
           // },
-          current: settings.pageNumber,
-          pageSize: settings.pageSize,
+          current: realSettings.pageNumber,
+          pageSize: realSettings.pageSize,
           total: pageResult.totalCount,
         }
       }

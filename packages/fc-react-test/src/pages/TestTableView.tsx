@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Button, Divider, Tabs } from 'antd'
-import { TableView } from '@fangcha/react'
+import { Button, Divider, Tabs, Space } from 'antd'
+import { TableView, useQueryParams } from '@fangcha/react'
 import { makeUUID, PageResult, sleep } from '@fangcha/tools'
 
 interface SomeData {
@@ -20,6 +20,7 @@ const makeDataList = () => {
 
 export const TestTableView: React.FC = () => {
   const [version, setVersion] = useState(0)
+  const { queryParams, updateQueryParams, setQueryParams } = useQueryParams<{ keywords: string; [p: string]: any }>()
 
   return (
     <div>
@@ -36,6 +37,15 @@ export const TestTableView: React.FC = () => {
             key: 'loadData',
             children: (
               <div>
+                <Space style={{ marginBottom: '8px' }}>
+                  <Button
+                    onClick={() => {
+                      setQueryParams({})
+                    }}
+                  >
+                    重置过滤器
+                  </Button>
+                </Space>
                 <TableView
                   reactiveQuery={true}
                   version={version}
@@ -47,7 +57,7 @@ export const TestTableView: React.FC = () => {
                   }}
                   columns={[
                     {
-                      title: 'Table 1 UID',
+                      title: 'UID',
                       render: (item: SomeData) => <span>{item.uid}</span>,
                     },
                     {
@@ -58,6 +68,7 @@ export const TestTableView: React.FC = () => {
                     },
                   ]}
                   loadData={async (retainParams) => {
+                    console.info(retainParams)
                     const items = makeDataList()
                     await sleep(1000)
                     const pageResult: PageResult<SomeData> = {
