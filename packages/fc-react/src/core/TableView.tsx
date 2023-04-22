@@ -97,7 +97,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     }
   }
 
-  useEffect(() => {
+  const reloadData = () => {
     const retainedParams = getRetainedParams()
     if (props.loadOnePageItems) {
       setLoading(true)
@@ -129,6 +129,10 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           throw e
         })
     }
+  }
+
+  useEffect(() => {
+    reloadData()
   }, [settings, props.version, props.loadData, props.loadOnePageItems])
 
   return (
@@ -173,6 +177,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
         }
         if (Object.keys(newParams).length > 0) {
           updateSettings(newParams)
+          reloadData()
         }
         if (props.tableProps && props.tableProps.onChange) {
           props.tableProps.onChange(pagination, filters, sorter, extra)
