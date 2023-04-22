@@ -81,6 +81,10 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   }
 
   const updateSettings = (params: Partial<DefaultSettings>) => {
+    setSettings({
+      ...settings,
+      ...params,
+    })
     if (props.reactiveQuery) {
       updateQueryParams(
         ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']
@@ -91,10 +95,6 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           }, {})
       )
     }
-    setSettings({
-      ...settings,
-      ...params,
-    })
   }
 
   useEffect(() => {
@@ -144,12 +144,12 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
         pageResult.totalCount > pageResult.length && {
           position: ['bottomRight'],
           showSizeChanger: true,
-          onChange: (pageNumber, pageSize) => {
-            updateSettings({
-              pageNumber: pageNumber,
-              pageSize: pageSize,
-            })
-          },
+          // onChange: (pageNumber, pageSize) => {
+          //   updateSettings({
+          //     pageNumber: pageNumber,
+          //     pageSize: pageSize,
+          //   })
+          // },
           current: settings.pageNumber,
           pageSize: settings.pageSize,
           total: pageResult.totalCount,
@@ -157,6 +157,27 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       }
       dataSource={pageResult.items}
       {...(props.tableProps || {})}
+      onChange={(pagination, filters, sorter, extra) => {
+        const newParams: any = {}
+        if (sorter) {
+          Object.assign(newParams, {
+            sortKey: sorter['columnKey'],
+            sortDirection: sorter['order'],
+          })
+        }
+        if (pagination) {
+          Object.assign(newParams, {
+            pageNumber: pagination.current,
+            pageSize: pagination.pageSize,
+          })
+        }
+        if (Object.keys(newParams).length > 0) {
+          updateSettings(newParams)
+        }
+        if (props.tableProps && props.tableProps.onChange) {
+          props.tableProps.onChange(pagination, filters, sorter, extra)
+        }
+      }}
     />
   )
 }
