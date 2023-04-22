@@ -5,12 +5,14 @@ import { makeUUID, PageResult, sleep } from '@fangcha/tools'
 
 interface SomeData {
   uid: string
+  value: number
 }
 
 const makeDataList = () => {
   return new Array(10).fill(null).map(() => {
     const data: SomeData = {
       uid: makeUUID(),
+      value: Math.random(),
     }
     return data
   })
@@ -47,6 +49,12 @@ export const TestTableView: React.FC = () => {
                     {
                       title: 'Table 1 UID',
                       render: (item: SomeData) => <span>{item.uid}</span>,
+                    },
+                    {
+                      title: 'Value',
+                      key: 'value',
+                      sorter: (a: SomeData, b: SomeData) => a.value - b.value,
+                      render: (item: SomeData) => <span>{item.value}</span>,
                     },
                   ]}
                   loadData={async (retainParams) => {

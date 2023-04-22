@@ -51,9 +51,6 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   defaultSettings.pageSize = Number(defaultSettings.pageSize || 10)
   defaultSettings.sortKey = defaultSettings.sortKey || ''
   defaultSettings.sortDirection = defaultSettings.sortDirection || ''
-  if (['ascend', 'descend'].includes(defaultSettings.sortDirection)) {
-    defaultSettings.sortDirection = `${defaultSettings.sortDirection}ing` as any
-  }
 
   const [settings, setSettings] = useState(defaultSettings)
 
@@ -76,6 +73,11 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     if (settings.sortKey) {
       params._sortKey = settings.sortKey
       params._sortDirection = settings.sortDirection
+    }
+    if (params._sortDirection) {
+      if (['ascend', 'descend'].includes(params._sortDirection)) {
+        params._sortDirection = `${params._sortDirection}ing`
+      }
     }
     return params
   }
@@ -177,7 +179,6 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
         }
         if (Object.keys(newParams).length > 0) {
           updateSettings(newParams)
-          reloadData()
         }
         if (props.tableProps && props.tableProps.onChange) {
           props.tableProps.onChange(pagination, filters, sorter, extra)
