@@ -34,11 +34,16 @@ type TableViewProtocol<T = any> = {
 export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
   const { queryParams, updateQueryParams } = useQueryParams<DefaultSettings>()
 
+  const getTargetKey = (key: string) => {
+    return props.namespace ? `${props.namespace}.${key}` : key
+  }
+
   const defaultSettings: DefaultSettings = props.defaultSettings || {}
   if (props.reactiveQuery) {
     for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
-      if (queryParams[key]) {
-        defaultSettings[key] = queryParams[key]
+      const targetKey = getTargetKey(key)
+      if (queryParams[targetKey]) {
+        defaultSettings[key] = queryParams[targetKey]
       }
     }
   }
@@ -76,69 +81,21 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   }
 
   const updateSettings = (params: Partial<DefaultSettings>) => {
-    const newParams = {
+    if (props.reactiveQuery) {
+      updateQueryParams(
+        ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']
+          .filter((key) => key in params)
+          .reduce((result, key) => {
+            result[getTargetKey(key)] = params[key]
+            return result
+          }, {})
+      )
+    }
+    setSettings({
       ...settings,
       ...params,
-    }
-    if (props.reactiveQuery) {
-      updateQueryParams(newParams)
-    }
-    setSettings(newParams)
+    })
   }
-
-  // const getTargetKey = (key: string) => {
-  //   return props.namespace ? `${props.namespace}.${key}` : key
-  // }
-
-  // const updateQuery = () => {
-  //   if (!props.reactiveQuery) {
-  //     return
-  //   }
-  //   const retainQueryParams: DefaultSettings = {
-  //     [getTargetKey('pageNumber')]: this.pageInfo.pageNumber,
-  //     [getTargetKey('pageSize')]: this.pageInfo.pageSize,
-  //     [getTargetKey('sortKey')]: this.orderRule.prop,
-  //     [getTargetKey('sortDirection')]: this.orderRule.order,
-  //   }
-  //   const params = this.delegate.reactiveQueryParams
-  //     ? this.delegate.reactiveQueryParams(retainQueryParams)
-  //     : retainQueryParams
-  //   let queryParams = Object.assign({}, this.$route?.query || {})
-  //
-  //   Object.keys(params).forEach((key) => {
-  //     if (params[key] !== undefined || params[key] !== null) {
-  //       queryParams[key] = params[key]
-  //     }
-  //     if (typeof queryParams[key] === 'number') {
-  //       queryParams[key] = `${queryParams[key]}`
-  //     }
-  //   })
-  //
-  //   if (this.trimParams) {
-  //     queryParams = trimParams(queryParams)
-  //   }
-  //
-  //   for (const queryKey of Object.keys(queryParams)) {
-  //     for (const forbiddenWord of this.forbiddenQueryWords) {
-  //       if (typeof queryParams[queryKey] === 'string' && queryParams[queryKey].includes(forbiddenWord)) {
-  //         delete queryParams[queryKey]
-  //         break
-  //       }
-  //     }
-  //   }
-  //   const defaultSettings = this.getDefaultSettings()
-  //   for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
-  //     if (queryParams[key] === `${defaultSettings[key]}`) {
-  //       delete queryParams[key]
-  //     }
-  //   }
-  //   if (this.$route && !DiffMapper.checkEquals(this.$route.query, queryParams)) {
-  //     this.$router.replace({
-  //       path: this.$route.path,
-  //       query: queryParams,
-  //     })
-  //   }
-  // }
 
   useEffect(() => {
     const retainedParams = getRetainedParams()

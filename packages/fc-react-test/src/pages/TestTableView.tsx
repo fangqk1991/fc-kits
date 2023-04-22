@@ -33,30 +33,64 @@ export const TestTableView: React.FC = () => {
             label: `loadData`,
             key: 'loadData',
             children: (
-              <TableView
-                reactiveQuery={false}
-                version={version}
-                rowKey={(item: SomeData) => {
-                  return item.uid
-                }}
-                columns={[
-                  {
-                    title: 'UID',
-                    render: (item: SomeData) => <span>{item.uid}</span>,
-                  },
-                ]}
-                loadData={async (retainParams) => {
-                  const items = makeDataList()
-                  await sleep(1000)
-                  const pageResult: PageResult<SomeData> = {
-                    offset: retainParams._offset!,
-                    length: items.length,
-                    totalCount: items.length * 2,
-                    items: items,
-                  }
-                  return pageResult
-                }}
-              />
+              <div>
+                <TableView
+                  reactiveQuery={true}
+                  version={version}
+                  tableProps={{
+                    size: 'small',
+                  }}
+                  rowKey={(item: SomeData) => {
+                    return item.uid
+                  }}
+                  columns={[
+                    {
+                      title: 'Table 1 UID',
+                      render: (item: SomeData) => <span>{item.uid}</span>,
+                    },
+                  ]}
+                  loadData={async (retainParams) => {
+                    const items = makeDataList()
+                    await sleep(1000)
+                    const pageResult: PageResult<SomeData> = {
+                      offset: retainParams._offset!,
+                      length: items.length,
+                      totalCount: items.length * 2,
+                      items: items,
+                    }
+                    return pageResult
+                  }}
+                />
+
+                <TableView
+                  reactiveQuery={true}
+                  namespace={'table2'}
+                  version={version}
+                  tableProps={{
+                    size: 'small',
+                  }}
+                  rowKey={(item: SomeData) => {
+                    return item.uid
+                  }}
+                  columns={[
+                    {
+                      title: 'Table 2 UID',
+                      render: (item: SomeData) => <span>{item.uid}</span>,
+                    },
+                  ]}
+                  loadData={async (retainParams) => {
+                    const items = makeDataList()
+                    await sleep(1000)
+                    const pageResult: PageResult<SomeData> = {
+                      offset: retainParams._offset!,
+                      length: items.length,
+                      totalCount: items.length * 2,
+                      items: items,
+                    }
+                    return pageResult
+                  }}
+                />
+              </div>
             ),
           },
           {
