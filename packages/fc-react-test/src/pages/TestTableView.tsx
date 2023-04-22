@@ -34,6 +34,7 @@ export const TestTableView: React.FC = () => {
             key: 'loadData',
             children: (
               <TableView
+                reactiveQuery={false}
                 version={version}
                 rowKey={(item: SomeData) => {
                   return item.uid

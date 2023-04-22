@@ -3,12 +3,13 @@ import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableProps } from 'antd/es/table'
 import { PageResult } from '@fangcha/tools'
+import { useQueryParams } from '../hooks/useQueryParams'
 
 interface DefaultSettings {
   pageNumber?: number
   pageSize?: number
   sortKey?: string
-  sortDirection?: 'ascend' | 'descend' | 'ascending' | 'descending'
+  sortDirection?: 'ascend' | 'descend' | 'ascending' | 'descending' | ''
 }
 
 interface RetainParams {
@@ -26,12 +27,30 @@ type TableViewProtocol<T = any> = {
   version?: number
   rowKey?: string | ((record: any, index?: number) => string)
   tableProps?: TableProps<any>
+  reactiveQuery?: boolean
+  namespace?: string
 }
 
 export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
-  const defaultSettings = props.defaultSettings || {}
+  const { queryParams, updateQueryParams } = useQueryParams<DefaultSettings>()
+
+  const defaultSettings: DefaultSettings = props.defaultSettings || {}
+  if (props.reactiveQuery) {
+    for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
+      if (queryParams[key]) {
+        defaultSettings[key] = queryParams[key]
+      }
+    }
+  }
   defaultSettings.pageNumber = Number(defaultSettings.pageNumber || 0) || 1
   defaultSettings.pageSize = Number(defaultSettings.pageSize || 10)
+  defaultSettings.sortKey = defaultSettings.sortKey || ''
+  defaultSettings.sortDirection = defaultSettings.sortDirection || ''
+  if (['ascend', 'descend'].includes(defaultSettings.sortDirection)) {
+    defaultSettings.sortDirection = `${defaultSettings.sortDirection}ing` as any
+  }
+
+  const [settings, setSettings] = useState(defaultSettings)
 
   const [pageResult, setPageResult] = useState<PageResult>({
     offset: 0,
@@ -39,34 +58,94 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     totalCount: 0,
     items: [],
   })
-  const [curPageNum, setCurPageNum] = useState(defaultSettings.pageNumber)
-  const [pageSize, setPageSize] = useState(defaultSettings.pageSize)
   const [loading, setLoading] = useState(true)
 
-  const convertPageParams = (pageNumber: number, pageSize: number) => {
+  const getRetainedParams = () => {
+    const pageNumber = settings.pageNumber
+    const pageSize = settings.pageSize
     const params: Partial<RetainParams> = {}
     if (pageNumber && pageSize) {
       params._offset = (pageNumber - 1) * pageSize
       params._length = pageSize
     }
+    if (settings.sortKey) {
+      params._sortKey = settings.sortKey
+      params._sortDirection = settings.sortDirection
+    }
     return params
   }
 
-  const sortKey = defaultSettings.sortKey || ''
-  let sortDirection = defaultSettings.sortDirection || ''
-  if (sortDirection && ['ascend', 'descend'].includes(sortDirection)) {
-    sortDirection = `${sortDirection}ing`
+  const updateSettings = (params: Partial<DefaultSettings>) => {
+    const newParams = {
+      ...settings,
+      ...params,
+    }
+    if (props.reactiveQuery) {
+      updateQueryParams(newParams)
+    }
+    setSettings(newParams)
   }
 
+  // const getTargetKey = (key: string) => {
+  //   return props.namespace ? `${props.namespace}.${key}` : key
+  // }
+
+  // const updateQuery = () => {
+  //   if (!props.reactiveQuery) {
+  //     return
+  //   }
+  //   const retainQueryParams: DefaultSettings = {
+  //     [getTargetKey('pageNumber')]: this.pageInfo.pageNumber,
+  //     [getTargetKey('pageSize')]: this.pageInfo.pageSize,
+  //     [getTargetKey('sortKey')]: this.orderRule.prop,
+  //     [getTargetKey('sortDirection')]: this.orderRule.order,
+  //   }
+  //   const params = this.delegate.reactiveQueryParams
+  //     ? this.delegate.reactiveQueryParams(retainQueryParams)
+  //     : retainQueryParams
+  //   let queryParams = Object.assign({}, this.$route?.query || {})
+  //
+  //   Object.keys(params).forEach((key) => {
+  //     if (params[key] !== undefined || params[key] !== null) {
+  //       queryParams[key] = params[key]
+  //     }
+  //     if (typeof queryParams[key] === 'number') {
+  //       queryParams[key] = `${queryParams[key]}`
+  //     }
+  //   })
+  //
+  //   if (this.trimParams) {
+  //     queryParams = trimParams(queryParams)
+  //   }
+  //
+  //   for (const queryKey of Object.keys(queryParams)) {
+  //     for (const forbiddenWord of this.forbiddenQueryWords) {
+  //       if (typeof queryParams[queryKey] === 'string' && queryParams[queryKey].includes(forbiddenWord)) {
+  //         delete queryParams[queryKey]
+  //         break
+  //       }
+  //     }
+  //   }
+  //   const defaultSettings = this.getDefaultSettings()
+  //   for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
+  //     if (queryParams[key] === `${defaultSettings[key]}`) {
+  //       delete queryParams[key]
+  //     }
+  //   }
+  //   if (this.$route && !DiffMapper.checkEquals(this.$route.query, queryParams)) {
+  //     this.$router.replace({
+  //       path: this.$route.path,
+  //       query: queryParams,
+  //     })
+  //   }
+  // }
+
   useEffect(() => {
+    const retainedParams = getRetainedParams()
     if (props.loadOnePageItems) {
       setLoading(true)
       props
-        .loadOnePageItems({
-          ...convertPageParams(curPageNum, pageSize),
-          _sortKey: sortKey,
-          _sortDirection: sortDirection,
-        })
+        .loadOnePageItems(retainedParams)
         .then((items) => {
           setPageResult({
             offset: 0,
@@ -83,11 +162,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     } else if (props.loadData) {
       setLoading(true)
       props
-        .loadData({
-          ...convertPageParams(curPageNum, pageSize),
-          _sortKey: sortKey,
-          _sortDirection: sortDirection,
-        })
+        .loadData(retainedParams)
         .then((pageResult) => {
           setPageResult(pageResult)
           setLoading(false)
@@ -97,7 +172,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           throw e
         })
     }
-  }, [curPageNum, pageSize, props.version, props.loadData, props.loadOnePageItems])
+  }, [settings, props.version, props.loadData, props.loadOnePageItems])
 
   return (
     <Table
@@ -112,14 +187,14 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
         pageResult.totalCount > pageResult.length && {
           position: ['bottomRight'],
           showSizeChanger: true,
-          onChange: (pageNumber, _pageSize) => {
-            setCurPageNum(pageNumber)
+          onChange: (pageNumber, pageSize) => {
+            updateSettings({
+              pageNumber: pageNumber,
+              pageSize: pageSize,
+            })
           },
-          onShowSizeChange: (_curPageNum, pageSize) => {
-            setPageSize(pageSize)
-          },
-          defaultCurrent: curPageNum,
-          pageSize: pageSize,
+          current: settings.pageNumber,
+          pageSize: settings.pageSize,
           total: pageResult.totalCount,
         }
       }
