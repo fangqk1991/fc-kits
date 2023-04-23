@@ -5,8 +5,15 @@ import * as qs from 'qs'
 export function useQueryParams<T = {}>() {
   const [searchParams, setSearchParams] = useSearchParams()
   const queryParams = useMemo(() => {
-    const params = {}
+    const params: any = {}
     for (const [key, value] of searchParams.entries()) {
+      if (key in params) {
+        if (!Array.isArray(params[key])) {
+          params[key] = [params[key]]
+        }
+        params[key].push(value)
+        continue
+      }
       params[key] = value
     }
     return params
