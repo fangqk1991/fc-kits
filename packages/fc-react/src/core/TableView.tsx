@@ -29,6 +29,7 @@ type TableViewProtocol<T = any> = {
   tableProps?: TableProps<any>
   reactiveQuery?: boolean
   namespace?: string
+  hidePagination?: boolean
 }
 
 export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
@@ -39,7 +40,9 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   }
 
   const settings: DefaultSettings = useMemo(() => {
-    const defaultSettings = props.defaultSettings || {}
+    const defaultSettings = {
+      ...(props.defaultSettings || {}),
+    }
     if (props.reactiveQuery) {
       for (const key of ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']) {
         const targetKey = getTargetKey(key)
@@ -152,7 +155,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
         ...(props.tableProps?.scroll || {}),
       }}
       pagination={
-        pageResult.totalCount > pageResult.length && {
+        !props.hidePagination && {
           position: ['bottomRight'],
           showSizeChanger: true,
           // onChange: (pageNumber, pageSize) => {
