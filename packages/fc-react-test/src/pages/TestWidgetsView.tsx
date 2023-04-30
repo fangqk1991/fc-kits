@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Space } from 'antd'
+import { Button, Card, message, Space } from 'antd'
 import { DraggableOptionsDialog, JsonPre, MyTagsPanel, useQueryParams } from '@fangcha/react'
 
 export const TestWidgetsView: React.FC = () => {
@@ -24,8 +24,22 @@ export const TestWidgetsView: React.FC = () => {
                 label: 'B',
                 value: 'b',
               },
+              {
+                label: 'C',
+                value: 'c',
+              },
+              {
+                label: 'D',
+                value: 'd',
+              },
+              {
+                label: 'E',
+                value: 'e',
+              },
             ])
-            dialog.show()
+            dialog.show(async (options) => {
+              message.success(`${options.map((item) => item.label).join(', ')}`)
+            })
           }}
         >
           DraggableOptionsDialog
