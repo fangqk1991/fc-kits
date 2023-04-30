@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, Space } from 'antd'
-import { JsonPre, MyTagsPanel, useQueryParams } from '@fangcha/react'
+import { Button, Card, Space } from 'antd'
+import { DraggableOptionsDialog, JsonPre, MyTagsPanel, useQueryParams } from '@fangcha/react'
 
 export const TestWidgetsView: React.FC = () => {
   const { queryParams } = useQueryParams()
@@ -11,6 +11,25 @@ export const TestWidgetsView: React.FC = () => {
       </Card>
       <Card size={'small'} title='Query Params' style={{ width: 300 }}>
         <JsonPre value={queryParams} />
+      </Card>
+      <Card size={'small'} title='Draggable' style={{ width: 300 }}>
+        <Button
+          onClick={() => {
+            const dialog = DraggableOptionsDialog.dialogWithOptions([
+              {
+                label: 'A',
+                value: 'a',
+              },
+              {
+                label: 'B',
+                value: 'b',
+              },
+            ])
+            dialog.show()
+          }}
+        >
+          DraggableOptionsDialog
+        </Button>
       </Card>
     </Space>
   )

@@ -18,7 +18,9 @@
     "react-router": "^6.8.2",
     "react-router-dom": "^6.8.2",
     "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6"
+    "@emotion/styled": "^11.10.6",
+    "react-beautiful-dnd": "^13.1.1",
+    "@types/react-beautiful-dnd": "^13.1.4"
   },
   "devDependencies": {
     "@fangcha/app-error": "workspace:^*",
