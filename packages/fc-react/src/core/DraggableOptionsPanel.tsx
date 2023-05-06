@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const DraggableOptionsPanel: React.FC<Props> = (props) => {
-  const [options, setOptions] = useState([...props.options])
+  const options = props.options
 
   return (
     <DragDropContext
@@ -24,7 +24,6 @@ export const DraggableOptionsPanel: React.FC<Props> = (props) => {
         const newOptions = [...options]
         const [sourceItem] = newOptions.splice(result.source.index, 1)
         newOptions.splice(result.destination.index, 0, sourceItem)
-        setOptions(newOptions)
 
         if (props.onChange) {
           props.onChange(newOptions)
