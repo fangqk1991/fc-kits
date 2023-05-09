@@ -5,13 +5,27 @@ interface KeyBufferMapper {
   [keyId: string]: Buffer
 }
 
+type KeyDataLoader = () => Promise<{ [keyId: string]: string }>
+
 export class EncryptionBox {
   private readonly _keyMapper: KeyBufferMapper
+  private _loader?: KeyDataLoader
 
   constructor(defaultKey?: string) {
     this._keyMapper = {}
     if (defaultKey) {
       this._keyMapper['_default'] = Buffer.from(crypto.createHash('md5').update(defaultKey).digest('hex'))
+    }
+  }
+
+  public setKeyDataLoader(loader: KeyDataLoader) {
+    this._loader = loader
+  }
+
+  public async reloadKeyData() {
+    if (this._loader) {
+      const keyData = await this._loader()
+      this.addKeyData(keyData)
     }
   }
 
