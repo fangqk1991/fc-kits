@@ -22,6 +22,10 @@ export class EncryptionBox {
     this._loader = loader
   }
 
+  public getKeyIdList() {
+    return Object.keys(this._keyMapper)
+  }
+
   public async reloadKeyData() {
     if (this._loader) {
       const keyData = await this._loader()
