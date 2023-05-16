@@ -3,7 +3,7 @@ import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { HuilianyiTokenKeeper } from './HuilianyiTokenKeeper'
 import { BasicAuthConfig } from '@fangcha/tools'
 import { HuilianyiApis } from './HuilianyiApis'
-import { HuilianyiResponse } from './HuilianyiModels'
+import { HLY_Company, HuilianyiResponse } from './HuilianyiModels'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   private _tokenKeeper: HuilianyiTokenKeeper
@@ -40,6 +40,7 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       page: 1,
       size: 100,
     })
-    return (await request.quickSend()) as HuilianyiResponse<any>
+    const response = (await request.quickSend()) as HuilianyiResponse<HLY_Company[]>
+    return response.data
   }
 }

@@ -6,7 +6,7 @@ describe('Test HuilianyiProxy.test.ts', () => {
   const feishuClient = new HuilianyiProxy(GlobalAppConfig.HuilianyiSDK, CustomRequestFollower)
 
   it(`getCompanyList`, async () => {
-    const response = await feishuClient.getCompanyList()
-    console.info(response)
+    const items = await feishuClient.getCompanyList()
+    console.info(items)
   })
 })
