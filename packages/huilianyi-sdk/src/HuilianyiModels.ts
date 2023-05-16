@@ -200,3 +200,184 @@ export interface HLY_ReceiptedInvoice {
   taxLocationName: null
   taxSignPassword: null
 }
+
+export interface HLY_ExpenseField {
+  fieldOID: string
+  fieldType: string // 'TEXT'
+  fieldDataType: string // 'TEXT'
+  mappedColumnId: number
+  name: string
+  value: null
+  codeName: null
+  messageKey: string
+  businessCode: string
+  sequence: 1
+  outerContactorCode: null
+  customEnumerationDTO: null
+  customEnumerationOID: null
+  customEnumerationName: null
+  printHide: false
+  required: false
+  showOnList: true
+  editable: false
+  defaultValueMode: 'CURRENT'
+  defaultValueKey: null
+  showValue: null
+  isDefaultValueConfigurable: true
+  isCommonField: true
+  reportKey: null
+  accountingKey: null
+  placeholder: null
+  config: {
+    datePattern: ''
+    daysComputeMode: 1
+    dateCombinedEnableTime: null
+    dateCombinedStartTime: null
+    dateCombinedEndTime: null
+    dateCombinedEnableDaysConvert: null
+    daysConvertStartDayTimeStart: null
+    daysConvertStartDayTimeEnd: null
+    dateCombinedStartDayConvertDays: null
+    daysConvertEndDayTimeStart: null
+    daysConvertEndDayTimeEnd: null
+    dateCombinedEndDayConvertDays: null
+    participantsRange: 3
+    showOnEdit: true
+    applicationScopMap: []
+    cityLevelRange: []
+    multiApplicationEnabled: 0
+    showBudgetDetail: 0
+    upperLimit: 9
+    attachmentTypeRange: []
+    hyperLinkPrefix: ''
+    hyperMode: null
+    fillType: null
+    multipleChoice: false
+    outCustomEnumeration: false
+    doubleDecimalDigits: null
+    externalParticipantInputType: null
+    isCanAddContactor: null
+    employeesType: null
+    externalEmployeesScope: false
+    associatedApplicationType: null
+    participantDefaultValue: null
+    manyMileage: null
+    monthDefaultValue: null
+    hasAssociateInvoiceMileage: null
+    budgetLineRange: null
+    cityDefaultValue: null
+    addToSummary: false
+  }
+  textWordLimit: 200
+  i18n: null
+  uniqueObj: null
+  formOID: null
+}
+
+export interface HLY_ExpenseType {
+  id: string
+  expenseTypeOID: string
+  code: string
+  name: string
+  parentName: null
+  iconName: string
+  iconURL: string
+  messageKey: string
+  classificationCode: string
+  readonly: boolean
+  enabled: boolean
+  isSystem: boolean
+  valid: boolean
+  fixedUnitPrice: boolean
+  unitPriceEditMode: string
+  unit: null
+  unitPrice: null
+  fields: HLY_ExpenseField[]
+  sequence: 0
+  needSplit: false
+  ruleTotal: null
+  companyOID: null
+  tenantId: string
+  setOfBooksId: null
+  setOfBooks: null
+  setOfBooksName: null
+  isAttachmentRequired: false
+  attachmentRequired: 0
+  pasteInvoiceNeeded: true
+  expenseTypeCategoryOID: string
+  expenseTypeCategoryId: string
+  expenseTypeCategoryName: string
+  subsidyType: number
+  apportionEnabled: false
+  erApportionEnabled: false
+  loanApportionEnabled: false
+  erAmortiseEnabled: false
+  crossCheckStatus: number
+  titleRequired: false
+  titleWordLimit: number
+  titlePlaceholder: null
+  titleShowOnList: true
+  invoiceRequired: false
+  apportionmentDataScope: number
+  isAbleToCreatedManually: false
+  isAmountEditable: false
+  isAmountIncreased: false
+  supplierType: number
+  accessibleRights: number
+  companyRights: number
+  pushType: string // 'ALL'
+  pushToBooker: false
+  confirmationStatus: string // 'confirmed'
+  reportKey: null
+  recommendType: null
+  depth: number
+  parentId: null
+  i18n: null
+  timeSupported: boolean
+  canFutureDate: boolean
+  notEditableDate: boolean
+  dateRemindText: null
+  occurDateDefaultValue: string // 'CURRENT'
+  dateLinkageValue: string // 'none'
+  multipleInvoiceSupported: boolean
+  promptEnabled: boolean
+  promptTitle: null
+  promptContent: null
+  instructions: null
+  showServiceFeeSplit: boolean
+  serviceFeeSplit: number
+  tripStatisticsEnabled: boolean
+  expenseTypeCatetoryCode: null
+  displayEnabled: true
+  paymentGenerate: number
+  attachmentPrompt: null
+  enabledUserGroups: null
+  enabledCompanies: null
+  enabledCompanieGroups: null
+  enabledDepartmentGroups: []
+  showExpenseCreateDate: true
+  levelCode: string // 'TENANT'
+  levelOrgName: null
+  enableDeduction: null
+  deductionTypeList: null
+  dateBringInVal: true
+  levelName: null
+  departmentGroupRights: 0
+  expAmountDefaultValue: null
+  enableInstead: null
+  needInsteadReason: null
+  requireInsteadExpenseType: null
+  supplementReceiptSupported: false
+  canCreateExpense: null
+  notSupportedReason: null
+  isIncentive: false
+  amountReceiptCheck: number
+  skipAmountCurrencyDifferenceCheck: false
+  units: null
+  substituteExpenseTypeEnabled: null
+  deductionByTaxRate: false
+  enableDeductionTaxRateEnumItems: null
+  formOID: null
+  customFormFields: []
+  isChangeCategory: null
+}

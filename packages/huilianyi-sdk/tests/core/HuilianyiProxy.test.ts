@@ -54,4 +54,9 @@ describe('Test HuilianyiProxy.test.ts', () => {
     const items = await huilianyiProxy.getReceiptedInvoiceList()
     console.info(items)
   })
+
+  it(`getExpenseTypeList`, async () => {
+    const items = await huilianyiProxy.getExpenseTypeList()
+    console.info(JSON.stringify(items, null, 2))
+  })
 })
