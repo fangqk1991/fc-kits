@@ -59,4 +59,9 @@ describe('Test HuilianyiProxy.test.ts', () => {
     const items = await huilianyiProxy.getExpenseTypeList()
     console.info(JSON.stringify(items, null, 2))
   })
+
+  it(`searchReimbursementData`, async () => {
+    const items = await huilianyiProxy.searchReimbursementData()
+    console.info(JSON.stringify(items, null, 2))
+  })
 })

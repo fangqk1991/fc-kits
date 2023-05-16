@@ -6,9 +6,11 @@ import { HuilianyiApis } from './HuilianyiApis'
 import {
   HLY_Company,
   HLY_CostCenter,
-  HLY_CostCenterItem, HLY_ExpenseType,
+  HLY_CostCenterItem,
+  HLY_ExpenseType,
   HLY_LegalEntity,
   HLY_ReceiptedInvoice,
+  HLY_Reimbursement,
   HLY_SimpleLegalEntity,
   HLY_User,
   HLY_UserGroup,
@@ -132,5 +134,15 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   public async getExpenseTypeList() {
     const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ExpenseTypeListGet))
     return await request.quickSend<HLY_ExpenseType[]>()
+  }
+
+  public async searchReimbursementData() {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReimbursementDataSearch))
+    request.setBodyData({
+      startDate: '2022-11-01',
+      endDate: '2023-02-01',
+    })
+    const response = await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
+    return response.data
   }
 }

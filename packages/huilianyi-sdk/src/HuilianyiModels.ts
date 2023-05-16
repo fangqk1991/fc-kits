@@ -381,3 +381,55 @@ export interface HLY_ExpenseType {
   customFormFields: []
   isChangeCategory: null
 }
+
+export interface HLY_Reimbursement {
+  departmentCode: string
+  setOfBooksId: string
+  legalEntityOid: string
+  companyOid: string
+  departmentOid: string
+  applicantOid: string
+  businessCode: string
+  formTypeDesc: string
+  applicantName: string
+  applicantEmpId: string
+  applicantComName: string
+  applicantDeptName: string
+  submittedByName: string
+  companyName: string
+  title: string
+  submittedDate: string // '2022-11-22 16:12:23'
+  reimbStatusDesc: string // '待付款'
+  reimbLastModifiedDate: string // '2022-11-22 16:12:25'
+  reimbLastApprover: string
+  reimbAuditApprover: string // '未维护信息'
+  reimbAuditApprovalDate: string // '2022-11-22 16:12:25'
+  currencyCode: string // 'CNY'
+  totalAmount: string // '5000.00'
+  functionalCurrencyCode: string // 'CNY'
+  exchageRate: string // '1.0000'
+  baseCurrencyAmount: string // '5000.00'
+  baseReimbPaymentAmount: string // '0.00'
+  realPaymentBaseAmount: string // '5000.00'
+  labelToast: string
+  formName: string
+  departmentName: string
+  applicantDeptPath: string
+  departmentPath: string
+  applicantLegalName: string
+  receiveStatusDesc: string // '未收单'
+  collectorName: string
+  paymentCurrencyCode: string // 'CNY'
+  createdByName: string
+  reimbBookDate: string // '2022-11-22'
+  integrationId: string
+  approvalDate: string // '2022-11-22'
+  approvalAndAuditName: string
+  reimbPrintViewDate: string // '2022-11-22 16:12:24'
+  applicantComCode: string // '1'
+  companyCode: string // '1'
+  lastApprovalDate: string // '2022-11-22 16:12:24'
+  financeApprovalDate: string // '2022-11-22 16:12:25'
+  firstSubmittedDate: string // '2022-11-22 16:12:23'
+  realPaymentAmountNew: string // '5000.00'
+}

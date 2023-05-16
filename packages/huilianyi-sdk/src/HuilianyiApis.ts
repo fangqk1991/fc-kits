@@ -61,4 +61,9 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/expenseType',
     description: '查询费用类型',
   },
+  ReimbursementDataSearch: {
+    method: 'POST',
+    route: '/gateway/report/api/open/report/searchReimbursement',
+    description: '报销单报表',
+  },
 }
