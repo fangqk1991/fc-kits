@@ -35,4 +35,15 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/legalEntity/:legalEntityOID',
     description: '根据法人实体 OID 查询该法人实体详情',
   },
+  CostCenterListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/costCenter',
+    description: '查询成本中心',
+    // 说明：不包含成本中心项列表
+  },
+  CostCenterDetailGet: {
+    method: 'POST',
+    route: '/gateway/api/open/costCenter/get',
+    description: '查询成本中心详情',
+  },
 }

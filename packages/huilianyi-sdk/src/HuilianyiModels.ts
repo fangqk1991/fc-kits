@@ -112,3 +112,37 @@ export interface HLY_LegalEntity {
   taxpayerType: string
   createdDate: string
 }
+
+export interface HLY_CostCenter {
+  id: string
+  costCenterOID: string
+  name: string
+  code: string
+  tenantId: string
+  companyId: null
+  setOfBooksId: null
+  setOfBooksCode: null
+  setOfBooksName: null
+  companyOID: null
+  companyName: null
+
+  costCenterItems: any[]
+  enabled: boolean
+  i18n: null
+  sequenceNumber: 1
+  parentCostCenterId: null
+  parentCostCenterOID: null
+  parentCostCenterCode: null
+  parentCostCenterName: null
+  formOID: string
+  childCostCenterId: null
+  childCostCenterOID: null
+  childCostCenterName: null
+  hasItemRecord: null
+  levelCode: string // 'TENANT'
+  levelOrgId: string
+  levelOrgName: null
+  selfTree: false
+  itemAmount: null
+  costCenterType: string // 'INNER'
+}

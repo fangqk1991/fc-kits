@@ -38,4 +38,15 @@ describe('Test HuilianyiProxy.test.ts', () => {
     const detailInfo = await huilianyiProxy.getLegalEntityInfo(entity.legalEntityOID)
     console.info(detailInfo)
   })
+
+  it(`getCostCenterList`, async () => {
+    const items = await huilianyiProxy.getCostCenterList()
+    console.info(items)
+  })
+
+  it(`getCostCenterDetail`, async () => {
+    const [item] = await huilianyiProxy.getCostCenterList()
+    const detailInfo = await huilianyiProxy.getCostCenterDetail(item.code)
+    console.info(detailInfo)
+  })
 })

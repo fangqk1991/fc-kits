@@ -5,11 +5,12 @@ import { BasicAuthConfig } from '@fangcha/tools'
 import { HuilianyiApis } from './HuilianyiApis'
 import {
   HLY_Company,
+  HLY_CostCenter,
   HLY_LegalEntity,
   HLY_SimpleLegalEntity,
   HLY_User,
   HLY_UserGroup,
-  HuilianyiResponse
+  HuilianyiResponse,
 } from './HuilianyiModels'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
@@ -78,12 +79,29 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       page: 1,
       size: 100,
     })
-    const response = (await request.quickSend()) as HuilianyiResponse<HLY_SimpleLegalEntity[]>
+    const response = await request.quickSend<HuilianyiResponse<HLY_SimpleLegalEntity[]>>()
     return response.data
   }
 
   public async getLegalEntityInfo(legalEntityOID: string) {
     const request = await this.makeRequest(new CommonAPI(HuilianyiApis.LegalEntityInfoGet, legalEntityOID))
     return await request.quickSend<HLY_LegalEntity>()
+  }
+
+  public async getCostCenterList() {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterListGet))
+    request.setQueryParams({
+      page: 1,
+      size: 100,
+    })
+    return await request.quickSend<HLY_CostCenter[]>()
+  }
+
+  public async getCostCenterDetail(code: string) {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterDetailGet))
+    request.setBodyData({
+      code: code,
+    })
+    return await request.quickSend<HLY_CostCenter>()
   }
 }
