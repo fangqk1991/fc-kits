@@ -27,4 +27,15 @@ describe('Test HuilianyiProxy.test.ts', () => {
     const members = await huilianyiProxy.getUserGroupMembers(userGroup.code)
     console.info(members)
   })
+
+  it(`getLegalEntityList`, async () => {
+    const items = await huilianyiProxy.getLegalEntityList()
+    console.info(items)
+  })
+
+  it(`getLegalEntityInfo`, async () => {
+    const [entity] = await huilianyiProxy.getLegalEntityList()
+    const detailInfo = await huilianyiProxy.getLegalEntityInfo(entity.legalEntityOID)
+    console.info(detailInfo)
+  })
 })

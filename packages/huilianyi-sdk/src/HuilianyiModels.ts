@@ -94,3 +94,21 @@ export interface HLY_User {
   tenantId: null
   multiJob: false
 }
+
+export interface HLY_SimpleLegalEntity {
+  legalEntityOID: string
+  entityName: string
+  enabled: boolean
+}
+
+export interface HLY_LegalEntity {
+  legalEntityOID: string
+  entityName: string
+  enabled: boolean
+
+  setOfBooksId: string
+  setOfBooksCode: string
+  setOfBooksName: string
+  taxpayerType: string
+  createdDate: string
+}

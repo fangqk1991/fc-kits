@@ -25,4 +25,14 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/userGroup/:groupCode',
     description: '根据人员组 OID 或者编码查询该人员组详情',
   },
+  LegalEntityListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/legalEntity',
+    description: '查询租户下所有法人',
+  },
+  LegalEntityInfoGet: {
+    method: 'GET',
+    route: '/gateway/api/open/legalEntity/:legalEntityOID',
+    description: '根据法人实体 OID 查询该法人实体详情',
+  },
 }

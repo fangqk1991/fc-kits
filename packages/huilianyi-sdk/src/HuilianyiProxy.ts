@@ -3,7 +3,14 @@ import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { HuilianyiTokenKeeper } from './HuilianyiTokenKeeper'
 import { BasicAuthConfig } from '@fangcha/tools'
 import { HuilianyiApis } from './HuilianyiApis'
-import { HLY_Company, HLY_User, HLY_UserGroup, HuilianyiResponse } from './HuilianyiModels'
+import {
+  HLY_Company,
+  HLY_LegalEntity,
+  HLY_SimpleLegalEntity,
+  HLY_User,
+  HLY_UserGroup,
+  HuilianyiResponse
+} from './HuilianyiModels'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   private _tokenKeeper: HuilianyiTokenKeeper
@@ -63,5 +70,20 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   public async getUserGroupMembers(groupCode: string) {
     const request = await this.makeRequest(new CommonAPI(HuilianyiApis.UserGroupMembersGet, groupCode))
     return await request.quickSend<HLY_User[]>()
+  }
+
+  public async getLegalEntityList() {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.LegalEntityListGet))
+    request.setQueryParams({
+      page: 1,
+      size: 100,
+    })
+    const response = (await request.quickSend()) as HuilianyiResponse<HLY_SimpleLegalEntity[]>
+    return response.data
+  }
+
+  public async getLegalEntityInfo(legalEntityOID: string) {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.LegalEntityInfoGet, legalEntityOID))
+    return await request.quickSend<HLY_LegalEntity>()
   }
 }
