@@ -7,7 +7,7 @@ import {
   HLY_Company,
   HLY_CostCenter,
   HLY_CostCenterItem,
-  HLY_LegalEntity,
+  HLY_LegalEntity, HLY_ReceiptedInvoice,
   HLY_SimpleLegalEntity,
   HLY_User,
   HLY_UserGroup,
@@ -114,5 +114,14 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       size: 100,
     })
     return await request.quickSend<HLY_CostCenterItem[]>()
+  }
+
+  public async getReceiptedInvoiceList() {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReceiptedInvoiceListGet))
+    request.setQueryParams({
+      page: 1,
+      size: 100,
+    })
+    return await request.quickSend<HLY_ReceiptedInvoice[]>()
   }
 }

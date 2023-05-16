@@ -162,3 +162,41 @@ export interface HLY_CostCenterItem {
   isPublic: boolean
   allTenant: boolean
 }
+
+export interface HLY_ReceiptedInvoice {
+  id: string
+  companyReceiptedOID: string
+  companyName: string
+  setOfBooksId: string
+  setOfBooksName: string
+  companyOID: null
+  enable: boolean
+  taxpayerNumber: null
+  address: null
+  accountBank: null
+  telephone: null
+  cardNumber: null
+  createdDate: null
+  lastModifiedDate: null
+  userAmount: null
+  userOIDs: null
+  parentLegalEntityId: null
+  parentLegalEntityName: null
+  i18n: null
+  attachmentId: null
+  fileURL: null
+  mainLanguage: null
+  alipayRespDTO: null
+  legalEntityAttachmentDTOs: []
+  userMainJobCompanyName: null
+  legalEntityDetail: null
+  startDate: null
+  endDate: null
+  legalEntityType: null
+  legalEntityTypeName: null
+  taxpayerType: string
+  taxConfirmStatus: boolean
+  taxLocationCode: null
+  taxLocationName: null
+  taxSignPassword: null
+}

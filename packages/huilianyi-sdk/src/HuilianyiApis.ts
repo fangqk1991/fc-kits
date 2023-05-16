@@ -51,4 +51,9 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/costCenterItem/incremental',
     description: '分页查询成本中心项',
   },
+  ReceiptedInvoiceListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/receiptedInvoice',
+    description: '查询开票信息',
+  },
 }

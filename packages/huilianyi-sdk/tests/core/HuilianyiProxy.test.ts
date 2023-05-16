@@ -49,4 +49,9 @@ describe('Test HuilianyiProxy.test.ts', () => {
     const detailInfo = await huilianyiProxy.getCostCenterItems(item.code)
     console.info(detailInfo)
   })
+
+  it(`getReceiptedInvoiceList`, async () => {
+    const items = await huilianyiProxy.getReceiptedInvoiceList()
+    console.info(items)
+  })
 })
