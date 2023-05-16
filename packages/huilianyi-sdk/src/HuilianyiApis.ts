@@ -46,4 +46,9 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/costCenter/get',
     description: '查询成本中心详情',
   },
+  CostCenterItemsGet: {
+    method: 'GET',
+    route: '/gateway/api/open/costCenterItem/incremental',
+    description: '分页查询成本中心项',
+  },
 }

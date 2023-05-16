@@ -146,3 +146,19 @@ export interface HLY_CostCenter {
   itemAmount: null
   costCenterType: string // 'INNER'
 }
+
+export interface HLY_CostCenterItem {
+  costCenterItemOID: string
+  parentCostCenterItemOID: null
+  name: string
+  code: string
+  parentCostCenterItemCode: string
+  parentCostCenterItemName: string
+  sequenceNumber: string
+  managerOID: string
+  managerFullName: string
+  enabled: boolean
+  group: null
+  isPublic: boolean
+  allTenant: boolean
+}

@@ -6,6 +6,7 @@ import { HuilianyiApis } from './HuilianyiApis'
 import {
   HLY_Company,
   HLY_CostCenter,
+  HLY_CostCenterItem,
   HLY_LegalEntity,
   HLY_SimpleLegalEntity,
   HLY_User,
@@ -103,5 +104,15 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       code: code,
     })
     return await request.quickSend<HLY_CostCenter>()
+  }
+
+  public async getCostCenterItems(code: string) {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterItemsGet))
+    request.setQueryParams({
+      costCenterCode: code,
+      page: 1,
+      size: 100,
+    })
+    return await request.quickSend<HLY_CostCenterItem[]>()
   }
 }
