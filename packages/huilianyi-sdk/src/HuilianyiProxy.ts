@@ -3,7 +3,7 @@ import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { HuilianyiTokenKeeper } from './HuilianyiTokenKeeper'
 import { BasicAuthConfig } from '@fangcha/tools'
 import { HuilianyiApis } from './HuilianyiApis'
-import { HLY_Company, HuilianyiResponse } from './HuilianyiModels'
+import { HLY_Company, HLY_User, HLY_UserGroup, HuilianyiResponse } from './HuilianyiModels'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   private _tokenKeeper: HuilianyiTokenKeeper
@@ -42,5 +42,26 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
     })
     const response = (await request.quickSend()) as HuilianyiResponse<HLY_Company[]>
     return response.data
+  }
+
+  public async getCompanyInfo(companyCode: string) {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CompanyInfoGet, companyCode))
+    const response = (await request.quickSend()) as HuilianyiResponse<HLY_Company>
+    return response.data
+  }
+
+  public async getUserGroupList() {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.UserGroupListGet))
+    request.setQueryParams({
+      page: 1,
+      size: 100,
+    })
+    const response = (await request.quickSend()) as HuilianyiResponse<HLY_UserGroup[]>
+    return response.data
+  }
+
+  public async getUserGroupMembers(groupCode: string) {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.UserGroupMembersGet, groupCode))
+    return await request.quickSend<HLY_User[]>()
   }
 }
