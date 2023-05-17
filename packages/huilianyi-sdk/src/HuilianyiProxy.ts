@@ -137,12 +137,37 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   }
 
   public async searchReimbursementData() {
-    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReimbursementDataSearch))
-    request.setBodyData({
-      startDate: '2022-11-01',
-      endDate: '2023-02-01',
+    return this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
+      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReimbursementDataSearch))
+      request.setBodyData({
+        startDate: '2022-11-01',
+        endDate: '2023-02-01',
+        ...pageParams,
+      })
+      pageParams
+      return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
     })
-    const response = await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
-    return response.data
+  }
+
+  public async getAllPageItems<T>(
+    handler: (params: { page: number; size: number }) => Promise<HuilianyiResponse<T[]>>
+  ) {
+    let items: T[] = []
+    let finished = false
+    let page = 0
+    while (!finished) {
+      const pageResult = await handler({
+        page: page,
+        size: 1000,
+      })
+      const pageItems = pageResult.data
+      items = items.concat(pageItems || [])
+      if (pageItems.length === 0) {
+        finished = true
+      } else {
+        ++page
+      }
+    }
+    return items
   }
 }
