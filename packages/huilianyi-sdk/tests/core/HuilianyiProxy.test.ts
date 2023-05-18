@@ -62,6 +62,7 @@ describe('Test HuilianyiProxy.test.ts', () => {
 
   it(`searchReimbursementData`, async () => {
     const items = await huilianyiProxy.searchReimbursementData()
-    console.info(JSON.stringify(items, null, 2))
+    console.info(`${items.length} items.`)
+    console.info(JSON.stringify(items.map((item) => item.submittedDate), null, 2))
   })
 })

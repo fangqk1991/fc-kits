@@ -16,6 +16,7 @@ import {
   HLY_UserGroup,
   HuilianyiResponse,
 } from './HuilianyiModels'
+import * as moment from 'moment'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   private _tokenKeeper: HuilianyiTokenKeeper
@@ -136,17 +137,23 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
     return await request.quickSend<HLY_ExpenseType[]>()
   }
 
-  public async searchReimbursementData() {
-    return this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReimbursementDataSearch))
-      request.setBodyData({
-        startDate: '2022-11-01',
-        endDate: '2023-02-01',
-        ...pageParams,
+  public async searchReimbursementData(startYear = 2015) {
+    let allItems: HLY_Reimbursement[] = []
+    const endYear = moment().year()
+    for (let year = startYear; year <= endYear; ++year) {
+      const [startDate, endDate] = [`${year}-01-01`, `${year}-12-31`]
+      const items = await this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
+        const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReimbursementDataSearch))
+        request.setBodyData({
+          startDate: startDate,
+          endDate: endDate,
+          ...pageParams,
+        })
+        return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
       })
-      pageParams
-      return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
-    })
+      allItems = allItems.concat(items)
+    }
+    return allItems
   }
 
   public async getAllPageItems<T>(
