@@ -2,6 +2,7 @@ import * as assert from 'assert'
 import { axiosDownload, axiosGET, axiosPOST, RequestObserverV2 } from '../src'
 import { AxiosError } from 'axios'
 import * as fs from 'fs'
+import AppError from '@fangcha/app-error'
 
 const observer: RequestObserverV2 = {
   onRequestStart: (client) => {
@@ -162,5 +163,18 @@ describe('Test AxiosBuilder', () => {
         })
         .quickSend()
     }
+  })
+
+  it(`Test setResponse200Checker`, async () => {
+    const theError = new AppError('response format invalid', 400)
+    await axiosGET('https://httpbin.org/get')
+      .setObserver(observer)
+      .setResponse200Checker(() => {
+        throw theError
+      })
+      .setErrorHandler((err) => {
+        assert.strictEqual(theError, err)
+      })
+      .quickSend()
   })
 })

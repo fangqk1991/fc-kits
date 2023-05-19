@@ -6,6 +6,8 @@ import AppError, { AppException, ErrorModel } from '@fangcha/app-error'
 import * as qs from 'qs'
 const axios = require('axios')
 
+export type Response200Checker = (responseData: any) => Promise<void> | void
+
 export type ErrorHandler = (error: AppError) => Promise<void> | void
 export type ErrorParser = (client: AxiosBuilder, error: AppError) => AppError
 
@@ -24,6 +26,7 @@ export class AxiosBuilder {
   public bodyData: any
   public formData!: FormData
   public commonApi!: CommonAPI
+  private _response200Checker?: Response200Checker
   private _errorHandler?: ErrorHandler
   private _errorParser?: ErrorParser
   public axiosError?: AxiosError
@@ -55,6 +58,11 @@ export class AxiosBuilder {
 
   public setErrorHandler(errorHandler: ErrorHandler) {
     this._errorHandler = errorHandler
+    return this
+  }
+
+  public setResponse200Checker(response200Checker: Response200Checker) {
+    this._response200Checker = response200Checker
     return this
   }
 
@@ -214,6 +222,9 @@ export class AxiosBuilder {
       this._startTs = Date.now()
       this.axiosResponse = await axios.create().request(options)
       this._endTs = Date.now()
+      if (this._response200Checker) {
+        await this._response200Checker(this.axiosResponse?.data)
+      }
       if (this._observer && this._observer.onRequestSuccess) {
         await this._observer.onRequestSuccess(this, this.axiosResponse?.data)
       }
@@ -222,39 +233,46 @@ export class AxiosBuilder {
       if (!this._endTs) {
         this._endTs = Date.now()
       }
+      let statusCode = 500
+      let message = 'Unknown error'
+
       const error = e as AxiosError<ErrorModel>
-      this.axiosError = error
+      if (error.name === 'AxiosError') {
+        this.axiosError = error
+        if (error.code === 'ECONNABORTED' || error.response === undefined) {
+          message = `Request timeout, please try again later. Code: ${error.code}`
+          statusCode = 504
+        } else {
+          const response = error.response!
+          this.axiosResponse = response
+          if (response && response.data) {
+            message = typeof response.data === 'object' ? JSON.stringify(response.data, null, 2) : response.data
+          }
+          statusCode = response.status || 500
+          if (!message) {
+            message = error.message || response.statusText || 'Unknown'
+          }
+        }
+        this.appError = new AppError(message, statusCode, this.axiosError)
 
-      let statusCode
-      let message: any
-      if (error.code === 'ECONNABORTED' || error.response === undefined) {
-        message = `Request timeout, please try again later. Code: ${error.code}`
-        statusCode = 504
+        if (
+          error.response &&
+          error.response.data &&
+          typeof error.response.data === 'object' &&
+          error.response.data.phrase
+        ) {
+          const errorModel = error.response.data as ErrorModel
+          this.appError = AppException.exception(error.response.data.phrase, {
+            statusCode: statusCode,
+            message: errorModel.message || message,
+          })
+        }
+      } else if (error.name === 'AppError') {
+        this.appError = e as AppError
       } else {
-        const response = error.response!
-        this.axiosResponse = response
-        if (response && response.data) {
-          message = typeof response.data === 'object' ? JSON.stringify(response.data, null, 2) : response.data
-        }
-        statusCode = response.status || 500
-        if (!message) {
-          message = error.message || response.statusText || 'Unknown'
-        }
+        this.appError = new AppError(error.message, statusCode, e)
       }
-      this.appError = new AppError(message, statusCode, this.axiosError)
 
-      if (
-        error.response &&
-        error.response.data &&
-        typeof error.response.data === 'object' &&
-        error.response.data.phrase
-      ) {
-        const errorModel = error.response.data as ErrorModel
-        this.appError = AppException.exception(error.response.data.phrase, {
-          statusCode: statusCode,
-          message: errorModel.message || message,
-        })
-      }
       if (this._errorParser) {
         this.appError = this._errorParser(this, this.appError)
       }
