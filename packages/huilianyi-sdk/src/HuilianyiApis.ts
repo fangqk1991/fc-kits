@@ -66,4 +66,9 @@ export const HuilianyiApis = {
     route: '/gateway/report/api/open/report/searchReimbursement',
     description: '报销单报表',
   },
+  ContractDataSearch: {
+    method: 'POST',
+    route: '/gateway/report/api/open/report/searchContractHeaderTableReport',
+    description: '合同明细报表',
+  },
 }

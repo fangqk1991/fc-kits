@@ -17,6 +17,7 @@ import {
   HuilianyiResponse,
 } from './HuilianyiModels'
 import * as moment from 'moment'
+import AppError from '@fangcha/app-error'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
   private _tokenKeeper: HuilianyiTokenKeeper
@@ -33,16 +34,12 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       .addHeader('Authorization', `Bearer ${accessToken}`)
       .setApiOptions(commonApi)
       .setTimeout(15000)
-    // request.setErrorParser((client, error) => {
-    //   let message = error.message
-    //   if (client.axiosError?.response?.data && typeof client.axiosError?.response.data === 'object') {
-    //     const data = client.axiosError?.response.data as HuilianyiResponse<any>
-    //     error.extras = data
-    //     message = `${data.msg}[${data.code}]`
-    //   }
-    //   const errorPrefix = `API[${commonApi.description}] error:`
-    //   return new AppError(`${errorPrefix} ${message}`, error.statusCode, error.extras)
-    // })
+      .setResponse200Checker((responseData: HuilianyiResponse<any>) => {
+        if (responseData.errorCode !== undefined && responseData.errorCode !== '0000') {
+          const errorPrefix = `API[${commonApi.description}] error:`
+          throw new AppError(`${errorPrefix} ${responseData.message} [${responseData.errorCode}]`, 400, responseData)
+        }
+      })
     this.onRequestMade(request)
     return request
   }
@@ -145,6 +142,26 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       const items = await this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
         const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReimbursementDataSearch))
         request.setBodyData({
+          startDate: startDate,
+          endDate: endDate,
+          ...pageParams,
+        })
+        return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
+      })
+      allItems = allItems.concat(items)
+    }
+    return allItems
+  }
+
+  public async searchContractData(setOfBooksCode: string, startYear = 2015) {
+    let allItems: HLY_Reimbursement[] = []
+    const endYear = moment().year()
+    for (let year = startYear; year <= endYear; ++year) {
+      const [startDate, endDate] = [`${year}-01-01`, `${year}-12-31`]
+      const items = await this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
+        const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ContractDataSearch))
+        request.setBodyData({
+          setOfBooksCode: setOfBooksCode,
           startDate: startDate,
           endDate: endDate,
           ...pageParams,
