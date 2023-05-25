@@ -58,6 +58,10 @@ class __FangchaState {
     }
     return userInfo
   }
+
+  public updateFrontendConfig(extras: {}) {
+    Object.assign(this.frontendConfig, extras)
+  }
 }
 
 export const _FangchaState = new __FangchaState()

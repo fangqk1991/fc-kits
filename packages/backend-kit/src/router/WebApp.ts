@@ -1,4 +1,4 @@
-import { FangchaApp } from '../main'
+import { _FangchaState, FangchaApp } from '../main'
 import { AppProtocol } from '../basic'
 import { HealthDocItem } from './retained-specs/HealthSpecs'
 import { _RouterState } from './_RouterState'
@@ -11,6 +11,7 @@ interface WebAppExtras {
   routerOptions: RouterSdkOptions
   useJwtSpecs?: boolean
   mainDocItems?: SwaggerDocItem[]
+  frontendConfig?: {}
 }
 
 export class WebApp extends FangchaApp {
@@ -26,6 +27,10 @@ export class WebApp extends FangchaApp {
     routerApp.addDocItem(HealthDocItem)
     if (protocol.useJwtSpecs || protocol.routerOptions.jwtProtocol) {
       routerApp.addDocItem(JwtSessionSpecDocItem)
+    }
+
+    if (protocol.frontendConfig) {
+      _FangchaState.updateFrontendConfig(protocol.frontendConfig)
     }
 
     this.routerPlugin = new RouterPlugin({
