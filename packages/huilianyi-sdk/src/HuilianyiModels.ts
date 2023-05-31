@@ -52,6 +52,18 @@ export interface HLY_Staff {
   activated: boolean
 }
 
+/**
+ * https://opendocs.huilianyi.com/implement/master-data/department/select-department.html
+ */
+export interface HLY_SimpleDepartment {
+  departmentOID: string
+  departmentName: string
+  departmentPath: string
+  status: number // 101--启用;102--禁用;103--删除
+  customFormValues: HLY_CustomFormValue[]
+  departmentType: string
+}
+
 export interface HLY_CustomField {
   fieldCode: string
   fieldName: string

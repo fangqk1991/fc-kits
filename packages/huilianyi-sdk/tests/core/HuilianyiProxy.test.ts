@@ -30,7 +30,12 @@ describe('Test HuilianyiProxy.test.ts', () => {
 
   it(`getAllStaffs`, async () => {
     const data = await huilianyiProxy.getAllStaffs()
-    console.info(data)
+    console.info(JSON.stringify(data, null, 2))
+  })
+
+  it(`getAllDepartments`, async () => {
+    const data = await huilianyiProxy.getAllDepartments()
+    console.info(JSON.stringify(data, null, 2))
   })
 
   it(`getLegalEntityList`, async () => {

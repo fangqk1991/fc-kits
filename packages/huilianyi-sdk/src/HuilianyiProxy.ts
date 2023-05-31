@@ -11,6 +11,7 @@ import {
   HLY_LegalEntity,
   HLY_ReceiptedInvoice,
   HLY_Reimbursement,
+  HLY_SimpleDepartment,
   HLY_SimpleLegalEntity,
   HLY_Staff,
   HLY_User,
@@ -85,6 +86,18 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
         ...params,
       })
       return await request.quickSend<HLY_Staff[]>()
+    })
+  }
+
+  public async getAllDepartments() {
+    return await this.getAllPageItemsV2(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.DepartmentListGet))
+      request.setQueryParams({
+        startDate: '2020-01-01 00:00:00',
+        endDate: '2040-12-31 00:00:00',
+        ...params,
+      })
+      return await request.quickSend<HLY_SimpleDepartment[]>()
     })
   }
 

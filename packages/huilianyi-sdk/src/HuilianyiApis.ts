@@ -30,6 +30,11 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/user',
     description: '增量查询员工',
   },
+  DepartmentListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/department',
+    description: '增量查询员工',
+  },
   LegalEntityListGet: {
     method: 'GET',
     route: '/gateway/api/open/legalEntity',
