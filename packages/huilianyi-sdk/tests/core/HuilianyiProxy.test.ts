@@ -28,8 +28,8 @@ describe('Test HuilianyiProxy.test.ts', () => {
     console.info(members)
   })
 
-  it(`getAllUsers`, async () => {
-    const data = await huilianyiProxy.getAllUsers()
+  it(`getAllStaffs`, async () => {
+    const data = await huilianyiProxy.getAllStaffs()
     console.info(data)
   })
 
