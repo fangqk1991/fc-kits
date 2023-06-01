@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/backend-kit",
-  "version": "0.61.0",
+  "version": "0.62.0",
   "description": "Backend Kit.",
   "main": "src/index.ts",
   "publishConfig": {

@@ -22,6 +22,12 @@ factory.prepare(RetainedHealthApis.PingPrint, async (ctx) => {
   ctx.body = 'PONG'
 })
 
+factory.prepare(RetainedHealthApis.PingPrint2, async (ctx) => {
+  console.info('query: ', JSON.stringify(ctx.request.query, null, 2))
+  console.info('body: ', JSON.stringify(ctx.request.body, null, 2))
+  ctx.body = 'PONG'
+})
+
 factory.prepare(RetainedHealthApis.PingQuery, async (ctx) => {
   ctx.body = ctx.request.query
 })

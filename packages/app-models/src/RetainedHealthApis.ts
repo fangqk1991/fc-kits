@@ -19,6 +19,12 @@ export const RetainedHealthApis = {
     description: 'Ping (Log query)',
     skipAuth: true,
   } as Api,
+  PingPrint2: {
+    method: 'POST',
+    route: `/api/health/ping-print`,
+    description: 'Ping (Log query & body)',
+    skipAuth: true,
+  } as Api,
   PingAuth: {
     method: 'GET',
     route: `/api/health/ping-auth`,
