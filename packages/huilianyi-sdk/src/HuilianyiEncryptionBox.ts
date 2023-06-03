@@ -23,6 +23,13 @@ export class HuilianyiEncryptionBox {
     return Buffer.concat([cipher.update(rawBuffer), cipher.final()]).toString('base64')
   }
 
+  public extractTenantId(encryptedText: string) {
+    const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
+    const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
+    const length = decryptedBuffer.subarray(16, 20).readUInt32BE()
+    return decryptedBuffer.subarray(20 + length).toString()
+  }
+
   public decrypt(encryptedText: string) {
     const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
     const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
