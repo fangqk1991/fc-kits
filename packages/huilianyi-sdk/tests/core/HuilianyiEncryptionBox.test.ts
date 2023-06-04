@@ -1,6 +1,6 @@
-import { HuilianyiEncryptionBox } from '../../src/HuilianyiEncryptionBox'
+import { HuilianyiEncryptionBox } from '../../src'
 import * as assert from 'assert'
-import { makeRandomStr } from '@fangcha/tools'
+import { DiffMapper, makeRandomStr } from '@fangcha/tools'
 
 describe('Test HuilianyiEncryptionBox.test.ts', () => {
   const aesKey = makeRandomStr(43)
@@ -19,5 +19,16 @@ describe('Test HuilianyiEncryptionBox.test.ts', () => {
     const encryptedText = encryptionBox.encrypt(rawText)
     const decryptedText = encryptionBox.decrypt(encryptedText)
     assert.ok(rawText === decryptedText)
+  })
+
+  it(`encryptFromJSON & decryptToJSON`, async () => {
+    const rawBodyData = {
+      a: makeRandomStr(16),
+      b: Math.random(),
+    }
+    const encryptionBox = new HuilianyiEncryptionBox(aesKey)
+    const encryptedText = encryptionBox.encryptFromJSON(rawBodyData)
+    const decryptedBodyData = encryptionBox.decryptToJSON(encryptedText)
+    assert.ok(DiffMapper.checkEquals(rawBodyData, decryptedBodyData))
   })
 })

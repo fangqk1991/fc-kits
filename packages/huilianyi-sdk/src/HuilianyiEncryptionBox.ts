@@ -23,23 +23,32 @@ export class HuilianyiEncryptionBox {
     return Buffer.concat([cipher.update(rawBuffer), cipher.final()]).toString('base64')
   }
 
+  public encryptFromJSON(data: {}) {
+    return this.encrypt(JSON.stringify(data))
+  }
+
   public extractTenantId(encryptedText: string) {
-    const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
-    const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
-    const length = decryptedBuffer.subarray(16, 20).readUInt32BE()
-    return decryptedBuffer.subarray(20 + length).toString()
+    const { tenantId } = this._decrypt(encryptedText)
+    return tenantId
   }
 
   public decrypt(encryptedText: string) {
-    const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
-    const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
-    const length = decryptedBuffer.subarray(16, 20).readUInt32BE()
-    // console.info(decryptedBuffer.subarray(0, 16).toString())
-    // console.info(decryptedBuffer.subarray(16, 20))
-    return decryptedBuffer.subarray(20, 20 + length).toString()
+    const { bodyText } = this._decrypt(encryptedText)
+    return bodyText
   }
 
   public decryptToJSON(encryptedText: string) {
     return JSON.parse(this.decrypt(encryptedText))
+  }
+
+  private _decrypt(encryptedText: string) {
+    const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
+    const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
+    const length = decryptedBuffer.subarray(16, 20).readUInt32BE()
+    const decryptedText = decryptedBuffer.subarray(20, 20 + length).toString()
+    return {
+      tenantId: decryptedBuffer.subarray(20 + length).toString(),
+      bodyText: decryptedText,
+    }
   }
 }
