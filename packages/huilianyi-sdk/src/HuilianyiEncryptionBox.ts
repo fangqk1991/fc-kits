@@ -20,7 +20,7 @@ export class HuilianyiEncryptionBox {
     lengthBuff.writeUInt32BE(length)
     const rawBuffer = Buffer.concat([Buffer.from(nonce), lengthBuff, Buffer.from(plainText), Buffer.from(this.suffix)])
     const cipher = crypto.createCipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
-    cipher.setAutoPadding(false)
+    // cipher.setAutoPadding(false)
     return Buffer.concat([cipher.update(rawBuffer), cipher.final()]).toString('base64')
   }
 
@@ -46,10 +46,12 @@ export class HuilianyiEncryptionBox {
     const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
     decipher.setAutoPadding(false)
     const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
-    const length = decryptedBuffer.subarray(16, 20).readUInt32BE()
-    const decryptedText = decryptedBuffer.subarray(20, 20 + length).toString()
+    const contentLength = decryptedBuffer.subarray(16, 20).readUInt32BE()
+    const decryptedText = decryptedBuffer.subarray(20, 20 + contentLength).toString()
+    const lastCode = decryptedBuffer[decryptedBuffer.length - 1]
+    const padLength = lastCode >= 1 && lastCode <= 32 ? lastCode : 0
     return {
-      tenantId: decryptedBuffer.subarray(20 + length).toString(),
+      tenantId: decryptedBuffer.subarray(20 + contentLength, decryptedBuffer.length - padLength).toString(),
       bodyText: decryptedText,
     }
   }
