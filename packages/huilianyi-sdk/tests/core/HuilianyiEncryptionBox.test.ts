@@ -1,6 +1,6 @@
 import { HuilianyiEncryptionBox } from '../../src/HuilianyiEncryptionBox'
 import * as assert from 'assert'
-import { makeRandomStr } from '@fangcha/tools/lib'
+import { makeRandomStr } from '@fangcha/tools'
 
 describe('Test HuilianyiEncryptionBox.test.ts', () => {
   const aesKey = makeRandomStr(43)

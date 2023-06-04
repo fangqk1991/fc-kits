@@ -33,8 +33,8 @@ export class HuilianyiEncryptionBox {
   public decrypt(encryptedText: string) {
     const decipher = crypto.createDecipheriv('aes-256-cbc', this.aesKeyBuffer, this.ivBuffer)
     const decryptedBuffer = Buffer.concat([decipher.update(encryptedText, 'base64'), decipher.final()])
-    // console.info(decryptedBuffer.subarray(0, 16).toString())
     const length = decryptedBuffer.subarray(16, 20).readUInt32BE()
+    // console.info(decryptedBuffer.subarray(0, 16).toString())
     // console.info(decryptedBuffer.subarray(16, 20))
     return decryptedBuffer.subarray(20, 20 + length).toString()
   }
