@@ -21,6 +21,7 @@
     "@fangcha/app-error": "workspace:^*",
     "@fangcha/app-request": "workspace:^*",
     "@fangcha/app-request-extensions": "workspace:^*",
+    "@fangcha/assert": "workspace:^*",
     "@fangcha/backend-kit": "workspace:^*",
     "@fangcha/logger": "workspace:^*",
     "@fangcha/tools": "workspace:^*"

@@ -553,7 +553,7 @@ importers:
         specifier: workspace:^*
         version: link:../app-error
       '@fangcha/backend-kit':
-        specifier: ^*
+        specifier: '*'
         version: link:../backend-kit
       '@fangcha/swagger':
         specifier: workspace:^*
@@ -958,6 +958,9 @@ importers:
       '@fangcha/app-request-extensions':
         specifier: workspace:^*
         version: link:../http-request-extensions
+      '@fangcha/assert':
+        specifier: workspace:^*
+        version: link:../assert
       '@fangcha/backend-kit':
         specifier: workspace:^*
         version: link:../backend-kit
