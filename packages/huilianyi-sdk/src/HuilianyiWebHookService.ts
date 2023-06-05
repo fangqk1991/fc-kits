@@ -2,8 +2,9 @@ import { HuilianyiWebhookBody } from './HuilianyiWebhookModels'
 import { HuilianyiSignatureBox } from './HuilianyiSignatureBox'
 import { HuilianyiEncryptionBox } from './HuilianyiEncryptionBox'
 import assert from '@fangcha/assert'
+import { HuilianyiApiCode } from './HuilianyiApiCode'
 
-export type HuilianyiWebhookHandler = (requestBody: HuilianyiWebhookBody) => Promise<any>
+export type HuilianyiWebhookHandler = (apiCode: HuilianyiApiCode, data: any) => Promise<any>
 
 interface Options {
   tenantId: string
@@ -31,8 +32,9 @@ export class HuilianyiWebHookService {
     })
     assert.ok(sign === webhookBody.signature, '验签失败')
 
+    const decryptedData = this.encryptionBox.decryptToJSON(webhookBody.message)
     if (this.options.webhookHandler) {
-      return this.options.webhookHandler(webhookBody)
+      return this.options.webhookHandler(webhookBody.apiCode, decryptedData)
     }
     return {
       code: 'SUCCESS',

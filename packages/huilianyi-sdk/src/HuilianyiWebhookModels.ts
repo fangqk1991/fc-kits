@@ -1,5 +1,7 @@
+import { HuilianyiApiCode } from './HuilianyiApiCode'
+
 export interface HuilianyiWebhookBody {
-  apiCode: string
+  apiCode: HuilianyiApiCode
   apiVersion: string
   // tenantId: number
 
