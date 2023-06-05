@@ -30,6 +30,10 @@ export class HuilianyiWebHookService {
       timestamp: webhookBody.timestamp,
     })
     assert.ok(sign === webhookBody.signature, '验签失败')
+
+    if (this.options.webhookHandler) {
+      return this.options.webhookHandler(webhookBody)
+    }
     return {
       code: 'SUCCESS',
       message: '',
