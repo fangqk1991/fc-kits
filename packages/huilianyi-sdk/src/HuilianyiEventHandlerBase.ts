@@ -1,5 +1,5 @@
 export abstract class HuilianyiEventHandlerBase {
   public constructor() {}
 
-  public abstract onExecute<T = {}>(requestData: T): Promise<string>
+  public abstract onExecute(requestData: any): Promise<string>
 }
