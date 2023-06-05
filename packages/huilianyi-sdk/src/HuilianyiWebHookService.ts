@@ -34,6 +34,7 @@ export class HuilianyiWebHookService {
     const decryptedData = this.encryptionBox.decryptToJSON(webhookBody.message)
     if (this.options.webhookHandler) {
       const handler = this.options.webhookHandler(webhookBody.apiCode)
+      assert.ok(!!handler, `${webhookBody.apiCode} 处理器未定义`)
       return await handler.onExecute(decryptedData)
     }
     return ''
