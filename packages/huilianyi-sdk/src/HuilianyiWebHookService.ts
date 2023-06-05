@@ -3,8 +3,9 @@ import { HuilianyiSignatureBox } from './HuilianyiSignatureBox'
 import { HuilianyiEncryptionBox } from './HuilianyiEncryptionBox'
 import assert from '@fangcha/assert'
 import { HuilianyiApiCode } from './HuilianyiApiCode'
+import { HuilianyiEventHandlerBase } from './HuilianyiEventHandlerBase'
 
-export type HuilianyiWebhookHandler = (apiCode: HuilianyiApiCode, data: any) => Promise<any>
+export type HuilianyiWebhookHandler = (apiCode: HuilianyiApiCode, data: any) => HuilianyiEventHandlerBase
 
 interface Options {
   tenantId: string
@@ -15,8 +16,8 @@ interface Options {
 
 export class HuilianyiWebHookService {
   private readonly options: Options
-  private readonly signatureBox: HuilianyiSignatureBox
-  private readonly encryptionBox: HuilianyiEncryptionBox
+  public readonly signatureBox: HuilianyiSignatureBox
+  public readonly encryptionBox: HuilianyiEncryptionBox
 
   constructor(options: Options) {
     this.options = options
@@ -34,11 +35,9 @@ export class HuilianyiWebHookService {
 
     const decryptedData = this.encryptionBox.decryptToJSON(webhookBody.message)
     if (this.options.webhookHandler) {
-      return this.options.webhookHandler(webhookBody.apiCode, decryptedData)
+      const handler = this.options.webhookHandler(webhookBody.apiCode, decryptedData)
+      return await handler.onExecute(decryptedData)
     }
-    return {
-      code: 'SUCCESS',
-      message: '',
-    }
+    return ''
   }
 }
