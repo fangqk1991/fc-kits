@@ -5,13 +5,11 @@ import assert from '@fangcha/assert'
 import { HuilianyiApiCode } from './HuilianyiApiCode'
 import { HuilianyiEventHandlerBase } from './HuilianyiEventHandlerBase'
 
-export type HuilianyiWebhookHandler = (apiCode: HuilianyiApiCode, data: any) => HuilianyiEventHandlerBase
-
 interface Options {
   tenantId: string
   encodingAesKey: string
   signatureToken: string
-  webhookHandler?: HuilianyiWebhookHandler
+  webhookHandler?: (apiCode: HuilianyiApiCode) => HuilianyiEventHandlerBase
 }
 
 export class HuilianyiWebHookService {
@@ -35,7 +33,7 @@ export class HuilianyiWebHookService {
 
     const decryptedData = this.encryptionBox.decryptToJSON(webhookBody.message)
     if (this.options.webhookHandler) {
-      const handler = this.options.webhookHandler(webhookBody.apiCode, decryptedData)
+      const handler = this.options.webhookHandler(webhookBody.apiCode)
       return await handler.onExecute(decryptedData)
     }
     return ''
