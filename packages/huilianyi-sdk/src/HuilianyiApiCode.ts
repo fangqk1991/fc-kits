@@ -2,12 +2,29 @@ import { Descriptor } from '@fangcha/tools'
 
 export enum HuilianyiApiCode {
   INIT = 'INIT',
-}
 
-const values = [HuilianyiApiCode.INIT]
+  // 对公申请
+  // 对公申请单保存回调
+  PUBLIC_APPLICATION_DRAFT = 'PUBLIC_APPLICATION_DRAFT',
+
+  // 差旅申请
+  TRAVEL_APPLICATION_DRAFT = 'TRAVEL_APPLICATION_DRAFT', // 差旅申请单保存回调
+  TRAVEL_APPLICATION_SUBMIT = 'TRAVEL_APPLICATION_SUBMIT', // 差旅申请单提交回调
+  TRAVEL_APPLICATION_WITHDRAW = 'TRAVEL_APPLICATION_WITHDRAW', // 差旅申请单撤回回调
+  TRAVEL_APPLICATION_DELETE = 'TRAVEL_APPLICATION_DELETE', // 差旅申请单删除回调
+  TRAVEL_APPLICATION_CHANGE = 'TRAVEL_APPLICATION_CHANGE', // 差旅申请单变更回调
+  TRAVEL_APPLICATION_CHANGE_DELETE = 'TRAVEL_APPLICATION_CHANGE_DELETE', // 差旅申请单变更后删除回调
+  TRAVEL_APPLICATION_REJECT = 'TRAVEL_APPLICATION_REJECT', // 差旅申请单审批驳回回调
+  TRAVEL_APPLICATION_CLOSED = 'TRAVEL_APPLICATION_CLOSED', // 差旅申请单关闭回调
+  TRAVEL_APPLICATION_APPROVAL = 'TRAVEL_APPLICATION_APPROVAL', // 差旅申请单审批中回调
+  TRAVEL_APPLICATION_APPROVAL_PASS = 'TRAVEL_APPLICATION_APPROVAL_PASS', // 差旅申请单审批通过回调
+  TRAVEL_APPLICATION_APPLICATION_INVALID = 'TRAVEL_APPLICATION_APPLICATION_INVALID', // 差旅申请单报废回调
+  TRAVEL_APPLICATION_OUT_ITINERARY_URL = 'TRAVEL_APPLICATION_OUT_ITINERARY_URL', // 差旅申请单外部行程地址回调
+  TRAVEL_APPLICATION_SUBSIDY_CALCULATE = 'TRAVEL_APPLICATION_SUBSIDY_CALCULATE', // 差旅申请单差补明细更新回调
+}
 
 const describe = (code: HuilianyiApiCode) => {
   return code
 }
 
-export const HuilianyiApiCodeDescriptor = new Descriptor(values, describe)
+export const HuilianyiApiCodeDescriptor = new Descriptor(Object.values(HuilianyiApiCode), describe)
