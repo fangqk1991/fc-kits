@@ -6,14 +6,14 @@ import { HuilianyiApis } from './HuilianyiApis'
 import {
   HLY_Company,
   HLY_CostCenter,
-  HLY_CostCenterItem,
+  HLY_CostCenterItem, HLY_ExpenseDetail,
   HLY_ExpenseType,
   HLY_LegalEntity,
   HLY_ReceiptedInvoice,
   HLY_Reimbursement,
   HLY_SimpleDepartment,
   HLY_SimpleLegalEntity,
-  HLY_Staff,
+  HLY_Staff, HLY_TravelApplyForm,
   HLY_User,
   HLY_UserGroup,
   HuilianyiResponse,
@@ -173,6 +173,44 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
           ...pageParams,
         })
         return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
+      })
+      allItems = allItems.concat(items)
+    }
+    return allItems
+  }
+
+  public async searchExpenseDetailsData(startYear = 2015) {
+    let allItems: HLY_ExpenseDetail[] = []
+    const endYear = moment().year()
+    for (let year = startYear; year <= endYear; ++year) {
+      const [startDate, endDate] = [`${year}-01-01`, `${year}-12-31`]
+      const items = await this.getAllPageItems<HLY_ExpenseDetail>(async (pageParams) => {
+        const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ExpenseDetailsDataSearch))
+        request.setBodyData({
+          startDate: startDate,
+          endDate: endDate,
+          ...pageParams,
+        })
+        return await request.quickSend<HuilianyiResponse<HLY_ExpenseDetail[]>>()
+      })
+      allItems = allItems.concat(items)
+    }
+    return allItems
+  }
+
+  public async searchTravelApplyData(startYear = 2015) {
+    let allItems: HLY_TravelApplyForm[] = []
+    const endYear = moment().year()
+    for (let year = startYear; year <= endYear; ++year) {
+      const [startDate, endDate] = [`${year}-01-01`, `${year}-12-31`]
+      const items = await this.getAllPageItems<HLY_TravelApplyForm>(async (pageParams) => {
+        const request = await this.makeRequest(new CommonAPI(HuilianyiApis.TravelApplyDataSearch))
+        request.setBodyData({
+          startDate: startDate,
+          endDate: endDate,
+          ...pageParams,
+        })
+        return await request.quickSend<HuilianyiResponse<HLY_TravelApplyForm[]>>()
       })
       allItems = allItems.concat(items)
     }

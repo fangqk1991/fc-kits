@@ -493,3 +493,135 @@ export interface HLY_Reimbursement {
   firstSubmittedDate: string // '2022-11-22 16:12:23'
   realPaymentAmountNew: string // '5000.00'
 }
+
+/**
+ * https://opendocs.huilianyi.com/implement/report-data/ExpenseDetailsReport.html
+ */
+export interface HLY_ExpenseDetail {
+  departmentCode: string // '0001'
+  setOfBooksId: string
+  legalEntityOid: string
+  companyOid: string
+  applicantOid: string
+  expenseTypeCategory: string // '其它'
+  setOfBooksName: string // '默认账套'
+  expenseType: string // '团建'
+  ownerName: string
+  ownerEmpId: string // '0001'
+  applicantComName: string
+  applicantDeptName: string
+  expenseLabels: string // '电子票/手录发票'
+  createdDate: string // '2022-10-11'
+  createdTime: string // '11:31:14'
+  expenseCreatedDate: string // '2021-07-13 11:34:15'
+  comment: string
+  invoiceCurrencyCode: string // 'CNY'
+  amount: string // '74.00'
+  companyCurrencyRate: string // '1.0'
+  actualCurrencyRate: string // '1.0'
+  exchangeRateDifference: string // '0.0'
+  functionalCurrencyCode: string // 'CNY'
+  baseAmount: string // '74.00'
+  formTypeDesc: string // '日常报销单'
+  businessCode: string
+  billingCode: string
+  billingNo: string
+  formName: string // '日常报销单'
+  reimbSubmittedDate: string // '2022-10-11 11:35:40'
+  reimbRemark: string // '1'
+  reimbLastModifiedDate: '2022-10-11 11:35:41'
+  reimbStatusDesc: string // '待付款'
+  reimbApprovalDate: '2022-10-11 11:35:40'
+  reimbLastApprover: string
+  reimbAuditApprovalDate: string // '2022-10-11 11:35:41'
+  reimbAuditApprover: string
+  nonVatInclusiveAmount: string // '69.81'
+  taxAmount: string // '4.19'
+  oriAmount: string // '74.00'
+  originalApprovedNonVat: string // '69.81'
+  originalApprovedVat: string // '4.19'
+  nonVatBaseAmount: string // '69.81'
+  baseCurrencyTax: string // '4.19'
+  baseApprovedNonVat: string // '69.81'
+  baseApprovedVat: string // '4.19'
+  applicantDeptPath: string
+  applicantLegalName: string
+  departmentName: string
+  vatInvoiceDesc: string
+  expenseTypeCode: string // 'EXP_COMMON_TEAM_BUILDING'
+  invoiceInsteadDesc: string
+  payeeTypeDesc: string
+  payeeName: string
+  departmentPath: string
+  companyName: string
+  reimbBookDate: string // '2022-10-11'
+  invoiceId: string
+  reimbPrintViewDate: string // '2022-10-11 11:35:40'
+  isAutoAuditDesc: string
+  applicantComCode: string // '1'
+  companyCode: string // '1'
+  lastApprovalDate: string // '2022-10-11 11:35:40'
+  financeApprovalDate: string // '2022-10-11 11:35:41'
+  integrationId: string
+  relatedReceiptDesc: string
+  enableDeductionDesc: string
+  deductionAmount: string // '0.0000'
+  exchangeRateAmount: string // '0.0'
+  payeeNumber: string
+  firstSubmittedDate: string // '2022-10-11 11:35:39'
+  applicantEmpId: string
+  applicantName: string
+}
+
+/**
+ * https://opendocs.huilianyi.com/implement/report-data/TrvappReport.html
+ */
+export interface HLY_TravelApplyForm {
+  departmentCode: string
+  setOfBooksId: string
+  legalEntityOid: string
+  companyOid: string
+  departmentOid: string
+  applicantOid: string
+  businessCode: string
+  relatedBusinessCode: string
+  submittedByName: string
+  submittedByEmpId: string
+  applicantName: string
+  applicantEmpId: string
+  applicantComName: string
+  applicantEntityName: string
+  applicantDeptName: string
+  companyName: string
+  departmentName: string
+  participantEmpId: string
+  startDate: string
+  endDate: string
+  title: string
+  currencyCode: string // 'CNY'
+  totalBudget: string
+  booker: string
+  appSubmittedByDate: string // '2022-07-28 21:19:13'
+  firstSubmittedDate: string // '2022-07-28 21:19:13'
+  appStatusDesc: string // '审批通过'
+  appApprovalDate: string // '2022-07-28 21:21:07'
+  lastApprover: string
+  trvItineraryTypeDesc: string // '机票'
+  supplierName: string // '甄选机票'
+  isRoundTrip: string // '单程'
+  trvItineraryCity: string // '上海 - 北京'
+  trvItineraryDate: string // '2022-07-29 - 2022-07-29'
+  roomQty: string // '0'
+  formName: string // '日程式差旅申请单'
+  applicantDeptPath: string
+  departmentPath: string
+  version: string // '0'
+  travelDays: string // '2'
+  integrationId: string
+  itHeadCity: string // '上海-北京'
+  itHeadDate: string // '2022-07-29 00:00:00-2022-07-30 00:00:00'
+  companyCode: string
+  applicantComCode: string
+  applicantMainJobRank: string
+  internalParticipant: string
+}
