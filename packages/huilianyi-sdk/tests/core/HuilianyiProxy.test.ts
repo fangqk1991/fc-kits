@@ -69,28 +69,4 @@ describe('Test HuilianyiProxy.test.ts', () => {
     const items = await huilianyiProxy.getExpenseTypeList()
     console.info(JSON.stringify(items, null, 2))
   })
-
-  it(`searchReimbursementData`, async () => {
-    const items = await huilianyiProxy.searchReimbursementData()
-    console.info(`${items.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
-  })
-
-  it(`searchExpenseDetailsData`, async () => {
-    const items = await huilianyiProxy.searchExpenseDetailsData()
-    console.info(`${items.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
-  })
-
-  it(`searchTravelApplyData`, async () => {
-    const items = await huilianyiProxy.searchTravelApplyData()
-    console.info(`${items.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
-  })
-
-  it(`searchContractData`, async () => {
-    const items = await huilianyiProxy.searchContractData('')
-    console.info(`${items.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
-  })
 })
