@@ -46,7 +46,7 @@ export class HLY_ReportProxy extends HuilianyiProxy {
     })
   }
 
-  public async getAllPageItems<T>(
+  private async getAllPageItems<T>(
     handler: (params: { page: number; size: number }) => Promise<HuilianyiResponse<T[]>>
   ) {
     let items: T[] = []

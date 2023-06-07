@@ -28,16 +28,6 @@ describe('Test HuilianyiProxy.test.ts', () => {
     console.info(members)
   })
 
-  it(`getAllStaffs`, async () => {
-    const data = await huilianyiProxy.getAllStaffs()
-    console.info(JSON.stringify(data, null, 2))
-  })
-
-  it(`getAllDepartments`, async () => {
-    const data = await huilianyiProxy.getAllDepartments()
-    console.info(JSON.stringify(data, null, 2))
-  })
-
   it(`getLegalEntityList`, async () => {
     const items = await huilianyiProxy.getLegalEntityList()
     console.info(items)
@@ -63,10 +53,5 @@ describe('Test HuilianyiProxy.test.ts', () => {
   it(`getReceiptedInvoiceList`, async () => {
     const items = await huilianyiProxy.getReceiptedInvoiceList()
     console.info(items)
-  })
-
-  it(`getExpenseTypeList`, async () => {
-    const items = await huilianyiProxy.getExpenseTypeList()
-    console.info(JSON.stringify(items, null, 2))
   })
 })

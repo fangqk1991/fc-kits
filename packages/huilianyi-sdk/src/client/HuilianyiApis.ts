@@ -66,9 +66,4 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/receiptedInvoice',
     description: '查询开票信息',
   },
-  ExpenseTypeListGet: {
-    method: 'GET',
-    route: '/gateway/api/open/expenseType',
-    description: '查询费用类型',
-  },
 }

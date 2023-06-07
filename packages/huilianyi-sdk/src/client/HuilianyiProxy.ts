@@ -7,20 +7,13 @@ import {
   HLY_Company,
   HLY_CostCenter,
   HLY_CostCenterItem,
-  HLY_ExpenseDetail,
-  HLY_ExpenseType,
   HLY_LegalEntity,
   HLY_ReceiptedInvoice,
-  HLY_Reimbursement,
-  HLY_SimpleDepartment,
   HLY_SimpleLegalEntity,
-  HLY_Staff,
-  HLY_TravelApplyForm,
   HLY_User,
   HLY_UserGroup,
   HuilianyiResponse,
 } from '../core/HuilianyiModels'
-import * as moment from 'moment'
 import AppError from '@fangcha/app-error'
 
 export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
@@ -79,30 +72,6 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
     return await request.quickSend<HLY_User[]>()
   }
 
-  public async getAllStaffs() {
-    return await this.getAllPageItemsV2(async (params) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.StaffListGet))
-      request.setQueryParams({
-        startDate: '2020-01-01 00:00:00',
-        endDate: '2040-12-31 00:00:00',
-        ...params,
-      })
-      return await request.quickSend<HLY_Staff[]>()
-    })
-  }
-
-  public async getAllDepartments() {
-    return await this.getAllPageItemsV2(async (params) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.DepartmentListGet))
-      request.setQueryParams({
-        startDate: '2020-01-01 00:00:00',
-        endDate: '2040-12-31 00:00:00',
-        ...params,
-      })
-      return await request.quickSend<HLY_SimpleDepartment[]>()
-    })
-  }
-
   public async getLegalEntityList() {
     const request = await this.makeRequest(new CommonAPI(HuilianyiApis.LegalEntityListGet))
     request.setQueryParams({
@@ -152,32 +121,5 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
       size: 100,
     })
     return await request.quickSend<HLY_ReceiptedInvoice[]>()
-  }
-
-  /**
-   * https://opendocs.huilianyi.com/implement/master-data/expense-type/query-expense-type.html
-   */
-  public async getExpenseTypeList() {
-    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ExpenseTypeListGet))
-    return await request.quickSend<HLY_ExpenseType[]>()
-  }
-
-  public async getAllPageItemsV2<T>(handler: (params: { page: number; size: number }) => Promise<T[]>) {
-    let items: T[] = []
-    let finished = false
-    let page = 1
-    while (!finished) {
-      const pageItems = await handler({
-        page: page,
-        size: 100,
-      })
-      items = items.concat(pageItems || [])
-      if (pageItems.length === 0) {
-        finished = true
-      } else {
-        ++page
-      }
-    }
-    return items
   }
 }
