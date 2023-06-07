@@ -1,10 +1,44 @@
 import { CommonAPI } from '@fangcha/app-request'
-import { HLY_ExpenseType, HLY_SimpleDepartment, HLY_Staff } from '../core/HuilianyiModels'
+import {
+  HLY_CostCenter,
+  HLY_CostCenterItem,
+  HLY_ExpenseType,
+  HLY_SimpleDepartment,
+  HLY_Staff,
+} from '../core/HuilianyiModels'
 import { HuilianyiProxy } from './HuilianyiProxy'
 import { HLY_BasicDataApis } from './HLY_BasicDataApis'
 import { HuilianyiApis } from './HuilianyiApis'
 
 export class HLY_BasicDataProxy extends HuilianyiProxy {
+  public async getCostCenterList() {
+    return await this.getAllPageItemsV2(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterListGet))
+      request.setQueryParams({
+        ...params,
+      })
+      return await request.quickSend<HLY_CostCenter[]>()
+    })
+  }
+  public async getEnabledCostCenterList() {
+    const items = await this.getCostCenterList()
+    return items.filter((item) => item.enabled)
+  }
+
+  /**
+   * 若请求已禁用的成本中心，会报错
+   */
+  public async getCostCenterItems(code: string) {
+    return await this.getAllPageItemsV2(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterItemsGet))
+      request.setQueryParams({
+        ...params,
+        costCenterCode: code,
+      })
+      return await request.quickSend<HLY_CostCenterItem[]>()
+    })
+  }
+
   public async getAllStaffs() {
     return await this.getAllPageItemsV2(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HuilianyiApis.StaffListGet))
