@@ -3,7 +3,7 @@ import { HuilianyiSignatureBox } from './HuilianyiSignatureBox'
 import { HuilianyiEncryptionBox } from './HuilianyiEncryptionBox'
 import assert from '@fangcha/assert'
 import { HuilianyiApiCode } from './HuilianyiApiCode'
-import { HuilianyiEventHandlerBase } from './HuilianyiEventHandlerBase'
+import { HuilianyiEventHandlerBase } from './webhook/HuilianyiEventHandlerBase'
 
 interface Options {
   tenantId: string
@@ -23,7 +23,25 @@ export class HuilianyiWebHookService {
     this.encryptionBox = new HuilianyiEncryptionBox(options.encodingAesKey, options.tenantId)
   }
 
-  public async handle(webhookBody: HuilianyiWebhookBody) {
+  public async handle(webhookBody: HuilianyiWebhookBody): Promise<{
+    code: 'SUCCESS' | 'ERROR'
+    message: string
+  }> {
+    try {
+      const message = await this._handle(webhookBody)
+      return {
+        code: 'SUCCESS',
+        message: message,
+      }
+    } catch (e: any) {
+      return {
+        code: 'ERROR',
+        message: e.message,
+      }
+    }
+  }
+
+  private async _handle(webhookBody: HuilianyiWebhookBody) {
     const sign = this.signatureBox.calcSignature({
       content: webhookBody.message,
       nonce: webhookBody.nonce,
