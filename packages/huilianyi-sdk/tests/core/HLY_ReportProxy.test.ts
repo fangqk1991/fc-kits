@@ -7,8 +7,13 @@ describe('Test HLY_ReportProxy.test.ts', () => {
 
   it(`searchReimbursementData`, async () => {
     const items = await huilianyiProxy.searchReimbursementData()
-    console.info(`${items.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
+    const keyTextList = items.map(
+      (item) =>
+        `${item.businessCode} - ${item.applicantName}(${item.submittedByName}) - ${item.reimbStatusDesc} - ${item.submittedDate}`
+    )
+    // console.info(JSON.stringify(items, null, 2))
+    console.info(`${keyTextList.length} items.`)
+    console.info(keyTextList)
   })
 
   it(`searchExpenseDetailsData`, async () => {
