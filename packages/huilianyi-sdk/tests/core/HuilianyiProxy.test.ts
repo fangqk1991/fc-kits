@@ -1,5 +1,5 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
-import { HuilianyiProxy } from '../../src/HuilianyiProxy'
+import { HuilianyiProxy } from '../../src'
 import { HuilianyiConfig } from './HuilianyiConfig'
 
 describe('Test HuilianyiProxy.test.ts', () => {

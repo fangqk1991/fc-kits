@@ -6,18 +6,20 @@ import { HuilianyiApis } from './HuilianyiApis'
 import {
   HLY_Company,
   HLY_CostCenter,
-  HLY_CostCenterItem, HLY_ExpenseDetail,
+  HLY_CostCenterItem,
+  HLY_ExpenseDetail,
   HLY_ExpenseType,
   HLY_LegalEntity,
   HLY_ReceiptedInvoice,
   HLY_Reimbursement,
   HLY_SimpleDepartment,
   HLY_SimpleLegalEntity,
-  HLY_Staff, HLY_TravelApplyForm,
+  HLY_Staff,
+  HLY_TravelApplyForm,
   HLY_User,
   HLY_UserGroup,
   HuilianyiResponse,
-} from './HuilianyiModels'
+} from '../core/HuilianyiModels'
 import * as moment from 'moment'
 import AppError from '@fangcha/app-error'
 

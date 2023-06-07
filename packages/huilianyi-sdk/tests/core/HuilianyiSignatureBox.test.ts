@@ -1,5 +1,5 @@
 import { makeRandomStr } from '@fangcha/tools'
-import { HuilianyiSignatureBox } from '../../src/HuilianyiSignatureBox'
+import { HuilianyiSignatureBox } from '../../src'
 
 describe('Test HuilianyiSignatureBox.test.ts', () => {
   it(`calcSignature`, async () => {

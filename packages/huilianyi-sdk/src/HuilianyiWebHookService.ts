@@ -1,8 +1,8 @@
-import { HuilianyiWebhookBody } from './HuilianyiWebhookModels'
-import { HuilianyiSignatureBox } from './HuilianyiSignatureBox'
-import { HuilianyiEncryptionBox } from './HuilianyiEncryptionBox'
+import { HuilianyiWebhookBody } from './webhook/HuilianyiWebhookModels'
+import { HuilianyiSignatureBox } from './webhook/HuilianyiSignatureBox'
+import { HuilianyiEncryptionBox } from './webhook/HuilianyiEncryptionBox'
 import assert from '@fangcha/assert'
-import { HuilianyiApiCode } from './HuilianyiApiCode'
+import { HuilianyiApiCode } from './core/HuilianyiApiCode'
 import { HuilianyiEventHandlerBase } from './webhook/HuilianyiEventHandlerBase'
 
 interface Options {
