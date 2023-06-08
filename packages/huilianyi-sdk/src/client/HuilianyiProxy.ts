@@ -87,14 +87,6 @@ export class HuilianyiProxy extends ServiceProxy<BasicAuthConfig> {
     return await request.quickSend<HLY_LegalEntity>()
   }
 
-  public async getCostCenterDetail(code: string) {
-    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterDetailGet))
-    request.setBodyData({
-      code: code,
-    })
-    return await request.quickSend<HLY_CostCenter>()
-  }
-
   public async getReceiptedInvoiceList() {
     const request = await this.makeRequest(new CommonAPI(HuilianyiApis.ReceiptedInvoiceListGet))
     request.setQueryParams({

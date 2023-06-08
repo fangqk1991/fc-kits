@@ -188,7 +188,7 @@ export interface HLY_CostCenter {
   companyOID: null
   companyName: null
 
-  costCenterItems: any[]
+  costCenterItems: HLY_CostCenterItem[]
   enabled: boolean
   i18n: null
   sequenceNumber: 1

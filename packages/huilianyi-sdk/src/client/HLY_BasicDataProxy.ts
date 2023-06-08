@@ -20,9 +20,18 @@ export class HLY_BasicDataProxy extends HuilianyiProxy {
       return await request.quickSend<HLY_CostCenter[]>()
     })
   }
+
   public async getEnabledCostCenterList() {
     const items = await this.getCostCenterList()
     return items.filter((item) => item.enabled)
+  }
+
+  public async getCostCenterDetail(code: string) {
+    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterDetailGet))
+    request.setBodyData({
+      code: code,
+    })
+    return await request.quickSend<HLY_CostCenter>()
   }
 
   /**

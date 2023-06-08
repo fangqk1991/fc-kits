@@ -26,6 +26,14 @@ describe('Test HLY_BasicDataProxy.test.ts', () => {
     console.info(JSON.stringify(keyTextList, null, 2))
   })
 
+  it(`getCostCenterDetail`, async () => {
+    const costCenters = await huilianyiProxy.getEnabledCostCenterList()
+    for (const center of costCenters) {
+      const centerDetail = await huilianyiProxy.getCostCenterDetail(center.code)
+      console.info(center.name, centerDetail.costCenterItems.map((item) => item.name))
+    }
+  })
+
   it(`getCostCenterItems`, async () => {
     const costCenters = await huilianyiProxy.getEnabledCostCenterList()
     for (const center of costCenters) {
