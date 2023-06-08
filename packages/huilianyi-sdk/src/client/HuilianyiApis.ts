@@ -40,4 +40,9 @@ export const HuilianyiApis = {
     route: '/gateway/api/open/receiptedInvoice',
     description: '查询开票信息',
   },
+  NotificationSend: {
+    method: 'POST',
+    route: '/gateway/api/open/notification/send',
+    description: '第三方应用消息推送',
+  },
 }
