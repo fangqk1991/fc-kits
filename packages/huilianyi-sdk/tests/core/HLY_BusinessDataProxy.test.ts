@@ -1,13 +1,15 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiConfig } from './HuilianyiConfig'
 import { HLY_BusinessDataProxy } from '../../src/client/HLY_BusinessDataProxy'
-import { HLY_ReimburseStatusDescriptor } from '../../src'
+import { HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../../src'
 
 describe('Test HLY_BusinessDataProxy.test.ts', () => {
   const huilianyiProxy = new HLY_BusinessDataProxy(HuilianyiConfig, CustomRequestFollower)
 
   it(`getExpenseReportList`, async () => {
-    const items = await huilianyiProxy.getExpenseReportList()
+    const items = await huilianyiProxy.getExpenseReportList({
+      statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
+    })
     const dataList = items.map((item) => ({
       title: item.title,
       applicantName: item.applicantName,

@@ -11,6 +11,17 @@ export enum HLY_ReimburseStatus {
   Canceled = 1015, // 取消支付
 }
 
+const values = [
+  HLY_ReimburseStatus.Init,
+  HLY_ReimburseStatus.Submitted,
+  HLY_ReimburseStatus.Passed,
+  HLY_ReimburseStatus.Passed2,
+  HLY_ReimburseStatus.Paid,
+  HLY_ReimburseStatus.WaitingForPayment,
+  HLY_ReimburseStatus.Confirmed,
+  HLY_ReimburseStatus.Canceled,
+]
+
 const describe = (code: HLY_ReimburseStatus) => {
   switch (code) {
     case HLY_ReimburseStatus.Init:
@@ -33,4 +44,4 @@ const describe = (code: HLY_ReimburseStatus) => {
   return code
 }
 
-export const HLY_ReimburseStatusDescriptor = new Descriptor(Object.values(HLY_ReimburseStatus), describe)
+export const HLY_ReimburseStatusDescriptor = new Descriptor(values, describe)

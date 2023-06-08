@@ -1,5 +1,3 @@
-import { Descriptor } from '@fangcha/tools'
-
 export enum HuilianyiApiCode {
   INIT = 'INIT',
 
@@ -22,9 +20,3 @@ export enum HuilianyiApiCode {
   TRAVEL_APPLICATION_OUT_ITINERARY_URL = 'TRAVEL_APPLICATION_OUT_ITINERARY_URL', // 差旅申请单外部行程地址回调
   TRAVEL_APPLICATION_SUBSIDY_CALCULATE = 'TRAVEL_APPLICATION_SUBSIDY_CALCULATE', // 差旅申请单差补明细更新回调
 }
-
-const describe = (code: HuilianyiApiCode) => {
-  return code
-}
-
-export const HuilianyiApiCodeDescriptor = new Descriptor(Object.values(HuilianyiApiCode), describe)
