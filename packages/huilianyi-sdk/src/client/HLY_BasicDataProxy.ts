@@ -6,14 +6,13 @@ import {
   HLY_SimpleDepartment,
   HLY_Staff,
 } from '../core/HuilianyiModels'
-import { HuilianyiProxy } from './HuilianyiProxy'
+import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BasicDataApis } from './HLY_BasicDataApis'
-import { HuilianyiApis } from './HuilianyiApis'
 
-export class HLY_BasicDataProxy extends HuilianyiProxy {
+export class HLY_BasicDataProxy extends HuilianyiProxyBase {
   public async getCostCenterList() {
     return await this.getAllPageItemsV2(async (params) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterListGet))
+      const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.CostCenterListGet))
       request.setQueryParams({
         ...params,
       })
@@ -27,7 +26,7 @@ export class HLY_BasicDataProxy extends HuilianyiProxy {
   }
 
   public async getCostCenterDetail(code: string) {
-    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterDetailGet))
+    const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.CostCenterDetailGet))
     request.setBodyData({
       code: code,
     })
@@ -39,7 +38,7 @@ export class HLY_BasicDataProxy extends HuilianyiProxy {
    */
   public async getCostCenterItems(code: string) {
     return await this.getAllPageItemsV2(async (params) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CostCenterItemsGet))
+      const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.CostCenterItemsGet))
       request.setQueryParams({
         ...params,
         costCenterCode: code,
@@ -50,7 +49,7 @@ export class HLY_BasicDataProxy extends HuilianyiProxy {
 
   public async getAllStaffs() {
     return await this.getAllPageItemsV2(async (params) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.StaffListGet))
+      const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.StaffListGet))
       request.setQueryParams({
         ...params,
       })
@@ -60,7 +59,7 @@ export class HLY_BasicDataProxy extends HuilianyiProxy {
 
   public async getAllDepartments() {
     return await this.getAllPageItemsV2(async (params) => {
-      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.DepartmentListGet))
+      const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.DepartmentListGet))
       request.setQueryParams({
         ...params,
       })

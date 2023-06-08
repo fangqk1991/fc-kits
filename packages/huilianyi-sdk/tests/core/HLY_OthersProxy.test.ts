@@ -1,9 +1,9 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
-import { HuilianyiProxy } from '../../src'
 import { HuilianyiConfig } from './HuilianyiConfig'
+import { HLY_OthersProxy } from '../../src'
 
-describe('Test HuilianyiProxy.test.ts', () => {
-  const huilianyiProxy = new HuilianyiProxy(HuilianyiConfig, CustomRequestFollower)
+describe('Test HLY_OthersProxy.test.ts', () => {
+  const huilianyiProxy = new HLY_OthersProxy(HuilianyiConfig, CustomRequestFollower)
 
   it(`getCompanyList`, async () => {
     const items = await huilianyiProxy.getCompanyList()

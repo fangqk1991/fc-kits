@@ -1,4 +1,6 @@
-export * from './client/HuilianyiProxy'
+export * from './client/HLY_BasicDataProxy'
+export * from './client/HLY_OthersProxy'
+export * from './client/HLY_ReportProxy'
 export * from './client/HuilianyiTokenKeeper'
 export * from './core/HuilianyiModels'
 export * from './core/HuilianyiApiCode'
