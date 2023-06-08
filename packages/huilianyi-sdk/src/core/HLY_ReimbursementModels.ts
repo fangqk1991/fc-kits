@@ -13,6 +13,7 @@ export interface HLY_Expense {
   applicantOID: string
   applicantUserType: string // 'INTERNAL'
   applicationStartAndEndDateMap: {}
+  applicationBusinessCode?: string // 关联申请单号
   asyncStatus: number // 1000
   autoAudit: boolean
   autoGoToSmallTripEdit: false

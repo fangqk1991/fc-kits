@@ -17,6 +17,15 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
   }
 
+  public async getExpenseReportDetail(businessCode: string) {
+    const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportDetailGet))
+    request.setQueryParams({
+      businessCode: businessCode,
+      // withExpenseReportItinerary: true,
+    })
+    return await request.quickSend<HLY_Expense>()
+  }
+
   public async getTravelApplicationList() {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.TravelApplicationListGet))
