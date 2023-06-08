@@ -1,6 +1,7 @@
 import { HLY_CustomFormValue, HLY_Staff } from './HLY_CoreModels'
+import { HLY_ReimburseStatus } from './HLY_ReimburseStatus'
 
-export interface HLY_Reimbursement {
+export interface HLY_Expense {
   applicant: HLY_Staff
   createdUser: HLY_Staff
   applicantCompanyOID: string
@@ -49,7 +50,7 @@ export interface HLY_Reimbursement {
   entityType: string // 'EXPENSE_REPORT'
   existApprovalNumber: false
   expenseReportApplicationDTOS: []
-  expenseReportInvoices: []
+  expenseReportInvoices: ExpenseReportInvoice[]
   expenseReportLabels: []
   expenseReportOID: string
   expenseTypes: string
@@ -88,7 +89,7 @@ export interface HLY_Reimbursement {
   splitStatus: number // 0
   ssoDetailJumpURL: string
   ssoViewJumpURL: string
-  status: number // 1001
+  status: HLY_ReimburseStatus
   statusView: number // 1001
   subCompanyOID: string
   tenantId: string
@@ -158,4 +159,13 @@ export interface HLY_ReimbursementReport {
   financeApprovalDate: string // '2022-11-22 16:12:25'
   firstSubmittedDate: string // '2022-11-22 16:12:23'
   realPaymentAmountNew: string // '5000.00'
+}
+
+export interface ExpenseReportInvoice {
+  expenseReportInvoiceOID: string // 报销费用OID
+  expenseReportOID: string // 报销单OID
+  invoiceOID: string // 费用OID
+  createdDate: string // 创建日期
+  status: number // 报销单费用状态枚举
+  invoiceView: any // 费用明细
 }
