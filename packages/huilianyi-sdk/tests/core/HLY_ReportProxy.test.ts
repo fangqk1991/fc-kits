@@ -7,13 +7,32 @@ describe('Test HLY_ReportProxy.test.ts', () => {
 
   it(`searchReimbursementData`, async () => {
     const items = await huilianyiProxy.searchReimbursementData()
-    const keyTextList = items.map(
-      (item) =>
-        `${item.businessCode} - ${item.applicantName}(${item.submittedByName}) - ${item.reimbStatusDesc} - ${item.submittedDate}`
-    )
-    // console.info(JSON.stringify(items, null, 2))
-    console.info(`${keyTextList.length} items.`)
-    console.info(keyTextList)
+    const dataList = items.map((item) => ({
+      businessCode: item.businessCode,
+      formTypeDesc: item.formTypeDesc,
+      applicantName: item.applicantName,
+      applicantDeptName: item.applicantDeptName,
+      submittedByName: item.submittedByName,
+      companyName: item.companyName,
+      departmentName: item.departmentName,
+      applicantDeptPath: item.applicantDeptPath,
+      departmentPath: item.departmentPath,
+      title: item.title,
+      submittedDate: item.submittedDate,
+      reimbStatusDesc: item.reimbStatusDesc,
+      reimbLastModifiedDate: item.reimbLastModifiedDate,
+      currencyCode: item.currencyCode,
+      totalAmount: item.totalAmount,
+      labelName: item.labelName,
+      labelToast: item.labelToast,
+      followingApprover: item.followingApprover,
+      createdByName: item.createdByName,
+      firstSubmittedDate: item.firstSubmittedDate,
+      reimbPrintViewDate: item.reimbPrintViewDate,
+      realPaymentAmountNew: item.realPaymentAmountNew,
+    }))
+    console.info(`${dataList.length} items.`)
+    console.info(dataList)
   })
 
   it(`searchExpenseDetailsData`, async () => {

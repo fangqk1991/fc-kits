@@ -1,6 +1,7 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BusinessDataApis } from './HLY_BusinessDataApis'
+import { HLY_Reimbursement } from '../core/HLY_ReimbursementModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getExpenseReportList() {
@@ -11,7 +12,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       status: [1001, 1002, 1003, 1004, 1005, 1007, 1008, 1015].join(','),
       size: 100,
     })
-    return await request.quickSend<any>()
+    return await request.quickSend<HLY_Reimbursement[]>()
   }
 
   public async getTravelApplicationList() {

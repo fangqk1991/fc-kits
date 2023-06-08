@@ -1,55 +1,9 @@
+import { HLY_CustomFormValue } from './HLY_CoreModels'
+
 export interface HuilianyiResponse<T> {
   message: string
   errorCode: string
   data: T
-}
-
-export interface HLY_CustomFormValue {
-  bizType: string
-  formValueOID: string
-  bizOID: string
-  fieldOID: string
-  fieldName: string
-  fieldType: string
-  value: any
-  messageKey: string
-  fieldValueCode: string
-}
-
-/**
- * https://opendocs.huilianyi.com/implement/master-data/staff/select-employee.html
- */
-export interface HLY_Staff {
-  employeeID: string
-  mobile: string
-  fullName: string
-  email: string
-  status: number // 1001--正常;1002--待离职;1003--离职
-  title: string
-  userOID: string
-  departmentOID: string
-  departmentName: string
-  departmentPath: string
-  companyOID: string
-  companyCode: string
-  companyName: string
-  gender: number // 0--男;1--女;2--未知
-  genderCode: string // 0--男;1--女;2--未知
-  employeeType: string
-  employeeTypeCode: string
-  duty: string
-  dutyCode: string
-  rank: string
-  rankCode: string
-  directManager: string
-  directManagerName: string
-  directManagerEmployeeId: string
-  customFormValues: HLY_CustomFormValue[]
-  contactCards: any[]
-  contactBankAccounts: any[]
-  userCreditDTOList: any[]
-  leavingDate: string
-  activated: boolean
 }
 
 /**
@@ -442,58 +396,6 @@ export interface HLY_ExpenseType {
   formOID: null
   customFormFields: []
   isChangeCategory: null
-}
-
-export interface HLY_Reimbursement {
-  departmentCode: string
-  setOfBooksId: string
-  legalEntityOid: string
-  companyOid: string
-  departmentOid: string
-  applicantOid: string
-  businessCode: string
-  formTypeDesc: string
-  applicantName: string
-  applicantEmpId: string
-  applicantComName: string
-  applicantDeptName: string
-  submittedByName: string
-  companyName: string
-  title: string
-  submittedDate: string // '2022-11-22 16:12:23'
-  reimbStatusDesc: string // '待付款'
-  reimbLastModifiedDate: string // '2022-11-22 16:12:25'
-  reimbLastApprover: string
-  reimbAuditApprover: string // '未维护信息'
-  reimbAuditApprovalDate: string // '2022-11-22 16:12:25'
-  currencyCode: string // 'CNY'
-  totalAmount: string // '5000.00'
-  functionalCurrencyCode: string // 'CNY'
-  exchageRate: string // '1.0000'
-  baseCurrencyAmount: string // '5000.00'
-  baseReimbPaymentAmount: string // '0.00'
-  realPaymentBaseAmount: string // '5000.00'
-  labelToast: string
-  formName: string
-  departmentName: string
-  applicantDeptPath: string
-  departmentPath: string
-  applicantLegalName: string
-  receiveStatusDesc: string // '未收单'
-  collectorName: string
-  paymentCurrencyCode: string // 'CNY'
-  createdByName: string
-  reimbBookDate: string // '2022-11-22'
-  integrationId: string
-  approvalDate: string // '2022-11-22'
-  approvalAndAuditName: string
-  reimbPrintViewDate: string // '2022-11-22 16:12:24'
-  applicantComCode: string // '1'
-  companyCode: string // '1'
-  lastApprovalDate: string // '2022-11-22 16:12:24'
-  financeApprovalDate: string // '2022-11-22 16:12:25'
-  firstSubmittedDate: string // '2022-11-22 16:12:23'
-  realPaymentAmountNew: string // '5000.00'
 }
 
 /**

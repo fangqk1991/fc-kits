@@ -1,22 +1,23 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HLY_ReportApis } from './HLY_ReportApis'
-import { HLY_ExpenseDetail, HLY_Reimbursement, HLY_TravelApplyForm, HuilianyiResponse } from '../core/HuilianyiModels'
+import { HLY_ExpenseDetail, HLY_TravelApplyForm, HuilianyiResponse } from '../core/HuilianyiModels'
 import * as moment from 'moment'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
+import { HLY_ReimbursementReport } from '../core/HLY_ReimbursementModels'
 
 export class HLY_ReportProxy extends HuilianyiProxyBase {
   public async searchReimbursementData() {
-    return await this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
+    return await this.getAllPageItems(async (pageParams) => {
       const request = await this.makeRequest(new CommonAPI(HLY_ReportApis.Report_ReimbursementDataSearch))
       request.setBodyData({
         ...pageParams,
       })
-      return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
+      return await request.quickSend<HuilianyiResponse<HLY_ReimbursementReport[]>>()
     })
   }
 
   public async searchExpenseDetailsData() {
-    return await this.getAllPageItems<HLY_ExpenseDetail>(async (pageParams) => {
+    return await this.getAllPageItems(async (pageParams) => {
       const request = await this.makeRequest(new CommonAPI(HLY_ReportApis.ExpenseDetailsDataSearch))
       request.setBodyData({
         ...pageParams,
@@ -26,7 +27,7 @@ export class HLY_ReportProxy extends HuilianyiProxyBase {
   }
 
   public async searchTravelApplyData() {
-    return await this.getAllPageItems<HLY_TravelApplyForm>(async (pageParams) => {
+    return await this.getAllPageItems(async (pageParams) => {
       const request = await this.makeRequest(new CommonAPI(HLY_ReportApis.TravelApplyDataSearch))
       request.setBodyData({
         ...pageParams,
@@ -36,13 +37,13 @@ export class HLY_ReportProxy extends HuilianyiProxyBase {
   }
 
   public async searchContractData(setOfBooksCode: string) {
-    return await this.getAllPageItems<HLY_Reimbursement>(async (pageParams) => {
+    return await this.getAllPageItems(async (pageParams) => {
       const request = await this.makeRequest(new CommonAPI(HLY_ReportApis.ContractDataSearch))
       request.setBodyData({
         setOfBooksCode: setOfBooksCode,
         ...pageParams,
       })
-      return await request.quickSend<HuilianyiResponse<HLY_Reimbursement[]>>()
+      return await request.quickSend<HuilianyiResponse<any[]>>()
     })
   }
 

@@ -7,9 +7,14 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
 
   it(`getExpenseReportList`, async () => {
     const items = await huilianyiProxy.getExpenseReportList()
-    // const keyTextList = items.map((item) => `${item.fullName} - ${item.departmentPath}`)
-    // console.info(`${keyTextList.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
+    const dataList = items.map((item) => ({
+      title: item.title,
+      applicantName: item.applicantName,
+      createdDate: item.createdDate,
+    }))
+    console.info(`${dataList.length} items.`)
+    // console.info(JSON.stringify(dataList, null, 2))
+    console.info(JSON.stringify(items[1]))
   })
 
   it(`getTravelApplicationList`, async () => {

@@ -1,13 +1,8 @@
 import { CommonAPI } from '@fangcha/app-request'
-import {
-  HLY_CostCenter,
-  HLY_CostCenterItem,
-  HLY_ExpenseType,
-  HLY_SimpleDepartment,
-  HLY_Staff,
-} from '../core/HuilianyiModels'
+import { HLY_CostCenter, HLY_CostCenterItem, HLY_ExpenseType, HLY_SimpleDepartment } from '../core/HuilianyiModels'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BasicDataApis } from './HLY_BasicDataApis'
+import { HLY_Staff } from '../core/HLY_CoreModels'
 
 export class HLY_BasicDataProxy extends HuilianyiProxyBase {
   public async getCostCenterList() {
