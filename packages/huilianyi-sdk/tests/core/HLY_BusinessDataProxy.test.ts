@@ -7,6 +7,16 @@ import { DiffMapper } from '@fangcha/tools'
 describe('Test HLY_BusinessDataProxy.test.ts', () => {
   const businessDataProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
 
+  it(`getApprovalMatrixList`, async () => {
+    const items = await businessDataProxy.getApprovalMatrixList()
+    const dataList = items.map((item) => ({
+      ...item,
+    }))
+    console.info(`${dataList.length} items.`)
+    console.info(JSON.stringify(dataList, null, 2))
+    // console.info(JSON.stringify(items[0]))
+  })
+
   it(`getPublicApplicationList`, async () => {
     const items = await businessDataProxy.getPublicApplicationList()
     const dataList = items.map((item) => ({
