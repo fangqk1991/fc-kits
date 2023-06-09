@@ -1,3 +1,5 @@
+import { HLY_Department } from './HuilianyiModels'
+
 export interface HLY_CustomFormValue {
   bizType: string
   formValueOID: string
@@ -5,15 +7,23 @@ export interface HLY_CustomFormValue {
   fieldOID: string
   fieldName: string
   fieldType: string
+  fieldCode: string
   value: any
   messageKey: string
   fieldValueCode: string | null
 }
 
+export interface HLY_StaffCoreDTO {
+  userOID: string
+  fullName: string
+  employeeID: string
+  department: HLY_Department
+}
+
 /**
  * https://opendocs.huilianyi.com/implement/master-data/staff/select-employee.html
  */
-export interface HLY_Staff {
+export interface HLY_Staff extends HLY_StaffCoreDTO {
   employeeID: string
   mobile: string
   fullName: string

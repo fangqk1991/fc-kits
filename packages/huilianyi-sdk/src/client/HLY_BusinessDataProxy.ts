@@ -4,8 +4,21 @@ import { HLY_BusinessDataApis } from './HLY_BusinessDataApis'
 import { HLY_Expense } from '../core/HLY_ReimbursementModels'
 import { HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../core/HLY_ReimburseStatus'
 import { PageDataFetcher } from './PageDataFetcher'
+import { HuilianyiResponse } from '../core/HuilianyiModels'
+import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
+  public async getPublicApplicationList() {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.PublicApplicationListGet))
+      request.setQueryParams({
+        ...params,
+      })
+      const response = await request.quickSend<HuilianyiResponse<HLY_PublicApplicationDTO[]>>()
+      return response.data
+    })
+  }
+
   public async getExpenseReportList(options: { statusList?: HLY_ReimburseStatus[] } = {}) {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGet))

@@ -1,4 +1,10 @@
 export const HLY_BusinessDataApis = {
+  PublicApplicationListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/publicApplication',
+    // 包含明细数据
+    description: '增量查询对公申请单',
+  },
   ExpenseReportListGet: {
     method: 'GET',
     route: '/gateway/api/open/expenseReport',

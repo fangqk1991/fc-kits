@@ -1,3 +1,5 @@
+import assert from '@fangcha/assert'
+
 export class PageDataFetcher {
   public static async fetchAllPageItems<T>(handler: (params: { page: number; size: number }) => Promise<T[]>) {
     let items: T[] = []
@@ -10,6 +12,7 @@ export class PageDataFetcher {
         page: page,
         size: 100,
       })
+      assert.ok(Array.isArray(pageItems), `fetchAllPageItems' handler response error`, 500)
       items = items.concat(pageItems || [])
       if (pageItems.length === 0) {
         finished = true

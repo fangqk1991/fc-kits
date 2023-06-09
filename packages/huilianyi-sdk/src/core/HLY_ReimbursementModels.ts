@@ -295,7 +295,7 @@ export interface ExpenseReportInvoiceView {
   invoiceInsteadReason: null
   paymentType: 1001
   source: null
-  ownerOID: string
+  ownerOID: string // 费用归属人
   owner: HLY_Staff
   userOID: string
   reconciliationStatus: null
@@ -376,7 +376,7 @@ export interface ExpenseReportInvoiceView {
   receiptCount: null
   vendorCode: null
   mixPay: null
-  custFormValues: []
+  custFormValues: HLY_CustomFormValue[]
   customFormValuePDFDataList: null
   invoiceSupplementReceiptVO: null
   relatedApplicationItineraryBudgetVOList: null
