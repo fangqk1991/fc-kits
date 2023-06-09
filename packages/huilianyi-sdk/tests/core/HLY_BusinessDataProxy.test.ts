@@ -27,7 +27,22 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     }))
     console.info(`${dataList.length} items.`)
     console.info(JSON.stringify(dataList, null, 2))
-    console.info(JSON.stringify(items[0]))
+    // console.info(JSON.stringify(items[0]))
+  })
+
+  it(`updateApplicationCustomFormValue`, async () => {
+    const businessCode = 'EA00985097'
+    const amount = 3000 + Math.floor(Math.random() * 1000)
+    await businessDataProxy.updateApplicationCustomFormValue(businessCode, {
+      field_amount_refer: amount,
+    })
+    const response = await businessDataProxy.getPublicApplicationDetail(businessCode)
+    console.info(
+      response.custFormValues.reduce((result, cur) => {
+        result[cur.fieldCode || cur.fieldOID] = cur.value
+        return result
+      }, {})
+    )
   })
 
   it(`getExpenseReportList`, async () => {

@@ -5,6 +5,11 @@ export const HLY_BusinessDataApis = {
     // 包含明细数据
     description: '增量查询对公申请单',
   },
+  PublicApplicationDetailGet: {
+    method: 'GET',
+    route: '/gateway/api/open/publicApplication/detail',
+    description: '查询单个对公申请单详情(单号)',
+  },
   ExpenseReportListGet: {
     method: 'GET',
     route: '/gateway/api/open/expenseReport',
@@ -21,5 +26,11 @@ export const HLY_BusinessDataApis = {
     route: '/gateway/api/open/travelApplication',
     // 包含明细数据
     description: '增量查询差旅申请单',
+  },
+
+  ApplicationCustomFormValueUpdate: {
+    method: 'PUT',
+    route: '/gateway/api/open/application/update/custom/form/value',
+    description: '申请单自定义控件值更新',
   },
 }

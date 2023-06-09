@@ -19,6 +19,15 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
   }
 
+  public async getPublicApplicationDetail(businessCode: string) {
+    const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.PublicApplicationDetailGet))
+    request.setQueryParams({
+      businessCode: businessCode,
+    })
+    const response = await request.quickSend<HuilianyiResponse<HLY_PublicApplicationDTO>>()
+    return response.data
+  }
+
   public async getExpenseReportList(options: { statusList?: HLY_ReimburseStatus[] } = {}) {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGet))
@@ -47,5 +56,17 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       })
       return await request.quickSend<any[]>()
     })
+  }
+
+  public async updateApplicationCustomFormValue(businessCode: string, params: {}) {
+    const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ApplicationCustomFormValueUpdate))
+    request.setBodyData({
+      businessCode: businessCode,
+      customFormValueDTOList: Object.keys(params).map((key) => ({
+        fieldCode: key,
+        value: params[key],
+      })),
+    })
+    await request.quickSend()
   }
 }
