@@ -63,6 +63,11 @@ export class HLY_BasicDataProxy extends HuilianyiProxyBase {
     })
   }
 
+  public async getDepartmentInfo(departmentOID: string) {
+    const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.DepartmentInfoGet, departmentOID))
+    return await request.quickSend<HLY_SimpleDepartment>()
+  }
+
   /**
    * https://opendocs.huilianyi.com/implement/master-data/expense-type/query-expense-type.html
    */

@@ -2,14 +2,15 @@ import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import { HLY_BusinessDataProxy } from '../../src/client/HLY_BusinessDataProxy'
 import { HLY_PublicApplicationStatusDescriptor, HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../../src'
-import { DiffMapper } from '@fangcha/tools/lib'
+import { DiffMapper } from '@fangcha/tools'
 
 describe('Test HLY_BusinessDataProxy.test.ts', () => {
-  const huilianyiProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
+  const businessDataProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
 
   it(`getPublicApplicationList`, async () => {
-    const items = await huilianyiProxy.getPublicApplicationList()
+    const items = await businessDataProxy.getPublicApplicationList()
     const dataList = items.map((item) => ({
+      version: item.version,
       title: `[${item.formName}] ${item.title}`,
       applicantName: item.applicant.fullName,
       createdDate: item.createdDate,
@@ -26,11 +27,11 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     }))
     console.info(`${dataList.length} items.`)
     console.info(JSON.stringify(dataList, null, 2))
-    // console.info(JSON.stringify(items[1]))
+    console.info(JSON.stringify(items[0]))
   })
 
   it(`getExpenseReportList`, async () => {
-    const items = await huilianyiProxy.getExpenseReportList({
+    const items = await businessDataProxy.getExpenseReportList({
       // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
     })
     const dataList = items.map((item) => ({
@@ -47,16 +48,16 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`getExpenseReportDetail`, async () => {
-    const [keyItem] = await huilianyiProxy.getExpenseReportList({
+    const [keyItem] = await businessDataProxy.getExpenseReportList({
       statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
     })
-    const detailInfo = await huilianyiProxy.getExpenseReportDetail(keyItem.businessCode)
+    const detailInfo = await businessDataProxy.getExpenseReportDetail(keyItem.businessCode)
     const diffMapper = new DiffMapper(keyItem, detailInfo)
     console.info(diffMapper.buildDiffItems())
   })
 
   it(`getTravelApplicationList`, async () => {
-    const items = await huilianyiProxy.getTravelApplicationList()
+    const items = await businessDataProxy.getTravelApplicationList()
     // const keyTextList = items.map((item) => `${item.fullName} - ${item.departmentPath}`)
     // console.info(`${keyTextList.length} items.`)
     console.info(JSON.stringify(items, null, 2))

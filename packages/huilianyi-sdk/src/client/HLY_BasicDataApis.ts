@@ -12,7 +12,12 @@ export const HLY_BasicDataApis = {
   DepartmentListGet: {
     method: 'GET',
     route: '/gateway/api/open/department',
-    description: '增量查询员工',
+    description: '增量查询部门',
+  },
+  DepartmentInfoGet: {
+    method: 'GET',
+    route: '/gateway/api/open/department/:departmentOID',
+    description: '查询指定部门',
   },
   CostCenterListGet: {
     method: 'GET',
