@@ -1,9 +1,9 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
-import { HuilianyiConfig } from './HuilianyiConfig'
+import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import { HLY_ReportProxy } from '../../src'
 
 describe('Test HLY_ReportProxy.test.ts', () => {
-  const huilianyiProxy = new HLY_ReportProxy(HuilianyiConfig, CustomRequestFollower)
+  const huilianyiProxy = new HLY_ReportProxy(HuilianyiConfigTest, CustomRequestFollower)
 
   it(`searchReimbursementData`, async () => {
     const items = await huilianyiProxy.searchReimbursementData()

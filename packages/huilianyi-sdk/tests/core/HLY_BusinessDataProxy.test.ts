@@ -1,11 +1,11 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
-import { HuilianyiConfig } from './HuilianyiConfig'
+import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import { HLY_BusinessDataProxy } from '../../src/client/HLY_BusinessDataProxy'
 import { HLY_PublicApplicationStatusDescriptor, HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../../src'
 import { DiffMapper } from '@fangcha/tools/lib'
 
 describe('Test HLY_BusinessDataProxy.test.ts', () => {
-  const huilianyiProxy = new HLY_BusinessDataProxy(HuilianyiConfig, CustomRequestFollower)
+  const huilianyiProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
 
   it(`getPublicApplicationList`, async () => {
     const items = await huilianyiProxy.getPublicApplicationList()

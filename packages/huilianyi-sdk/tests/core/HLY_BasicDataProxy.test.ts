@@ -1,9 +1,9 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
-import { HuilianyiConfig } from './HuilianyiConfig'
+import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import { HLY_BasicDataProxy } from '../../src'
 
 describe('Test HLY_BasicDataProxy.test.ts', () => {
-  const huilianyiProxy = new HLY_BasicDataProxy(HuilianyiConfig, CustomRequestFollower)
+  const huilianyiProxy = new HLY_BasicDataProxy(HuilianyiConfigTest, CustomRequestFollower)
 
   it(`getAllStaffs`, async () => {
     const items = await huilianyiProxy.getAllStaffs()

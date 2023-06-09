@@ -1,10 +1,10 @@
 import { loggerForDev } from '@fangcha/logger'
 import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiTokenKeeper } from '../../src'
-import { HuilianyiConfig } from './HuilianyiConfig'
+import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 
 describe('Test HuilianyiTokenKeeper.test.ts', () => {
-  const keeper = new HuilianyiTokenKeeper(HuilianyiConfig, CustomRequestFollower)
+  const keeper = new HuilianyiTokenKeeper(HuilianyiConfigTest, CustomRequestFollower)
 
   it(`requireTenantAccessToken`, async () => {
     const accessToken = await keeper.requireTenantAccessToken()
