@@ -68,6 +68,13 @@ export enum HLY_ExpenseResourceStatus {
   APPROVAL_HISTORY = 'APPROVAL_HISTORY', // 审批历史
 }
 
+// 报销单类型枚举
+export enum HLY_ExpenseType {
+  Daily = 1001, // 日常报销单
+  Travel = 1002, // 差旅报销单
+  Cost = 1003, // 费用报销单
+}
+
 export interface HLY_ExpenseV2 {
   id: string // '15011743'
   expenseReportOID: string // UUID
@@ -83,7 +90,7 @@ export interface HLY_ExpenseV2 {
   applicationOID: string // UUID
   formOID: string // UUID
   corporationOID: string // UUID
-  type: number // 报销单类型 1001
+  type: HLY_ExpenseType
   printable: boolean
   submittedBy: string // UUID
   lastSubmittedDate: string // '2023-06-07T08:51:32Z'
@@ -131,7 +138,7 @@ export interface HLY_ExpenseV2 {
   createdUserEmployeeId: string
   departmentPath: string
   billStatus: number // 开票状态 1001
-  totalAmount: number
+  totalAmount: number // 总金额
   baseCurrencyAmount: number
   withReceiptAmount: number
   withoutReceiptAmount: number
