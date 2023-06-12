@@ -30,6 +30,118 @@ export interface InvoiceLabelDTO {
   toast: string
 }
 
+export enum HLY_ExpenseTravelStandardValidStatus {
+  Pending = 1001, // 未验证
+  Verified = 1002, // 验证通过
+  Invalid = 1003, // 验证失败
+}
+
+// 驳回类型枚举
+export enum HLY_ExpenseRejectType {
+  Normal = 1000, // 正常
+  Recalled = 1001, // 撤回
+  ApprovalRejected = 1002, // 审批驳回
+  FinanceRejected = 1003, // 财务审核驳回
+}
+
+// 收单状态枚举
+export enum HLY_ExpenseReceiveStatus {
+  Pending = 0, // 未收单
+  Received = 1, // 已收单
+  Returned = 2, // 已退单
+  WaitingToReturn = 3, // 待退单
+}
+
+// 寄单状态枚举
+export enum HLY_ExpenseSendBillStatus {
+  Pending = 0, // 未寄单
+  Sent = 1, // 已寄单
+  Returned = 2, // 已退单
+  WaitingToReturn = 3, // 待退单
+}
+
+// 附件来源类型枚举
+export enum HLY_ExpenseResourceStatus {
+  EXPENSE_REPORT = 'EXPENSE_REPORT', // 报销单
+  RECEIPT = 'RECEIPT', // 发票
+  INVOICE = 'INVOICE', // 费用
+  APPROVAL_HISTORY = 'APPROVAL_HISTORY', // 审批历史
+}
+
+export interface HLY_ExpenseV2 {
+  id: string // '15011743'
+  expenseReportOID: string // UUID
+  businessCode: string // 'ER15011743'
+  departmentOID: string // UUID
+  status: HLY_ReimburseStatus
+  splitStatus: number // 拆单状态 0
+  applicantJobId: string // '1661298278307860481'
+  applicantOID: string // UUID
+  applicantCompanyOID: string // UUID
+  applicantDepartmentOID: string // UUID
+  applicantCorporationOID: string // UUID
+  applicationOID: string // UUID
+  formOID: string // UUID
+  corporationOID: string // UUID
+  type: number // 报销单类型 1001
+  printable: boolean
+  submittedBy: string // UUID
+  lastSubmittedDate: string // '2023-06-07T08:51:32Z'
+  firstSubmittedDate: string // '2023-06-07T08:47:57Z'
+  formName: string
+  formCode: string
+  companyOID: string // UUID
+  companyCode: string
+  companyName: string
+  docCompanyOID: string // UUID
+  docCompanyCode: string
+  docCompanyName: string
+  currencyCode: string // 'CNY'
+  baseCurrency: string // 'CNY'
+  applicantName: string
+  title: string
+  expenseTypes: string // ''
+  travelStandardValid: HLY_ExpenseTravelStandardValidStatus
+  costCenterItemOID: string // UUID
+  rejectType: HLY_ExpenseRejectType
+  subCompanyOID: string // UUID
+  sendEmailResult: boolean
+  departmentName: string
+  printFree: boolean // 查询的报销单是否免打印
+  reviewedFlag: boolean // 单据被财务审核调整标记
+  travelStandardWarning: boolean // 是否超差标
+  receiveStatus: HLY_ExpenseReceiveStatus // 收单状态
+  sendBillStatus: HLY_ExpenseSendBillStatus
+  overBudgetFlag: true
+  withdrawFlag: string // 撤回标记 'Y'
+  budgetCheckMessage: string
+  filterFlag: boolean
+  lastRejectType: HLY_ExpenseRejectType
+  autoAudit: false
+  receiptCheckStatus: number // 核票状态 1000
+  createdBy: string // UUID
+  createdDate: string // '2023-06-06T02:08:29Z'
+  lastModifiedDate: string // '2023-06-09T05:11:15Z'
+  lastModifiedBy: string // UUID
+  corporateFlag: boolean
+  setOfBooksId: string
+  tenantId: string
+  applicantEmployeeId: string
+  createdUserName: string
+  createdUserEmployeeId: string
+  departmentPath: string
+  billStatus: number // 开票状态 1001
+  totalAmount: number
+  baseCurrencyAmount: number
+  withReceiptAmount: number
+  withoutReceiptAmount: number
+  exchangeRateValue: number
+  personalPaymentAmount: number
+  foreignCurrencyAmount: number
+  personalPaymentBaseAmount: number
+  toBeAuditDate: string // '2023-06-07T08:52:18Z'
+}
+
 export interface HLY_Expense {
   applicant: HLY_Staff
   createdUser: HLY_Staff

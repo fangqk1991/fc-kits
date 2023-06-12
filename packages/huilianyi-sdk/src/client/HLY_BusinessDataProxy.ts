@@ -1,7 +1,7 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BusinessDataApis } from './HLY_BusinessDataApis'
-import { HLY_Expense } from '../core/HLY_ReimbursementModels'
+import { HLY_Expense, HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
 import { HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../core/HLY_ReimburseStatus'
 import { PageDataFetcher } from './PageDataFetcher'
 import { HuilianyiResponse } from '../core/HuilianyiModels'
@@ -53,11 +53,15 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
   }
 
-  public async getExpenseReportListV2(options: { statusList?: HLY_ReimburseStatus[] } = {}) {
+  public async getExpenseReportListV2(
+    options: { statusList?: HLY_ReimburseStatus[]; lastModifyStartDate?: string } = {}
+  ) {
     return await PageDataFetcher.fetchAllPageItemsV2(async (params) => {
+      const lastModifyStartDate = options.lastModifyStartDate || params.lastModifyStartDate
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGetV2))
       request.setBodyData({
         ...params,
+        lastModifyStartDate: lastModifyStartDate,
         statusList: options.statusList || HLY_ReimburseStatusDescriptor.values,
         sortDTOList: [
           {
@@ -66,7 +70,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
           },
         ],
       })
-      return await request.quickSend<HLY_Expense[]>()
+      return await request.quickSend<HLY_ExpenseV2[]>()
     })
   }
 

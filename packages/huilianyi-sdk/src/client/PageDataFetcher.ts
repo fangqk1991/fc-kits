@@ -23,7 +23,14 @@ export class PageDataFetcher {
     return items
   }
 
-  public static async fetchAllPageItemsV2<T>(handler: (params: { page: number; size: number }) => Promise<T[]>) {
+  public static async fetchAllPageItemsV2<T>(
+    handler: (params: {
+      page: number
+      size: number
+      lastModifyStartDate: string
+      lastModifyEndDate: string
+    }) => Promise<T[]>
+  ) {
     let items: T[] = []
     let finished = false
     let page = 1

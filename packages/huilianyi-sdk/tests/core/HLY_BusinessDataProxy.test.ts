@@ -75,18 +75,20 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   it(`getExpenseReportListV2`, async () => {
     const items = await businessDataProxy.getExpenseReportListV2({
       // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
+      lastModifyStartDate: '2023-06-09 00:00:00',
     })
     const dataList = items.map((item) => ({
       id: item.id,
       title: item.title,
       applicantName: item.applicantName,
       createdDate: item.createdDate,
+      lastModifiedDate: item.lastModifiedDate,
       status: item.status,
       statusText: HLY_ReimburseStatusDescriptor.describe(item.status),
-      applicationBusinessCode: item.applicationBusinessCode,
     }))
     console.info(`${dataList.length} items.`)
-    console.info(JSON.stringify(dataList, null, 2))
+    // console.info(JSON.stringify(dataList, null, 2))
+    console.info(JSON.stringify(items, null, 2))
     // console.info(JSON.stringify(items[1]))
   })
 
