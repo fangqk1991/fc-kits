@@ -75,7 +75,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   it(`getExpenseReportListV2`, async () => {
     const items = await businessDataProxy.getExpenseReportListV2({
       // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
-      lastModifyStartDate: '2023-06-09 00:00:00',
+      lastModifyStartDate: '2023-06-09 17:24:07',
     })
     const dataList = items.map((item) => ({
       id: item.id,

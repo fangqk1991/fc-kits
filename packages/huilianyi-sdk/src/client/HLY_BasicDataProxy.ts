@@ -1,5 +1,10 @@
 import { CommonAPI } from '@fangcha/app-request'
-import { HLY_CostCenter, HLY_CostCenterItem, HLY_ExpenseType, HLY_SimpleDepartment } from '../core/HuilianyiModels'
+import {
+  HLY_CostCenter,
+  HLY_CostCenterItem,
+  HLY_ExpenseTypeEntity,
+  HLY_SimpleDepartment
+} from '../core/HuilianyiModels'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BasicDataApis } from './HLY_BasicDataApis'
 import { HLY_Staff } from '../core/HLY_CoreModels'
@@ -73,6 +78,6 @@ export class HLY_BasicDataProxy extends HuilianyiProxyBase {
    */
   public async getExpenseTypeList() {
     const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.ExpenseTypeListGet))
-    return await request.quickSend<HLY_ExpenseType[]>()
+    return await request.quickSend<HLY_ExpenseTypeEntity[]>()
   }
 }

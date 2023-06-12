@@ -290,7 +290,7 @@ export interface HLY_ExpenseField {
   formOID: null
 }
 
-export interface HLY_ExpenseType {
+export interface HLY_ExpenseTypeEntity {
   id: string
   expenseTypeOID: string
   code: string

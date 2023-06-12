@@ -1,4 +1,5 @@
 export * from './client/HLY_BasicDataProxy'
+export * from './client/HLY_BusinessDataProxy'
 export * from './client/HLY_OthersProxy'
 export * from './client/HLY_ReportProxy'
 export * from './client/HuilianyiTokenKeeper'

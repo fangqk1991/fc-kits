@@ -42,6 +42,10 @@ const _insertableCols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'created_date',
+  'first_submitted_date',
+  'last_submitted_date',
+  'last_modified_date',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
