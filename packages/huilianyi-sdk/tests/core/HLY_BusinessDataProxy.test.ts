@@ -72,6 +72,24 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     // console.info(JSON.stringify(items[1]))
   })
 
+  it(`getExpenseReportListV2`, async () => {
+    const items = await businessDataProxy.getExpenseReportListV2({
+      // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
+    })
+    const dataList = items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      applicantName: item.applicantName,
+      createdDate: item.createdDate,
+      status: item.status,
+      statusText: HLY_ReimburseStatusDescriptor.describe(item.status),
+      applicationBusinessCode: item.applicationBusinessCode,
+    }))
+    console.info(`${dataList.length} items.`)
+    console.info(JSON.stringify(dataList, null, 2))
+    // console.info(JSON.stringify(items[1]))
+  })
+
   it(`getExpenseReportDetail`, async () => {
     const [keyItem] = await businessDataProxy.getExpenseReportList({
       statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],

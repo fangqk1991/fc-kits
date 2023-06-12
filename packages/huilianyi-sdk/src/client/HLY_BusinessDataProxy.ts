@@ -38,12 +38,33 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     return response.data
   }
 
+  /**
+   * @deprecated
+   * @param options
+   */
   public async getExpenseReportList(options: { statusList?: HLY_ReimburseStatus[] } = {}) {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGet))
       request.setQueryParams({
         ...params,
         status: (options.statusList || HLY_ReimburseStatusDescriptor.values).join(','),
+      })
+      return await request.quickSend<HLY_Expense[]>()
+    })
+  }
+
+  public async getExpenseReportListV2(options: { statusList?: HLY_ReimburseStatus[] } = {}) {
+    return await PageDataFetcher.fetchAllPageItemsV2(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGetV2))
+      request.setBodyData({
+        ...params,
+        statusList: options.statusList || HLY_ReimburseStatusDescriptor.values,
+        sortDTOList: [
+          {
+            property: 'id',
+            direction: 'ASC',
+          },
+        ],
       })
       return await request.quickSend<HLY_Expense[]>()
     })
