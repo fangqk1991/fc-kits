@@ -971,6 +971,36 @@ importers:
         specifier: workspace:^*
         version: link:../fc-tools
 
+  packages/huilianyi-sync:
+    devDependencies:
+      '@fangcha/app-error':
+        specifier: workspace:^
+        version: link:../app-error
+      '@fangcha/app-request':
+        specifier: workspace:^
+        version: link:../http-request
+      '@fangcha/app-request-extensions':
+        specifier: workspace:^
+        version: link:../http-request-extensions
+      '@fangcha/assert':
+        specifier: workspace:^
+        version: link:../assert
+      '@fangcha/backend-kit':
+        specifier: workspace:^
+        version: link:../backend-kit
+      '@fangcha/generator':
+        specifier: workspace:^
+        version: link:../fc-generator
+      '@fangcha/huilianyi-sdk':
+        specifier: workspace:^
+        version: link:../huilianyi-sdk
+      '@fangcha/logger':
+        specifier: workspace:^
+        version: link:../fc-logger
+      '@fangcha/tools':
+        specifier: workspace:^
+        version: link:../fc-tools
+
   packages/notification-center: {}
 
   packages/oss-service:
