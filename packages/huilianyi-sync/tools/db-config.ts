@@ -1,7 +1,7 @@
-export const GeneralDataDBOptions = {
+export const DemoDBOptions = {
   host: '127.0.0.1',
   port: 3306,
-  database: 'general_data',
+  database: 'demo_db',
   username: 'root',
   password: '',
   dialect: 'mysql',

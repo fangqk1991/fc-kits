@@ -27,7 +27,10 @@
     "@fangcha/assert": "workspace:^",
     "@fangcha/backend-kit": "workspace:^",
     "@fangcha/logger": "workspace:^",
-    "@fangcha/tools": "workspace:^"
+    "@fangcha/tools": "workspace:^",
+    "fc-feed": "workspace:^",
+    "fc-model": "workspace:^",
+    "fc-sql": "workspace:^"
   },
   "nyc": {
     "sourceMap": false

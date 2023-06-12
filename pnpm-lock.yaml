@@ -1000,6 +1000,15 @@ importers:
       '@fangcha/tools':
         specifier: workspace:^
         version: link:../fc-tools
+      fc-feed:
+        specifier: workspace:^
+        version: link:../fc-feed
+      fc-model:
+        specifier: workspace:^
+        version: link:../fc-model
+      fc-sql:
+        specifier: workspace:^
+        version: link:../fc-sql
 
   packages/notification-center: {}
 

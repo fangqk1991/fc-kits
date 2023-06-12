@@ -1,29 +1,29 @@
 import { DBModelSchema, ModelGenerator } from '@fangcha/generator'
-import { GeneralDataDBOptions } from './db-config'
+import { DemoDBOptions } from './db-config'
 
 const modelTmpl = `${__dirname}/model.tmpl.ejs`
 const extendTmpl = `${__dirname}/class.extends.model.ejs`
 
-const generalDataGenerator = new ModelGenerator({
-  dbConfig: GeneralDataDBOptions,
+const dbGenetator = new ModelGenerator({
+  dbConfig: DemoDBOptions,
   tmplFile: modelTmpl,
   extTmplFile: extendTmpl,
 })
 
-const generalDataSchemas: DBModelSchema[] = [
+const dbSchemas: DBModelSchema[] = [
   {
-    tableName: 'common_job',
-    outputFile: `${__dirname}/../src/models/auto-build/__CommonJob.ts`,
-    extFile: `${__dirname}/../src/models/extensions/_CommonJob.ts`,
-    primaryKey: ['job_id'],
-    modifiableBlackList: ['app', 'queue', 'task_name', 'params_str', 'create_time'],
+    tableName: 'hly_expense',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_Expense.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_Expense.ts`,
+    primaryKey: ['hly_id'],
+    modifiableBlackList: ['create_time', 'update_time'],
   },
 ]
 
 const main = async () => {
-  for (const schema of generalDataSchemas) {
-    const data = await generalDataGenerator.generateData(schema)
-    generalDataGenerator.buildModel(schema, data)
+  for (const schema of dbSchemas) {
+    const data = await dbGenetator.generateData(schema)
+    dbGenetator.buildModel(schema, data)
   }
   process.exit()
 }
