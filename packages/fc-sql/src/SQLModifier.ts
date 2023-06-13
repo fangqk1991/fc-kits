@@ -19,7 +19,7 @@ export class SQLModifier extends SQLBuilderBase {
       key = `\`${key}\``
     }
     this._updateColumns.push(`${key} = ?`)
-    this._updateValues.push(value)
+    this._updateValues.push(value !== undefined ? value : null)
     return this
   }
 

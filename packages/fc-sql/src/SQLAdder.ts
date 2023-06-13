@@ -21,7 +21,7 @@ export class SQLAdder extends SQLBuilderBase {
    */
   public insertKV(key: string, value: string | number | null) {
     this._insertKeys.push(key)
-    this._insertValues.push(value)
+    this._insertValues.push(value !== undefined ? value : null)
     return this
   }
 
