@@ -39,4 +39,10 @@ export const HLY_BusinessDataApis = {
     route: '/gateway/api/open/application/update/custom/form/value',
     description: '申请单自定义控件值更新',
   },
+
+  ApprovalPass: {
+    method: 'POST',
+    route: '/gateway/api/open/approvals/pass',
+    description: '当前审批人审批通过',
+  },
 }

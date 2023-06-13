@@ -528,3 +528,28 @@ export interface ExpenseReportInvoiceView {
   handler: string[]
   currentLanguage: string // 'zh-cn'
 }
+
+export enum HLY_EntityType {
+  Application = 1001, // 申请单
+  Expense = 1002, // 报销单
+  Loan = 3001, // 借款单
+  Contract = 6001, // 合同
+
+  // 对公申请单	1001
+  // 对公支付单	1002
+  // 预算日记账	3005
+  // 其他	4001
+  // 供应商申请	9003
+  // 支付单	1501
+  // 预提单	1701
+}
+
+export interface HLY_ApprovalParams {
+  businessCode: string // 单号
+
+  entityType: HLY_EntityType // 单据类型
+  operator: string // 操作人工号
+  approver: string // 审批链上的审批人工号
+
+  approvalTxt?: string // 审批备注
+}

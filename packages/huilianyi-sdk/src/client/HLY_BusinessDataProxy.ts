@@ -1,7 +1,7 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BusinessDataApis } from './HLY_BusinessDataApis'
-import { HLY_Expense, HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
+import { HLY_ApprovalParams, HLY_Expense, HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
 import { HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../core/HLY_ReimburseStatus'
 import { PageDataFetcher } from './PageDataFetcher'
 import { HuilianyiResponse } from '../core/HuilianyiModels'
@@ -93,5 +93,11 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       })),
     })
     await request.quickSend()
+  }
+
+  public async passApproval(params: HLY_ApprovalParams) {
+    const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ApprovalPass))
+    request.setBodyData(params)
+    return await request.quickSend()
   }
 }

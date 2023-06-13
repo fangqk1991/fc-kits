@@ -1,7 +1,7 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import {
-  HLY_BusinessDataProxy,
+  HLY_BusinessDataProxy, HLY_EntityType,
   HLY_PublicApplicationStatusDescriptor,
   HLY_ReimburseStatus,
   HLY_ReimburseStatusDescriptor,
@@ -93,6 +93,21 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     const detailInfo = await businessDataProxy.getExpenseReportDetail(keyItem.businessCode)
     const diffMapper = new DiffMapper(keyItem, detailInfo)
     console.info(diffMapper.buildDiffItems())
+  })
+
+  it(`getExpenseReportDetail - 2`, async () => {
+    const detailInfo = await businessDataProxy.getExpenseReportDetail('ER15282123')
+    console.info(JSON.stringify(detailInfo, null, 2))
+  })
+
+  it(`passApproval`, async () => {
+    const response = await businessDataProxy.passApproval({
+      businessCode: 'ER15282123',
+      entityType: HLY_EntityType.Expense,
+      operator: '123123',
+      approver: '123123',
+    } as any)
+    console.info(JSON.stringify(response, null, 2))
   })
 
   it(`getTravelApplicationList`, async () => {
