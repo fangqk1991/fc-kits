@@ -9,11 +9,9 @@ interface Options {
 }
 
 export class HuilianyiService {
-  private readonly options: Options
   private readonly syncCore: HuilianyiSyncCore
 
   constructor(options: Options) {
-    this.options = options
     this.syncCore = new HuilianyiSyncCore(options)
   }
 
