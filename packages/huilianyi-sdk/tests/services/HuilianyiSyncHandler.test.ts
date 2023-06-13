@@ -1,15 +1,13 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HuilianyiSyncCore, HuilianyiSyncHandler } from '../../src'
+import { HuilianyiService } from '../../src'
 
 describe('Test HuilianyiSyncHandler.test.ts', () => {
-  const syncCore = new HuilianyiSyncCore({
+  const huilianyiService = new HuilianyiService({
     authConfig: HuilianyiConfigTest,
     database: HuilianyiDBTest,
   })
 
-  const syncHandler = new HuilianyiSyncHandler(syncCore)
-
   it(`dumpExpenseRecords`, async () => {
-    await syncHandler.dumpExpenseRecords()
+    await huilianyiService.syncHandler().dumpExpenseRecords()
   })
 })
