@@ -1,8 +1,8 @@
 import { FCDatabase } from 'fc-sql'
 import { BasicAuthConfig } from '@fangcha/tools'
 import { _HLY_Expense } from '../models/extensions/_HLY_Expense'
-import { HLY_BusinessDataProxy } from '@fangcha/huilianyi-sdk'
 import { CustomRequestFollower } from '@fangcha/backend-kit'
+import { HLY_BusinessDataProxy } from '../client/HLY_BusinessDataProxy'
 
 interface Options {
   database: FCDatabase
