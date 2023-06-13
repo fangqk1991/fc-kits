@@ -140,19 +140,19 @@ export default class __HLY_Expense extends FeedBase {
   /**
    * @description [timestamp]
    */
-  public createdDate!: string
+  public createdDate!: string | null
   /**
    * @description [timestamp]
    */
-  public firstSubmittedDate!: string
+  public firstSubmittedDate!: string | null
   /**
    * @description [timestamp]
    */
-  public lastSubmittedDate!: string
+  public lastSubmittedDate!: string | null
   /**
    * @description [timestamp]
    */
-  public lastModifiedDate!: string
+  public lastModifiedDate!: string | null
   /**
    * @description [timestamp] 创建时间
    */
@@ -203,6 +203,10 @@ export default class __HLY_Expense extends FeedBase {
     this.formName = ''
     this.submittedBy = null
     this.title = ''
+    this.createdDate = null
+    this.firstSubmittedDate = null
+    this.lastSubmittedDate = null
+    this.lastModifiedDate = null
   }
 
   public fc_propertyMapper() {

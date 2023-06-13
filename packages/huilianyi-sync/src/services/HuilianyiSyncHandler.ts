@@ -59,10 +59,10 @@ export class HuilianyiSyncHandler {
       feed.expenseType = item.type
       feed.expenseStatus = item.status
       feed.totalAmount = item.totalAmount
-      feed.createdDate = moment(item.createdDate).format()
-      feed.firstSubmittedDate = moment(item.firstSubmittedDate).format()
-      feed.lastSubmittedDate = moment(item.lastSubmittedDate).format()
-      feed.lastModifiedDate = moment(item.lastModifiedDate).format()
+      feed.createdDate = item.createdDate ? moment(item.createdDate).format() : null
+      feed.firstSubmittedDate = item.firstSubmittedDate ? moment(item.firstSubmittedDate).format() : null
+      feed.lastSubmittedDate = item.lastSubmittedDate ? moment(item.lastSubmittedDate).format() : null
+      feed.lastModifiedDate = item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()

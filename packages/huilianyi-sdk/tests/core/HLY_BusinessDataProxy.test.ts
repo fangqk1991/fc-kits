@@ -88,7 +88,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     }))
     console.info(`${dataList.length} items.`)
     // console.info(JSON.stringify(dataList, null, 2))
-    console.info(JSON.stringify(items, null, 2))
+    console.info(JSON.stringify(dataList, null, 2))
     // console.info(JSON.stringify(items[1]))
   })
 
