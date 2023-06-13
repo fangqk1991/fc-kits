@@ -1,9 +1,4 @@
 export const HLY_BusinessDataApis = {
-  ApprovalMatrixListGet: {
-    method: 'POST',
-    route: '/gateway/api/open/approval/matrix/list',
-    description: '审批矩阵查询',
-  },
   PublicApplicationListGet: {
     method: 'GET',
     route: '/gateway/api/open/publicApplication',

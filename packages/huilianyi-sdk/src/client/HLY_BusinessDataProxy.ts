@@ -8,16 +8,6 @@ import { HuilianyiResponse } from '../core/HuilianyiModels'
 import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
-  public async getApprovalMatrixList() {
-    const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ApprovalMatrixListGet))
-    request.setBodyData({
-      page: 1,
-      size: 20,
-    })
-    const response = await request.quickSend<HuilianyiResponse<any[]>>()
-    return response.data
-  }
-
   public async getPublicApplicationList() {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.PublicApplicationListGet))
