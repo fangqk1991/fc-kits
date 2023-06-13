@@ -1,7 +1,11 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
-import { HLY_BusinessDataProxy } from '../../src/client/HLY_BusinessDataProxy'
-import { HLY_PublicApplicationStatusDescriptor, HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../../src'
+import {
+  HLY_BusinessDataProxy,
+  HLY_PublicApplicationStatusDescriptor,
+  HLY_ReimburseStatus,
+  HLY_ReimburseStatusDescriptor
+} from '../../src'
 import { DiffMapper } from '@fangcha/tools'
 
 describe('Test HLY_BusinessDataProxy.test.ts', () => {

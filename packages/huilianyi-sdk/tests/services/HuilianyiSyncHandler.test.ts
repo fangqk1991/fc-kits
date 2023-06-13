@@ -1,6 +1,5 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HuilianyiSyncHandler } from '../../src/services/HuilianyiSyncHandler'
-import { HuilianyiSyncCore } from '../../src/services/HuilianyiSyncCore'
+import { HuilianyiSyncCore, HuilianyiSyncHandler } from '../../src'
 
 describe('Test HuilianyiSyncHandler.test.ts', () => {
   const syncCore = new HuilianyiSyncCore({
