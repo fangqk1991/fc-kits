@@ -25,14 +25,20 @@ export class HuilianyiWebHookService {
 
   public async handle(webhookBody: HuilianyiWebhookBody): Promise<{
     code: 'SUCCESS' | 'ERROR'
-    message: string
+    message?: string
+    body?: {}
   }> {
     try {
-      const message = await this._handle(webhookBody)
-      return {
-        code: 'SUCCESS',
-        message: message,
-      }
+      const response = await this._handle(webhookBody)
+      return typeof response === 'string'
+        ? {
+            code: 'SUCCESS',
+            message: response,
+          }
+        : {
+            code: 'SUCCESS',
+            body: response,
+          }
     } catch (e: any) {
       return {
         code: 'ERROR',

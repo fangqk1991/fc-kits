@@ -1,7 +1,8 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import {
-  HLY_BusinessDataProxy, HLY_EntityType,
+  HLY_BusinessDataProxy,
+  HLY_EntityType,
   HLY_PublicApplicationStatusDescriptor,
   HLY_ReimburseStatus,
   HLY_ReimburseStatusDescriptor,
@@ -35,18 +36,14 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`updateApplicationCustomFormValue`, async () => {
-    const businessCode = 'EA00985097'
-    const amount = 3000 + Math.floor(Math.random() * 1000)
+    const businessCode = 'TA00986956'
     await businessDataProxy.updateApplicationCustomFormValue(businessCode, {
-      field_amount_refer: amount,
+      field_remarks: [
+        10000 + Math.floor(Math.random() * 1000),
+        20000 + Math.floor(Math.random() * 1000),
+        30000 + Math.floor(Math.random() * 1000),
+      ].join('\n'),
     })
-    const response = await businessDataProxy.getPublicApplicationDetail(businessCode)
-    console.info(
-      response.custFormValues.reduce((result, cur) => {
-        result[cur.fieldCode || cur.fieldOID] = cur.value
-        return result
-      }, {})
-    )
   })
 
   it(`getExpenseReportList`, async () => {

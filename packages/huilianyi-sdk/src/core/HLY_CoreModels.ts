@@ -1,5 +1,8 @@
 import { HLY_Department } from './HuilianyiModels'
 
+/**
+ * @description https://opendocs.huilianyi.com/widget.html
+ */
 export interface HLY_CustomFormValue {
   bizType: string
   formValueOID: string
