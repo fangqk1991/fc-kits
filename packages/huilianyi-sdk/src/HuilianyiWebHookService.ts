@@ -30,15 +30,10 @@ export class HuilianyiWebHookService {
   }> {
     try {
       const response = await this._handle(webhookBody)
-      return typeof response === 'string'
-        ? {
-            code: 'SUCCESS',
-            message: response,
-          }
-        : {
-            code: 'SUCCESS',
-            body: response,
-          }
+      return {
+        ...response,
+        code: 'SUCCESS',
+      }
     } catch (e: any) {
       return {
         code: 'ERROR',
@@ -61,6 +56,8 @@ export class HuilianyiWebHookService {
       assert.ok(!!handler, `${webhookBody.apiCode} 处理器未定义`, 500)
       return await handler.onExecute(decryptedData)
     }
-    return ''
+    return {
+      message: '',
+    }
   }
 }
