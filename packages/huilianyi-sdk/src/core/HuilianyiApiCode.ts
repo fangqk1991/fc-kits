@@ -8,6 +8,10 @@ export enum HuilianyiApiCode {
   // 申请单预检回调说明
   APPLICATION_PRE_VERIFY = 'APPLICATION_PRE_VERIFY',
 
+  // 报销单预校验回调
+  // https://opendocs.huilianyi.com/callback/business-data/expense-report/pre-check.html
+  EXPENSE_REPORT_VERIFY = 'EXPENSE_REPORT_VERIFY',
+
   // 外部表单计算回调
   OUT_FORM_CALCULATE = 'OUT_FORM_CALCULATE',
 
