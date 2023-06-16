@@ -66,3 +66,9 @@ export interface HLY_EntityLabelDTO {
   level: 'ERROR' | 'WARN' | 'INFO' // 标签级别，ERROR（禁止），WARN（警告），INFO（提示）
   toast: string // 标签提示文案
 }
+
+export interface HLY_PreCheckResponseDTO {
+  result: true // 检查结果	true为固定值
+  labels: HLY_EntityLabelDTO[] // 费用标签列表
+  message?: string // 用于前端展示。预留字段，非必传
+}
