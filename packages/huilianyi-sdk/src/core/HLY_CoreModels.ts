@@ -1,4 +1,5 @@
 import { HLY_Department } from './HuilianyiModels'
+import { HLY_LabelType } from './HLY_LabelType'
 
 /**
  * @description https://opendocs.huilianyi.com/widget.html
@@ -57,4 +58,11 @@ export interface HLY_Staff extends HLY_StaffCoreDTO {
   userCreditDTOList: any[]
   leavingDate: string
   activated: boolean
+}
+
+export interface HLY_EntityLabelDTO {
+  type: HLY_LabelType | string // 标签类型
+  name: string // 标签名称
+  level: 'ERROR' | 'WARN' | 'INFO' // 标签级别，ERROR（禁止），WARN（警告），INFO（提示）
+  toast: string // 标签提示文案
 }

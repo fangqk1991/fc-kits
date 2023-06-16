@@ -1,4 +1,4 @@
-import { HLY_CustomFormValue, HLY_Staff } from './HLY_CoreModels'
+import { HLY_CustomFormValue, HLY_EntityLabelDTO, HLY_Staff } from './HLY_CoreModels'
 import { HLY_ReimburseStatus } from './HLY_ReimburseStatus'
 import { HLY_FieldBusinessCode, HLY_FieldType } from './HLY_FieldType'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
@@ -200,7 +200,7 @@ export interface HLY_Expense {
   existApprovalNumber: false
   expenseReportApplicationDTOS: []
   expenseReportInvoices: ExpenseReportInvoice[]
-  expenseReportLabels: []
+  expenseReportLabels: HLY_EntityLabelDTO[]
   expenseReportOID: string
   expenseTypes: string
   forceCount: number
