@@ -61,8 +61,7 @@ export interface HLY_Staff extends HLY_StaffCoreDTO {
 }
 
 export interface HLY_EntityLabelDTO {
-  type: HLY_LabelType | string // 标签类型
-  name: string // 标签名称
+  labelType: HLY_LabelType | string // 标签类型
   level: 'ERROR' | 'WARN' | 'INFO' // 标签级别，ERROR（禁止），WARN（警告），INFO（提示）
   toast: string // 标签提示文案
 }
