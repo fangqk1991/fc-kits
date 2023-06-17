@@ -36,12 +36,12 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`updateApplicationCustomFormValue`, async () => {
-    const businessCode = 'TA00986956'
+    const businessCode = 'TA00988382'
     await businessDataProxy.updateApplicationCustomFormValue(businessCode, {
       field_remarks: [
-        10000 + Math.floor(Math.random() * 1000),
-        20000 + Math.floor(Math.random() * 1000),
-        30000 + Math.floor(Math.random() * 1000),
+        `系统补充内容 1: ${10000 + Math.floor(Math.random() * 1000)}`,
+        `系统补充内容 2: ${20000 + Math.floor(Math.random() * 1000)}`,
+        `系统补充内容 3: ${30000 + Math.floor(Math.random() * 1000)}`,
       ].join('\n'),
     })
   })
