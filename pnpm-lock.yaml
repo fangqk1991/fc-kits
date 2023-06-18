@@ -550,16 +550,16 @@ importers:
   packages/fc-router:
     dependencies:
       '@fangcha/app-error':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../app-error
       '@fangcha/backend-kit':
         specifier: '*'
         version: link:../backend-kit
       '@fangcha/swagger':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-swagger
       '@fangcha/tools':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-tools
       '@koa/router':
         specifier: ^12.0.0
@@ -587,10 +587,10 @@ importers:
         version: 4.1.0
     devDependencies:
       '@fangcha/assert':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../assert
       '@fangcha/logger':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-logger
       log4js:
         specifier: ^6.7.0

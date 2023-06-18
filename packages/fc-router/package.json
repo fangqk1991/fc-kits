@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/router",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "lib/index.js",
@@ -17,9 +17,9 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/app-error": "workspace:^*",
-    "@fangcha/tools": "workspace:^*",
-    "@fangcha/swagger": "workspace:^*",
+    "@fangcha/app-error": "workspace:^",
+    "@fangcha/tools": "workspace:^",
+    "@fangcha/swagger": "workspace:^",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
     "koa-compose": "^4.1.0",
@@ -30,8 +30,8 @@
     "@types/jsonwebtoken": "^9.0.1"
   },
   "devDependencies": {
-    "@fangcha/assert": "workspace:^*",
-    "@fangcha/logger": "workspace:^*",
+    "@fangcha/assert": "workspace:^",
+    "@fangcha/logger": "workspace:^",
     "log4js": "^6.7.0",
     "typescript": "^4.8.4"
   },
