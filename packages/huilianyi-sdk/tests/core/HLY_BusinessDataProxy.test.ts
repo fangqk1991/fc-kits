@@ -63,6 +63,27 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     // console.info(JSON.stringify(items[1]))
   })
 
+  it(`diff testing getExpenseReportListV2`, async () => {
+    const items1 = await businessDataProxy.getExpenseReportListV2({
+      lastModifyStartDate: '2023-06-09 17:24:07',
+    })
+    const items2 = await businessDataProxy.getExpenseReportListV2(
+      {
+        lastModifyStartDate: '2023-06-09 17:24:07',
+      },
+      {
+        withExpenseField: true,
+      }
+    )
+    console.info(
+      JSON.stringify(
+        items1.map((_, index) => DiffMapper.diff(items1[index], items2[index])),
+        null,
+        2
+      )
+    )
+  })
+
   it(`getExpenseReportListV2`, async () => {
     const items = await businessDataProxy.getExpenseReportListV2({
       // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
@@ -79,8 +100,13 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     }))
     console.info(`${dataList.length} items.`)
     // console.info(JSON.stringify(dataList, null, 2))
-    // console.info(JSON.stringify(dataList, null, 2))
-    console.info(JSON.stringify(items.map((item) => item.invoiceVOList), null, 2))
+    console.info(
+      JSON.stringify(
+        items.map((item) => item.expenseFieldVOList),
+        null,
+        2
+      )
+    )
     // console.info(JSON.stringify(items[1]))
   })
 
@@ -94,7 +120,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`getExpenseReportDetail - 2`, async () => {
-    const detailInfo = await businessDataProxy.getExpenseReportDetail('ER15282123')
+    const detailInfo = await businessDataProxy.getExpenseReportDetail('ER15389015')
     console.info(JSON.stringify(detailInfo, null, 2))
   })
 

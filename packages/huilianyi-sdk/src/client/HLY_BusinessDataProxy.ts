@@ -44,15 +44,23 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   }
 
   public async getExpenseReportListV2(
-    options: { statusList?: HLY_ReimburseStatus[]; lastModifyStartDate?: string } = {}
+    options: { statusList?: HLY_ReimburseStatus[]; lastModifyStartDate?: string } = {},
+    extras: {} = {}
   ) {
     return await PageDataFetcher.fetchAllPageItemsV2(async (params) => {
       const lastModifyStartDate = options.lastModifyStartDate || params.lastModifyStartDate
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGetV2))
       request.setBodyData({
         ...params,
+        withExpenseType: true,
+        withExpenseField: true,
         withCustomFormValue: true,
         withInvoice: true,
+        withExpenseReportLabel: true,
+        withRealPaymentAmount: true,
+        // withInvoiceAttachment: true,
+        // withInvoiceCustomFormValue: true,
+        ...extras,
         lastModifyStartDate: lastModifyStartDate,
         statusList: options.statusList || HLY_ReimburseStatusDescriptor.values,
         sortDTOList: [

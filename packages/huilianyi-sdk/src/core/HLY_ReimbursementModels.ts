@@ -75,6 +75,13 @@ export enum HLY_ExpenseType {
   Cost = 1003, // 费用报销单
 }
 
+export interface OpenExpenseTypeVO {
+  id: string
+  expenseTypeOID: string
+  name: string
+  code: string
+}
+
 export interface HLY_ExpenseV2 {
   id: string // '15011743'
   expenseReportOID: string // UUID
@@ -139,6 +146,7 @@ export interface HLY_ExpenseV2 {
   departmentPath: string
   billStatus: number // 开票状态 1001
   totalAmount: number // 总金额
+  realPaymentAmount: number // 单据实际支付金额
   baseCurrencyAmount: number
   withReceiptAmount: number
   withoutReceiptAmount: number
@@ -149,6 +157,15 @@ export interface HLY_ExpenseV2 {
   toBeAuditDate: string // '2023-06-07T08:52:18Z'
   customFormValueVOList: HLY_CustomFormValue[]
   invoiceVOList: ExpenseReportInvoiceView[]
+  expenseTypeVOList: OpenExpenseTypeVO[]
+  expenseReportLabelVOList: any[]
+  expenseFieldVOList: ExpenseFieldDTO[] // !!!
+  // withReceipt ->
+  // receiptVOList: any[],
+  // receiptAttachmentVOList: any[],
+
+  // withInvoiceAttachment ->
+  // invoiceAttachmentVOList: any[]
 }
 
 export interface HLY_Expense {

@@ -1,6 +1,6 @@
 import __HLY_Expense from '../auto-build/__HLY_Expense'
 import { HLY_CustomFormValue } from '../../core/HLY_CoreModels'
-import { ExpenseReportInvoiceView } from '../../core/HLY_ReimbursementModels'
+import { ExpenseFieldDTO, ExpenseReportInvoiceView } from '../../core/HLY_ReimbursementModels'
 
 export class _HLY_Expense extends __HLY_Expense {
   public constructor() {
@@ -10,10 +10,12 @@ export class _HLY_Expense extends __HLY_Expense {
   public extrasData(): {
     customFormValueVOList: HLY_CustomFormValue[]
     invoiceVOList: ExpenseReportInvoiceView[]
+    expenseFieldVOList: ExpenseFieldDTO[]
   } {
     const defaultData = {
       customFormValueVOList: [],
       invoiceVOList: [],
+      expenseFieldVOList: [],
     }
     try {
       return JSON.parse(this.extrasInfo) || defaultData
