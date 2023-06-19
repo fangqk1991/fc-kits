@@ -12,7 +12,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const feeds = await new HLY_Expense().fc_searcher().queryFeeds()
     console.info(
       JSON.stringify(
-        feeds.map((item) => item.fc_pureModel()),
+        feeds.map((item) => item.modelForClient()),
         null,
         2
       )

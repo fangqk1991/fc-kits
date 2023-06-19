@@ -1,11 +1,5 @@
 import { FCDatabase } from 'fc-sql'
-import { BasicAuthConfig } from '@fangcha/tools'
 import { _HLY_Expense } from '../models/extensions/_HLY_Expense'
-
-interface Options {
-  database: FCDatabase
-  authConfig: BasicAuthConfig
-}
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
