@@ -51,6 +51,8 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGetV2))
       request.setBodyData({
         ...params,
+        withCustomFormValue: true,
+        withInvoice: true,
         lastModifyStartDate: lastModifyStartDate,
         statusList: options.statusList || HLY_ReimburseStatusDescriptor.values,
         sortDTOList: [

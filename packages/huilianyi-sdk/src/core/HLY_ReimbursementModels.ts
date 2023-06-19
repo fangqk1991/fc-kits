@@ -147,6 +147,8 @@ export interface HLY_ExpenseV2 {
   foreignCurrencyAmount: number
   personalPaymentBaseAmount: number
   toBeAuditDate: string // '2023-06-07T08:52:18Z'
+  customFormValueVOList: HLY_CustomFormValue[]
+  invoiceVOList: ExpenseReportInvoiceView[]
 }
 
 export interface HLY_Expense {

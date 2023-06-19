@@ -79,7 +79,8 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     }))
     console.info(`${dataList.length} items.`)
     // console.info(JSON.stringify(dataList, null, 2))
-    console.info(JSON.stringify(dataList, null, 2))
+    // console.info(JSON.stringify(dataList, null, 2))
+    console.info(JSON.stringify(items.map((item) => item.invoiceVOList), null, 2))
     // console.info(JSON.stringify(items[1]))
   })
 
