@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS hly_expense
     first_submitted_date TIMESTAMP       NULL,
     last_submitted_date  TIMESTAMP       NULL,
     last_modified_date   TIMESTAMP       NULL,
+    extras_info          MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
     create_time          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time          TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (business_code),

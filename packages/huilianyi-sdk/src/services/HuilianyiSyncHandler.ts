@@ -63,6 +63,10 @@ export class HuilianyiSyncHandler {
       feed.firstSubmittedDate = item.firstSubmittedDate ? moment(item.firstSubmittedDate).format() : null
       feed.lastSubmittedDate = item.lastSubmittedDate ? moment(item.lastSubmittedDate).format() : null
       feed.lastModifiedDate = item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null
+      feed.extrasInfo = JSON.stringify({
+        customFormValueVOList: item.customFormValueVOList,
+        invoiceVOList: item.invoiceVOList,
+      })
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()

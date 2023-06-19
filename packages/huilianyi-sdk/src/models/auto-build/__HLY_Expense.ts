@@ -22,6 +22,7 @@ const _cols: string[] = [
   'first_submitted_date',
   'last_submitted_date',
   'last_modified_date',
+  'extras_info',
   'create_time',
   'update_time',
 ]
@@ -46,6 +47,7 @@ const _insertableCols: string[] = [
   'first_submitted_date',
   'last_submitted_date',
   'last_modified_date',
+  'extras_info',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -66,6 +68,7 @@ const _modifiableCols: string[] = [
   'first_submitted_date',
   'last_submitted_date',
   'last_modified_date',
+  'extras_info',
 ]
 
 const dbOptions = {
@@ -154,6 +157,10 @@ export default class __HLY_Expense extends FeedBase {
    */
   public lastModifiedDate!: string | null
   /**
+   * @description [mediumtext] 附加信息，空 | JSON 字符串
+   */
+  public extrasInfo!: string
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -207,6 +214,7 @@ export default class __HLY_Expense extends FeedBase {
     this.firstSubmittedDate = null
     this.lastSubmittedDate = null
     this.lastModifiedDate = null
+    this.extrasInfo = ''
   }
 
   public fc_propertyMapper() {
@@ -230,6 +238,7 @@ export default class __HLY_Expense extends FeedBase {
       firstSubmittedDate: 'first_submitted_date',
       lastSubmittedDate: 'last_submitted_date',
       lastModifiedDate: 'last_modified_date',
+      extrasInfo: 'extras_info',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
