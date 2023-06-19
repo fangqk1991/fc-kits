@@ -2,6 +2,7 @@ import { FCDatabase } from 'fc-sql'
 import { BasicAuthConfig } from '@fangcha/tools'
 import { HuilianyiSyncCore } from './services/HuilianyiSyncCore'
 import { HuilianyiSyncHandler } from './services/HuilianyiSyncHandler'
+import { HuilianyiModelsCore } from './services/HuilianyiModelsCore'
 
 interface Options {
   database: FCDatabase
@@ -9,10 +10,15 @@ interface Options {
 }
 
 export class HuilianyiService {
-  private readonly syncCore: HuilianyiSyncCore
+  public readonly syncCore: HuilianyiSyncCore
+  public readonly modelsCore: HuilianyiModelsCore
 
   constructor(options: Options) {
-    this.syncCore = new HuilianyiSyncCore(options)
+    this.modelsCore = new HuilianyiModelsCore(options.database)
+    this.syncCore = new HuilianyiSyncCore({
+      authConfig: options.authConfig,
+      modelsCore: this.modelsCore,
+    })
   }
 
   public syncHandler() {

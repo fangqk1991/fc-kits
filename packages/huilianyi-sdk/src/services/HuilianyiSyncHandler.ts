@@ -21,7 +21,7 @@ export class HuilianyiSyncHandler {
 
   public async dumpExpenseRecords() {
     const syncCore = this.syncCore
-    const HLY_Expense = syncCore.HLY_Expense
+    const HLY_Expense = syncCore.modelsCore.HLY_Expense
 
     const lastTime = await this.getLastTime(HLY_Expense)
 
