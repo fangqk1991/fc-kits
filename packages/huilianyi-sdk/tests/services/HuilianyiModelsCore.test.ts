@@ -12,7 +12,9 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const feeds = await new HLY_Expense().fc_searcher().queryFeeds()
     console.info(
       JSON.stringify(
-        feeds.filter((item) => item.formName.includes('差旅费报销')).map((item) => item.extrasData().expenseFieldVOList),
+        feeds
+          .filter((item) => item.formName.includes('差旅费报销'))
+          .map((item) => item.modelForClient().extrasData.expenseFieldVOList),
         null,
         2
       )

@@ -2,6 +2,7 @@ import * as moment from 'moment'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder } from 'fc-sql'
+import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -45,33 +46,8 @@ export class HuilianyiSyncHandler {
     bulkAdder.declareTimestampKey('first_submitted_date')
     bulkAdder.declareTimestampKey('last_submitted_date')
     bulkAdder.declareTimestampKey('last_modified_date')
-
     for (const item of items) {
-      const feed = new HLY_Expense()
-      feed.hlyId = Number(item.id)
-      feed.businessCode = item.businessCode
-      feed.applicationOid = item.applicationOID
-      feed.applicantOid = item.applicantOID
-      feed.applicantName = item.applicantName
-      feed.companyOid = item.companyOID
-      feed.departmentOid = item.departmentOID
-      feed.corporationOid = item.corporationOID
-      feed.formOid = item.formOID
-      feed.formName = item.formName
-      feed.submittedBy = item.submittedBy
-      feed.title = item.title
-      feed.expenseType = item.type
-      feed.expenseStatus = item.status
-      feed.totalAmount = item.totalAmount
-      feed.createdDate = item.createdDate ? moment(item.createdDate).format() : null
-      feed.firstSubmittedDate = item.firstSubmittedDate ? moment(item.firstSubmittedDate).format() : null
-      feed.lastSubmittedDate = item.lastSubmittedDate ? moment(item.lastSubmittedDate).format() : null
-      feed.lastModifiedDate = item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null
-      feed.extrasInfo = JSON.stringify({
-        customFormValueVOList: item.customFormValueVOList,
-        invoiceVOList: item.invoiceVOList,
-        expenseFieldVOList: item.expenseFieldVOList,
-      })
+      const feed = HLY_Expense.makeFeed(HuilianyiFormatter.transferExpenseModel(item))
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
