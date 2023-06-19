@@ -354,8 +354,8 @@ importers:
         specifier: ^1.5.4
         version: 1.5.6
       '@types/koa':
-        specifier: ^2.13.5
-        version: 2.13.6
+        specifier: 2.13.5
+        version: 2.13.5
       '@types/koa-joi-router':
         specifier: ^8.0.4
         version: 8.0.4
@@ -409,8 +409,8 @@ importers:
         specifier: workspace:^*
         version: link:../app-error
       '@types/koa':
-        specifier: 2.13.4
-        version: 2.13.4
+        specifier: 2.13.5
+        version: 2.13.5
       '@types/lodash':
         specifier: ^4.14.179
         version: 4.14.194
@@ -950,28 +950,28 @@ importers:
   packages/huilianyi-sdk:
     devDependencies:
       '@fangcha/app-error':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../app-error
       '@fangcha/app-request':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../http-request
       '@fangcha/app-request-extensions':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../http-request-extensions
       '@fangcha/assert':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../assert
       '@fangcha/backend-kit':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../backend-kit
       '@fangcha/generator':
         specifier: workspace:^
         version: link:../fc-generator
       '@fangcha/logger':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-logger
       '@fangcha/tools':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-tools
       fc-feed:
         specifier: workspace:^
@@ -988,55 +988,55 @@ importers:
   packages/oss-service:
     devDependencies:
       '@fangcha/ali-oss':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../ali-oss
       '@fangcha/app-request':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../http-request
       '@fangcha/assert':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../assert
       '@fangcha/backend-kit':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../backend-kit
       '@fangcha/generator':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-generator
       '@fangcha/logger':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-logger
       '@fangcha/resque':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../resque
       '@fangcha/router':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-router
       '@fangcha/session':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-session
       '@fangcha/swagger':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-swagger
       '@fangcha/tools':
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-tools
       '@types/ali-oss':
         specifier: ^6.16.6
         version: 6.16.8
       '@types/koa':
-        specifier: ^2.13.5
-        version: 2.13.6
+        specifier: 2.13.5
+        version: 2.13.5
       '@types/shelljs':
         specifier: ^0.8.11
         version: 0.8.12
       fc-feed:
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-feed
       fc-model:
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-model
       fc-sql:
-        specifier: workspace:^*
+        specifier: workspace:^
         version: link:../fc-sql
       koa:
         specifier: ^2.13.4
@@ -3217,7 +3217,7 @@ packages:
   /@types/busboy@1.5.0:
     resolution: {integrity: sha512-ncOOhwmyFDW76c/Tuvv9MA9VGYUCn8blzyWmzYELcNGDb0WXWLSmFi7hJq25YdRBYJrmMBB5jZZwUjlJe9HCjQ==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: true
 
   /@types/caseless@0.12.2:
@@ -3227,7 +3227,7 @@ packages:
   /@types/co-body@6.1.0:
     resolution: {integrity: sha512-3e0q2jyDAnx/DSZi0z2H0yoZ2wt5yRDZ+P7ymcMObvq0ufWRT4tsajyO+Q1VwVWiv9PRR4W3YEjEzBjeZlhF+w==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
       '@types/qs': 6.9.7
     dev: true
 
@@ -3258,7 +3258,7 @@ packages:
       '@types/connect': 3.4.35
       '@types/express': 4.17.17
       '@types/keygrip': 1.0.2
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
 
   /@types/cron@1.7.3:
     resolution: {integrity: sha512-iPmUXyIJG1Js+ldPYhOQcYU3kCAQ2FWrSkm1FJPoii2eYSn6wEW6onPukNTT0bfiflexNSRPl6KWmAIqS+36YA==}
@@ -3386,7 +3386,7 @@ packages:
     dependencies:
       '@types/busboy': 1.5.0
       '@types/co-body': 6.1.0
-      '@types/koa': 2.13.6
+      '@types/koa': 2.13.5
       '@types/koa-router': 7.4.4
       '@types/node': 20.1.4
       joi: 17.9.2
@@ -3395,20 +3395,7 @@ packages:
   /@types/koa-router@7.4.4:
     resolution: {integrity: sha512-3dHlZ6CkhgcWeF6wafEUvyyqjWYfKmev3vy1PtOmr0mBc3wpXPU5E8fBBd4YQo5bRpHPfmwC5yDaX7s4jhIN6A==}
     dependencies:
-      '@types/koa': 2.13.6
-    dev: true
-
-  /@types/koa@2.13.4:
-    resolution: {integrity: sha512-dfHYMfU+z/vKtQB7NUrthdAEiSvnLebvBjwHtfFmpZmB7em2N3WVQdHgnFq+xvyVgxW5jKDmjWfLD3lw4g4uTw==}
-    dependencies:
-      '@types/accepts': 1.3.5
-      '@types/content-disposition': 0.5.5
-      '@types/cookies': 0.7.7
-      '@types/http-assert': 1.5.3
-      '@types/http-errors': 2.0.1
-      '@types/keygrip': 1.0.2
-      '@types/koa-compose': 3.2.5
-      '@types/node': 20.1.4
+      '@types/koa': 2.13.5
     dev: true
 
   /@types/koa@2.13.5:
@@ -3421,20 +3408,7 @@ packages:
       '@types/http-errors': 2.0.1
       '@types/keygrip': 1.0.2
       '@types/koa-compose': 3.2.5
-      '@types/node': 20.1.4
-
-  /@types/koa@2.13.6:
-    resolution: {integrity: sha512-diYUfp/GqfWBAiwxHtYJ/FQYIXhlEhlyaU7lB/bWQrx4Il9lCET5UwpFy3StOAohfsxxvEQ11qIJgT1j2tfBvw==}
-    dependencies:
-      '@types/accepts': 1.3.5
-      '@types/content-disposition': 0.5.5
-      '@types/cookies': 0.7.7
-      '@types/http-assert': 1.5.3
-      '@types/http-errors': 2.0.1
-      '@types/keygrip': 1.0.2
-      '@types/koa-compose': 3.2.5
-      '@types/node': 20.1.4
-    dev: true
+      '@types/node': 18.16.9
 
   /@types/koa__router@12.0.0:
     resolution: {integrity: sha512-S6eHyZyoWCZLNHyy8j0sMW85cPrpByCbGGU2/BO4IzGiI87aHJ92lZh4E9xfsM9DcbCT469/OIqyC0sSJXSIBQ==}
