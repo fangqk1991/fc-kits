@@ -19,16 +19,20 @@ export class HuilianyiSyncHandler {
     return result['last_time']
   }
 
-  public async dumpExpenseRecords() {
+  public async dumpExpenseRecords(forceReload = false) {
     const syncCore = this.syncCore
     const HLY_Expense = syncCore.modelsCore.HLY_Expense
 
-    const lastTime = await this.getLastTime(HLY_Expense)
+    let lastModifyStartDate = '2020-01-01 00:00:00'
+    if (!forceReload) {
+      const lastTime = await this.getLastTime(HLY_Expense)
+      if (lastTime) {
+        lastModifyStartDate = moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
+      }
+    }
 
     const items = await syncCore.dataProxy.getExpenseReportListV2({
-      lastModifyStartDate: lastTime
-        ? moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
-        : '2020-01-01 00:00:00',
+      lastModifyStartDate: lastModifyStartDate,
     })
     console.info(`[dumpExpenseRecords] fetch ${items.length} items.`)
 
@@ -66,6 +70,7 @@ export class HuilianyiSyncHandler {
       feed.extrasInfo = JSON.stringify({
         customFormValueVOList: item.customFormValueVOList,
         invoiceVOList: item.invoiceVOList,
+        expenseFieldVOList: item.expenseFieldVOList,
       })
       bulkAdder.putObject(feed.fc_encode())
     }
