@@ -12,6 +12,7 @@ export interface App_FormBase<T = any> {
   companyOid: string | null
   departmentOid: string | null
   corporationOid: string | null
+  formCode: string | null
   formOid: string | null
   formName: string
   submittedBy: string | null
@@ -46,8 +47,6 @@ export interface App_ExpenseModel extends App_FormBase<App_ExpenseExtrasData> {
   expenseType: HLY_ExpenseType
   expenseStatus: HLY_ReimburseStatus
   totalAmount: number
-  firstSubmittedDate: string | null
-  lastSubmittedDate: string | null
 }
 
 export interface App_TravelExtrasData {
@@ -61,7 +60,5 @@ export interface App_TravelExtrasData {
 }
 
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
-  formCode: string | null
-  formType: number
   travelStatus: HLY_TravelStatus
 }

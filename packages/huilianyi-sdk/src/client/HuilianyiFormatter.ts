@@ -15,6 +15,7 @@ export class HuilianyiFormatter {
       companyOid: item.companyOID,
       departmentOid: item.departmentOID,
       corporationOid: item.corporationOID,
+      formCode: item.formCode,
       formOid: item.formOID,
       formName: item.formName,
       submittedBy: item.submittedBy,
@@ -23,8 +24,6 @@ export class HuilianyiFormatter {
       expenseStatus: item.status,
       totalAmount: item.totalAmount,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
-      firstSubmittedDate: item.firstSubmittedDate ? moment(item.firstSubmittedDate).format() : null,
-      lastSubmittedDate: item.lastSubmittedDate ? moment(item.lastSubmittedDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
       extrasData: {
         customProps: item.customFormValueVOList.reduce((result, cur) => {
@@ -61,7 +60,6 @@ export class HuilianyiFormatter {
       companyOid: item.companyOID,
       departmentOid: item.departmentOID,
       corporationOid: item.corporationOID,
-      formType: item.type,
       formCode: item.formCode,
       formOid: item.formOID,
       formName: item.formName,

@@ -100,7 +100,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
       statusText: HLY_ReimburseStatusDescriptor.describe(item.status),
     }))
     console.info(`${dataList.length} items.`)
-    // console.info(JSON.stringify(dataList, null, 2))
+    // console.info(JSON.stringify(items, null, 2))
     console.info(
       JSON.stringify(
         items.map((item) => item.expenseFieldVOList),

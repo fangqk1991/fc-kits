@@ -12,15 +12,14 @@ const _cols: string[] = [
   'department_oid',
   'corporation_oid',
   'form_code',
-  'form_type',
   'form_oid',
   'form_name',
   'submitted_by',
   'title',
-  'travel_status',
   'created_date',
   'last_modified_date',
   'extras_info',
+  'travel_status',
   'create_time',
   'update_time',
 ]
@@ -35,15 +34,14 @@ const _insertableCols: string[] = [
   'department_oid',
   'corporation_oid',
   'form_code',
-  'form_type',
   'form_oid',
   'form_name',
   'submitted_by',
   'title',
-  'travel_status',
   'created_date',
   'last_modified_date',
   'extras_info',
+  'travel_status',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -54,15 +52,14 @@ const _modifiableCols: string[] = [
   'department_oid',
   'corporation_oid',
   'form_code',
-  'form_type',
   'form_oid',
   'form_name',
   'submitted_by',
   'title',
-  'travel_status',
   'created_date',
   'last_modified_date',
   'extras_info',
+  'travel_status',
 ]
 
 const dbOptions = {
@@ -109,11 +106,7 @@ export default class __HLY_Travel extends FeedBase {
   /**
    * @description [varchar(32)]
    */
-  public formCode!: string
-  /**
-   * @description [int] form_type
-   */
-  public formType!: number
+  public formCode!: string | null
   /**
    * @description [char(36)]
    */
@@ -131,10 +124,6 @@ export default class __HLY_Travel extends FeedBase {
    */
   public title!: string
   /**
-   * @description [int] HLY_TravelStatus
-   */
-  public travelStatus!: number
-  /**
    * @description [timestamp]
    */
   public createdDate!: string | null
@@ -146,6 +135,10 @@ export default class __HLY_Travel extends FeedBase {
    * @description [mediumtext] 附加信息，空 | JSON 字符串
    */
   public extrasInfo!: string
+  /**
+   * @description [int] HLY_TravelStatus
+   */
+  public travelStatus!: number
   /**
    * @description [timestamp] 创建时间
    */
@@ -192,6 +185,7 @@ export default class __HLY_Travel extends FeedBase {
     this.companyOid = null
     this.departmentOid = null
     this.corporationOid = null
+    this.formCode = null
     this.formOid = null
     this.formName = ''
     this.submittedBy = null
@@ -212,15 +206,14 @@ export default class __HLY_Travel extends FeedBase {
       departmentOid: 'department_oid',
       corporationOid: 'corporation_oid',
       formCode: 'form_code',
-      formType: 'form_type',
       formOid: 'form_oid',
       formName: 'form_name',
       submittedBy: 'submitted_by',
       title: 'title',
-      travelStatus: 'travel_status',
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
+      travelStatus: 'travel_status',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

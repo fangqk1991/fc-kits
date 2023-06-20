@@ -43,8 +43,6 @@ export class HuilianyiSyncHandler {
     bulkAdder.useUpdateWhenDuplicate()
     bulkAdder.setInsertKeys(dbSpec.insertableCols())
     bulkAdder.declareTimestampKey('created_date')
-    bulkAdder.declareTimestampKey('first_submitted_date')
-    bulkAdder.declareTimestampKey('last_submitted_date')
     bulkAdder.declareTimestampKey('last_modified_date')
     for (const item of items) {
       const feed = HLY_Expense.makeFeed(HuilianyiFormatter.transferExpenseModel(item))

@@ -12,17 +12,16 @@ const _cols: string[] = [
   'department_oid',
   'corporation_oid',
   'form_oid',
+  'form_code',
   'form_name',
   'submitted_by',
   'title',
+  'created_date',
+  'last_modified_date',
+  'extras_info',
   'expense_type',
   'expense_status',
   'total_amount',
-  'created_date',
-  'first_submitted_date',
-  'last_submitted_date',
-  'last_modified_date',
-  'extras_info',
   'create_time',
   'update_time',
 ]
@@ -37,17 +36,16 @@ const _insertableCols: string[] = [
   'department_oid',
   'corporation_oid',
   'form_oid',
+  'form_code',
   'form_name',
   'submitted_by',
   'title',
+  'created_date',
+  'last_modified_date',
+  'extras_info',
   'expense_type',
   'expense_status',
   'total_amount',
-  'created_date',
-  'first_submitted_date',
-  'last_submitted_date',
-  'last_modified_date',
-  'extras_info',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -58,17 +56,16 @@ const _modifiableCols: string[] = [
   'department_oid',
   'corporation_oid',
   'form_oid',
+  'form_code',
   'form_name',
   'submitted_by',
   'title',
+  'created_date',
+  'last_modified_date',
+  'extras_info',
   'expense_type',
   'expense_status',
   'total_amount',
-  'created_date',
-  'first_submitted_date',
-  'last_submitted_date',
-  'last_modified_date',
-  'extras_info',
 ]
 
 const dbOptions = {
@@ -117,6 +114,10 @@ export default class __HLY_Expense extends FeedBase {
    */
   public formOid!: string | null
   /**
+   * @description [varchar(32)]
+   */
+  public formCode!: string | null
+  /**
    * @description [text]
    */
   public formName!: string
@@ -129,6 +130,18 @@ export default class __HLY_Expense extends FeedBase {
    */
   public title!: string
   /**
+   * @description [timestamp]
+   */
+  public createdDate!: string | null
+  /**
+   * @description [timestamp]
+   */
+  public lastModifiedDate!: string | null
+  /**
+   * @description [mediumtext] 附加信息，空 | JSON 字符串
+   */
+  public extrasInfo!: string
+  /**
    * @description [int] HLY_ExpenseType
    */
   public expenseType!: number
@@ -140,26 +153,6 @@ export default class __HLY_Expense extends FeedBase {
    * @description [double] 总金额
    */
   public totalAmount!: number
-  /**
-   * @description [timestamp]
-   */
-  public createdDate!: string | null
-  /**
-   * @description [timestamp]
-   */
-  public firstSubmittedDate!: string | null
-  /**
-   * @description [timestamp]
-   */
-  public lastSubmittedDate!: string | null
-  /**
-   * @description [timestamp]
-   */
-  public lastModifiedDate!: string | null
-  /**
-   * @description [mediumtext] 附加信息，空 | JSON 字符串
-   */
-  public extrasInfo!: string
   /**
    * @description [timestamp] 创建时间
    */
@@ -207,12 +200,11 @@ export default class __HLY_Expense extends FeedBase {
     this.departmentOid = null
     this.corporationOid = null
     this.formOid = null
+    this.formCode = null
     this.formName = ''
     this.submittedBy = null
     this.title = ''
     this.createdDate = null
-    this.firstSubmittedDate = null
-    this.lastSubmittedDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
   }
@@ -228,17 +220,16 @@ export default class __HLY_Expense extends FeedBase {
       departmentOid: 'department_oid',
       corporationOid: 'corporation_oid',
       formOid: 'form_oid',
+      formCode: 'form_code',
       formName: 'form_name',
       submittedBy: 'submitted_by',
       title: 'title',
+      createdDate: 'created_date',
+      lastModifiedDate: 'last_modified_date',
+      extrasInfo: 'extras_info',
       expenseType: 'expense_type',
       expenseStatus: 'expense_status',
       totalAmount: 'total_amount',
-      createdDate: 'created_date',
-      firstSubmittedDate: 'first_submitted_date',
-      lastSubmittedDate: 'last_submitted_date',
-      lastModifiedDate: 'last_modified_date',
-      extrasInfo: 'extras_info',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
