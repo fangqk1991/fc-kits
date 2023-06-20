@@ -8,6 +8,7 @@ import {
   HLY_ReimburseStatusDescriptor,
 } from '../../src'
 import { DiffMapper } from '@fangcha/tools'
+import { HuilianyiFormatter } from '../../src/client/HuilianyiFormatter'
 
 describe('Test HLY_BusinessDataProxy.test.ts', () => {
   const businessDataProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
@@ -135,9 +136,34 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`getTravelApplicationList`, async () => {
-    const items = await businessDataProxy.getTravelApplicationList()
+    const items = await businessDataProxy.getTravelApplicationList({
+      startDate: '2023-06-09 17:24:07',
+    })
     // const keyTextList = items.map((item) => `${item.fullName} - ${item.departmentPath}`)
-    // console.info(`${keyTextList.length} items.`)
-    console.info(JSON.stringify(items, null, 2))
+    console.info(`${items.length} items.`)
+    console.info(
+      JSON.stringify(
+        items.map((item) => HuilianyiFormatter.transferTravelModel(item)),
+        null,
+        2
+      )
+    )
+  })
+
+  it(`diff testing getTravelApplicationList`, async () => {
+    const items1 = await businessDataProxy.getTravelApplicationList({
+      // startDate: '2023-06-09 17:24:07',
+    })
+    const items2 = await businessDataProxy.getTravelApplicationList({
+      // startDate: '2023-06-09 17:24:07',
+      withDocPdfAttachment: true,
+    })
+    console.info(
+      JSON.stringify(
+        items1.map((_, index) => DiffMapper.diff(items1[index], items2[index])),
+        null,
+        2
+      )
+    )
   })
 })

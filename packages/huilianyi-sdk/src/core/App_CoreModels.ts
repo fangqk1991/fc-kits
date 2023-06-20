@@ -45,3 +45,17 @@ export interface App_ExpenseModel {
   lastModifiedDate: string | null
   extrasData: App_ExpenseExtrasData
 }
+
+export interface App_TravelExtrasData {
+  customProps: {
+    [propKey: string]: {
+      fieldName: string
+      value: string
+      showValue: string
+    }
+  }
+}
+
+export interface App_TravelModel {
+  extrasData: App_TravelExtrasData
+}

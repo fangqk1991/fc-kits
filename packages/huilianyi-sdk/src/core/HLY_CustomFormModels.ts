@@ -12,6 +12,7 @@ export interface HLY_CustomFormRequestDTO {
 
 export interface HLY_CustomFormItem {
   fieldCode: string // 控件 code
+  fieldName: string
   value: string // 控件值
   showValue: string // 控件值显示值
   valueCode?: string // 控件 valueCode, 如果该控件有 valueCode 值

@@ -6,6 +6,7 @@ import { HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../core/HLY_
 import { PageDataFetcher } from './PageDataFetcher'
 import { HuilianyiResponse } from '../core/HuilianyiModels'
 import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
+import { HLY_Travel } from '../core/HLY_TravelModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPublicApplicationList() {
@@ -83,13 +84,15 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     return await request.quickSend<HLY_Expense>()
   }
 
-  public async getTravelApplicationList() {
+  public async getTravelApplicationList(extras: {} = {}) {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.TravelApplicationListGet))
       request.setQueryParams({
         ...params,
+        withApplicationParticipant: true,
+        ...extras,
       })
-      return await request.quickSend<any[]>()
+      return await request.quickSend<HLY_Travel[]>()
     })
   }
 

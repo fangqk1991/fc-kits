@@ -1,6 +1,7 @@
 import { HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
-import { App_ExpenseModel } from '../core/App_CoreModels'
+import { App_ExpenseModel, App_TravelModel } from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
+import { HLY_Travel } from '../core/HLY_TravelModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -46,6 +47,21 @@ export class HuilianyiFormatter {
           return result
         }, {}),
         expenseFieldVOList: expenseFieldVOList,
+      },
+    }
+  }
+
+  public static transferTravelModel(item: HLY_Travel): App_TravelModel {
+    return {
+      extrasData: {
+        customProps: item.custFormValues.reduce((result, cur) => {
+          result[cur.fieldCode] = {
+            fieldName: cur.fieldName,
+            value: cur.value,
+            showValue: cur.showValue || cur.value,
+          }
+          return result
+        }, {}),
       },
     }
   }
