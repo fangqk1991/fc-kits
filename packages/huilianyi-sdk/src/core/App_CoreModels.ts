@@ -3,8 +3,23 @@ import { ExpenseFieldDTO, ExpenseReportInvoiceView, HLY_ExpenseType } from './HL
 import { HLY_ReimburseStatus } from './HLY_ReimburseStatus'
 
 export interface App_ExpenseExtrasData {
+  customProps: {
+    [propKey: string]: {
+      fieldName: string
+      value: string
+      showValue: string
+    }
+  }
   customFormValueVOList: HLY_CustomFormValue[]
   invoiceVOList: ExpenseReportInvoiceView[]
+  expenseProps: {
+    [propKey: string]: {
+      name: string
+      fieldType: string
+      value: string
+      showValue: string
+    }
+  }
   expenseFieldVOList: ExpenseFieldDTO[]
 }
 

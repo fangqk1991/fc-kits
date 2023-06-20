@@ -20,8 +20,10 @@ export class _HLY_Expense extends __HLY_Expense {
 
   public extrasData(): App_ExpenseExtrasData {
     const defaultData: App_ExpenseExtrasData = {
+      customProps: {},
       customFormValueVOList: [],
       invoiceVOList: [],
+      expenseProps: {},
       expenseFieldVOList: [],
     }
     try {

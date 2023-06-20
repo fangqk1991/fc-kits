@@ -13,6 +13,7 @@ export interface HLY_CustomFormValue {
   fieldType: string
   fieldCode: string
   value: any
+  showValue?: any
   messageKey: string
   fieldValueCode: string | null
 }

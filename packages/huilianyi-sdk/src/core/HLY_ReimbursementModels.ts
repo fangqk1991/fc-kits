@@ -4,9 +4,11 @@ import { HLY_FieldBusinessCode, HLY_FieldType } from './HLY_FieldType'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 
 export interface ExpenseFieldDTO {
+  fieldOID: string
   fieldType: HLY_FieldType
   name: string // 字段名称
   value: string // 字段值
+  showValue: string // 字段展示值
   businessCode: HLY_FieldBusinessCode // 控件业务编码
   sequence: number
   customEnumerationDTO: any // 值列表对象
