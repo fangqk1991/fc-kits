@@ -52,4 +52,35 @@ export class HuilianyiSyncHandler {
     }
     await bulkAdder.execute()
   }
+
+  public async dumpTravelRecords(forceReload = false) {
+    const syncCore = this.syncCore
+    const HLY_Travel = syncCore.modelsCore.HLY_Travel
+
+    let lastModifyStartDate = '2020-01-01 00:00:00'
+    if (!forceReload) {
+      const lastTime = await this.getLastTime(HLY_Travel)
+      if (lastTime) {
+        lastModifyStartDate = moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
+      }
+    }
+
+    const items = await syncCore.dataProxy.getTravelApplicationList({
+      startDate: lastModifyStartDate,
+    })
+    console.info(`[dumpTravelRecords] fetch ${items.length} items.`)
+
+    const dbSpec = new HLY_Travel().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey('created_date')
+    bulkAdder.declareTimestampKey('last_modified_date')
+    for (const item of items) {
+      const feed = HLY_Travel.makeFeed(HuilianyiFormatter.transferTravelModel(item))
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
 }

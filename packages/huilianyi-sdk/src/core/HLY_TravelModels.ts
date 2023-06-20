@@ -1,11 +1,33 @@
 import { HLY_StaffCoreDTO } from './HLY_CoreModels'
 import { HLY_CustomFormItem } from './HLY_CustomFormModels'
+import { HLY_TravelStatus } from './HLY_TravelStatus'
 
 export interface HLY_Travel {
-  applicant: HLY_StaffCoreDTO
-  applicantOID: string
   applicationId: string
+  businessCode: string
   applicationOID: string
+
+  applicantOID: string
+  applicant: HLY_StaffCoreDTO
+
+  companyOID: string
+  departmentOID: string
+  corporationOID: string
+
+  formCode: string
+  formType: number // 2001
+  formOID: string
+  formName: string
+
+  type: number // 1002
+  status: HLY_TravelStatus // 1002
+  title: string
+  submittedBy: string
+  submittedDate: string // '2023-06-16T08:40:14Z'
+
+  createdBy: string
+  createdDate: string // '2023-06-16T08:40:07Z'
+
   /**
    * @deprecated
    */
@@ -14,21 +36,15 @@ export interface HLY_Travel {
   budgetCheckMessage: string
   budgetClosed: number // ? 1000
   budgetLabelCode: string // 'BUD_000'
-  businessCode: string
   client: string
   closeEnabled: boolean
   closed: boolean
   companyCode: string
-  companyOID: string
   companyPaymentAmount: number // 0
-  corporationOID: string
-  createdBy: string
-  createdDate: string // '2023-06-16T08:40:07Z'
   createdUser: HLY_StaffCoreDTO
   currencyCode: string // 'CNY'
   custFormValues: HLY_CustomFormItem[]
   departmentName: string
-  departmentOID: string
   docCompanyOID: string
   duplicate: boolean
   enableCustomBudget: boolean
@@ -39,10 +55,6 @@ export interface HLY_Travel {
   externalParticipantDTOs: any[]
   filterFlag: boolean
   forceOccupyFlag: boolean
-  formCode: string
-  formName: string
-  formOID: string
-  formType: number // 2001
   ignoreBudget: boolean
   ignoreBudgetWarningFlag: boolean
   ignoreWarnCheck: boolean
@@ -66,14 +78,10 @@ export interface HLY_Travel {
   setOfBooksId: string
   showAmount: boolean
   showDeliverButton: boolean
-  status: number // 1002
   subCompanyOID: string
-  submittedBy: string
-  submittedDate: string // '2023-06-16T08:40:14Z'
   supportBudget: boolean
   tenantId: string
   timeZoneOffset: number // 480
-  title: string
   totalAmount: number
   totalBudget: number
   travelApplication: {
@@ -115,7 +123,6 @@ export interface HLY_Travel {
   }
   travelOperationRecords: []
   travelOrders: []
-  type: number // 1002
   version: number
   warningList: string
   withApportionment: boolean

@@ -53,6 +53,23 @@ export class HuilianyiFormatter {
 
   public static transferTravelModel(item: HLY_Travel): App_TravelModel {
     return {
+      hlyId: Number(item.applicationId),
+      businessCode: item.businessCode,
+      applicationOid: item.applicationOID,
+      applicantOid: item.applicantOID,
+      applicantName: item.applicant.fullName,
+      companyOid: item.companyOID,
+      departmentOid: item.departmentOID,
+      corporationOid: item.corporationOID,
+      formType: item.type,
+      formCode: item.formCode,
+      formOid: item.formOID,
+      formName: item.formName,
+      submittedBy: item.submittedBy,
+      title: item.title,
+      travelStatus: item.status,
+      createdDate: item.createdDate ? moment(item.createdDate).format() : null,
+      lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
       extrasData: {
         customProps: item.custFormValues.reduce((result, cur) => {
           result[cur.fieldCode] = {
