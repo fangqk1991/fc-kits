@@ -1,5 +1,5 @@
 import __HLY_Travel from '../auto-build/__HLY_Travel'
-import { App_TravelExtrasData, App_TravelModel, } from '../../core/App_CoreModels'
+import { App_TravelExtrasData, App_TravelModel } from '../../core/App_CoreModels'
 
 export class _HLY_Travel extends __HLY_Travel {
   public constructor() {
@@ -21,6 +21,10 @@ export class _HLY_Travel extends __HLY_Travel {
       return JSON.parse(this.extrasInfo) || defaultData
     } catch (e) {}
     return defaultData
+  }
+
+  public toJSON() {
+    return this.modelForClient()
   }
 
   public modelForClient() {

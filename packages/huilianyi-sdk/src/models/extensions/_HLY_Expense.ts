@@ -32,6 +32,10 @@ export class _HLY_Expense extends __HLY_Expense {
     return defaultData
   }
 
+  public toJSON() {
+    return this.modelForClient()
+  }
+
   public modelForClient() {
     const data = this.fc_pureModel() as App_ExpenseModel
     data.extrasData = this.extrasData()
