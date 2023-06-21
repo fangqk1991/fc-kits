@@ -22,6 +22,7 @@ const _cols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'reload_time',
   'create_time',
   'update_time',
 ]
@@ -46,6 +47,7 @@ const _insertableCols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'reload_time',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -66,6 +68,7 @@ const _modifiableCols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'reload_time',
 ]
 
 const dbOptions = {
@@ -154,6 +157,10 @@ export default class __HLY_Expense extends FeedBase {
    */
   public totalAmount!: number
   /**
+   * @description [timestamp]
+   */
+  public reloadTime!: string
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -207,6 +214,7 @@ export default class __HLY_Expense extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.reloadTime = '2000-01-01 00:00:00'
   }
 
   public fc_propertyMapper() {
@@ -230,6 +238,7 @@ export default class __HLY_Expense extends FeedBase {
       expenseType: 'expense_type',
       expenseStatus: 'expense_status',
       totalAmount: 'total_amount',
+      reloadTime: 'reload_time',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

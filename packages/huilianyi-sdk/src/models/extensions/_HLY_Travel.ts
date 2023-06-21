@@ -2,6 +2,8 @@ import __HLY_Travel from '../auto-build/__HLY_Travel'
 import { App_TravelExtrasData, App_TravelModel } from '../../core/App_CoreModels'
 
 export class _HLY_Travel extends __HLY_Travel {
+  public lastModifiedDate!: string
+
   public constructor() {
     super()
   }
@@ -23,6 +25,14 @@ export class _HLY_Travel extends __HLY_Travel {
     return defaultData
   }
 
+  public itineraryItems(): any[] {
+    const defaultData: any[] = []
+    try {
+      return JSON.parse(this.itineraryItemsStr) || defaultData
+    } catch (e) {}
+    return defaultData
+  }
+
   public toJSON() {
     return this.modelForClient()
   }
@@ -30,6 +40,7 @@ export class _HLY_Travel extends __HLY_Travel {
   public modelForClient() {
     const data = this.fc_pureModel() as App_TravelModel
     data.extrasData = this.extrasData()
+    data.itineraryItems = this.itineraryItems()
     delete data['extrasInfo']
     delete data['createTime']
     delete data['updateTime']

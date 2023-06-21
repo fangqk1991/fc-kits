@@ -3,6 +3,7 @@ import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
+import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -44,6 +45,7 @@ export class HuilianyiSyncHandler {
     bulkAdder.setInsertKeys(dbSpec.insertableCols())
     bulkAdder.declareTimestampKey('created_date')
     bulkAdder.declareTimestampKey('last_modified_date')
+    bulkAdder.declareTimestampKey('reload_time')
     for (const item of items) {
       const feed = HLY_Expense.makeFeed(HuilianyiFormatter.transferExpenseModel(item))
       bulkAdder.putObject(feed.fc_encode())
@@ -72,7 +74,9 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.setInsertKeys(
+      dbSpec.insertableCols().filter((col) => !['itinerary_items_str', 'reload_time'].includes(col))
+    )
     bulkAdder.declareTimestampKey('created_date')
     bulkAdder.declareTimestampKey('last_modified_date')
     for (const item of items) {
@@ -80,5 +84,21 @@ export class HuilianyiSyncHandler {
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
+
+    const searcher = new HLY_Travel().fc_searcher()
+    searcher.processor().addSpecialCondition('last_modified_date != reload_time')
+    searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
+    const todoItems = await searcher.queryAllFeeds()
+
+    console.info(`[dumpTravelRecords] ${todoItems.length} items need to reload.`)
+    for (const item of todoItems) {
+      const travelInfo = await syncCore.dataProxy.getTravelApplicationDetail(item.businessCode)
+      item.fc_edit()
+      item.itineraryItemsStr = travelInfo.travelApplication.itineraryHeadDTOs
+        ? JSON.stringify(travelInfo.travelApplication.itineraryHeadDTOs)
+        : ''
+      item.reloadTime = item.lastModifiedDate
+      await item.updateToDB()
+    }
   }
 }

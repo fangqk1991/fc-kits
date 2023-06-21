@@ -4,6 +4,8 @@ import { HLY_ExpenseType } from '../../core/HLY_ReimbursementModels'
 import { HLY_ReimburseStatus } from '../../core/HLY_ReimburseStatus'
 
 export class _HLY_Expense extends __HLY_Expense {
+  public lastModifiedDate!: string
+
   expenseType!: HLY_ExpenseType
   expenseStatus!: HLY_ReimburseStatus
 

@@ -19,7 +19,9 @@ const _cols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'itinerary_items_str',
   'travel_status',
+  'reload_time',
   'create_time',
   'update_time',
 ]
@@ -41,7 +43,9 @@ const _insertableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'itinerary_items_str',
   'travel_status',
+  'reload_time',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -59,7 +63,9 @@ const _modifiableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'itinerary_items_str',
   'travel_status',
+  'reload_time',
 ]
 
 const dbOptions = {
@@ -136,9 +142,17 @@ export default class __HLY_Travel extends FeedBase {
    */
   public extrasInfo!: string
   /**
+   * @description [mediumtext] 行程单信息，空 | JSON 字符串
+   */
+  public itineraryItemsStr!: string
+  /**
    * @description [int] HLY_TravelStatus
    */
   public travelStatus!: number
+  /**
+   * @description [timestamp]
+   */
+  public reloadTime!: string
   /**
    * @description [timestamp] 创建时间
    */
@@ -193,6 +207,8 @@ export default class __HLY_Travel extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.itineraryItemsStr = ''
+    this.reloadTime = '2000-01-01 00:00:00'
   }
 
   public fc_propertyMapper() {
@@ -213,7 +229,9 @@ export default class __HLY_Travel extends FeedBase {
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
+      itineraryItemsStr: 'itinerary_items_str',
       travelStatus: 'travel_status',
+      reloadTime: 'reload_time',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

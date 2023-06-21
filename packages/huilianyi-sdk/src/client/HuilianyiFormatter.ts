@@ -68,6 +68,7 @@ export class HuilianyiFormatter {
       travelStatus: item.status,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
+      itineraryItems: item.travelApplication?.itineraryHeadDTOs || [],
       extrasData: {
         travelApplication: item.travelApplication,
         customProps: item.custFormValues.reduce((result, cur) => {
