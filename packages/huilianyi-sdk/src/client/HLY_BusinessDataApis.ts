@@ -33,6 +33,11 @@ export const HLY_BusinessDataApis = {
     // 包含明细数据
     description: '增量查询差旅申请单',
   },
+  TravelApplicationDetailGet: {
+    method: 'GET',
+    route: '/gateway/api/open/travelApplication/detail',
+    description: '查询单个差旅申请单详情(单号)',
+  },
 
   ApplicationCustomFormValueUpdate: {
     method: 'PUT',

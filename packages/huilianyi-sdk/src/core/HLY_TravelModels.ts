@@ -94,6 +94,23 @@ export interface ItineraryRemark {
   itineraryShowDetails: []
 }
 
+export interface ItineraryHeadDTO {
+  itineraryHeadId: string // Long	行程头id
+  applicationOID: string //	申请单OID
+  startDate: string //	开始时间
+  endDate: string //	结束时间
+  fromCityName: string //	出发地
+  fromCityCode: string //	出发地 code
+  toCityName: string //	目的地
+  toCityCode: string //	目的地 code
+  remark: string //	备注
+  itineraryDirection: number //	往返类型 1001表示去程，1002表示返程； 单程为空	2021-09-16
+  refItineraryHeadId: string //	对应的 去程/返程 行程头id	2021-09-16
+  travelSubsidiesCustList: any[] // List(#TravelSubsidiesCustList)	差补行程值列表	2021-10-26
+  itineraryBudgetDTOList: any[] // (#ItineraryBudgetDTO)	行程预算
+  customFormvalues: any[] //(#ItineraryHeadFormValue)	行程头表单自定义值	2022-05-26
+}
+
 export interface TravelApplication {
   businessCode: string
 
@@ -114,6 +131,9 @@ export interface TravelApplication {
   hotelBookingClerkOID: string
   hotelManageType: 1002
   hotelUniformBooking: true
+
+  itineraryHeadDTOs?: ItineraryHeadDTO[]
+
   itineraryMap: {
     FLIGHT: ItineraryFlight[]
     TRAIN: ItineraryTrain[]
