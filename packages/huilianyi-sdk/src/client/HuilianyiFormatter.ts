@@ -69,6 +69,7 @@ export class HuilianyiFormatter {
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
       extrasData: {
+        travelApplication: item.travelApplication,
         customProps: item.custFormValues.reduce((result, cur) => {
           result[cur.fieldCode] = {
             fieldName: cur.fieldName,

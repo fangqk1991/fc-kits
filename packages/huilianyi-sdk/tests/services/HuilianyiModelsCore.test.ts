@@ -25,14 +25,14 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   })
 
   it(`HLY_Travel`, async () => {
-    await huilianyiService.syncHandler().dumpExpenseRecords(true)
+    await huilianyiService.syncHandler().dumpTravelRecords(true)
 
     const feeds = await new HLY_Travel().fc_searcher().queryFeeds()
     console.info(
       JSON.stringify(
         feeds
           // .filter((item) => item.formName.includes('差旅费报销'))
-          .map((item) => item.modelForClient().extrasData.customProps),
+          .map((item) => item.modelForClient().extrasData.travelApplication?.itineraryMap.TRAIN),
         null,
         2
       )

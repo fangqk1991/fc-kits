@@ -2,6 +2,141 @@ import { HLY_StaffCoreDTO } from './HLY_CoreModels'
 import { HLY_CustomFormItem } from './HLY_CustomFormModels'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
 
+export interface ItineraryFlight {
+  flightItineraryOID: string
+  applicationOID: string
+  fromCity: string
+  fromCityCode: string
+  toCity: string
+  toCityCode: string
+  itineraryType: number // 行程类型：1001 单程 1002 往返（可为空，行程级管控时必填）
+  itineraryDirection: number // 行程方向 往返有效 1001 去程 1002 返程 单程为空
+  startDate: string
+  endDate: string
+  remark: string
+  createdDate: string
+  lastModifiedDate: string
+  ticketPrice: number | null
+  seatClass: string // 舱等，经济舱/超级经济舱/公务舱/头等舱
+  disabled: boolean
+  isExtend: boolean
+}
+
+export interface ItineraryTrain {
+  trainItineraryOID: string
+  applicationOID: string
+  fromCity: string
+  fromCityCode: string
+  toCity: string
+  toCityCode: string
+  startDate: string
+  endDate: string
+  remark: string
+  createdDate: string
+  lastModifiedDate: string
+  ticketPrice: number | null
+  seatClass: string // 舱等、火车座席
+  disabled: boolean
+  isExtend: boolean
+}
+
+export interface ItineraryHotel {
+  hotelItineraryOID: string
+  applicationOID: string
+  city: string
+  cityCode: string
+  fromDate: string
+  leaveDate: string
+  roomNumber: number
+  remark: string
+  createdDate: string
+  lastModifiedDate: string
+  maxPrice: number | null
+  minPrice: number | null
+  seatClass: string // 舱等、火车座席
+  disabled: boolean
+  isExtend: boolean
+}
+
+export interface ItineraryOther {
+  otherItineraryOID: string
+  applicationOID: string
+  itineraryType: number // 行程类型：1001 单程 1002 往返（可为空，行程级管控时必填）
+  trafficType: number // 交通类型: 1001 轮船、1002 汽车、1003 其他
+  trafficTypeName: string // 交通类型名称，当交通类型为其他时可以自行设置
+
+  fromCity: string
+  fromCityCode: string
+  toCity: string
+  toCityCode: string
+
+  startDate: string
+  endDate: string
+
+  remark: string
+
+  createdDate: string
+  lastModifiedDate: string
+  disabled: boolean
+  isExtend: boolean
+}
+
+export interface ItineraryRemark {
+  itineraryRemarkOID: string
+  applicationOID: string
+
+  remarkDate: string
+  remark: string
+
+  createdDate: string
+  lastModifiedDate: string
+  itineraryDetails: {}
+  itineraryShowDetails: []
+}
+
+export interface TravelApplication {
+  businessCode: string
+
+  applicationOID: string
+  baseCurrencyAmount: number
+  bookingClerkOID: string
+  carManageType: 1002
+  carUniformBooking: false
+  companyCurrencyRate: number // 1
+  currencyCode: string // 'CNY'
+  departmentOID: string
+  diningBookingClerkOID: string
+  diningUniformBooking: boolean
+  emergencyFlyback: boolean
+  enableItineraryHead: boolean
+  endDate: string // '2023-06-16T15:59:00Z'
+  externalParticipantNumber: number
+  hotelBookingClerkOID: string
+  hotelManageType: 1002
+  hotelUniformBooking: true
+  itineraryMap: {
+    FLIGHT: ItineraryFlight[]
+    TRAIN: ItineraryTrain[]
+    HOTEL: ItineraryHotel[]
+    OTHER: ItineraryOther[]
+    REMARK: ItineraryRemark[]
+  }
+  itineraryTypes: '1005'
+  manageType: 1002
+  participantNum: number
+  startDate: string // '2023-06-15T16:00:00Z'
+  subCompanyOID: string
+  totalBudget: number
+  totalSubsidiesBudget: number
+  trainManageType: number
+  trainUniformBooking: boolean
+  travelDays: number
+  travelItinerarys: []
+  uniformBooking: boolean
+  uniformReimbursement: boolean
+  userRankMap: {}
+}
+
 export interface HLY_Travel {
   applicationId: string
   businessCode: string
@@ -84,43 +219,7 @@ export interface HLY_Travel {
   timeZoneOffset: number // 480
   totalAmount: number
   totalBudget: number
-  travelApplication: {
-    applicationOID: '487f4391-90da-4189-af76-4925604f2c45'
-    baseCurrencyAmount: 0
-    bookingClerkOID: 'd6ed60d5-5d8f-4712-b913-acca3d3ef420'
-    businessCode: 'TA00988382'
-    carManageType: 1002
-    carUniformBooking: false
-    companyCurrencyRate: 1
-    currencyCode: 'CNY'
-    departmentOID: '3354c2f7-058b-4ef2-a9be-0090677d9475'
-    diningBookingClerkOID: 'd6ed60d5-5d8f-4712-b913-acca3d3ef420'
-    diningUniformBooking: true
-    emergencyFlyback: false
-    enableItineraryHead: true
-    endDate: '2023-06-16T15:59:00Z'
-    externalParticipantNumber: 0
-    hotelBookingClerkOID: 'd6ed60d5-5d8f-4712-b913-acca3d3ef420'
-    hotelManageType: 1002
-    hotelUniformBooking: true
-    itineraryMap: {
-      REMARK: []
-    }
-    itineraryTypes: '1005'
-    manageType: 1002
-    participantNum: 1
-    startDate: '2023-06-15T16:00:00Z'
-    subCompanyOID: '34de59ca-36c8-4884-adaa-54981cc6f9d7'
-    totalBudget: 0
-    totalSubsidiesBudget: 0
-    trainManageType: 1002
-    trainUniformBooking: true
-    travelDays: 1
-    travelItinerarys: []
-    uniformBooking: true
-    uniformReimbursement: false
-    userRankMap: {}
-  }
+  travelApplication: TravelApplication
   travelOperationRecords: []
   travelOrders: []
   version: number

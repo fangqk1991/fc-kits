@@ -2,6 +2,7 @@ import { HLY_CustomFormValue } from './HLY_CoreModels'
 import { ExpenseFieldDTO, ExpenseReportInvoiceView, HLY_ExpenseType } from './HLY_ReimbursementModels'
 import { HLY_ReimburseStatus } from './HLY_ReimburseStatus'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
+import { TravelApplication } from './HLY_TravelModels'
 
 export interface App_FormBase<T = any> {
   hlyId: number
@@ -50,6 +51,7 @@ export interface App_ExpenseModel extends App_FormBase<App_ExpenseExtrasData> {
 }
 
 export interface App_TravelExtrasData {
+  travelApplication?: TravelApplication
   customProps: {
     [propKey: string]: {
       fieldName: string
