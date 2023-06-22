@@ -10,8 +10,8 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "devDependencies": {
-    "@fangcha/react": "workspace:^*",
-    "@fangcha/app-request": "workspace:^*",
+    "@fangcha/react": "workspace:^",
+    "@fangcha/app-request": "workspace:^",
     "@fangcha/auth-basic": "^0.8.0",
     "@fangcha/auth-react": "^0.9.0",
     "@types/assert": "^1.5.6",

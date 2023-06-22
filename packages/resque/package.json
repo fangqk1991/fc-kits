@@ -19,7 +19,7 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/tools": "workspace:^*",
+    "@fangcha/tools": "workspace:^",
     "ioredis": "^4.28.5",
     "moment": "^2.29.4",
     "shelljs": "^0.8.5",

@@ -23,11 +23,11 @@
     "moment": "^2.29.4"
   },
   "devDependencies": {
-    "@fangcha/app-error": "workspace:^*",
-    "@fangcha/app-request": "workspace:^*",
-    "@fangcha/logger": "workspace:^*",
-    "fc-sql": "workspace:^*",
-    "fc-queue": "workspace:^*",
+    "@fangcha/app-error": "workspace:^",
+    "@fangcha/app-request": "workspace:^",
+    "@fangcha/logger": "workspace:^",
+    "fc-sql": "workspace:^",
+    "fc-queue": "workspace:^",
     "exceljs": "^3.3.1",
     "axios": "^1.3.2",
     "log4js": "^6.1.0",

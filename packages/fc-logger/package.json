@@ -21,7 +21,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@fangcha/app-error": "workspace:^*",
+    "@fangcha/app-error": "workspace:^",
     "@types/koa": "2.13.5",
     "@types/lodash": "^4.14.179",
     "koa": "^2.13.4",

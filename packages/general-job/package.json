@@ -22,13 +22,13 @@
     "moment": "^2.29.4"
   },
   "devDependencies": {
-    "@fangcha/assert": "workspace:^*",
-    "@fangcha/generator": "workspace:^*",
-    "@fangcha/tools": "workspace:^*",
-    "fc-feed": "workspace:^*",
-    "fc-sql": "workspace:^*",
-    "@fangcha/logger": "workspace:^*",
-    "@fangcha/resque": "workspace:^*",
+    "@fangcha/assert": "workspace:^",
+    "@fangcha/generator": "workspace:^",
+    "@fangcha/tools": "workspace:^",
+    "fc-feed": "workspace:^",
+    "fc-sql": "workspace:^",
+    "@fangcha/logger": "workspace:^",
+    "@fangcha/resque": "workspace:^",
     "typescript": "^4.6.2"
   },
   "files": [

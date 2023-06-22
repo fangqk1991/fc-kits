@@ -26,6 +26,6 @@
     "src/*"
   ],
   "dependencies": {
-    "@fangcha/app-error": "workspace:^*"
+    "@fangcha/app-error": "workspace:^"
   }
 }

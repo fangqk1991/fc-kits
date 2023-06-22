@@ -17,7 +17,7 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "devDependencies": {
-    "@fangcha/tools": "workspace:^*"
+    "@fangcha/tools": "workspace:^"
   },
   "files": [
     "lib/*",

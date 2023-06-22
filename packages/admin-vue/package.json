@@ -14,8 +14,8 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/tools": "workspace:^*",
-    "notification-center-js": "workspace:^*"
+    "@fangcha/tools": "workspace:^",
+    "notification-center-js": "workspace:^"
   },
   "peerDependencies": {
     "@fangcha/vue": "*"

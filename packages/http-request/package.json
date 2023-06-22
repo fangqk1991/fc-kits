@@ -22,7 +22,7 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/app-error": "workspace:^*",
+    "@fangcha/app-error": "workspace:^",
     "axios": "^1.3.2",
     "form-data": "^4.0.0",
     "qs": "^6.11.0"

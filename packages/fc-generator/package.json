@@ -15,9 +15,9 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/tools": "workspace:^*",
-    "@fangcha/swagger": "workspace:^*",
-    "fc-sql": "workspace:^*",
+    "@fangcha/tools": "workspace:^",
+    "@fangcha/swagger": "workspace:^",
+    "fc-sql": "workspace:^",
     "@types/ejs": "^3.1.1",
     "ejs": "^3.1.8"
   },
