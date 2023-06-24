@@ -1,7 +1,7 @@
 import { HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
-import { App_ExpenseModel, App_TravelModel } from '../core/App_CoreModels'
+import { App_ExpenseModel, App_TravelCoreItinerary, App_TravelModel } from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
-import { HLY_Travel } from '../core/HLY_TravelModels'
+import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -68,14 +68,7 @@ export class HuilianyiFormatter {
       travelStatus: item.status,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
-      itineraryItems: (item.travelApplication?.itineraryHeadDTOs || []).map((itinerary) => {
-        return {
-          startDate: itinerary.startDate,
-          endDate: itinerary.endDate,
-          fromCityName: itinerary.fromCityName,
-          toCityName: itinerary.toCityName,
-        }
-      }),
+      itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
       extrasData: {
         travelApplication: item.travelApplication,
         customProps: item.custFormValues.reduce((result, cur) => {
@@ -88,5 +81,14 @@ export class HuilianyiFormatter {
         }, {}),
       },
     }
+  }
+
+  public static transferItineraryHeadDTOs(itineraryItems?: ItineraryHeadDTO[]): App_TravelCoreItinerary[] {
+    return (itineraryItems || []).map((itinerary) => ({
+      startDate: itinerary.startDate,
+      endDate: itinerary.endDate,
+      fromCityName: itinerary.fromCityName,
+      toCityName: itinerary.toCityName,
+    }))
   }
 }

@@ -86,7 +86,9 @@ export class HuilianyiSyncHandler {
     await bulkAdder.execute()
 
     const searcher = new HLY_Travel().fc_searcher()
-    searcher.processor().addSpecialCondition('last_modified_date != reload_time')
+    if (!forceReload) {
+      searcher.processor().addSpecialCondition('last_modified_date != reload_time')
+    }
     searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
     const todoItems = await searcher.queryAllFeeds()
 
@@ -94,9 +96,9 @@ export class HuilianyiSyncHandler {
     for (const item of todoItems) {
       const travelInfo = await syncCore.dataProxy.getTravelApplicationDetail(item.businessCode)
       item.fc_edit()
-      item.itineraryItemsStr = travelInfo.travelApplication.itineraryHeadDTOs
-        ? JSON.stringify(travelInfo.travelApplication.itineraryHeadDTOs)
-        : ''
+      item.itineraryItemsStr = JSON.stringify(
+        HuilianyiFormatter.transferItineraryHeadDTOs(travelInfo.travelApplication?.itineraryHeadDTOs)
+      )
       item.reloadTime = item.lastModifiedDate
       await item.updateToDB()
     }
