@@ -1,5 +1,5 @@
 import __HLY_Travel from '../auto-build/__HLY_Travel'
-import { App_TravelExtrasData, App_TravelModel } from '../../core/App_CoreModels'
+import { App_TravelCoreItinerary, App_TravelExtrasData, App_TravelModel } from '../../core/App_CoreModels'
 
 export class _HLY_Travel extends __HLY_Travel {
   public lastModifiedDate!: string
@@ -25,7 +25,7 @@ export class _HLY_Travel extends __HLY_Travel {
     return defaultData
   }
 
-  public itineraryItems(): any[] {
+  public itineraryItems(): App_TravelCoreItinerary[] {
     const defaultData: any[] = []
     try {
       return JSON.parse(this.itineraryItemsStr) || defaultData

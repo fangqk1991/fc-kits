@@ -61,7 +61,14 @@ export interface App_TravelExtrasData {
   }
 }
 
+export interface App_TravelCoreItinerary {
+  startDate: string
+  endDate: string
+  fromCityName: string
+  toCityName: string
+}
+
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   travelStatus: HLY_TravelStatus
-  itineraryItems: any[]
+  itineraryItems: App_TravelCoreItinerary[]
 }

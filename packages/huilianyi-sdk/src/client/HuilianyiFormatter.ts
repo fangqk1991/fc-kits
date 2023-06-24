@@ -68,7 +68,14 @@ export class HuilianyiFormatter {
       travelStatus: item.status,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
-      itineraryItems: item.travelApplication?.itineraryHeadDTOs || [],
+      itineraryItems: (item.travelApplication?.itineraryHeadDTOs || []).map((itinerary) => {
+        return {
+          startDate: itinerary.startDate,
+          endDate: itinerary.endDate,
+          fromCityName: itinerary.fromCityName,
+          toCityName: itinerary.toCityName,
+        }
+      }),
       extrasData: {
         travelApplication: item.travelApplication,
         customProps: item.custFormValues.reduce((result, cur) => {
