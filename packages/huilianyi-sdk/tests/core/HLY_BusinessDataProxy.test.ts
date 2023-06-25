@@ -194,4 +194,12 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     })
     console.info(JSON.stringify(items, null, 2))
   })
+
+  it(`getTrainOrders`, async () => {
+    const companyList = await othersProxy.getCompanyList()
+    const items = await businessDataProxy.getTrainOrders({
+      companyOID: companyList[0].companyOID,
+    })
+    console.info(JSON.stringify(items, null, 2))
+  })
 })

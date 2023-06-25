@@ -132,7 +132,20 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         // withApplicationParticipant: true,
         ...extras,
       })
-      return await request.quickSend<HLY_Travel[]>()
+      return await request.quickSend<any[]>()
+    })
+  }
+
+  public async getTrainOrders(extras: {} = {}) {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.TrainOrdersGet))
+      request.setQueryParams({
+        ...params,
+        // withApplicationParticipant: true,
+        ...extras,
+      })
+      const items = await request.quickSend<any[]>()
+      return items || []
     })
   }
 }

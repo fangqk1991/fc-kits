@@ -51,9 +51,21 @@ export const HLY_BusinessDataApis = {
     description: '当前审批人审批通过',
   },
 
+  /**
+   * @description https://opendocs.huilianyi.com/implement/business-data/flight/orders.html
+   */
   FlightOrdersGet: {
     method: 'GET',
     route: '/gateway/api/open/flight/orders',
     description: '查询机票订单信息',
+  },
+
+  /**
+   * @description https://opendocs.huilianyi.com/implement/business-data/flight/orders.html
+   */
+  TrainOrdersGet: {
+    method: 'GET',
+    route: '/gateway/api/open/train/orders',
+    description: '查询火车订单信息',
   },
 }
