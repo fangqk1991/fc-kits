@@ -9,7 +9,7 @@ describe('Test HLY_BasicDataProxy.test.ts', () => {
     const items = await basicDataProxy.getAllStaffs()
     const keyTextList = items.map((item) => `${item.fullName} - ${item.departmentPath}`)
     console.info(`${keyTextList.length} items.`)
-    console.info(JSON.stringify(keyTextList, null, 2))
+    console.info(JSON.stringify(items, null, 2))
   })
 
   it(`getAllDepartments`, async () => {

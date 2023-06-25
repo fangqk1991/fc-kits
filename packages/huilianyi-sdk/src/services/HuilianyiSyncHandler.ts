@@ -21,6 +21,37 @@ export class HuilianyiSyncHandler {
     return result['last_time']
   }
 
+  public async dumpStaffRecords() {
+    const syncCore = this.syncCore
+    const HLY_Staff = syncCore.modelsCore.HLY_Staff
+
+    const items = await syncCore.basicDataProxy.getAllStaffs()
+    console.info(`[dumpStaffRecords] fetch ${items.length} items.`)
+
+    const dbSpec = new HLY_Staff().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey('entry_date')
+    bulkAdder.declareTimestampKey('leaving_date')
+    for (const item of items) {
+      const feed = new HLY_Staff()
+      feed.userOid = item.userOID
+      feed.companyCode = item.companyCode
+      feed.fullName = item.fullName
+      feed.departmentPath = item.departmentPath
+      feed.employeeId = item.employeeID
+      feed.email = item.email
+      feed.staffStatus = item.status
+      feed.entryDate = item.entryDate
+      feed.leavingDate = item.leavingDate
+      feed.extrasInfo = JSON.stringify(item)
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
+
   public async dumpExpenseRecords(forceReload = false) {
     const syncCore = this.syncCore
     const HLY_Expense = syncCore.modelsCore.HLY_Expense

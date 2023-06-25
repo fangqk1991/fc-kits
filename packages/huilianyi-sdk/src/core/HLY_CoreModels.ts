@@ -57,6 +57,7 @@ export interface HLY_Staff extends HLY_StaffCoreDTO {
   contactCards: any[]
   contactBankAccounts: any[]
   userCreditDTOList: any[]
+  entryDate: string
   leavingDate: string
   activated: boolean
 }

@@ -27,6 +27,14 @@ const dbSchemas: DBModelSchema[] = [
     forceInsertableWhiteList: ['created_date', 'last_modified_date'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
+  {
+    tableName: 'hly_staff',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_Staff.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_Staff.ts`,
+    primaryKey: ['user_oid'],
+    // forceInsertableWhiteList: ['created_date', 'last_modified_date'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
 ]
 
 const main = async () => {

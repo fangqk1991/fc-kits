@@ -7,6 +7,10 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     database: HuilianyiDBTest,
   })
 
+  it(`dumpStaffRecords`, async () => {
+    await huilianyiService.syncHandler().dumpStaffRecords()
+  })
+
   it(`dumpExpenseRecords`, async () => {
     await huilianyiService.syncHandler().dumpExpenseRecords(true)
   })

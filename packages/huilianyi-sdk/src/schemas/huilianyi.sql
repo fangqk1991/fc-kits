@@ -1,7 +1,6 @@
 # CREATE DATABASE `demo_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS hly_expense;
-
 CREATE TABLE IF NOT EXISTS hly_expense
 (
     hly_id             BIGINT UNSIGNED NOT NULL PRIMARY KEY,
@@ -34,7 +33,6 @@ CREATE TABLE IF NOT EXISTS hly_expense
   COLLATE utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS hly_travel;
-
 CREATE TABLE IF NOT EXISTS hly_travel
 (
     hly_id              BIGINT UNSIGNED NOT NULL PRIMARY KEY,
@@ -61,6 +59,30 @@ CREATE TABLE IF NOT EXISTS hly_travel
     UNIQUE (business_code),
     INDEX (last_modified_date),
     INDEX (reload_time)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_staff;
+CREATE TABLE IF NOT EXISTS hly_staff
+(
+    _rid            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_oid        CHAR(36)        NOT NULL COLLATE ascii_bin,
+    employee_id     VARCHAR(64)     NOT NULL COLLATE ascii_bin,
+    company_code    VARCHAR(20)     NULL COLLATE ascii_bin,
+    full_name       VARCHAR(64)     NOT NULL DEFAULT '',
+    email           VARCHAR(128)    NULL COLLATE ascii_bin,
+    department_path TEXT            NULL,
+    staff_status    INT             NOT NULL COMMENT 'HLY_StaffStatus',
+    entry_date      TIMESTAMP       NULL,
+    leaving_date    TIMESTAMP       NULL,
+    extras_info     MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    create_time     TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (user_oid),
+    UNIQUE (employee_id),
+    INDEX (email),
+    INDEX (staff_status)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
