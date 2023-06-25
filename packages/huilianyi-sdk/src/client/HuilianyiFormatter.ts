@@ -70,7 +70,7 @@ export class HuilianyiFormatter {
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
       itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
       extrasData: {
-        travelApplication: item.travelApplication,
+        itineraryMap: item.travelApplication?.itineraryMap || {},
         customProps: item.custFormValues.reduce((result, cur) => {
           result[cur.fieldCode] = {
             fieldName: cur.fieldName,

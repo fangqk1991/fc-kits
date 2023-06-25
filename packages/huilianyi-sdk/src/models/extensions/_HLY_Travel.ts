@@ -17,6 +17,7 @@ export class _HLY_Travel extends __HLY_Travel {
 
   public extrasData(): App_TravelExtrasData {
     const defaultData: App_TravelExtrasData = {
+      itineraryMap: {},
       customProps: {},
     }
     try {
@@ -41,6 +42,7 @@ export class _HLY_Travel extends __HLY_Travel {
     const data = this.fc_pureModel() as App_TravelModel
     data.extrasData = this.extrasData()
     data.itineraryItems = this.itineraryItems()
+    delete data['itineraryItemsStr']
     delete data['extrasInfo']
     delete data['createTime']
     delete data['updateTime']

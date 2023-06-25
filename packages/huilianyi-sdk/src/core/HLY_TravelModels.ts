@@ -111,6 +111,14 @@ export interface ItineraryHeadDTO {
   customFormvalues: any[] //(#ItineraryHeadFormValue)	行程头表单自定义值	2022-05-26
 }
 
+export interface ItineraryMap {
+  FLIGHT?: ItineraryFlight[]
+  TRAIN?: ItineraryTrain[]
+  HOTEL?: ItineraryHotel[]
+  OTHER?: ItineraryOther[]
+  REMARK?: ItineraryRemark[]
+}
+
 export interface TravelApplication {
   businessCode: string
 
@@ -134,13 +142,7 @@ export interface TravelApplication {
 
   itineraryHeadDTOs?: ItineraryHeadDTO[]
 
-  itineraryMap: {
-    FLIGHT: ItineraryFlight[]
-    TRAIN: ItineraryTrain[]
-    HOTEL: ItineraryHotel[]
-    OTHER: ItineraryOther[]
-    REMARK: ItineraryRemark[]
-  }
+  itineraryMap: ItineraryMap
   itineraryTypes: '1005'
   manageType: 1002
   participantNum: number
