@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS hly_staff
     company_code    VARCHAR(20)     NULL COLLATE ascii_bin,
     full_name       VARCHAR(64)     NOT NULL DEFAULT '',
     email           VARCHAR(128)    NULL COLLATE ascii_bin,
+    department_oid  CHAR(36)        NULL COLLATE ascii_bin,
     department_path TEXT            NULL,
     staff_status    INT             NOT NULL COMMENT 'HLY_StaffStatus',
     entry_date      TIMESTAMP       NULL,

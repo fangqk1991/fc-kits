@@ -40,6 +40,7 @@ export class HuilianyiSyncHandler {
       feed.userOid = item.userOID
       feed.companyCode = item.companyCode
       feed.fullName = item.fullName
+      feed.departmentOid = item.departmentOID
       feed.departmentPath = item.departmentPath
       feed.employeeId = item.employeeID
       feed.email = item.email
