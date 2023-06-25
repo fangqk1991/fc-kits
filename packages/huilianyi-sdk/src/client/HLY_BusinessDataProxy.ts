@@ -123,4 +123,16 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     request.setBodyData(params)
     return await request.quickSend()
   }
+
+  public async getFlightOrders(extras: {} = {}) {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.FlightOrdersGet))
+      request.setQueryParams({
+        ...params,
+        // withApplicationParticipant: true,
+        ...extras,
+      })
+      return await request.quickSend<HLY_Travel[]>()
+    })
+  }
 }

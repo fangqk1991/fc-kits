@@ -30,7 +30,7 @@ export interface HLY_CustomField {
 export interface HLY_Company {
   // id / companyOID 输出不稳定，不建议使用
   // id: number
-  // companyOID: string
+  companyOID: string
   code: string
   name: string
   parentCompanyCode: string | null

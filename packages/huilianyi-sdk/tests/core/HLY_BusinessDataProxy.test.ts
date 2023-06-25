@@ -3,6 +3,7 @@ import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import {
   HLY_BusinessDataProxy,
   HLY_EntityType,
+  HLY_OthersProxy,
   HLY_PublicApplicationStatusDescriptor,
   HLY_ReimburseStatus,
   HLY_ReimburseStatusDescriptor,
@@ -11,6 +12,7 @@ import { DiffMapper } from '@fangcha/tools'
 
 describe('Test HLY_BusinessDataProxy.test.ts', () => {
   const businessDataProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
+  const othersProxy = new HLY_OthersProxy(HuilianyiConfigTest, CustomRequestFollower)
 
   it(`getPublicApplicationList`, async () => {
     const items = await businessDataProxy.getPublicApplicationList()
@@ -183,5 +185,13 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
         2
       )
     )
+  })
+
+  it(`getFlightOrders`, async () => {
+    const companyList = await othersProxy.getCompanyList()
+    const items = await businessDataProxy.getFlightOrders({
+      companyOID: companyList[0].companyOID,
+    })
+    console.info(JSON.stringify(items, null, 2))
   })
 })

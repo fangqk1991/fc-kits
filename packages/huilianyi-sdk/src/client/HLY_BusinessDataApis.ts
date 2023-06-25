@@ -50,4 +50,10 @@ export const HLY_BusinessDataApis = {
     route: '/gateway/api/open/approvals/pass',
     description: '当前审批人审批通过',
   },
+
+  FlightOrdersGet: {
+    method: 'GET',
+    route: '/gateway/api/open/flight/orders',
+    description: '查询机票订单信息',
+  },
 }
