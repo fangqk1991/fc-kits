@@ -279,12 +279,27 @@ export class FeedBase extends FCModel {
     if (sortKey && mapper[sortKey]) {
       searcher.processor().addOrderRule(mapper[sortKey], sortDirection)
     }
-    const filterKeys = Object.keys(params).filter((key: string) => {
-      return /^[a-zA-Z]\w+$/.test(key) && key in mapper && !!params[key]
-    })
-    filterKeys.forEach((key) => {
-      searcher.processor().addConditionKV(mapper[key], params[key])
-    })
+    const paramsKeys = Object.keys(params)
+    paramsKeys
+      .filter((key: string) => {
+        return /^[a-zA-Z]\w+$/.test(key) && key in mapper && !!params[key]
+      })
+      .forEach((key) => {
+        searcher.processor().addConditionKV(mapper[key], params[key])
+      })
+    for (const key of paramsKeys) {
+      const matches = key.match(/^([a-zA-Z]\w+)\.\$(\w+)$/)
+      if (!matches || !(matches[1] in mapper)) {
+        continue
+      }
+      const columnKey = matches[1]
+      const symbol = matches[2]
+      if (symbol === 'in' && Array.isArray(params[key])) {
+        searcher.processor().addConditionKeyInArray(columnKey, params[key])
+      } else if (symbol === 'notIn' && Array.isArray(params[key])) {
+        searcher.processor().addConditionKeyNotInArray(columnKey, params[key])
+      }
+    }
     const limitInfo = _buildLimitInfo(params)
     if (limitInfo.offset >= 0 && limitInfo.length > 0) {
       searcher.processor().setLimitInfo(limitInfo.offset, limitInfo.length)

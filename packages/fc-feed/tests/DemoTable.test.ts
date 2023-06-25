@@ -98,8 +98,11 @@ describe('Test DemoTable', (): void => {
     }
   })
 
-  it(`Test fc_searcher`, async () => {
-    const pageResult = await DemoTable.getPageResult<{}>()
+  it(`Test getPageResult`, async () => {
+    const pageResult = await DemoTable.getPageResult<{}>({
+      [`uid.$in`]: [4, 5],
+      [`uid.$notIn`]: [4],
+    })
     pageResult.items.forEach((item) => {
       console.info(item)
     })
