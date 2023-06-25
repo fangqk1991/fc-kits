@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS hly_expense
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (business_code),
+    INDEX (form_code),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
@@ -57,6 +58,7 @@ CREATE TABLE IF NOT EXISTS hly_travel
     create_time         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (business_code),
+    INDEX (form_code),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
