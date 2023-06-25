@@ -292,7 +292,7 @@ export class FeedBase extends FCModel {
       if (!matches || !(matches[1] in mapper)) {
         continue
       }
-      const columnKey = matches[1]
+      const columnKey = mapper[matches[1]]
       const symbol = matches[2]
       if (symbol === 'in' && Array.isArray(params[key])) {
         searcher.processor().addConditionKeyInArray(columnKey, params[key])
