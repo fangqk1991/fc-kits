@@ -53,6 +53,33 @@ export class HuilianyiSyncHandler {
     await bulkAdder.execute()
   }
 
+  public async dumpDepartmentRecords() {
+    const syncCore = this.syncCore
+    const HLY_Department = syncCore.modelsCore.HLY_Department
+
+    const items = await syncCore.basicDataProxy.getAllDepartments()
+    console.info(`[dumpDepartmentRecords] fetch ${items.length} items.`)
+
+    const dbSpec = new HLY_Department().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    for (const item of items) {
+      const feed = new HLY_Department()
+      feed.departmentOid = item.departmentOID
+      feed.departmentName = item.departmentName
+      feed.departmentPath = item.departmentPath
+      feed.managerOid = item.managerOID
+      feed.managerName = item.managerName
+      feed.departmentParentOid = item.departmentParentOID
+      feed.departmentStatus = item.status
+      feed.extrasInfo = JSON.stringify(item)
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
+
   public async dumpExpenseRecords(forceReload = false) {
     const syncCore = this.syncCore
     const HLY_Expense = syncCore.modelsCore.HLY_Expense

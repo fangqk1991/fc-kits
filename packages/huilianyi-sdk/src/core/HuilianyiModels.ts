@@ -16,6 +16,7 @@ export interface HLY_SimpleDepartment {
   managerName: string
   managerOID: string
   status: number // 101--启用;102--禁用;103--删除
+  departmentParentOID: string
   customFormValues: HLY_CustomFormValue[]
   departmentType: string
 }

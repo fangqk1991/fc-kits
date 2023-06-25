@@ -32,7 +32,13 @@ const dbSchemas: DBModelSchema[] = [
     outputFile: `${__dirname}/../src/models/auto-build/__HLY_Staff.ts`,
     extFile: `${__dirname}/../src/models/extensions/_HLY_Staff.ts`,
     primaryKey: ['user_oid'],
-    // forceInsertableWhiteList: ['created_date', 'last_modified_date'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
+  {
+    tableName: 'hly_department',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_Department.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_Department.ts`,
+    primaryKey: ['department_oid'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
 ]

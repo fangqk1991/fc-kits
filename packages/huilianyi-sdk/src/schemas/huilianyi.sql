@@ -87,3 +87,23 @@ CREATE TABLE IF NOT EXISTS hly_staff
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_department;
+CREATE TABLE IF NOT EXISTS hly_department
+(
+    _rid                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    department_oid        CHAR(36)        NOT NULL COLLATE ascii_bin,
+    department_name       VARCHAR(64)     NULL     DEFAULT '',
+    department_path       TEXT            NULL,
+    manager_oid           CHAR(36)        NULL COLLATE ascii_bin,
+    manager_name          VARCHAR(64)     NULL     DEFAULT '',
+    department_parent_oid CHAR(36)        NULL COLLATE ascii_bin,
+    department_status     INT             NOT NULL COMMENT 'HLY_DepartmentStatus',
+    extras_info           MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    create_time           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (department_oid),
+    INDEX (department_status)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
