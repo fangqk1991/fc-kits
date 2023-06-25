@@ -2,7 +2,7 @@ import { HLY_CustomFormValue } from './HLY_CoreModels'
 import { ExpenseFieldDTO, ExpenseReportInvoiceView, HLY_ExpenseType } from './HLY_ReimbursementModels'
 import { HLY_ReimburseStatus } from './HLY_ReimburseStatus'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
-import { ItineraryMap, TravelApplication } from './HLY_TravelModels'
+import { ItineraryMap } from './HLY_TravelModels'
 
 export interface App_FormBase<T = any> {
   hlyId: number
