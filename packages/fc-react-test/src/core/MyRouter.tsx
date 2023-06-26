@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import React from 'react'
 import { MainLayout } from './MainLayout'
 import { LoadingView, RouteErrorBoundary } from '@fangcha/react'
-import { TestTableView } from '../pages/TestTableView'
+import { TestTableView } from '../pages/table/TestTableView'
 import { TestDialogsView } from '../pages/TestDialogsView'
 import { TestWidgetsView } from '../pages/TestWidgetsView'
 
