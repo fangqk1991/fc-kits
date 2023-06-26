@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { message } from 'antd'
 import { FilterDropdownView, TableView } from '@fangcha/react'
-import { PageResult, SelectOption, sleep } from '@fangcha/tools'
-import { TestTableView_SomeData, TestTableView_Tools } from './TestTableView_Tools'
+import { SelectOption } from '@fangcha/tools'
+import { TestTableView_SomeData } from './TestTableView_Tools'
 
 interface Props {
   version: number
@@ -23,6 +23,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
       value: 'c',
     },
   ]
+  const [selectorValue, setSelectorValue] = useState('')
   const [checkedValues, setCheckedValues] = useState<string[]>(
     options.filter((_) => Math.random() > 0.5).map((item) => item.value as string)
   )
@@ -38,12 +39,26 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
       }}
       columns={[
         {
+          title: 'Selector',
+          filtered: !!checkedValues && checkedValues.length > 0,
+          filterDropdown: (
+            <FilterDropdownView.Selector
+              title={'Selector'}
+              options={options}
+              value={selectorValue}
+              onValueChanged={(newValue) => {
+                message.success(`Select "${newValue}"`)
+                setSelectorValue(newValue)
+              }}
+            />
+          ),
+        },
+        {
           title: 'MultiSelector',
-          render: (item: TestTableView_SomeData) => <span>{item.uid}</span>,
           filtered: !!checkedValues && checkedValues.length > 0,
           filterDropdown: (
             <FilterDropdownView.MultiSelector
-              title={'UID'}
+              title={'MultiSelector'}
               options={options}
               checkedValues={checkedValues}
               onCheckedValuesChanged={(newValues) => {
@@ -54,23 +69,22 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
           ),
         },
         {
-          title: 'Value',
-          key: 'value',
-          sorter: (a: TestTableView_SomeData, b: TestTableView_SomeData) => a.value - b.value,
-          render: (item: TestTableView_SomeData) => <span>{item.value}</span>,
+          title: 'TextSearcher',
+          filterDropdown: (
+            <FilterDropdownView.TextSearcher
+              title={'TextSearcher'}
+              options={options}
+              checkedValues={checkedValues}
+              onCheckedValuesChanged={(newValues) => {
+                message.success(`[${newValues.join(', ')}] checked.`)
+                setCheckedValues(newValues)
+              }}
+            />
+          ),
         },
       ]}
-      loadData={async (retainParams) => {
-        console.info(retainParams)
-        const items = TestTableView_Tools.makeDataList()
-        await sleep(1000)
-        const pageResult: PageResult<TestTableView_SomeData> = {
-          offset: retainParams._offset!,
-          length: items.length,
-          totalCount: items.length * 2,
-          items: items,
-        }
-        return pageResult
+      loadOnePageItems={async () => {
+        return []
       }}
     />
   )
