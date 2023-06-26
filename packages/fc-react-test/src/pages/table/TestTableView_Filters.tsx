@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Button, Divider, message, Space } from 'antd'
-import { TableView, TableViewColumn } from '@fangcha/react'
+import { Button, Divider, message, Space, Tag } from 'antd'
+import { ColumnFilterType, TableView, TableViewColumn } from '@fangcha/react'
 import { SelectOption } from '@fangcha/tools'
 
 interface Props {
@@ -45,10 +45,23 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
       <TableView
         reactiveQuery={true}
         version={version}
+        hidePagination={true}
         tableProps={{
           size: 'small',
         }}
         columns={[
+          {
+            title: 'Normal - 1',
+            render: (item) => {
+              return `Normal Cell - 1`
+            },
+          },
+          TableViewColumn.normalColumn({
+            title: 'Normal - 2',
+            render: (item) => {
+              return `Normal Cell - 2`
+            },
+          }),
           TableViewColumn.selectorColumn({
             title: 'Selector',
             options: options,
@@ -85,6 +98,66 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
             },
           }),
         ]}
+        loadOnePageItems={async () => {
+          return [null]
+        }}
+      />
+
+      <Divider />
+
+      <TableView
+        reactiveQuery={true}
+        version={version}
+        hidePagination={true}
+        tableProps={{
+          size: 'small',
+        }}
+        columns={TableViewColumn.makeColumns<null>([
+          {
+            title: 'Normal',
+            render: (item) => {
+              return `Normal Cell`
+            },
+          },
+          {
+            type: ColumnFilterType.Selector,
+            title: 'Selector',
+            options: options,
+            value: selectorValue,
+            onValueChanged: (newValue) => {
+              message.success(`Select "${newValue}"`)
+              setSelectorValue(newValue)
+            },
+            render: (item) => {
+              return `selectorValue: ${selectorValue}`
+            },
+          },
+          {
+            type: ColumnFilterType.MultiSelector,
+            title: 'MultiSelector',
+            options: options,
+            checkedValues: checkedValues,
+            onCheckedValuesChanged: (newValues) => {
+              message.success(`[${JSON.stringify(newValues)}] checked.`)
+              setCheckedValues(newValues)
+            },
+            render: (item) => {
+              return `checkedValues: ${JSON.stringify(checkedValues)}`
+            },
+          },
+          {
+            type: ColumnFilterType.TextSearcher,
+            title: <Tag color={'geekblue'}>TextSearcher</Tag>,
+            value: textValue,
+            onValueChanged: (newVal) => {
+              message.success(`Search "${newVal}"`)
+              setTextValue(newVal)
+            },
+            render: (item) => {
+              return `textValue: ${textValue}`
+            },
+          },
+        ])}
         loadOnePageItems={async () => {
           return [null]
         }}
