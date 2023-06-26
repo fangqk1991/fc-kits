@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { message } from 'antd'
-import { FilterDropdownView, TableView } from '@fangcha/react'
+import { Button, Divider, message, Space } from 'antd'
+import { TableView, TableViewColumn } from '@fangcha/react'
 import { SelectOption } from '@fangcha/tools'
-import { TestTableView_SomeData } from './TestTableView_Tools'
 
 interface Props {
   version: number
@@ -27,65 +26,69 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
   const [checkedValues, setCheckedValues] = useState<string[]>(
     options.filter((_) => Math.random() > 0.5).map((item) => item.value as string)
   )
+  const [textValue, setTextValue] = useState('')
   return (
-    <TableView
-      reactiveQuery={true}
-      version={version}
-      tableProps={{
-        size: 'small',
-      }}
-      rowKey={(item: TestTableView_SomeData) => {
-        return item.uid
-      }}
-      columns={[
-        {
-          title: 'Selector',
-          filtered: !!checkedValues && checkedValues.length > 0,
-          filterDropdown: (
-            <FilterDropdownView.Selector
-              title={'Selector'}
-              options={options}
-              value={selectorValue}
-              onValueChanged={(newValue) => {
-                message.success(`Select "${newValue}"`)
-                setSelectorValue(newValue)
-              }}
-            />
-          ),
-        },
-        {
-          title: 'MultiSelector',
-          filtered: !!checkedValues && checkedValues.length > 0,
-          filterDropdown: (
-            <FilterDropdownView.MultiSelector
-              title={'MultiSelector'}
-              options={options}
-              checkedValues={checkedValues}
-              onCheckedValuesChanged={(newValues) => {
-                message.success(`[${newValues.join(', ')}] checked.`)
-                setCheckedValues(newValues)
-              }}
-            />
-          ),
-        },
-        {
-          title: 'TextSearcher',
-          filterDropdown: (
-            <FilterDropdownView.TextSearcher
-              title={'TextSearcher'}
-              options={options}
-              checkedValues={checkedValues}
-              onCheckedValuesChanged={(newValues) => {
-                message.success(`[${newValues.join(', ')}] checked.`)
-                setCheckedValues(newValues)
-              }}
-            />
-          ),
-        },
-      ]}
-      loadOnePageItems={async () => {
-        return []
-      }}
-    />
+    <div>
+      <Space>
+        <Button
+          onClick={() => {
+            setTextValue('')
+            setSelectorValue('')
+            setCheckedValues([])
+          }}
+        >
+          Clear
+        </Button>
+      </Space>
+      <Divider />
+
+      <TableView
+        reactiveQuery={true}
+        version={version}
+        tableProps={{
+          size: 'small',
+        }}
+        columns={[
+          TableViewColumn.selectorColumn({
+            title: 'Selector',
+            options: options,
+            value: selectorValue,
+            onValueChanged: (newValue) => {
+              message.success(`Select "${newValue}"`)
+              setSelectorValue(newValue)
+            },
+            render: () => {
+              return `selectorValue: ${selectorValue}`
+            },
+          }),
+          TableViewColumn.multiSelectorColumn({
+            title: 'MultiSelector',
+            options: options,
+            checkedValues: checkedValues,
+            onCheckedValuesChanged: (newValues) => {
+              message.success(`[${JSON.stringify(newValues)}] checked.`)
+              setCheckedValues(newValues)
+            },
+            render: () => {
+              return `checkedValues: ${JSON.stringify(checkedValues)}`
+            },
+          }),
+          TableViewColumn.textSearcherColumn({
+            title: 'TextSearcher',
+            value: textValue,
+            onValueChanged: (newVal) => {
+              message.success(`Search "${newVal}"`)
+              setTextValue(newVal)
+            },
+            render: () => {
+              return `textValue: ${textValue}`
+            },
+          }),
+        ]}
+        loadOnePageItems={async () => {
+          return [null]
+        }}
+      />
+    </div>
   )
 }
