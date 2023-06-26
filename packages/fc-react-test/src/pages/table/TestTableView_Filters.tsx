@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { message } from 'antd'
-import { TableView } from '@fangcha/react'
+import { FilterDropdownView, TableView } from '@fangcha/react'
 import { PageResult, SelectOption, sleep } from '@fangcha/tools'
 import { TestTableView_SomeData, TestTableView_Tools } from './TestTableView_Tools'
-import { FilterDropdownView } from './FilterDropdownView'
 
 interface Props {
   version: number
@@ -39,7 +38,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
       }}
       columns={[
         {
-          title: 'UID',
+          title: 'MultiSelector',
           render: (item: TestTableView_SomeData) => <span>{item.uid}</span>,
           filtered: !!checkedValues && checkedValues.length > 0,
           filterDropdown: (

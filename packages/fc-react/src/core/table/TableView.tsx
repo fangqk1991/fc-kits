@@ -3,7 +3,7 @@ import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableProps } from 'antd/es/table'
 import { PageResult } from '@fangcha/tools'
-import { useQueryParams } from '../hooks/useQueryParams'
+import { useQueryParams } from '../../hooks/useQueryParams'
 
 interface DefaultSettings {
   pageNumber?: number
