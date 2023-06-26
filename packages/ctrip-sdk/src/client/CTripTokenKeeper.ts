@@ -24,8 +24,8 @@ export class CTripTokenKeeper extends ServiceProxy<CTripOptions> {
       const request = this.makeRequest(CTripDataApis.OrderTicketRequest)
       request
         .setBodyData({
-          appKey: config.appKey,
-          appSecurity: config.appSecurity,
+          AppKey: config.appKey,
+          AppSecurity: config.appSecurity,
         })
         .setResponse200Checker((responseData: CTripResponseDTO) => {
           if (responseData.Status !== undefined && responseData.Status.ErrorCode !== 0) {
@@ -38,7 +38,7 @@ export class CTripTokenKeeper extends ServiceProxy<CTripOptions> {
           }
         })
       this.onRequestMade(request)
-      const response = await request.quickSend<CTripResponseDTO>()
+      const response = await request.quickSend<CTripResponseDTO<{ Ticket: string }>>()
       this._ticket = response.Ticket
       this._expireTs = Date.now() + 7200 * 1000
       return this._ticket

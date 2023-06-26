@@ -3,7 +3,7 @@ import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { CTripTokenKeeper } from './CTripTokenKeeper'
 import AppError from '@fangcha/app-error'
 import { CTripOptions } from './CTripOptions'
-import { CTripResponseDTO } from '../core/CTrip_CoreModels'
+import { CTripDatetimeRange, CTripResponseDTO, CTripSimpleOrder } from '../core/CTrip_CoreModels'
 import { CTripDataApis } from './CTripDataApis'
 
 export class CTripProxy extends ServiceProxy<CTripOptions> {
@@ -40,13 +40,30 @@ export class CTripProxy extends ServiceProxy<CTripOptions> {
     return request
   }
 
-  public async searchOrder() {
-    const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderSearch))
+  public async searchOrder(dateRange: CTripDatetimeRange) {
+    const orderIdList = await this.queryOrderIdList(dateRange)
+    const items: any[] = []
+    for (let i = 0; i < orderIdList.length; i += 30) {
+      const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderSearch))
+      request.setBodyData({
+        ...request.bodyData,
+        OrderID: orderIdList.slice(i, i + 30).join(','),
+      })
+      const data = await request.quickSend<CTripResponseDTO<{ ItineraryList: any[] }>>()
+      items.push(...data.ItineraryList)
+    }
+    return items
+  }
+
+  public async queryOrderIdList(dateRange: CTripDatetimeRange) {
+    const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderIdListQuery))
+    request.setBaseURL('https://corpsz.ctrip.com')
     request.setBodyData({
       ...request.bodyData,
-      DateFrom: '2023-06-25',
-      DateTo: '2023-06-25',
+      BeginDate: dateRange.from,
+      EndDate: dateRange.to,
     })
-    return await request.quickSend<CTripResponseDTO>()
+    const data = await request.quickSend<CTripResponseDTO<{ Data: CTripSimpleOrder[] }>>()
+    return data.Data.map((item) => item.OrderId)
   }
 }

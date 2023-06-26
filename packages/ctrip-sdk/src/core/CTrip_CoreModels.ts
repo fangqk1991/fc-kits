@@ -1,8 +1,17 @@
-export interface CTripResponseDTO {
+export type CTripResponseDTO<T = any> = {
   Status: {
     Success: boolean
     ErrorCode: number
     Message: string
   }
-  Ticket: string
+} & T
+
+export interface CTripSimpleOrder {
+  OrderId: number
+  OrderType: number
+}
+
+export interface CTripDatetimeRange {
+  from: string
+  to: string
 }
