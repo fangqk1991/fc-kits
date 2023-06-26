@@ -4,6 +4,7 @@ import { SelectOption } from '@fangcha/tools'
 import { SearchOutlined } from '@ant-design/icons'
 
 interface NormalProps<T = any> {
+  filterType?: ColumnFilterType
   title: React.ReactNode
   render?: (item: T, _: T, index: number) => React.ReactNode
 }
@@ -41,9 +42,7 @@ export enum ColumnFilterType {
 
 export class TableViewColumn {
   public static makeColumns<T = any>(
-    propsList: ((NormalProps<T> | SelectorProps<T> | MultipleSelectorProps<T> | TextSearcherProps<T>) & {
-      filterType?: ColumnFilterType
-    })[]
+    propsList: (NormalProps<T> | SelectorProps<T> | MultipleSelectorProps<T> | TextSearcherProps<T>)[]
   ): ColumnAttrs<T>[] {
     return propsList.map((props) => {
       switch (props.filterType) {
