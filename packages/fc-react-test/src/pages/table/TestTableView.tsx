@@ -4,6 +4,7 @@ import { useQueryParams } from '@fangcha/react'
 import { TestTableView_LoadData } from './TestTableView_LoadData'
 import { TestTableView_LoadOnePageItems } from './TestTableView_LoadOnePageItems'
 import { TestTableView_WideTable } from './TestTableView_WideTable'
+import { TestTableView_Filters } from './TestTableView_Filters'
 
 export const TestTableView: React.FC = () => {
   const [version, setVersion] = useState(0)
@@ -41,6 +42,11 @@ export const TestTableView: React.FC = () => {
             label: `Wide Table`,
             key: 'wideTable',
             children: <TestTableView_WideTable version={version} />,
+          },
+          {
+            label: `Filters`,
+            key: 'filters',
+            children: <TestTableView_Filters version={version} />,
           },
         ]}
       />
