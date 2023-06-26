@@ -5,7 +5,7 @@ import { SearchOutlined } from '@ant-design/icons'
 
 interface NormalProps<T = any> {
   title: React.ReactNode
-  render?: (item: T) => React.ReactNode
+  render?: (item: T, _: T, index: number) => React.ReactNode
 }
 
 interface SelectorProps<T = any> extends NormalProps<T> {
@@ -29,7 +29,7 @@ interface ColumnAttrs<T = any> {
   title: React.ReactNode
   filtered?: boolean
   filterDropdown?: React.ReactNode
-  render?: (item: T) => React.ReactNode
+  render?: (item: T, _: T, index: number) => React.ReactNode
 }
 
 export enum ColumnFilterType {
@@ -42,11 +42,11 @@ export enum ColumnFilterType {
 export class TableViewColumn {
   public static makeColumns<T = any>(
     propsList: ((NormalProps<T> | SelectorProps<T> | MultipleSelectorProps<T> | TextSearcherProps<T>) & {
-      type?: ColumnFilterType
+      filterType?: ColumnFilterType
     })[]
   ): ColumnAttrs<T>[] {
     return propsList.map((props) => {
-      switch (props.type) {
+      switch (props.filterType) {
         case ColumnFilterType.Selector:
           return TableViewColumn.selectorColumn(props as SelectorProps)
         case ColumnFilterType.MultiSelector:

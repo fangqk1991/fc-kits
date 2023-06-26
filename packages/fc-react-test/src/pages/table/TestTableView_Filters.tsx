@@ -52,7 +52,8 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
         columns={[
           {
             title: 'Normal - 1',
-            render: (item) => {
+            render: (item, record, index) => {
+              console.info(item, record, index)
               return `Normal Cell - 1`
             },
           },
@@ -99,7 +100,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
           }),
         ]}
         loadOnePageItems={async () => {
-          return [null]
+          return [{ a: 1 }]
         }}
       />
 
@@ -120,7 +121,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
             },
           },
           {
-            type: ColumnFilterType.Selector,
+            filterType: ColumnFilterType.Selector,
             title: 'Selector',
             options: options,
             value: selectorValue,
@@ -133,7 +134,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
             },
           },
           {
-            type: ColumnFilterType.MultiSelector,
+            filterType: ColumnFilterType.MultiSelector,
             title: 'MultiSelector',
             options: options,
             checkedValues: checkedValues,
@@ -146,7 +147,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
             },
           },
           {
-            type: ColumnFilterType.TextSearcher,
+            filterType: ColumnFilterType.TextSearcher,
             title: <Tag color={'geekblue'}>TextSearcher</Tag>,
             value: textValue,
             onValueChanged: (newVal) => {
