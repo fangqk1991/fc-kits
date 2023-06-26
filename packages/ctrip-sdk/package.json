@@ -1,0 +1,37 @@
+{
+  "name": "@fangcha/ctrip-sdk",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build",
+    "rebuild-models": "ts-node ./tools/rebuild-models.ts"
+  },
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "files": [
+    "lib/*",
+    "src/*"
+  ],
+  "devDependencies": {
+    "@fangcha/app-error": "workspace:^",
+    "@fangcha/app-request": "workspace:^",
+    "@fangcha/app-request-extensions": "workspace:^",
+    "@fangcha/assert": "workspace:^",
+    "@fangcha/backend-kit": "workspace:^",
+    "@fangcha/logger": "workspace:^",
+    "@fangcha/tools": "workspace:^",
+    "@fangcha/generator": "workspace:^",
+    "fc-feed": "workspace:^",
+    "fc-model": "workspace:^",
+    "fc-sql": "workspace:^"
+  },
+  "nyc": {
+    "sourceMap": false
+  }
+}

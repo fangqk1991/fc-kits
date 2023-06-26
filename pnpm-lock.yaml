@@ -283,6 +283,42 @@ importers:
         specifier: 4.6.4
         version: 4.6.4
 
+  packages/ctrip-sdk:
+    devDependencies:
+      '@fangcha/app-error':
+        specifier: workspace:^
+        version: link:../app-error
+      '@fangcha/app-request':
+        specifier: workspace:^
+        version: link:../http-request
+      '@fangcha/app-request-extensions':
+        specifier: workspace:^
+        version: link:../http-request-extensions
+      '@fangcha/assert':
+        specifier: workspace:^
+        version: link:../assert
+      '@fangcha/backend-kit':
+        specifier: workspace:^
+        version: link:../backend-kit
+      '@fangcha/generator':
+        specifier: workspace:^
+        version: link:../fc-generator
+      '@fangcha/logger':
+        specifier: workspace:^
+        version: link:../fc-logger
+      '@fangcha/tools':
+        specifier: workspace:^
+        version: link:../fc-tools
+      fc-feed:
+        specifier: workspace:^
+        version: link:../fc-feed
+      fc-model:
+        specifier: workspace:^
+        version: link:../fc-model
+      fc-sql:
+        specifier: workspace:^
+        version: link:../fc-sql
+
   packages/eslint:
     dependencies:
       '@typescript-eslint/eslint-plugin':

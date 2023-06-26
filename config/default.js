@@ -16,4 +16,9 @@ module.exports = {
     timezone: '+08:00',
     logging: false,
   },
+  CTripSDK: {
+    urlBase: 'https://ct.ctrip.com',
+    appKey: '<username>',
+    appSecurity: '<password>',
+  },
 }
