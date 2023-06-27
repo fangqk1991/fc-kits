@@ -12,6 +12,9 @@ export const TestWidgetsView: React.FC = () => {
             values={['abcdefg', 'hijklmn', 'opqrst', 'uvwxyz', '12345', '67890']}
             inline={true}
             thin={true}
+            onItemClick={(value, index) => {
+              message.success(`value: ${value}, index: ${index}`)
+            }}
           />
         </Card>
         <Card size={'small'} title='Query Params' style={{ width: 300 }}>

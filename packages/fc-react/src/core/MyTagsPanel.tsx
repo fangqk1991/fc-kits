@@ -9,6 +9,7 @@ interface Props {
   inline?: boolean
   tagProps?: TagProps
   thin?: boolean
+  onItemClick?: (value: any, index: number) => void | Promise<void>
 }
 
 export const MyTagsPanel: React.FC<Props> = (props) => {
@@ -26,14 +27,27 @@ export const MyTagsPanel: React.FC<Props> = (props) => {
   }
   return (
     <div style={{ width: props.width || 'auto' }}>
-      {options.map((option) => {
+      {options.map((option, index) => {
         return (
-          <div key={option.value} style={{ display: props.inline ? 'inline-block' : 'block' }}>
+          <div
+            key={option.value}
+            style={{
+              display: props.inline ? 'inline-block' : 'block',
+            }}
+          >
             <Tag
               {...(props.tagProps || {})}
               style={{
                 whiteSpace: 'normal',
+                cursor: props.onItemClick ? 'pointer' : undefined,
               }}
+              {...(props.onItemClick
+                ? {
+                    onClick: () => {
+                      props.onItemClick && props.onItemClick(option.value, index)
+                    },
+                  }
+                : {})}
             >
               {option.label}
             </Tag>
