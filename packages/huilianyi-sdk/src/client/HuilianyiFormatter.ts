@@ -1,4 +1,4 @@
-import { HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
+import { HLY_ExpenseV2 } from '../core/HLY_ExpenseModels'
 import { App_ExpenseModel, App_TravelCoreItinerary, App_TravelModel } from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
 import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'

@@ -5,8 +5,8 @@ import {
   HLY_EntityType,
   HLY_OthersProxy,
   HLY_PublicApplicationStatusDescriptor,
-  HLY_ReimburseStatus,
-  HLY_ReimburseStatusDescriptor,
+  HLY_ExpenseStatus,
+  HLY_ExpenseStatusDescriptor,
 } from '../../src'
 import { DiffMapper } from '@fangcha/tools'
 
@@ -57,7 +57,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
       applicantName: item.applicantName,
       createdDate: item.createdDate,
       status: item.status,
-      statusText: HLY_ReimburseStatusDescriptor.describe(item.status),
+      statusText: HLY_ExpenseStatusDescriptor.describe(item.status),
       applicationBusinessCode: item.applicationBusinessCode,
     }))
     console.info(`${dataList.length} items.`)
@@ -98,7 +98,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
       createdDate: item.createdDate,
       lastModifiedDate: item.lastModifiedDate,
       status: item.status,
-      statusText: HLY_ReimburseStatusDescriptor.describe(item.status),
+      statusText: HLY_ExpenseStatusDescriptor.describe(item.status),
     }))
     console.info(`${dataList.length} items.`)
     // console.info(JSON.stringify(items, null, 2))
@@ -114,7 +114,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
 
   it(`getExpenseReportDetail`, async () => {
     const [keyItem] = await businessDataProxy.getExpenseReportList({
-      statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
+      statusList: [HLY_ExpenseStatus.Passed, HLY_ExpenseStatus.Paid],
     })
     const detailInfo = await businessDataProxy.getExpenseReportDetail(keyItem.businessCode)
     const diffMapper = new DiffMapper(keyItem, detailInfo)

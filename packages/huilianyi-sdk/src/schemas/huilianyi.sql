@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS hly_expense
     last_modified_date   TIMESTAMP       NULL,
     extras_info          MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
     expense_type         INT             NOT NULL COMMENT 'HLY_ExpenseType',
-    expense_status       INT             NOT NULL COMMENT 'HLY_ReimburseStatus',
+    expense_status       INT             NOT NULL COMMENT 'HLY_ExpenseStatus',
     total_amount         DOUBLE          NOT NULL COMMENT '总金额',
     apply_form_codes_str VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联申请单编号集',
     reload_time          TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',

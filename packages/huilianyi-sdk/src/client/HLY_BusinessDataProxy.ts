@@ -1,8 +1,8 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BusinessDataApis } from './HLY_BusinessDataApis'
-import { HLY_ApprovalParams, HLY_Expense, HLY_ExpenseV2 } from '../core/HLY_ReimbursementModels'
-import { HLY_ReimburseStatus, HLY_ReimburseStatusDescriptor } from '../core/HLY_ReimburseStatus'
+import { HLY_ApprovalParams, HLY_Expense, HLY_ExpenseV2 } from '../core/HLY_ExpenseModels'
+import { HLY_ExpenseStatus, HLY_ExpenseStatusDescriptor } from '../core/HLY_ExpenseStatus'
 import { PageDataFetcher } from './PageDataFetcher'
 import { HuilianyiResponse } from '../core/HuilianyiModels'
 import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
@@ -33,19 +33,19 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
    * @deprecated
    * @param options
    */
-  public async getExpenseReportList(options: { statusList?: HLY_ReimburseStatus[] } = {}) {
+  public async getExpenseReportList(options: { statusList?: HLY_ExpenseStatus[] } = {}) {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseReportListGet))
       request.setQueryParams({
         ...params,
-        status: (options.statusList || HLY_ReimburseStatusDescriptor.values).join(','),
+        status: (options.statusList || HLY_ExpenseStatusDescriptor.values).join(','),
       })
       return await request.quickSend<HLY_Expense[]>()
     })
   }
 
   public async getExpenseReportListV2(
-    options: { statusList?: HLY_ReimburseStatus[]; lastModifyStartDate?: string } = {},
+    options: { statusList?: HLY_ExpenseStatus[]; lastModifyStartDate?: string } = {},
     extras: {} = {}
   ) {
     return await PageDataFetcher.fetchAllPageItemsV2(async (params) => {
@@ -64,7 +64,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         // withInvoiceCustomFormValue: true,
         ...extras,
         lastModifyStartDate: lastModifyStartDate,
-        statusList: options.statusList || HLY_ReimburseStatusDescriptor.values,
+        statusList: options.statusList || HLY_ExpenseStatusDescriptor.values,
         sortDTOList: [
           {
             property: 'id',

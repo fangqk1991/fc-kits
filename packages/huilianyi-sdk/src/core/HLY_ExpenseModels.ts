@@ -1,5 +1,5 @@
 import { HLY_CustomFormValue, HLY_EntityLabelDTO, HLY_Staff } from './HLY_CoreModels'
-import { HLY_ReimburseStatus } from './HLY_ReimburseStatus'
+import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
 import { HLY_FieldBusinessCode, HLY_FieldType } from './HLY_FieldType'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 
@@ -94,7 +94,7 @@ export interface HLY_ExpenseV2 {
   expenseReportOID: string // UUID
   businessCode: string // 'ER15011743'
   departmentOID: string // UUID
-  status: HLY_ReimburseStatus
+  status: HLY_ExpenseStatus
   splitStatus: number // 拆单状态 0
   applicantJobId: string // '1661298278307860481'
   applicantOID: string // UUID
@@ -265,7 +265,7 @@ export interface HLY_Expense {
   splitStatus: number // 0
   ssoDetailJumpURL: string
   ssoViewJumpURL: string
-  status: HLY_ReimburseStatus
+  status: HLY_ExpenseStatus
   statusView: number // 1001
   subCompanyOID: string
   tenantId: string
