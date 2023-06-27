@@ -1,7 +1,8 @@
 import { HLY_CustomFormValue, HLY_EntityLabelDTO, HLY_Staff } from './HLY_CoreModels'
 import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
 import { HLY_FieldBusinessCode, HLY_FieldType } from './HLY_FieldType'
-import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
+import { HLY_InvoiceStatusStr } from './HLY_InvoiceStatus'
+import { InvoiceLabelDTO } from './HLY_InvoiceModels'
 
 export interface ExpenseFieldDTO {
   fieldOID: string
@@ -23,13 +24,6 @@ export interface AttachmentDTO {
   fileName: string
   fileURL: string
   fileType: string
-}
-
-export interface InvoiceLabelDTO {
-  type: string
-  name: string
-  description: string
-  toast: string
 }
 
 export enum HLY_ExpenseTravelStandardValidStatus {
@@ -378,7 +372,7 @@ export interface ExpenseReportInvoiceView {
   employeeId: string
   bookerEmployeeId: string | null
   data: ExpenseFieldDTO[] // Example [出发城市, 到达城市, 交通工具, 附件]
-  invoiceStatus: HLY_InvoiceStatus
+  invoiceStatus: HLY_InvoiceStatusStr
   invoiceSaveStatus: null
   comment: string
   warning: string

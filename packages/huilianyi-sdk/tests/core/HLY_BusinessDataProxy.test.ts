@@ -3,10 +3,10 @@ import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
 import {
   HLY_BusinessDataProxy,
   HLY_EntityType,
-  HLY_OthersProxy,
-  HLY_PublicApplicationStatusDescriptor,
   HLY_ExpenseStatus,
   HLY_ExpenseStatusDescriptor,
+  HLY_OthersProxy,
+  HLY_PublicApplicationStatusDescriptor,
 } from '../../src'
 import { DiffMapper } from '@fangcha/tools'
 
@@ -181,6 +181,22 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     console.info(
       JSON.stringify(
         items1.map((_, index) => DiffMapper.diff(items1[index], items2[index])),
+        null,
+        2
+      )
+    )
+  })
+
+  it(`getInvoiceList`, async () => {
+    const items = await businessDataProxy.getInvoiceList({})
+    // const keyTextList = items.map((item) => `${item.fullName} - ${item.departmentPath}`)
+    console.info(`${items.length} items.`)
+    console.info(
+      JSON.stringify(
+        items.map((item) => ({
+          name: item.expenseTypeName,
+          fields: item.data.map((field) => `${field.name}`),
+        })),
         null,
         2
       )

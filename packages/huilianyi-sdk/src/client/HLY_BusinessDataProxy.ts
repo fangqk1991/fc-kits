@@ -7,6 +7,7 @@ import { PageDataFetcher } from './PageDataFetcher'
 import { HuilianyiResponse } from '../core/HuilianyiModels'
 import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
 import { HLY_Travel } from '../core/HLY_TravelModels'
+import { HLY_Invoice } from '../core/HLY_InvoiceModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPublicApplicationList() {
@@ -106,6 +107,17 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       ...extras,
     })
     return await request.quickSend<HLY_Travel>()
+  }
+
+  public async getInvoiceList(extras: {} = {}) {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.InvoiceListGet))
+      request.setQueryParams({
+        ...params,
+        ...extras,
+      })
+      return await request.quickSend<HLY_Invoice[]>()
+    })
   }
 
   public async updateApplicationCustomFormValue(businessCode: string, params: {}) {
