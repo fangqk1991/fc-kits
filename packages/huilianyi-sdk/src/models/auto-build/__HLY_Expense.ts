@@ -22,6 +22,7 @@ const _cols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'apply_form_codes_str',
   'reload_time',
   'create_time',
   'update_time',
@@ -47,6 +48,7 @@ const _insertableCols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'apply_form_codes_str',
   'reload_time',
 ]
 const _modifiableCols: string[] = [
@@ -68,6 +70,7 @@ const _modifiableCols: string[] = [
   'expense_type',
   'expense_status',
   'total_amount',
+  'apply_form_codes_str',
   'reload_time',
 ]
 
@@ -157,6 +160,10 @@ export default class __HLY_Expense extends FeedBase {
    */
   public totalAmount!: number
   /**
+   * @description [varchar(256)] 关联申请单编号集
+   */
+  public applyFormCodesStr!: string
+  /**
    * @description [timestamp]
    */
   public reloadTime!: string
@@ -214,6 +221,7 @@ export default class __HLY_Expense extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.applyFormCodesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
@@ -238,6 +246,7 @@ export default class __HLY_Expense extends FeedBase {
       expenseType: 'expense_type',
       expenseStatus: 'expense_status',
       totalAmount: 'total_amount',
+      applyFormCodesStr: 'apply_form_codes_str',
       reloadTime: 'reload_time',
       createTime: 'create_time',
       updateTime: 'update_time',

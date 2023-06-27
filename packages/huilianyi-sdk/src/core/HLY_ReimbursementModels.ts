@@ -84,6 +84,11 @@ export interface OpenExpenseTypeVO {
   code: string
 }
 
+export interface OpenExpenseReportApplicationVO {
+  applicationOID: string
+  applicationBusinessCode: string
+}
+
 export interface HLY_ExpenseV2 {
   id: string // '15011743'
   expenseReportOID: string // UUID
@@ -162,6 +167,7 @@ export interface HLY_ExpenseV2 {
   expenseTypeVOList: OpenExpenseTypeVO[]
   expenseReportLabelVOList: any[]
   expenseFieldVOList: ExpenseFieldDTO[] // !!!
+  expenseReportApplicationVOList: OpenExpenseReportApplicationVO[]
   // withReceipt ->
   // receiptVOList: any[],
   // receiptAttachmentVOList: any[],

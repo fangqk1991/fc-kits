@@ -104,7 +104,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     // console.info(JSON.stringify(items, null, 2))
     console.info(
       JSON.stringify(
-        items.map((item) => item.expenseFieldVOList),
+        items.map((item) => item),
         null,
         2
       )

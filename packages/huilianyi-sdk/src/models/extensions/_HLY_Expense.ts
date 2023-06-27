@@ -17,7 +17,15 @@ export class _HLY_Expense extends __HLY_Expense {
     const feed = new this()
     feed.fc_generateWithModel(data)
     feed.extrasInfo = JSON.stringify(data.extrasData)
+    feed.applyFormCodesStr = data.applyFormCodes.join(',')
     return feed
+  }
+
+  public applyFormCodes() {
+    return this.applyFormCodesStr
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
   }
 
   public extrasData(): App_ExpenseExtrasData {
@@ -40,7 +48,9 @@ export class _HLY_Expense extends __HLY_Expense {
 
   public modelForClient() {
     const data = this.fc_pureModel() as App_ExpenseModel
+    data.applyFormCodes = this.applyFormCodes()
     data.extrasData = this.extrasData()
+    delete data['applyFormCodesStr']
     delete data['extrasInfo']
     delete data['createTime']
     delete data['updateTime']

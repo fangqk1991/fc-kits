@@ -48,6 +48,7 @@ export interface App_ExpenseModel extends App_FormBase<App_ExpenseExtrasData> {
   expenseType: HLY_ExpenseType
   expenseStatus: HLY_ReimburseStatus
   totalAmount: number
+  applyFormCodes: string[]
 }
 
 export interface App_TravelExtrasData {

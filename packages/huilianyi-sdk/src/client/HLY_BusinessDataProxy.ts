@@ -56,6 +56,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         withExpenseType: true,
         withExpenseField: true,
         withCustomFormValue: true,
+        withApplication: true,
         withInvoice: true,
         withExpenseReportLabel: true,
         withRealPaymentAmount: true,

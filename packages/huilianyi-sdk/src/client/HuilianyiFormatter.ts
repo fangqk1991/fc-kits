@@ -23,6 +23,7 @@ export class HuilianyiFormatter {
       expenseType: item.type,
       expenseStatus: item.status,
       totalAmount: item.totalAmount,
+      applyFormCodes: (item.expenseReportApplicationVOList || []).map((item) => item.applicationBusinessCode),
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
       extrasData: {
