@@ -294,10 +294,22 @@ export class FeedBase extends FCModel {
       }
       const columnKey = mapper[matches[1]]
       const symbol = matches[2]
-      if (symbol === 'in' && Array.isArray(params[key])) {
-        searcher.processor().addConditionKeyInArray(columnKey, params[key])
-      } else if (symbol === 'notIn' && Array.isArray(params[key])) {
-        searcher.processor().addConditionKeyNotInArray(columnKey, params[key])
+      if (['in', 'notIn'].includes(symbol) && Array.isArray(params[key])) {
+        if (symbol === 'in') {
+          searcher.processor().addConditionKeyInArray(columnKey, params[key])
+        } else if (symbol === 'notIn') {
+          searcher.processor().addConditionKeyNotInArray(columnKey, params[key])
+        }
+      } else if (['inStr', 'notInStr'].includes(symbol) && typeof params[key] === 'string') {
+        const values = (params[key] as string)
+          .split(',')
+          .map((item) => item.trim())
+          .filter((item) => !!item)
+        if (symbol === 'inStr') {
+          searcher.processor().addConditionKeyInArray(columnKey, values)
+        } else if (symbol === 'notInStr') {
+          searcher.processor().addConditionKeyNotInArray(columnKey, values)
+        }
       }
     }
     const limitInfo = _buildLimitInfo(params)

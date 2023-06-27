@@ -100,8 +100,10 @@ describe('Test DemoTable', (): void => {
 
   it(`Test getPageResult`, async () => {
     const pageResult = await DemoTable.getPageResult<{}>({
-      [`uid.$in`]: [4, 5],
-      [`uid.$notIn`]: [4],
+      // [`uid.$in`]: [4, 5],
+      // [`uid.$notIn`]: [4],
+      [`uid.$inStr`]: '5',
+      [`uid.$notInStr`]: '3,4',
     })
     pageResult.items.forEach((item) => {
       console.info(item)
