@@ -22,6 +22,7 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
       value: 'c',
     },
   ]
+  const [multiStrValue, setMultiStrValue] = useState('')
   const [selectorValue, setSelectorValue] = useState('')
   const [checkedValues, setCheckedValues] = useState<string[]>(
     options.filter((_) => Math.random() > 0.5).map((item) => item.value as string)
@@ -87,6 +88,18 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
               return `checkedValues: ${JSON.stringify(checkedValues)}`
             },
           }),
+          TableViewColumn.strMultiSelectorColumn({
+            title: 'StrMultiSelector',
+            options: options,
+            value: multiStrValue,
+            onValueChanged: (newValue) => {
+              message.success(`Select "${newValue}"`)
+              setMultiStrValue(newValue)
+            },
+            render: () => {
+              return `multiStrValue: ${multiStrValue}`
+            },
+          }),
           TableViewColumn.textSearcherColumn({
             title: 'TextSearcher',
             value: textValue,
@@ -144,6 +157,19 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
             },
             render: (item) => {
               return `checkedValues: ${JSON.stringify(checkedValues)}`
+            },
+          },
+          {
+            filterType: ColumnFilterType.StrMultiSelector,
+            title: 'StrMultiSelector',
+            options: options,
+            value: multiStrValue,
+            onValueChanged: (newValue) => {
+              message.success(`Select "${newValue}"`)
+              setMultiStrValue(newValue)
+            },
+            render: (item) => {
+              return `multiStrValue: ${multiStrValue}`
             },
           },
           {

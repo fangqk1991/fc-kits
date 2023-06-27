@@ -9,21 +9,19 @@ interface NormalProps<T = any> {
   render?: (item: T, _: T, index: number) => React.ReactNode
 }
 
-interface SelectorProps<T = any> extends NormalProps<T> {
-  options: SelectOption[]
+interface SingleValueProps<T = any> extends NormalProps<T> {
   value?: any
   onValueChanged?: (newValues: any) => void | Promise<void>
 }
 
-interface MultipleSelectorProps<T = any> extends NormalProps<T> {
+interface SelectorProps<T = any> extends SingleValueProps<T> {
+  options: SelectOption[]
+}
+
+interface MultiSelectorProps<T = any> extends NormalProps<T> {
   options: SelectOption[]
   checkedValues?: any[]
   onCheckedValuesChanged?: (newValues: any[]) => void | Promise<void>
-}
-
-interface TextSearcherProps<T = any> extends NormalProps<T> {
-  value?: any
-  onValueChanged?: (newValues: any) => void | Promise<void>
 }
 
 interface ColumnAttrs<T = any> {
@@ -37,21 +35,24 @@ export enum ColumnFilterType {
   None = 'None',
   Selector = 'Selector',
   MultiSelector = 'MultiSelector',
+  StrMultiSelector = 'StrMultiSelector',
   TextSearcher = 'TextSearcher',
 }
 
 export class TableViewColumn {
   public static makeColumns<T = any>(
-    propsList: (NormalProps<T> | SelectorProps<T> | MultipleSelectorProps<T> | TextSearcherProps<T>)[]
+    propsList: (NormalProps<T> | SelectorProps<T> | MultiSelectorProps<T> | SingleValueProps<T>)[]
   ): ColumnAttrs<T>[] {
     return propsList.map((props) => {
       switch (props.filterType) {
         case ColumnFilterType.Selector:
           return TableViewColumn.selectorColumn(props as SelectorProps)
         case ColumnFilterType.MultiSelector:
-          return TableViewColumn.multiSelectorColumn(props as MultipleSelectorProps)
+          return TableViewColumn.multiSelectorColumn(props as MultiSelectorProps)
+        case ColumnFilterType.StrMultiSelector:
+          return TableViewColumn.strMultiSelectorColumn(props as MultiSelectorProps)
         case ColumnFilterType.TextSearcher:
-          return TableViewColumn.textSearcherColumn(props as TextSearcherProps)
+          return TableViewColumn.textSearcherColumn(props as SingleValueProps)
       }
       return TableViewColumn.normalColumn(props as NormalProps)
     })
@@ -98,7 +99,7 @@ export class TableViewColumn {
     )
   }
 
-  public static multiSelectorColumn<T = any>(props: MultipleSelectorProps<T>): ColumnAttrs<T> {
+  public static multiSelectorColumn<T = any>(props: MultiSelectorProps<T>): ColumnAttrs<T> {
     return {
       ...props,
       title: props.title,
@@ -108,7 +109,7 @@ export class TableViewColumn {
     }
   }
 
-  public static MultiSelector: React.FC<MultipleSelectorProps> = ({
+  public static MultiSelector: React.FC<MultiSelectorProps> = ({
     title,
     options,
     checkedValues,
@@ -128,7 +129,34 @@ export class TableViewColumn {
     )
   }
 
-  public static textSearcherColumn<T = any>(props: TextSearcherProps<T>): ColumnAttrs<T> {
+  public static strMultiSelectorColumn<T = any>(props: SelectorProps<T>): ColumnAttrs<T> {
+    return {
+      ...props,
+      title: props.title,
+      filtered: !!props.value,
+      filterDropdown: <TableViewColumn.StrMultiSelector {...props} />,
+      render: props.render,
+    }
+  }
+
+  public static StrMultiSelector: React.FC<SelectorProps> = ({ title, options, value, onValueChanged }) => {
+    const checkedValues = `${value || ''}`
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+    return (
+      <TableViewColumn.MultiSelector
+        title={title}
+        options={options}
+        checkedValues={checkedValues}
+        onCheckedValuesChanged={(newValues) => {
+          onValueChanged && onValueChanged(newValues.join(','))
+        }}
+      />
+    )
+  }
+
+  public static textSearcherColumn<T = any>(props: SingleValueProps<T>): ColumnAttrs<T> {
     return {
       ...props,
       title: props.title,
@@ -138,7 +166,7 @@ export class TableViewColumn {
     }
   }
 
-  public static TextSearcher: React.FC<TextSearcherProps> = ({ title, value, onValueChanged }) => {
+  public static TextSearcher: React.FC<SingleValueProps> = ({ title, value, onValueChanged }) => {
     const searchInput = useRef<InputRef>(null)
     const [text, setText] = useState(value)
     const onConfirm = () => {
