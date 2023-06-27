@@ -70,6 +70,7 @@ export class HuilianyiFormatter {
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
       itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
+      expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
         itineraryMap: item.travelApplication?.itineraryMap || {},
         customProps: item.custFormValues.reduce((result, cur) => {

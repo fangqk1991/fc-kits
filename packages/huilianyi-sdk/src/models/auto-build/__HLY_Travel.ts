@@ -20,6 +20,7 @@ const _cols: string[] = [
   'last_modified_date',
   'extras_info',
   'itinerary_items_str',
+  'expense_form_codes_str',
   'travel_status',
   'reload_time',
   'create_time',
@@ -44,6 +45,7 @@ const _insertableCols: string[] = [
   'last_modified_date',
   'extras_info',
   'itinerary_items_str',
+  'expense_form_codes_str',
   'travel_status',
   'reload_time',
 ]
@@ -64,6 +66,7 @@ const _modifiableCols: string[] = [
   'last_modified_date',
   'extras_info',
   'itinerary_items_str',
+  'expense_form_codes_str',
   'travel_status',
   'reload_time',
 ]
@@ -146,6 +149,10 @@ export default class __HLY_Travel extends FeedBase {
    */
   public itineraryItemsStr!: string
   /**
+   * @description [varchar(256)] 关联报销单编号集
+   */
+  public expenseFormCodesStr!: string
+  /**
    * @description [int] HLY_TravelStatus
    */
   public travelStatus!: number
@@ -208,6 +215,7 @@ export default class __HLY_Travel extends FeedBase {
     this.lastModifiedDate = null
     this.extrasInfo = ''
     this.itineraryItemsStr = ''
+    this.expenseFormCodesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
@@ -230,6 +238,7 @@ export default class __HLY_Travel extends FeedBase {
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
       itineraryItemsStr: 'itinerary_items_str',
+      expenseFormCodesStr: 'expense_form_codes_str',
       travelStatus: 'travel_status',
       reloadTime: 'reload_time',
       createTime: 'create_time',

@@ -50,7 +50,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
 
   it(`getExpenseReportList`, async () => {
     const items = await businessDataProxy.getExpenseReportList({
-      // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
+      // statusList: [HLY_ExpenseStatus.Passed, HLY_ExpenseStatus.Paid],
     })
     const dataList = items.map((item) => ({
       title: item.title,
@@ -88,7 +88,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
 
   it(`getExpenseReportListV2`, async () => {
     const items = await businessDataProxy.getExpenseReportListV2({
-      // statusList: [HLY_ReimburseStatus.Passed, HLY_ReimburseStatus.Paid],
+      // statusList: [HLY_ExpenseStatus.Passed, HLY_ExpenseStatus.Paid],
       lastModifyStartDate: '2023-06-09 17:24:07',
     })
     const dataList = items.map((item) => ({
@@ -157,7 +157,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`getTravelApplicationDetail`, async () => {
-    const data = await businessDataProxy.getTravelApplicationDetail('TA00991041')
+    const data = await businessDataProxy.getTravelApplicationDetail('TA00981318')
     console.info(JSON.stringify(data, null, 2))
   })
 

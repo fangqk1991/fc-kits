@@ -159,6 +159,15 @@ export interface TravelApplication {
   userRankMap: {}
 }
 
+export interface ReferenceEntityDTO {
+  entityType: number //	Integer	单据实体类型枚举
+  entityOID: string //	UUID	单据oid
+  businessCode: string //	String	单据编号
+  formOID: string //	UUID	表单OID
+  formTypeId: string //	Integer	表单类型id
+  formName: string //	String	表单名称
+}
+
 export interface HLY_Travel {
   applicationId: string
   businessCode: string
@@ -248,4 +257,6 @@ export interface HLY_Travel {
   warningList: string
   withApportionment: boolean
   withdrawFlag: string // 'Y'
+
+  referenceExpenseReports: ReferenceEntityDTO[]
 }

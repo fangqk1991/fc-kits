@@ -134,7 +134,9 @@ export class HuilianyiSyncHandler {
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
     bulkAdder.setInsertKeys(
-      dbSpec.insertableCols().filter((col) => !['itinerary_items_str', 'reload_time'].includes(col))
+      dbSpec
+        .insertableCols()
+        .filter((col) => !['itinerary_items_str', 'expense_form_codes_str', 'reload_time'].includes(col))
     )
     bulkAdder.declareTimestampKey('created_date')
     bulkAdder.declareTimestampKey('last_modified_date')
@@ -158,6 +160,7 @@ export class HuilianyiSyncHandler {
       item.itineraryItemsStr = JSON.stringify(
         HuilianyiFormatter.transferItineraryHeadDTOs(travelInfo.travelApplication?.itineraryHeadDTOs)
       )
+      item.expenseFormCodesStr = (travelInfo.referenceExpenseReports || []).map((item) => item.businessCode).join(',')
       item.reloadTime = item.lastModifiedDate
       await item.updateToDB()
     }

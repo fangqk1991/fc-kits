@@ -12,7 +12,15 @@ export class _HLY_Travel extends __HLY_Travel {
     const feed = new this()
     feed.fc_generateWithModel(data)
     feed.extrasInfo = JSON.stringify(data.extrasData)
+    feed.expenseFormCodesStr = data.expenseFormCodes.join(',')
     return feed
+  }
+
+  public expenseFormCodes() {
+    return this.expenseFormCodesStr
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
   }
 
   public extrasData(): App_TravelExtrasData {
@@ -40,8 +48,10 @@ export class _HLY_Travel extends __HLY_Travel {
 
   public modelForClient() {
     const data = this.fc_pureModel() as App_TravelModel
+    data.expenseFormCodes = this.expenseFormCodes()
     data.extrasData = this.extrasData()
     data.itineraryItems = this.itineraryItems()
+    delete data['expenseFormCodesStr']
     delete data['itineraryItemsStr']
     delete data['extrasInfo']
     delete data['createTime']

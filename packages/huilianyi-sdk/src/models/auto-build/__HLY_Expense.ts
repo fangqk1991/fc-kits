@@ -152,7 +152,7 @@ export default class __HLY_Expense extends FeedBase {
    */
   public expenseType!: number
   /**
-   * @description [int] HLY_ReimburseStatus
+   * @description [int] HLY_ExpenseStatus
    */
   public expenseStatus!: number
   /**

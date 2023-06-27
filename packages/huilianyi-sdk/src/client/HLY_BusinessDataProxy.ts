@@ -102,6 +102,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     request.setQueryParams({
       businessCode: businessCode,
       withItineraryMap: true,
+      withReferenceDocument: true,
       ...extras,
     })
     return await request.quickSend<HLY_Travel>()
