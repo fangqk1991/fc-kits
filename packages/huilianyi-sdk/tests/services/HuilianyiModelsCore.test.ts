@@ -51,7 +51,23 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const feeds = await new HLY_Invoice().fc_searcher().queryFeeds()
     console.info(
       JSON.stringify(
-        feeds.map((item) => item.modelForClient().extrasData.entityType),
+        feeds
+          .filter((item) => item.expenseTypeName.startsWith('差旅'))
+          .map((item) => ({
+            expenseTypeName: item.expenseTypeName,
+            ...item
+              .modelForClient()
+              .extrasData.data.map((field) => ({
+                fieldType: field.fieldDataType,
+                fieldDataType: field.fieldDataType,
+                name: field.name,
+                value: field.value,
+              }))
+              .reduce((result, cur) => {
+                result[cur.name] = cur.value
+                return result
+              }, {}),
+          })),
         null,
         2
       )
