@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS hly_expense
     UNIQUE (business_code),
     INDEX (form_code),
     INDEX (apply_form_codes_str),
+    INDEX (expense_status),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
@@ -63,6 +64,32 @@ CREATE TABLE IF NOT EXISTS hly_travel
     UNIQUE (business_code),
     INDEX (form_code),
     INDEX (expense_form_codes_str),
+    INDEX (travel_status),
+    INDEX (last_modified_date),
+    INDEX (reload_time)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_invoice;
+CREATE TABLE IF NOT EXISTS hly_invoice
+(
+    _rid               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    invoice_oid        CHAR(36)        NULL COLLATE ascii_bin,
+    expense_type_code  VARCHAR(32)     NOT NULL COLLATE ascii_bin,
+    expense_type_name  TEXT            NULL,
+    invoice_status     VARCHAR(16)     NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT 'HLY_InvoiceStatus',
+    reimbursement_oid  CHAR(36)        NULL COLLATE ascii_bin,
+    reimbursement_name TEXT            NULL,
+    amount             DOUBLE          NOT NULL COMMENT '总金额',
+    created_date       TIMESTAMP       NULL,
+    last_modified_date TIMESTAMP       NULL,
+    extras_info        MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
+    create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (invoice_oid),
+    INDEX (invoice_status),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB

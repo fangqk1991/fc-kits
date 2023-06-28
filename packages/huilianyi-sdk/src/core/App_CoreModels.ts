@@ -3,6 +3,8 @@ import { ExpenseFieldDTO, ExpenseReportInvoiceView, HLY_ExpenseType } from './HL
 import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
 import { ItineraryMap } from './HLY_TravelModels'
+import { HLY_Invoice } from './HLY_InvoiceModels'
+import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 
 export interface App_FormBase<T = any> {
   hlyId: number
@@ -73,4 +75,17 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
   expenseFormCodes: string[]
+}
+
+export interface App_Invoice {
+  invoiceOid: string
+  invoiceStatus: HLY_InvoiceStatus
+  expenseTypeCode: string
+  expenseTypeName: string
+  reimbursementOid: string
+  reimbursementName: string
+  amount: number
+  createdDate: string | null
+  lastModifiedDate: string | null
+  extrasData: HLY_Invoice
 }

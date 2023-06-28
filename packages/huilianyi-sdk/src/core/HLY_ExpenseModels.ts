@@ -1,7 +1,7 @@
 import { HLY_CustomFormValue, HLY_EntityLabelDTO, HLY_Staff } from './HLY_CoreModels'
 import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
 import { HLY_FieldBusinessCode, HLY_FieldType } from './HLY_FieldType'
-import { HLY_InvoiceStatusStr } from './HLY_InvoiceStatus'
+import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { InvoiceLabelDTO } from './HLY_InvoiceModels'
 
 export interface ExpenseFieldDTO {
@@ -372,7 +372,7 @@ export interface ExpenseReportInvoiceView {
   employeeId: string
   bookerEmployeeId: string | null
   data: ExpenseFieldDTO[] // Example [出发城市, 到达城市, 交通工具, 附件]
-  invoiceStatus: HLY_InvoiceStatusStr
+  invoiceStatus: HLY_InvoiceStatus
   invoiceSaveStatus: null
   comment: string
   warning: string

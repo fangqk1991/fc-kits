@@ -165,4 +165,46 @@ export class HuilianyiSyncHandler {
       await item.updateToDB()
     }
   }
+
+  public async dumpInvoiceRecords(forceReload = false) {
+    const syncCore = this.syncCore
+    const HLY_Invoice = syncCore.modelsCore.HLY_Invoice
+
+    let lastModifyStartDate = '2020-01-01 00:00:00'
+    if (!forceReload) {
+      const lastTime = await this.getLastTime(HLY_Invoice)
+      if (lastTime) {
+        lastModifyStartDate = moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
+      }
+    }
+
+    const items = await syncCore.dataProxy.getInvoiceList({
+      startDate: lastModifyStartDate,
+    })
+    console.info(`[dumpInvoiceRecords] fetch ${items.length} items.`)
+
+    const dbSpec = new HLY_Invoice().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey('created_date')
+    bulkAdder.declareTimestampKey('last_modified_date')
+    bulkAdder.declareTimestampKey('reload_time')
+    for (const item of items) {
+      const feed = new HLY_Invoice()
+      feed.invoiceOid = item.invoiceOID
+      feed.invoiceStatus = item.invoiceStatus
+      feed.expenseTypeCode = item.expenseTypeCode
+      feed.expenseTypeName = item.expenseTypeName
+      feed.reimbursementOid = item.reimbursementUserOID
+      feed.reimbursementName = item.reimbursementUserName
+      feed.amount = item.amount
+      feed.createdDate = item.createdDate
+      feed.lastModifiedDate = item.lastModifiedDate
+      feed.extrasInfo = JSON.stringify(item)
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
 }

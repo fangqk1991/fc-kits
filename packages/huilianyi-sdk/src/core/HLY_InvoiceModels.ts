@@ -1,5 +1,5 @@
 import { HLY_Staff } from './HLY_CoreModels'
-import { HLY_InvoiceStatusStr } from './HLY_InvoiceStatus'
+import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { HLY_ExpenseField } from './HuilianyiModels'
 
 export interface InvoiceLabelDTO {
@@ -41,7 +41,7 @@ export interface HLY_Invoice {
   employeeId: string
   bookerEmployeeId: string | null
   data: HLY_ExpenseField[] // 开始结束日期，出发城市，到达城市
-  invoiceStatus: HLY_InvoiceStatusStr
+  invoiceStatus: HLY_InvoiceStatus
   invoiceSaveStatus: null
   comment: null
   warning: string // ''
@@ -102,7 +102,7 @@ export interface HLY_Invoice {
   departmentName: null
   invoiceInstead: false
   invoiceInsteadReason: null
-  paymentType: 1001
+  paymentType: number // 支付方式，1001 个人支付、1002 企业支付
   source: null
   ownerOID: string
   owner: HLY_Staff
@@ -152,7 +152,7 @@ export interface HLY_Invoice {
   internationalFlag: string // 'N'
   summaryInfo: ''
   currencyPrecision: null
-  expenseTypeCode: string // 'EX0087'
+  expenseTypeCode: string // 费用类型 code 'EX0087'
   receiptTotalAmount: null
   bankTransactionTotalAmount: null
   paymentScheduleId: null

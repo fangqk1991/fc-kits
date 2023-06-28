@@ -201,6 +201,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
         2
       )
     )
+    console.info(JSON.stringify(items[0], null, 2))
   })
 
   it(`getFlightOrders`, async () => {
