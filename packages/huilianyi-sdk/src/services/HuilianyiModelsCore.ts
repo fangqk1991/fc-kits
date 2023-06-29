@@ -4,6 +4,7 @@ import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
 import { _HLY_Department } from '../models/extensions/_HLY_Department'
 import { _HLY_Invoice } from '../models/extensions/_HLY_Invoice'
+import { _HLY_Config } from '../models/extensions/_HLY_Config'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -13,6 +14,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_Invoice!: { new (): _HLY_Invoice } & typeof _HLY_Invoice
   public readonly HLY_Staff!: { new (): _HLY_Staff } & typeof _HLY_Staff
   public readonly HLY_Department!: { new (): _HLY_Department } & typeof _HLY_Department
+  public readonly HLY_Config!: { new (): _HLY_Config } & typeof _HLY_Config
 
   constructor(database: FCDatabase) {
     this.database = database
@@ -46,5 +48,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_Department = HLY_Department
+
+    class HLY_Config extends _HLY_Config {}
+    HLY_Config.addStaticOptions({
+      database: database,
+    })
+    this.HLY_Config = HLY_Config
   }
 }

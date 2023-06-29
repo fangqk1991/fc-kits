@@ -48,6 +48,13 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['invoice_oid'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
+  {
+    tableName: 'hly_config',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_Config.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_Config.ts`,
+    primaryKey: ['config_key'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
 ]
 
 const main = async () => {

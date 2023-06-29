@@ -140,3 +140,16 @@ CREATE TABLE IF NOT EXISTS hly_department
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_config;
+CREATE TABLE IF NOT EXISTS hly_config
+(
+    _rid            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    config_key      CHAR(36)        NOT NULL COLLATE ascii_bin,
+    config_data_str MEDIUMTEXT COMMENT 'JSON 字符串',
+    create_time     TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (config_key)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;

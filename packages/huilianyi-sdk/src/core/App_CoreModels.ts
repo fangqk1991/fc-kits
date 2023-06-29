@@ -6,6 +6,10 @@ import { ItineraryMap } from './HLY_TravelModels'
 import { HLY_Invoice } from './HLY_InvoiceModels'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 
+export enum RetainConfigKey {
+  ExpenseTypeMetadata = 'ExpenseTypeMetadata',
+}
+
 export interface App_FormBase<T = any> {
   hlyId: number
   businessCode: string
