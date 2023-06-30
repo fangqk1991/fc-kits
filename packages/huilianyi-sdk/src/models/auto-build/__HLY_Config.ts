@@ -18,12 +18,19 @@ const _modifiableCols: string[] = [
   'config_data_str',
 ]
 
+const _timestampTypeCols: string[] = [
+  // prettier-ignore
+  'create_time',
+  'update_time',
+]
+
 const dbOptions = {
   table: 'hly_config',
   primaryKey: ['config_key'],
   cols: _cols,
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
+  timestampTypeCols: _timestampTypeCols,
 }
 
 export default class __HLY_Config extends FeedBase {

@@ -36,12 +36,19 @@ const _modifiableCols: string[] = [
   'extras_info',
 ]
 
+const _timestampTypeCols: string[] = [
+  // prettier-ignore
+  'create_time',
+  'update_time',
+]
+
 const dbOptions = {
   table: 'hly_department',
   primaryKey: ['department_oid'],
   cols: _cols,
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
+  timestampTypeCols: _timestampTypeCols,
 }
 
 export default class __HLY_Department extends FeedBase {

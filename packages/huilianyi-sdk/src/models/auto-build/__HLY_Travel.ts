@@ -71,12 +71,22 @@ const _modifiableCols: string[] = [
   'reload_time',
 ]
 
+const _timestampTypeCols: string[] = [
+  // prettier-ignore
+  'created_date',
+  'last_modified_date',
+  'reload_time',
+  'create_time',
+  'update_time',
+]
+
 const dbOptions = {
   table: 'hly_travel',
   primaryKey: ['hly_id'],
   cols: _cols,
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
+  timestampTypeCols: _timestampTypeCols,
 }
 
 export default class __HLY_Travel extends FeedBase {

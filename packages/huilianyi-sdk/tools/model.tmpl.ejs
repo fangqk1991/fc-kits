@@ -20,12 +20,20 @@ const _modifiableCols: string[] = [
 <% }) -%>
 ]
 
+const _timestampTypeCols: string[] = [
+  // prettier-ignore
+<% sqlCols.filter((item) => item.isTimestamp).forEach((item) => { -%>
+  '<%-item.columnName%>',
+<% }) -%>
+]
+
 const dbOptions = {
   table: '<%-tableName%>',
   primaryKey: <%-decoratePrimaryKey(primaryKey)%>,
   cols: _cols,
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
+  timestampTypeCols: _timestampTypeCols,
 }
 
 export default class <%-className%> extends FeedBase {
