@@ -1,7 +1,15 @@
 import __HLY_Travel from '../auto-build/__HLY_Travel'
-import { App_TravelCoreItinerary, App_TravelExtrasData, App_TravelModel } from '../../core/App_CoreModels'
+import {
+  App_TravelCoreItinerary,
+  App_TravelExtrasData,
+  App_TravelModel,
+  TravelMonthSection,
+} from '../../core/App_CoreModels'
+import { HLY_TravelStatus } from '../../core/HLY_TravelStatus'
+import { HuilianyiFormatter } from '../../client/HuilianyiFormatter'
 
 export class _HLY_Travel extends __HLY_Travel {
+  public status!: HLY_TravelStatus
   public lastModifiedDate!: string
 
   public constructor() {
@@ -40,6 +48,10 @@ export class _HLY_Travel extends __HLY_Travel {
       return JSON.parse(this.itineraryItemsStr) || defaultData
     } catch (e) {}
     return defaultData
+  }
+
+  public monthSectionInfos(): TravelMonthSection[] {
+    return HuilianyiFormatter.transferMonthSectionInfos(this.itineraryItems())
   }
 
   public toJSON() {

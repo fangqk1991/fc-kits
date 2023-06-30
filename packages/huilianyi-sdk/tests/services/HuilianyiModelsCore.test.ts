@@ -32,7 +32,8 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     // feeds = feeds.filter((item) => item.travelStatus === HLY_TravelStatus.Passed)
     console.info(
       JSON.stringify(
-        feeds.map((item) => item.timeRangeListSplitByMonth()),
+        feeds.map((item) => item.monthSectionInfos()),
+        // feeds.map((item) => item.monthSectionInfos()),
         null,
         2
       )

@@ -17,4 +17,8 @@ describe('Test HuilianyiService.test.ts', () => {
     const metadata = await huilianyiService.getExpenseTypeMetadata()
     console.info(JSON.stringify(metadata, null, 2))
   })
+
+  it(`makeMonthAllowance`, async () => {
+    await huilianyiService.makeMonthAllowance()
+  })
 })

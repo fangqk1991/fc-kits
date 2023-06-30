@@ -55,6 +55,13 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['config_key'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
+  {
+    tableName: 'hly_travel_allowance',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_TravelAllowance.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_TravelAllowance.ts`,
+    primaryKey: ['uid'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
 ]
 
 const main = async () => {
