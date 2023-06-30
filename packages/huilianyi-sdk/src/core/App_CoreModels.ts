@@ -80,6 +80,13 @@ export interface TravelDateRange {
   endDate: string
 }
 
+export interface TravelMonthSection {
+  month: string
+  startDate: string
+  endDate: string
+  itineraryItems: App_TravelCoreItinerary[]
+}
+
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
