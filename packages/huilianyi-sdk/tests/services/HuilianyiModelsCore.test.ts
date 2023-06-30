@@ -26,21 +26,13 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   })
 
   it(`HLY_Travel`, async () => {
-    await huilianyiService.syncHandler().dumpTravelRecords(true)
+    // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
-    const feeds = await new HLY_Travel().fc_searcher().queryFeeds()
-    // console.info(
-    //   JSON.stringify(
-    //     feeds
-    //       // .filter((item) => item.formName.includes('差旅费报销'))
-    //       .map((item) => item.modelForClient().extrasData.travelApplication?.itineraryMap.TRAIN),
-    //     null,
-    //     2
-    //   )
-    // )
+    let feeds = await new HLY_Travel().fc_searcher().queryFeeds()
+    // feeds = feeds.filter((item) => item.travelStatus === HLY_TravelStatus.Passed)
     console.info(
       JSON.stringify(
-        feeds.map((item) => item.itineraryItems()),
+        feeds.map((item) => item.timeRangeListSplitByMonth()),
         null,
         2
       )

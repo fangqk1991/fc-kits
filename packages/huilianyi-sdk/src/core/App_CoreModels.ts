@@ -75,6 +75,11 @@ export interface App_TravelCoreItinerary {
   toCityName: string
 }
 
+export interface TravelDateRange {
+  startDate: string
+  endDate: string
+}
+
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
