@@ -74,19 +74,25 @@ export class HuilianyiService {
       for (const section of monthSections) {
         const monthStartDate = TimeUtils.monthStartDate(section.month)
         const monthEndDate = TimeUtils.monthEndDate(section.month)
-        const allowanceItems: App_TravelAllowanceItem[] = section.itineraryItems.map((item) => {
-          const startDate = TimeUtils.max(item.startDate, monthStartDate)
+        const allowanceItems: App_TravelAllowanceItem[] = []
+        let lastDate = '1970-01-01'
+        for (const item of section.itineraryItems) {
+          const startDate = TimeUtils.max(item.startDate, monthStartDate, lastDate)
           const endDate = TimeUtils.min(item.endDate, monthEndDate)
+          if (TimeUtils.diff(startDate, endDate) > 0) {
+            break
+          }
+          lastDate = moment(endDate).add(1, 'days').format('YYYY-MM-DD')
           const daysCount = moment(endDate).diff(moment(startDate), 'days') + 1
           const allowanceAmount = daysCount * 100
-          return {
+          allowanceItems.push({
             startDate: startDate,
             endDate: endDate,
             city: item.toCityName,
             daysCount: daysCount,
             allowanceAmount: allowanceAmount,
-          }
-        })
+          })
+        }
         const allowance = new HLY_TravelAllowance()
         allowance.businessCode = travelItem.businessCode
         allowance.targetMonth = section.month

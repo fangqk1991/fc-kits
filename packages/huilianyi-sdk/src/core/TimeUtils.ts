@@ -13,12 +13,22 @@ export class TimeUtils {
     return moment(timeStr1).valueOf() - moment(timeStr2).valueOf()
   }
 
-  public static min(timeStr1: string, timeStr2: string) {
-    return this.diff(timeStr1, timeStr2) < 0 ? timeStr1 : timeStr2
+  public static min(timeStr: string, ...timeStrList: string[]) {
+    for (const timeStr2 of timeStrList) {
+      if (this.diff(timeStr2, timeStr) < 0) {
+        timeStr = timeStr2
+      }
+    }
+    return timeStr
   }
 
-  public static max(timeStr1: string, timeStr2: string) {
-    return this.diff(timeStr1, timeStr2) > 0 ? timeStr1 : timeStr2
+  public static max(timeStr: string, ...timeStrList: string[]) {
+    for (const timeStr2 of timeStrList) {
+      if (this.diff(timeStr2, timeStr) > 0) {
+        timeStr = timeStr2
+      }
+    }
+    return timeStr
   }
 
   public static monthStartDate(time: string) {
