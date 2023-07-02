@@ -68,6 +68,14 @@ export interface App_TravelExtrasData {
   }
 }
 
+export interface App_TravelAllowanceItem {
+  startDate: string
+  endDate: string
+  city: string
+  daysCount: number
+  allowanceAmount: number
+}
+
 export interface App_TravelCoreItinerary {
   startDate: string
   endDate: string

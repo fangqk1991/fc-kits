@@ -3,8 +3,10 @@ import { BasicAuthConfig, md5 } from '@fangcha/tools'
 import { HuilianyiSyncCore } from './services/HuilianyiSyncCore'
 import { HuilianyiSyncHandler } from './services/HuilianyiSyncHandler'
 import { HuilianyiModelsCore } from './services/HuilianyiModelsCore'
-import { RetainConfigKey } from './core/App_CoreModels'
+import { App_TravelAllowanceItem, RetainConfigKey } from './core/App_CoreModels'
 import * as moment from 'moment'
+import { HLY_TravelStatus } from './core/HLY_TravelStatus'
+import { TimeUtils } from './core/TimeUtils'
 
 interface Options {
   database: FCDatabase
@@ -70,15 +72,33 @@ export class HuilianyiService {
     for (const travelItem of items) {
       const monthSections = travelItem.monthSectionInfos()
       for (const section of monthSections) {
+        const monthStartDate = TimeUtils.monthStartDate(section.month)
+        const monthEndDate = TimeUtils.monthEndDate(section.month)
+        const allowanceItems: App_TravelAllowanceItem[] = section.itineraryItems.map((item) => {
+          const startDate = TimeUtils.max(item.startDate, monthStartDate)
+          const endDate = TimeUtils.min(item.endDate, monthEndDate)
+          const daysCount = moment(endDate).diff(moment(startDate), 'days') + 1
+          const allowanceAmount = daysCount * 100
+          return {
+            startDate: startDate,
+            endDate: endDate,
+            city: item.toCityName,
+            daysCount: daysCount,
+            allowanceAmount: allowanceAmount,
+          }
+        })
         const allowance = new HLY_TravelAllowance()
         allowance.businessCode = travelItem.businessCode
         allowance.targetMonth = section.month
         allowance.applicantOid = travelItem.applicantOid
         allowance.applicantName = travelItem.applicantName
         allowance.uid = md5([travelItem.businessCode, section.month, travelItem.applicantOid].join(','))
-        allowance.daysCount = moment(section.endDate).diff(moment(section.startDate), 'days') + 1
-        allowance.amount = 0
-        allowance.detailItemsStr = JSON.stringify(section.itineraryItems)
+        allowance.daysCount = allowanceItems.reduce((result, cur) => result + cur.daysCount, 0)
+        allowance.amount = allowanceItems.reduce((result, cur) => result + cur.allowanceAmount, 0)
+        allowance.detailItemsStr = JSON.stringify(allowanceItems)
+        allowance.extrasInfo = JSON.stringify({
+          itineraryItems: section.itineraryItems,
+        })
         await allowance.strongAddToDB()
       }
     }

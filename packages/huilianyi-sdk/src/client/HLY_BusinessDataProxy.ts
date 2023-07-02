@@ -8,6 +8,7 @@ import { HuilianyiResponse } from '../core/HuilianyiModels'
 import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
 import { HLY_Travel } from '../core/HLY_TravelModels'
 import { HLY_Invoice } from '../core/HLY_InvoiceModels'
+import { TimeUtils } from '../core/TimeUtils'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPublicApplicationList() {
@@ -106,7 +107,14 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       withReferenceDocument: true,
       ...extras,
     })
-    return await request.quickSend<HLY_Travel>()
+    const data = await request.quickSend<HLY_Travel>()
+    if (data.travelApplication?.itineraryHeadDTOs) {
+      data.travelApplication.itineraryHeadDTOs.forEach((item) => {
+        item.startDate = TimeUtils.momentUTC8(item.startDate).format('YYYY-MM-DD')
+        item.endDate = TimeUtils.momentUTC8(item.endDate).format('YYYY-MM-DD')
+      })
+    }
+    return data
   }
 
   public async getInvoiceList(extras: {} = {}) {
