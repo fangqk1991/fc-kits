@@ -4,6 +4,7 @@ import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
+import { TimeUtils } from '../core/TimeUtils'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -88,7 +89,7 @@ export class HuilianyiSyncHandler {
     if (!forceReload) {
       const lastTime = await this.getLastTime(HLY_Expense)
       if (lastTime) {
-        lastModifyStartDate = moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
+        lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
       }
     }
 
@@ -120,7 +121,7 @@ export class HuilianyiSyncHandler {
     if (!forceReload) {
       const lastTime = await this.getLastTime(HLY_Travel)
       if (lastTime) {
-        lastModifyStartDate = moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
+        lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
       }
     }
 
@@ -174,7 +175,7 @@ export class HuilianyiSyncHandler {
     if (!forceReload) {
       const lastTime = await this.getLastTime(HLY_Invoice)
       if (lastTime) {
-        lastModifyStartDate = moment(lastTime).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
+        lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
       }
     }
 

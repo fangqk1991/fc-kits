@@ -2,6 +2,7 @@ import { HLY_ExpenseV2 } from '../core/HLY_ExpenseModels'
 import { App_ExpenseModel, App_TravelCoreItinerary, App_TravelModel, TravelMonthSection } from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
 import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
+import { TimeUtils } from '../core/TimeUtils'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -95,8 +96,8 @@ export class HuilianyiFormatter {
   }
 
   public static extractMonthList(timeRange: { startDate: string; endDate: string }) {
-    const startMoment = moment(timeRange.startDate).utcOffset('+08:00')
-    const endMoment = moment(timeRange.endDate).utcOffset('+08:00')
+    const startMoment = TimeUtils.momentUTC8(timeRange.startDate)
+    const endMoment = TimeUtils.momentUTC8(timeRange.endDate)
     const monthList: string[] = []
     while (startMoment.valueOf() <= endMoment.valueOf()) {
       monthList.push(moment(startMoment).format('YYYY-MM'))
@@ -122,10 +123,10 @@ export class HuilianyiFormatter {
     monthList.sort()
     return monthList.map((month) => {
       const itineraryItems = monthMapper[month] as App_TravelCoreItinerary[]
-      const startMoment1 = moment(itineraryItems[0].startDate).utcOffset('+08:00')
-      const endMoment1 = moment(itineraryItems[itineraryItems.length - 1].endDate).utcOffset('+08:00')
-      const startMoment2 = moment(month).utcOffset('+08:00').startOf('month')
-      const endMoment2 = moment(month).utcOffset('+08:00').endOf('month')
+      const startMoment1 = TimeUtils.momentUTC8(itineraryItems[0].startDate)
+      const endMoment1 = TimeUtils.momentUTC8(itineraryItems[itineraryItems.length - 1].endDate)
+      const startMoment2 = TimeUtils.momentUTC8(month).startOf('month')
+      const endMoment2 = TimeUtils.momentUTC8(month).endOf('month')
 
       return {
         month: month,
