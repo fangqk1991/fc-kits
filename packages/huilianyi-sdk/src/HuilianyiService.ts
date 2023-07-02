@@ -67,7 +67,7 @@ export class HuilianyiService {
     const HLY_Travel = this.modelsCore.HLY_Travel
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const searcher = new HLY_Travel().fc_searcher()
-    // searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
+    searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
     const items = await searcher.queryAllFeeds()
     for (const travelItem of items) {
       const monthSections = travelItem.monthSectionInfos()
