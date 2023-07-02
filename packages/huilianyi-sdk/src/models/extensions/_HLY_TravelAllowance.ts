@@ -1,13 +1,19 @@
 import __HLY_TravelAllowance from '../auto-build/__HLY_TravelAllowance'
-import { App_TravelAllowanceItem, App_TravelAllowanceModel } from '../../core/App_CoreModels'
+import {
+  App_TravelAllowanceExtrasData,
+  App_TravelAllowanceItem,
+  App_TravelAllowanceModel,
+} from '../../core/App_CoreModels'
 
 export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   public constructor() {
     super()
   }
 
-  public extrasData(): any {
-    const defaultData = {}
+  public extrasData(): App_TravelAllowanceExtrasData {
+    const defaultData: App_TravelAllowanceExtrasData = {
+      itineraryItems: [],
+    }
     try {
       return JSON.parse(this.extrasInfo) || defaultData
     } catch (e) {}

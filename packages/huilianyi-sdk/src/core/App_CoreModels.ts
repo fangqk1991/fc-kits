@@ -106,6 +106,11 @@ export interface App_Invoice {
   extrasData: HLY_Invoice
 }
 
+
+export interface App_TravelAllowanceExtrasData {
+  itineraryItems: App_TravelCoreItinerary[]
+}
+
 export interface App_TravelAllowanceModel {
   uid: string
   businessCode: string
@@ -115,7 +120,7 @@ export interface App_TravelAllowanceModel {
   title: string
   daysCount: number
   amount: string
-  extrasData: any
+  extrasData: App_TravelAllowanceExtrasData
   detailItems: App_TravelAllowanceItem[]
 }
 
