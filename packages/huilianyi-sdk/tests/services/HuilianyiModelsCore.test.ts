@@ -9,6 +9,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   const HLY_Expense = huilianyiService.modelsCore.HLY_Expense
   const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
   const HLY_Invoice = huilianyiService.modelsCore.HLY_Invoice
+  const HLY_TravelAllowance = huilianyiService.modelsCore.HLY_TravelAllowance
 
   it(`HLY_Expense`, async () => {
     await huilianyiService.syncHandler().dumpExpenseRecords(true)
@@ -61,6 +62,19 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
                 return result
               }, {}),
           })),
+        null,
+        2
+      )
+    )
+  })
+
+  it(`HLY_TravelAllowance`, async () => {
+    // await huilianyiService.syncHandler().dumpTravelRecords(true)
+
+    let feeds = await new HLY_TravelAllowance().fc_searcher().queryFeeds()
+    console.info(
+      JSON.stringify(
+        feeds.map((item) => item.modelForClient()),
         null,
         2
       )

@@ -68,14 +68,6 @@ export interface App_TravelExtrasData {
   }
 }
 
-export interface App_TravelAllowanceItem {
-  startDate: string
-  endDate: string
-  city: string
-  daysCount: number
-  allowanceAmount: number
-}
-
 export interface App_TravelCoreItinerary {
   startDate: string
   endDate: string
@@ -112,4 +104,24 @@ export interface App_Invoice {
   createdDate: string | null
   lastModifiedDate: string | null
   extrasData: HLY_Invoice
+}
+
+export interface App_TravelAllowanceModel {
+  uid: string
+  businessCode: string
+  targetMonth: string
+  applicantOid: string
+  applicantName: string
+  daysCount: number
+  amount: string
+  extrasData: any
+  detailItems: App_TravelAllowanceItem[]
+}
+
+export interface App_TravelAllowanceItem {
+  startDate: string
+  endDate: string
+  city: string
+  daysCount: number
+  allowanceAmount: number
 }

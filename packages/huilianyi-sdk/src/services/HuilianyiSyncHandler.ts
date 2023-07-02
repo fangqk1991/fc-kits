@@ -1,4 +1,3 @@
-import * as moment from 'moment'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder } from 'fc-sql'
