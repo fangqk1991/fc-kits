@@ -8,6 +8,7 @@ const _cols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'title',
   'days_count',
   'amount',
   'detail_items_str',
@@ -22,6 +23,7 @@ const _insertableCols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'title',
   'days_count',
   'amount',
   'detail_items_str',
@@ -33,6 +35,7 @@ const _modifiableCols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'title',
   'days_count',
   'amount',
   'detail_items_str',
@@ -75,6 +78,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    * @description [text]
    */
   public applicantName!: string
+  /**
+   * @description [text]
+   */
+  public title!: string
   /**
    * @description [double] 补贴天数
    */
@@ -133,6 +140,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     // This function is invoked by constructor of FCModel
     this.applicantOid = null
     this.applicantName = ''
+    this.title = ''
     this.daysCount = 0
     this.amount = 0
     this.detailItemsStr = ''
@@ -146,6 +154,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       targetMonth: 'target_month',
       applicantOid: 'applicant_oid',
       applicantName: 'applicant_name',
+      title: 'title',
       daysCount: 'days_count',
       amount: 'amount',
       detailItemsStr: 'detail_items_str',

@@ -92,6 +92,7 @@ export class HuilianyiService {
         allowance.targetMonth = section.month
         allowance.applicantOid = travelItem.applicantOid
         allowance.applicantName = travelItem.applicantName
+        allowance.title = travelItem.title
         allowance.uid = md5([travelItem.businessCode, section.month, travelItem.applicantOid].join(','))
         allowance.daysCount = allowanceItems.reduce((result, cur) => result + cur.daysCount, 0)
         allowance.amount = allowanceItems.reduce((result, cur) => result + cur.allowanceAmount, 0)

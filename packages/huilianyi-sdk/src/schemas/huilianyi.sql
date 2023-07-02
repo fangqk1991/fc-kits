@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS hly_travel_allowance
     target_month     CHAR(7)         NOT NULL COLLATE ascii_bin COMMENT '补贴月份 yyyy-MM',
     applicant_oid    CHAR(36)        NULL COLLATE ascii_bin,
     applicant_name   TEXT            NULL,
+    title            TEXT            NULL,
     days_count       DOUBLE          NOT NULL DEFAULT 0 COMMENT '补贴天数',
     amount           DOUBLE          NOT NULL DEFAULT 0 COMMENT '补贴金额',
     detail_items_str MEDIUMTEXT COMMENT '明细，空 | JSON 字符串',

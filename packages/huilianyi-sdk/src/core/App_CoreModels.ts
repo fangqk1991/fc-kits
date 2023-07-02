@@ -112,6 +112,7 @@ export interface App_TravelAllowanceModel {
   targetMonth: string
   applicantOid: string
   applicantName: string
+  title: string
   daysCount: number
   amount: string
   extrasData: any
