@@ -14,6 +14,7 @@ const _cols: string[] = [
   'detail_items_str',
   'extras_info',
   'is_pretty',
+  'is_verified',
   'create_time',
   'update_time',
 ]
@@ -30,6 +31,7 @@ const _insertableCols: string[] = [
   'detail_items_str',
   'extras_info',
   'is_pretty',
+  'is_verified',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -43,6 +45,7 @@ const _modifiableCols: string[] = [
   'detail_items_str',
   'extras_info',
   'is_pretty',
+  'is_verified',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -52,7 +55,7 @@ const _timestampTypeCols: string[] = [
 ]
 
 const dbOptions = {
-  table: 'hly_travel_allowance',
+  table: 'hly_allowance_snapshot',
   primaryKey: ['uid'],
   cols: _cols,
   insertableCols: _insertableCols,
@@ -60,7 +63,7 @@ const dbOptions = {
   timestampTypeCols: _timestampTypeCols,
 }
 
-export default class __HLY_TravelAllowance extends FeedBase {
+export default class __HLY_AllowanceSnapshot extends FeedBase {
   /**
    * @description [char(32)] business_code + target_month + applicant_oid MD5
    */
@@ -105,6 +108,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    * @description [tinyint] 是否为标准情况
    */
   public isPretty!: number
+  /**
+   * @description [tinyint] 是否已核验
+   */
+  public isVerified!: number
   /**
    * @description [timestamp] 创建时间
    */
@@ -153,6 +160,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.detailItemsStr = ''
     this.extrasInfo = ''
     this.isPretty = 0
+    this.isVerified = 0
   }
 
   public fc_propertyMapper() {
@@ -168,6 +176,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       detailItemsStr: 'detail_items_str',
       extrasInfo: 'extras_info',
       isPretty: 'is_pretty',
+      isVerified: 'is_verified',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

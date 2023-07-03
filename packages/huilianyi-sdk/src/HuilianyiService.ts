@@ -106,6 +106,7 @@ export class HuilianyiService {
         allowance.extrasInfo = JSON.stringify({
           itineraryItems: section.itineraryItems,
         })
+        allowance.isPretty = 0
         await allowance.strongAddToDB()
       }
     }
