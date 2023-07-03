@@ -2,7 +2,7 @@ export const HuilianyiApis = {
   // https://opendocs.huilianyi.com/implement.html#%E8%8E%B7%E5%8F%96accesstoken
   AccessTokenRequest: {
     method: 'POST',
-    route: '/oauth/token',
+    route: '/gateway/oauth/token',
     description: '获取 AccessToken',
   },
   CompanyListGet: {
