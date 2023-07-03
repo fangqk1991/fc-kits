@@ -24,6 +24,10 @@ export const MyMenu: Route = {
           path: '/v1/widgets',
           name: 'Widgets',
         },
+        {
+          path: '/v1/forms',
+          name: 'Forms',
+        },
       ],
     },
   ],

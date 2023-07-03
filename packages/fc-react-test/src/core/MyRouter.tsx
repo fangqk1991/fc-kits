@@ -5,6 +5,7 @@ import { LoadingView, RouteErrorBoundary } from '@fangcha/react'
 import { TestTableView } from '../pages/table/TestTableView'
 import { TestDialogsView } from '../pages/TestDialogsView'
 import { TestWidgetsView } from '../pages/TestWidgetsView'
+import { TestFormsView } from '../pages/TestFormsView'
 
 export const MyRouter = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const MyRouter = createBrowserRouter([
       {
         path: '/v1/widgets',
         element: <TestWidgetsView />,
+      },
+      {
+        path: '/v1/forms',
+        element: <TestFormsView />,
       },
       {
         path: '*',
