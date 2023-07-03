@@ -14,6 +14,7 @@ const _cols: string[] = [
   'detail_items_str',
   'extras_info',
   'is_pretty',
+  'is_verified',
   'create_time',
   'update_time',
 ]
@@ -30,6 +31,7 @@ const _insertableCols: string[] = [
   'detail_items_str',
   'extras_info',
   'is_pretty',
+  'is_verified',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -43,6 +45,7 @@ const _modifiableCols: string[] = [
   'detail_items_str',
   'extras_info',
   'is_pretty',
+  'is_verified',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -106,6 +109,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public isPretty!: number
   /**
+   * @description [tinyint] 是否已核验
+   */
+  public isVerified!: number
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -153,6 +160,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.detailItemsStr = ''
     this.extrasInfo = ''
     this.isPretty = 0
+    this.isVerified = 0
   }
 
   public fc_propertyMapper() {
@@ -168,6 +176,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       detailItemsStr: 'detail_items_str',
       extrasInfo: 'extras_info',
       isPretty: 'is_pretty',
+      isVerified: 'is_verified',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

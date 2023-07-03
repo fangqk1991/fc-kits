@@ -107,14 +107,27 @@ export class HuilianyiService {
           itineraryItems: section.itineraryItems,
         })
         allowance.isPretty = 0
+        allowance.isVerified = 0
         await allowance.strongAddToDB()
       }
     }
-    {
-      const allowanceList = await new HLY_TravelAllowance().fc_searcher().queryAllFeeds()
-      for (const item of allowanceList) {
-        console.info(item.fc_pureModel())
-      }
+  }
+
+  public async makeAllowanceSnapshot(month: string) {
+    const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
+    const HLY_AllowanceSnapshot = this.modelsCore.HLY_AllowanceSnapshot
+    const searcher = new HLY_AllowanceSnapshot().fc_searcher()
+    searcher.processor().addConditionKV('target_month', month)
+    const count = await searcher.queryCount()
+    if (count > 0) {
+      console.warn(`${month}'s AllowanceSnapshot has been created.`)
+      return
     }
+
+    const snapshotTable = new HLY_AllowanceSnapshot().dbSpec().table
+    const allowanceDBSpec = new HLY_TravelAllowance().dbSpec()
+    const allowanceColumnsStr = allowanceDBSpec.insertableCols().map((item) => `\`${item}\``).join(', ')
+    const sql = `INSERT INTO ${snapshotTable} (${allowanceColumnsStr}) SELECT ${allowanceColumnsStr} FROM \`${allowanceDBSpec.table}\` WHERE target_month = ?`
+    await allowanceDBSpec.database.update(sql, [month])
   }
 }

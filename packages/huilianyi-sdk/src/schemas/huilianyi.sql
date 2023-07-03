@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS hly_travel_allowance
     detail_items_str MEDIUMTEXT COMMENT '明细，空 | JSON 字符串',
     extras_info      MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
     is_pretty        TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为标准情况',
+    is_verified      TINYINT         NOT NULL DEFAULT 0 COMMENT '是否已核验',
     create_time      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (uid),
