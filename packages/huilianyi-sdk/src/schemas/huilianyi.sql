@@ -97,6 +97,19 @@ CREATE TABLE IF NOT EXISTS hly_travel_allowance
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 
+DROP TABLE IF EXISTS hly_snapshot_log;
+CREATE TABLE IF NOT EXISTS hly_snapshot_log
+(
+    _rid         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    target_month CHAR(7)         NOT NULL COLLATE ascii_bin COMMENT '快照月份 yyyy-MM',
+    record_count INT             NOT NULL COMMENT '记录数量',
+    create_time  TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time  TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (target_month)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
 DROP TABLE IF EXISTS hly_allowance_snapshot;
 CREATE TABLE IF NOT EXISTS hly_allowance_snapshot
 (

@@ -116,18 +116,36 @@ export class HuilianyiService {
   public async makeAllowanceSnapshot(month: string) {
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const HLY_AllowanceSnapshot = this.modelsCore.HLY_AllowanceSnapshot
-    const searcher = new HLY_AllowanceSnapshot().fc_searcher()
-    searcher.processor().addConditionKV('target_month', month)
-    const count = await searcher.queryCount()
-    if (count > 0) {
+    const HLY_SnapshotLog = this.modelsCore.HLY_SnapshotLog
+
+    if (await HLY_SnapshotLog.findWithUid(month)) {
       console.warn(`${month}'s AllowanceSnapshot has been created.`)
       return
     }
 
-    const snapshotTable = new HLY_AllowanceSnapshot().dbSpec().table
     const allowanceDBSpec = new HLY_TravelAllowance().dbSpec()
-    const allowanceColumnsStr = allowanceDBSpec.insertableCols().map((item) => `\`${item}\``).join(', ')
-    const sql = `INSERT INTO ${snapshotTable} (${allowanceColumnsStr}) SELECT ${allowanceColumnsStr} FROM \`${allowanceDBSpec.table}\` WHERE target_month = ?`
-    await allowanceDBSpec.database.update(sql, [month])
+    const database = allowanceDBSpec.database
+    const runner = await database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      const snapshotTable = new HLY_AllowanceSnapshot().dbSpec().table
+      const allowanceColumnsStr = allowanceDBSpec
+        .insertableCols()
+        .map((item) => `\`${item}\``)
+        .join(', ')
+      const sql = `INSERT INTO ${snapshotTable} (${allowanceColumnsStr}) SELECT ${allowanceColumnsStr} FROM \`${allowanceDBSpec.table}\` WHERE target_month = ?`
+      await database.update(sql, [month], transaction)
+
+      const searcher = new HLY_AllowanceSnapshot().fc_searcher()
+      searcher.processor().transaction = transaction
+      searcher.processor().addConditionKV('target_month', month)
+      const count = await searcher.queryCount()
+
+      if (count > 0) {
+        const snapshotLog = new HLY_SnapshotLog()
+        snapshotLog.targetMonth = month
+        snapshotLog.recordCount = count
+        await snapshotLog.addToDB(transaction)
+      }
+    })
   }
 }

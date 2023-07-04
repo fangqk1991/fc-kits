@@ -7,6 +7,7 @@ import { _HLY_Invoice } from '../models/extensions/_HLY_Invoice'
 import { _HLY_Config } from '../models/extensions/_HLY_Config'
 import { _HLY_TravelAllowance } from '../models/extensions/_HLY_TravelAllowance'
 import { _HLY_AllowanceSnapshot } from '../models/extensions/_HLY_AllowanceSnapshot'
+import { _HLY_SnapshotLog } from '../models/extensions/_HLY_SnapshotLog'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -19,6 +20,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_Config!: { new (): _HLY_Config } & typeof _HLY_Config
   public readonly HLY_TravelAllowance!: { new (): _HLY_TravelAllowance } & typeof _HLY_TravelAllowance
   public readonly HLY_AllowanceSnapshot!: { new (): _HLY_AllowanceSnapshot } & typeof _HLY_AllowanceSnapshot
+  public readonly HLY_SnapshotLog!: { new (): _HLY_SnapshotLog } & typeof _HLY_SnapshotLog
 
   constructor(database: FCDatabase) {
     this.database = database
@@ -70,5 +72,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_AllowanceSnapshot = HLY_AllowanceSnapshot
+
+    class HLY_SnapshotLog extends _HLY_SnapshotLog {}
+    HLY_SnapshotLog.addStaticOptions({
+      database: database,
+    })
+    this.HLY_SnapshotLog = HLY_SnapshotLog
   }
 }

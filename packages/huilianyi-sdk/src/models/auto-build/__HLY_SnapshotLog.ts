@@ -1,0 +1,95 @@
+import { DBObserver, FeedBase } from 'fc-feed'
+import { DBProtocolV2, FCDatabase } from 'fc-sql'
+
+const _cols: string[] = [
+  // prettier-ignore
+  'target_month',
+  'record_count',
+  'create_time',
+  'update_time',
+]
+const _insertableCols: string[] = [
+  // prettier-ignore
+  'target_month',
+  'record_count',
+]
+const _modifiableCols: string[] = [
+  // prettier-ignore
+  'record_count',
+]
+
+const _timestampTypeCols: string[] = [
+  // prettier-ignore
+  'create_time',
+  'update_time',
+]
+
+const dbOptions = {
+  table: 'hly_snapshot_log',
+  primaryKey: ['target_month'],
+  cols: _cols,
+  insertableCols: _insertableCols,
+  modifiableCols: _modifiableCols,
+  timestampTypeCols: _timestampTypeCols,
+}
+
+export default class __HLY_SnapshotLog extends FeedBase {
+  /**
+   * @description [char(7)] 快照月份 yyyy-MM
+   */
+  public targetMonth!: string
+  /**
+   * @description [int] 记录数量
+   */
+  public recordCount!: number
+  /**
+   * @description [timestamp] 创建时间
+   */
+  public createTime!: string
+  /**
+   * @description [timestamp] 更新时间
+   */
+  public updateTime!: string
+
+  protected static _staticDBOptions: DBProtocolV2
+  protected static _staticDBObserver?: DBObserver
+
+  public static setDatabase(database: FCDatabase, dbObserver?: DBObserver) {
+    this.addStaticOptions({ database: database }, dbObserver)
+  }
+
+  public static setStaticProtocol(protocol: Partial<DBProtocolV2>, dbObserver?: DBObserver) {
+    this._staticDBOptions = Object.assign({}, dbOptions, protocol) as DBProtocolV2
+    this._staticDBObserver = dbObserver
+    this._onStaticDBOptionsUpdate(this._staticDBOptions)
+  }
+
+  public static addStaticOptions(protocol: Partial<DBProtocolV2>, dbObserver?: DBObserver) {
+    this._staticDBOptions = Object.assign({}, dbOptions, this._staticDBOptions, protocol) as DBProtocolV2
+    this._staticDBObserver = dbObserver
+    this._onStaticDBOptionsUpdate(this._staticDBOptions)
+  }
+
+  public static _onStaticDBOptionsUpdate(_protocol: DBProtocolV2) {}
+
+  public constructor() {
+    super()
+    this.setDBProtocolV2(this.constructor['_staticDBOptions'])
+    if (this.constructor['_staticDBObserver']) {
+      this.dbObserver = this.constructor['_staticDBObserver']
+    }
+  }
+
+  public fc_defaultInit() {
+    // This function is invoked by constructor of FCModel
+  }
+
+  public fc_propertyMapper() {
+    return {
+      targetMonth: 'target_month',
+      recordCount: 'record_count',
+      createTime: 'create_time',
+      updateTime: 'update_time',
+    }
+  }
+}

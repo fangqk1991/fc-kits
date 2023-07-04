@@ -63,10 +63,10 @@ const dbSchemas: DBModelSchema[] = [
     modifiableBlackList: ['create_time', 'update_time'],
   },
   {
-    tableName: 'hly_allowance_snapshot',
-    outputFile: `${__dirname}/../src/models/auto-build/__HLY_AllowanceSnapshot.ts`,
-    extFile: `${__dirname}/../src/models/extensions/_HLY_AllowanceSnapshot.ts`,
-    primaryKey: ['uid'],
+    tableName: 'hly_snapshot_log',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_SnapshotLog.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_SnapshotLog.ts`,
+    primaryKey: ['target_month'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
 ]

@@ -25,6 +25,8 @@ describe('Test HuilianyiService.test.ts', () => {
 
   it(`makeAllowanceSnapshot`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
+    await huilianyiService.makeAllowanceSnapshot('2023-05')
     await huilianyiService.makeAllowanceSnapshot('2023-06')
+    await huilianyiService.makeAllowanceSnapshot('2023-07')
   })
 })
