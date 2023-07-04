@@ -106,7 +106,6 @@ export interface App_Invoice {
   extrasData: HLY_Invoice
 }
 
-
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
 }
@@ -122,6 +121,8 @@ export interface App_TravelAllowanceModel {
   amount: string
   extrasData: App_TravelAllowanceExtrasData
   detailItems: App_TravelAllowanceItem[]
+  isPretty: number
+  isVerified: number
 }
 
 export interface App_TravelAllowanceItem {
