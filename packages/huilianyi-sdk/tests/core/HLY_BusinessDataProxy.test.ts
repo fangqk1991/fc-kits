@@ -206,10 +206,12 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
 
   it(`getFlightOrders`, async () => {
     const companyList = await othersProxy.getCompanyList()
-    const items = await businessDataProxy.getFlightOrders({
-      companyOID: companyList[0].companyOID,
-    })
-    console.info(JSON.stringify(items, null, 2))
+    for (const company of companyList) {
+      const items = await businessDataProxy.getFlightOrders({
+        companyOID: company.companyOID,
+      })
+      console.info(JSON.stringify(items, null, 2))
+    }
   })
 
   it(`getTrainOrders`, async () => {

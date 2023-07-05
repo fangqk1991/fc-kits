@@ -9,6 +9,7 @@ import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
 import { HLY_Travel } from '../core/HLY_TravelModels'
 import { HLY_Invoice } from '../core/HLY_InvoiceModels'
 import { TimeUtils } from '../core/TimeUtils'
+import { HLY_OrderFlight } from '../core/HLY_TravelOrderModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPublicApplicationList() {
@@ -154,7 +155,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         // withApplicationParticipant: true,
         ...extras,
       })
-      return await request.quickSend<any[]>()
+      return await request.quickSend<HLY_OrderFlight[]>()
     })
   }
 
