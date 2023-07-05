@@ -68,6 +68,7 @@ export interface HLY_OrderFlight {
   companyOID: string
   applicant: string
   users: string
+  journeyNo?: string
   orderCreateDate: string // '2023-07-04 20:40:08'
   stringColumn1: string
   stringColumn2: string
