@@ -7,6 +7,8 @@ import { App_TravelAllowanceItem, RetainConfigKey } from './core/App_CoreModels'
 import * as moment from 'moment'
 import { HLY_TravelStatus } from './core/HLY_TravelStatus'
 import { TimeUtils } from './core/TimeUtils'
+import { HLY_PrettyStatus } from './core/HLY_PrettyStatus'
+import { HLY_VerifiedStatus } from './core/HLY_VerifiedStatus'
 
 interface Options {
   database: FCDatabase
@@ -106,8 +108,8 @@ export class HuilianyiService {
         allowance.extrasInfo = JSON.stringify({
           itineraryItems: section.itineraryItems,
         })
-        allowance.isPretty = 0
-        allowance.isVerified = 0
+        allowance.isPretty = HLY_PrettyStatus.NotPretty
+        allowance.isVerified = HLY_VerifiedStatus.NotVerified
         await allowance.strongAddToDB()
       }
     }

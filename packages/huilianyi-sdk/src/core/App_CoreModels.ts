@@ -5,6 +5,8 @@ import { HLY_TravelStatus } from './HLY_TravelStatus'
 import { ItineraryMap } from './HLY_TravelModels'
 import { HLY_Invoice } from './HLY_InvoiceModels'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
+import { HLY_PrettyStatus } from './HLY_PrettyStatus'
+import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 
 export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
@@ -121,8 +123,8 @@ export interface App_TravelAllowanceModel {
   amount: string
   extrasData: App_TravelAllowanceExtrasData
   detailItems: App_TravelAllowanceItem[]
-  isPretty: number
-  isVerified: number
+  isPretty: HLY_PrettyStatus
+  isVerified: HLY_VerifiedStatus
 }
 
 export interface App_TravelAllowanceItem {
