@@ -19,7 +19,7 @@ export class HuilianyiProxyBase extends ServiceProxy<BasicAuthConfig> {
       .setBaseURL(this._tokenKeeper.baseURL())
       .addHeader('Authorization', `Bearer ${accessToken}`)
       .setApiOptions(commonApi)
-      .setTimeout(15000)
+      .setTimeout(60000)
       .setResponse200Checker((responseData: HuilianyiResponse<any>) => {
         if (responseData.errorCode !== undefined && responseData.errorCode !== '0000') {
           const errorPrefix = `API[${commonApi.description}] error:`
