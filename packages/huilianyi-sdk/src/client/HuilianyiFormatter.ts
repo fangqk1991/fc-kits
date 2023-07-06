@@ -53,6 +53,21 @@ export class HuilianyiFormatter {
   }
 
   public static transferTravelModel(item: HLY_Travel): App_TravelModel {
+    const customProps: {
+      [propKey: string]: {
+        fieldName: string
+        value: string
+        showValue: string
+      }
+    } = item.custFormValues.reduce((result, cur) => {
+      result[cur.fieldCode] = {
+        fieldName: cur.fieldName,
+        value: cur.value,
+        showValue: cur.showValue || cur.value,
+      }
+      return result
+    }, {})
+
     return {
       hlyId: Number(item.applicationId),
       businessCode: item.businessCode,
@@ -67,6 +82,8 @@ export class HuilianyiFormatter {
       formName: item.formName,
       submittedBy: item.submittedBy,
       title: item.title,
+      startTime: customProps.field_start_date ? customProps.field_start_date.value : '2000-01-01T00:00:00Z',
+      endTime: customProps.field_end_date ? customProps.field_end_date.value : '2000-01-01T00:00:00Z',
       travelStatus: item.status,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
@@ -74,14 +91,7 @@ export class HuilianyiFormatter {
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
         itineraryMap: item.travelApplication?.itineraryMap || {},
-        customProps: item.custFormValues.reduce((result, cur) => {
-          result[cur.fieldCode] = {
-            fieldName: cur.fieldName,
-            value: cur.value,
-            showValue: cur.showValue || cur.value,
-          }
-          return result
-        }, {}),
+        customProps: customProps,
       },
     }
   }

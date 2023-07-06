@@ -138,8 +138,11 @@ export class HuilianyiSyncHandler {
         .insertableCols()
         .filter((col) => !['itinerary_items_str', 'expense_form_codes_str', 'reload_time'].includes(col))
     )
+    bulkAdder.declareTimestampKey('start_time')
+    bulkAdder.declareTimestampKey('end_time')
     bulkAdder.declareTimestampKey('created_date')
     bulkAdder.declareTimestampKey('last_modified_date')
+
     for (const item of items) {
       const feed = HLY_Travel.makeFeed(HuilianyiFormatter.transferTravelModel(item))
       bulkAdder.putObject(feed.fc_encode())

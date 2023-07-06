@@ -16,6 +16,8 @@ const _cols: string[] = [
   'form_name',
   'submitted_by',
   'title',
+  'start_time',
+  'end_time',
   'created_date',
   'last_modified_date',
   'extras_info',
@@ -41,6 +43,8 @@ const _insertableCols: string[] = [
   'form_name',
   'submitted_by',
   'title',
+  'start_time',
+  'end_time',
   'created_date',
   'last_modified_date',
   'extras_info',
@@ -62,6 +66,8 @@ const _modifiableCols: string[] = [
   'form_name',
   'submitted_by',
   'title',
+  'start_time',
+  'end_time',
   'created_date',
   'last_modified_date',
   'extras_info',
@@ -73,6 +79,8 @@ const _modifiableCols: string[] = [
 
 const _timestampTypeCols: string[] = [
   // prettier-ignore
+  'start_time',
+  'end_time',
   'created_date',
   'last_modified_date',
   'reload_time',
@@ -142,6 +150,14 @@ export default class __HLY_Travel extends FeedBase {
    * @description [text]
    */
   public title!: string
+  /**
+   * @description [timestamp] 开始时间
+   */
+  public startTime!: string | null
+  /**
+   * @description [timestamp] 结束时间
+   */
+  public endTime!: string | null
   /**
    * @description [timestamp]
    */
@@ -221,6 +237,8 @@ export default class __HLY_Travel extends FeedBase {
     this.formName = ''
     this.submittedBy = null
     this.title = ''
+    this.startTime = null
+    this.endTime = null
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
@@ -244,6 +262,8 @@ export default class __HLY_Travel extends FeedBase {
       formName: 'form_name',
       submittedBy: 'submitted_by',
       title: 'title',
+      startTime: 'start_time',
+      endTime: 'end_time',
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',

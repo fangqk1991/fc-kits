@@ -97,6 +97,8 @@ export interface TravelMonthSection {
 }
 
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
+  startTime: string
+  endTime: string
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
   expenseFormCodes: string[]
