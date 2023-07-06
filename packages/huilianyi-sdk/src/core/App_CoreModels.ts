@@ -129,11 +129,15 @@ export interface App_TravelAllowanceModel {
   daysCount: number
   amount: string
   extrasData: App_TravelAllowanceExtrasData
+  subsidyItems: App_TravelSubsidyItem[]
   detailItems: App_TravelAllowanceItem[]
   isPretty: HLY_PrettyStatus
   isVerified: HLY_VerifiedStatus
 }
 
+/**
+ * @deprecated
+ */
 export interface App_TravelAllowanceItem {
   startDate: string
   endDate: string

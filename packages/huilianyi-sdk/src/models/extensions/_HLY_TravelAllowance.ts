@@ -3,6 +3,7 @@ import {
   App_TravelAllowanceExtrasData,
   App_TravelAllowanceItem,
   App_TravelAllowanceModel,
+  App_TravelSubsidyItem,
 } from '../../core/App_CoreModels'
 
 export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
@@ -28,6 +29,14 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     return defaultData
   }
 
+  public subsidyItems(): App_TravelSubsidyItem[] {
+    const defaultData: any[] = []
+    try {
+      return JSON.parse(this.subsidyItemsStr) || defaultData
+    } catch (e) {}
+    return defaultData
+  }
+
   public toJSON() {
     return this.modelForClient()
   }
@@ -36,6 +45,7 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     const data = this.fc_pureModel() as App_TravelAllowanceModel
     data.extrasData = this.extrasData()
     data.detailItems = this.detailItems()
+    data.subsidyItems = this.subsidyItems()
     delete data['detailItemsStr']
     delete data['extrasInfo']
     delete data['createTime']
