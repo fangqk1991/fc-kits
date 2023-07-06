@@ -94,6 +94,111 @@ export interface ItineraryRemark {
   itineraryShowDetails: []
 }
 
+export interface TravelSubsidiesRequestItemDetailDTO {
+  travelSubsidiesDetailsOID: string
+  applicationOID: string
+  expenseTypeOID: string
+  expenseTypeName: string // '差旅-出差补助'
+  userOID: string
+  userName: string
+  amount: number
+  currencyCode: string // 'CNY'
+  baseCurrencyAmount: number
+  status: number // 1001
+  subsidiesDate: string // '2023-07-23T16:00:00Z'
+  currencyRate: number
+  baseCurrencyRate: number
+  comment: null
+  baseAmount: number
+  lastModifiedDate: string // '2023-07-05T13:10:26Z'
+  deleted: boolean
+  areaCode: string // 'CHN011000000'
+  cityName: string // '北京'
+  cityPath: string // ''
+  travelSubsidiesRequestID: string
+  isDuplicateSubsidies: null
+  amountType: number
+  ruleCurrencyCode: string // 'CNY'
+  ruleAmount: number
+}
+
+export interface ItineraryBudgetDTO {
+  itineraryHeadId: string
+  applicationCustomBudgetId: string
+  expenseBudgetOID: string
+  expenseTypeId: string
+  expenseTypeOID: string
+  expenseTypeName: string // '差旅-出差补助'
+  expenseTypeCode: string
+  expenseTypeIconName: string
+  expenseTypeIconURL: string
+  itineraryFormType: null
+  itineraryType: number // 1006
+  itineraryRoundType: null
+  itineraryDirection: null
+  productType: null
+  isInternational: null
+  itineraryOID: string
+  widgetMessageKey: null
+  budgetFormOID: string
+  applicationOID: string
+  supplierOID: null
+  supplierName: null
+  supplierServiceName: null
+  supplierConfig: null
+  supplierIconUrl: null
+  amount: number
+  currencyCode: string // 'CNY'
+  baseCurrencyCode: null
+  paymentType: number // 1001
+  baseCurrencyAmount: number
+  companyCurrencyRate: number
+  actualCurrencyRate: null
+  withApportion: boolean
+  withBudget: boolean
+  travelStandardAmount: number
+  budgetCurrencyCode: string // 'CNY'
+  travelRuleMatchedResult: null
+  apportionmentDTOList: null
+  expenseBudgetCustomValueDTOs: any[]
+  regulationId: null
+  regulationName: null
+  approvalType: null
+  carPickUpType: null
+  carPickUpTypeDescription: null
+  travelCarItineraryTrips: null
+  diningSceneId: null
+  diningSceneDTO: null
+  isExtend: boolean
+  disabled: boolean
+  deleted: boolean
+  remark: null
+  customCombinationValue: null
+  approvalNumber: null
+  bookedStatus: null
+  expiredDate: null
+  isMultiSupplier: boolean
+  unitPrice: null
+  quantity: null
+  businessType: null
+  travelSubsidiesRequestItemDetailDTOs: TravelSubsidiesRequestItemDetailDTO[]
+  travelSubsidiesRequestItemDTOs: []
+  ctripOrders: null
+  flightOrderDetails: null
+  travelHotelOrderInfoDTOs: null
+  trainOrderInfoList: null
+  carOrders: null
+  labelList: null
+  orderList: []
+  travelRecommendResult: null
+  exceedingReason: null
+  averageBaseCurrencyAmount: null
+  averageCurrencyAmount: null
+  userCount: null
+  vendorInfoId: null
+  contractExpenseId: null
+}
+
 export interface ItineraryHeadDTO {
   itineraryHeadId: string // Long	行程头id
   applicationOID: string //	申请单OID
@@ -107,9 +212,11 @@ export interface ItineraryHeadDTO {
   itineraryDirection: number //	往返类型 1001表示去程，1002表示返程； 单程为空	2021-09-16
   refItineraryHeadId: string //	对应的 去程/返程 行程头id	2021-09-16
   travelSubsidiesCustList: any[] // List(#TravelSubsidiesCustList)	差补行程值列表	2021-10-26
-  itineraryBudgetDTOList: any[] // (#ItineraryBudgetDTO)	行程预算
+  itineraryBudgetDTOList: ItineraryBudgetDTO[] // (#ItineraryBudgetDTO)	行程预算
   customFormvalues: any[] //(#ItineraryHeadFormValue)	行程头表单自定义值	2022-05-26
 }
+
+export interface ItinerarySubsidies {}
 
 export interface ItineraryMap {
   FLIGHT?: ItineraryFlight[]
@@ -117,6 +224,7 @@ export interface ItineraryMap {
   HOTEL?: ItineraryHotel[]
   OTHER?: ItineraryOther[]
   REMARK?: ItineraryRemark[]
+  SUBSIDIES?: ItinerarySubsidies[]
 }
 
 export interface TravelApplication {

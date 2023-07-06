@@ -70,11 +70,18 @@ export interface App_TravelExtrasData {
   }
 }
 
+export interface App_TravelSubsidyItem {
+  date: string
+  amount: number
+  cityName: string // '北京'
+}
+
 export interface App_TravelCoreItinerary {
   startDate: string
   endDate: string
   fromCityName: string
   toCityName: string
+  subsidyList: App_TravelSubsidyItem[]
 }
 
 export interface TravelDateRange {

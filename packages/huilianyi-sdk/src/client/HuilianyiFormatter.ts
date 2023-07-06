@@ -87,12 +87,27 @@ export class HuilianyiFormatter {
   }
 
   public static transferItineraryHeadDTOs(itineraryItems?: ItineraryHeadDTO[]): App_TravelCoreItinerary[] {
-    return (itineraryItems || []).map((itinerary) => ({
-      startDate: itinerary.startDate,
-      endDate: itinerary.endDate,
-      fromCityName: itinerary.fromCityName,
-      toCityName: itinerary.toCityName,
-    }))
+    itineraryItems = itineraryItems || []
+    return itineraryItems.map((itinerary) => {
+      const appItinerary: App_TravelCoreItinerary = {
+        startDate: itinerary.startDate,
+        endDate: itinerary.endDate,
+        fromCityName: itinerary.fromCityName,
+        toCityName: itinerary.toCityName,
+        subsidyList: [],
+      }
+      const itineraryBudgetDTOList = itinerary.itineraryBudgetDTOList || []
+      if (itineraryBudgetDTOList.length > 0) {
+        const itineraryBudgetDTO = itineraryBudgetDTOList[0]
+        const items = itineraryBudgetDTO.travelSubsidiesRequestItemDetailDTOs || []
+        appItinerary.subsidyList = items.map((item) => ({
+          date: TimeUtils.momentUTC8(item.subsidiesDate).format('YYYY-MM-DD'),
+          amount: item.amount,
+          cityName: item.cityName,
+        }))
+      }
+      return appItinerary
+    })
   }
 
   public static extractMonthList(timeRange: { startDate: string; endDate: string }) {

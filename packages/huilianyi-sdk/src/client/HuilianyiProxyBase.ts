@@ -2,7 +2,7 @@ import { ApiOptions, axiosBuilder } from '@fangcha/app-request'
 import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { HuilianyiTokenKeeper } from './HuilianyiTokenKeeper'
 import { BasicAuthConfig } from '@fangcha/tools'
-import { HuilianyiResponse, } from '../core/HuilianyiModels'
+import { HuilianyiResponse } from '../core/HuilianyiModels'
 import AppError from '@fangcha/app-error'
 
 export class HuilianyiProxyBase extends ServiceProxy<BasicAuthConfig> {
@@ -19,7 +19,7 @@ export class HuilianyiProxyBase extends ServiceProxy<BasicAuthConfig> {
       .setBaseURL(this._tokenKeeper.baseURL())
       .addHeader('Authorization', `Bearer ${accessToken}`)
       .setApiOptions(commonApi)
-      .setTimeout(60000)
+      .setTimeout(120000)
       .setResponse200Checker((responseData: HuilianyiResponse<any>) => {
         if (responseData.errorCode !== undefined && responseData.errorCode !== '0000') {
           const errorPrefix = `API[${commonApi.description}] error:`
@@ -29,5 +29,4 @@ export class HuilianyiProxyBase extends ServiceProxy<BasicAuthConfig> {
     this.onRequestMade(request)
     return request
   }
-
 }
