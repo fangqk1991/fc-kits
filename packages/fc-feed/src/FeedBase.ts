@@ -310,6 +310,25 @@ export class FeedBase extends FCModel {
         } else if (symbol === 'notInStr') {
           searcher.processor().addConditionKeyNotInArray(columnKey, values)
         }
+      } else if (
+        ['lt', 'le', 'gt', 'ge', 'eq', 'ne'].includes(symbol) &&
+        ((typeof params[key] === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(params[key])) ||
+          typeof params[key] === 'number')
+      ) {
+        const value = Number(params[key])
+        if (symbol === 'lt') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` < ?`, value)
+        } else if (symbol === 'le') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` <= ?`, value)
+        } else if (symbol === 'gt') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` > ?`, value)
+        } else if (symbol === 'ge') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` >= ?`, value)
+        } else if (symbol === 'eq') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` = ?`, value)
+        } else if (symbol === 'ne') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` != ?`, value)
+        }
       }
     }
     const limitInfo = _buildLimitInfo(params)

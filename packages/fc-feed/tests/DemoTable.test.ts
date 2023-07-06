@@ -102,8 +102,11 @@ describe('Test DemoTable', (): void => {
     const pageResult = await DemoTable.getPageResult<{}>({
       // [`uid.$in`]: [4, 5],
       // [`uid.$notIn`]: [4],
-      [`uid.$inStr`]: '5',
-      [`uid.$notInStr`]: '3,4',
+      // [`uid.$inStr`]: '5',
+      // [`uid.$notInStr`]: '3,4',
+      [`uid.$gt`]: 3,
+      [`uid.$ne`]: '5',
+      [`uid.$le`]: '5',
     })
     pageResult.items.forEach((item) => {
       console.info(item)
