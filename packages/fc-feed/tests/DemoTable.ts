@@ -41,6 +41,10 @@ export class DemoProtocol implements DBProtocolV2 {
   modifiableCols(): string[] {
     return ['key1', 'key2']
   }
+
+  timestampTypeCols(): string[] {
+    return ['create_time', 'update_time']
+  }
 }
 
 class MyObserver implements DBObserver {

@@ -1,4 +1,5 @@
 import * as assert from 'assert'
+import * as moment from 'moment'
 import DemoTable from './DemoTable'
 
 describe('Test DemoTable', (): void => {
@@ -107,6 +108,7 @@ describe('Test DemoTable', (): void => {
       [`uid.$gt`]: 3,
       [`uid.$ne`]: '5',
       [`uid.$le`]: '5',
+      [`createTime.$le`]: moment('2023-02-06T14:59:03+08:00').unix(),
     })
     pageResult.items.forEach((item) => {
       console.info(item)

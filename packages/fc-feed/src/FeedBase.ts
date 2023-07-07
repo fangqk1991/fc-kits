@@ -310,24 +310,33 @@ export class FeedBase extends FCModel {
         } else if (symbol === 'notInStr') {
           searcher.processor().addConditionKeyNotInArray(columnKey, values)
         }
+      } else if (['eq', 'ne'].includes(symbol) && typeof params[key] === 'string') {
+        const value = params[key]
+        if (symbol === 'eq') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` = ?`, value)
+        } else if (symbol === 'ne') {
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` != ?`, value)
+        }
       } else if (
         ['lt', 'le', 'gt', 'ge', 'eq', 'ne'].includes(symbol) &&
         ((typeof params[key] === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(params[key])) ||
           typeof params[key] === 'number')
       ) {
+        const isTimestamp = this.dbSpec().checkTimestampKey(columnKey)
+        const placeholder = isTimestamp ? 'FROM_UNIXTIME(?)' : '?'
         const value = Number(params[key])
         if (symbol === 'lt') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` < ?`, value)
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` < ${placeholder}`, value)
         } else if (symbol === 'le') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` <= ?`, value)
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` <= ${placeholder}`, value)
         } else if (symbol === 'gt') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` > ?`, value)
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` > ${placeholder}`, value)
         } else if (symbol === 'ge') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` >= ?`, value)
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` >= ${placeholder}`, value)
         } else if (symbol === 'eq') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` = ?`, value)
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` = ${placeholder}`, value)
         } else if (symbol === 'ne') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` != ?`, value)
+          searcher.processor().addSpecialCondition(`\`${columnKey}\` != ${placeholder}`, value)
         }
       }
     }
