@@ -21,6 +21,7 @@ const _cols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
   'travel_status',
@@ -48,6 +49,7 @@ const _insertableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
   'travel_status',
@@ -71,6 +73,7 @@ const _modifiableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
   'travel_status',
@@ -171,6 +174,10 @@ export default class __HLY_Travel extends FeedBase {
    */
   public extrasInfo!: string
   /**
+   * @description [tinyint] 是否有补贴数据
+   */
+  public hasSubsidy!: number
+  /**
    * @description [mediumtext] 行程单信息，空 | JSON 字符串
    */
   public itineraryItemsStr!: string
@@ -242,6 +249,7 @@ export default class __HLY_Travel extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.hasSubsidy = 0
     this.itineraryItemsStr = ''
     this.expenseFormCodesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
@@ -267,6 +275,7 @@ export default class __HLY_Travel extends FeedBase {
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
+      hasSubsidy: 'has_subsidy',
       itineraryItemsStr: 'itinerary_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
       travelStatus: 'travel_status',

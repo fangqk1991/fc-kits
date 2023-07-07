@@ -7,6 +7,7 @@ import { HLY_Invoice } from './HLY_InvoiceModels'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { HLY_PrettyStatus } from './HLY_PrettyStatus'
 import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
+import { HLY_SubsidyStatus } from './HLY_SubsidyStatus'
 
 export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
@@ -99,6 +100,7 @@ export interface TravelMonthSection {
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   startTime: string
   endTime: string
+  hasSubsidy: HLY_SubsidyStatus
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
   expenseFormCodes: string[]

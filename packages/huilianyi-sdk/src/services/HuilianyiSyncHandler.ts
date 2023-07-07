@@ -136,7 +136,7 @@ export class HuilianyiSyncHandler {
     bulkAdder.setInsertKeys(
       dbSpec
         .insertableCols()
-        .filter((col) => !['itinerary_items_str', 'expense_form_codes_str', 'reload_time'].includes(col))
+        .filter((col) => !['has_subsidy', 'itinerary_items_str', 'expense_form_codes_str', 'reload_time'].includes(col))
     )
     bulkAdder.declareTimestampKey('start_time')
     bulkAdder.declareTimestampKey('end_time')
@@ -159,10 +159,12 @@ export class HuilianyiSyncHandler {
     console.info(`[dumpTravelRecords] ${todoItems.length} items need to reload.`)
     for (const item of todoItems) {
       const travelInfo = await syncCore.dataProxy.getTravelApplicationDetail(item.businessCode)
-      item.fc_edit()
-      item.itineraryItemsStr = JSON.stringify(
-        HuilianyiFormatter.transferItineraryHeadDTOs(travelInfo.travelApplication?.itineraryHeadDTOs)
+      const itineraryItems = HuilianyiFormatter.transferItineraryHeadDTOs(
+        travelInfo.travelApplication?.itineraryHeadDTOs
       )
+      item.fc_edit()
+      item.hasSubsidy = itineraryItems.find((item) => item.subsidyList.length > 0) ? 1 : 0
+      item.itineraryItemsStr = JSON.stringify(itineraryItems)
       item.expenseFormCodesStr = (travelInfo.referenceExpenseReports || []).map((item) => item.businessCode).join(',')
       item.reloadTime = item.lastModifiedDate
       await item.updateToDB()
