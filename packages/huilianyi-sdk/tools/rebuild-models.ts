@@ -69,6 +69,13 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['target_month'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
+  {
+    tableName: 'hly_order_flight',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_OrderFlight.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_OrderFlight.ts`,
+    primaryKey: ['hly_id'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
 ]
 
 const main = async () => {

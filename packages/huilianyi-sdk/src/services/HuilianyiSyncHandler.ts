@@ -1,6 +1,6 @@
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
-import { SQLBulkAdder } from 'fc-sql'
+import { SQLBulkAdder, SQLSearcher } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
 import { TimeUtils } from '../core/TimeUtils'
@@ -12,11 +12,17 @@ export class HuilianyiSyncHandler {
     this.syncCore = syncCore
   }
 
-  private async getLastTime(tableClass: { new (): FeedBase } & typeof FeedBase) {
+  private async getLastTime(
+    tableClass: { new (): FeedBase } & typeof FeedBase,
+    customHandler?: (searcher: SQLSearcher) => void
+  ) {
     const progressDBSpec = new tableClass().dbSpec()
     const searcher = progressDBSpec.database.searcher()
     searcher.setTable(progressDBSpec.table)
     searcher.setColumns(['MAX(last_modified_date) AS last_time'])
+    if (customHandler) {
+      customHandler(searcher)
+    }
     const result = (await searcher.querySingle()) as any
     return result['last_time']
   }
@@ -211,5 +217,55 @@ export class HuilianyiSyncHandler {
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
+  }
+
+  public async dumpOrderFlightRecords(forceReload = false) {
+    const syncCore = this.syncCore
+    const HLY_OrderFlight = syncCore.modelsCore.HLY_OrderFlight
+
+    const companyList = await syncCore.othersProxy.getCompanyList()
+    for (const company of companyList) {
+      let lastModifyStartDate = '2020-01-01 00:00:00'
+      if (!forceReload) {
+        const lastTime = await this.getLastTime(HLY_OrderFlight, (searcher) => {
+          searcher.addConditionKV('company_oid', company.companyOID)
+        })
+        if (lastTime) {
+          lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
+        }
+      }
+
+      const items = await syncCore.dataProxy.getFlightOrders(company.companyOID, {
+        lastModifyStartDate: lastModifyStartDate,
+      })
+      console.info(`[dumpOrderFlightRecords](${company.name}) fetch ${items.length} items.`)
+
+      const dbSpec = new HLY_OrderFlight().dbSpec()
+      const bulkAdder = new SQLBulkAdder(dbSpec.database)
+      bulkAdder.setTable(dbSpec.table)
+      bulkAdder.useUpdateWhenDuplicate()
+      bulkAdder.setInsertKeys(dbSpec.insertableCols())
+      bulkAdder.declareTimestampKey('created_date')
+      bulkAdder.declareTimestampKey('last_modified_date')
+      bulkAdder.declareTimestampKey('reload_time')
+      for (const item of items) {
+        const feed = new HLY_OrderFlight()
+        feed.hlyId = Number(item.orderId)
+        feed.employeeId = item.employeeId
+        feed.applicantName = item.applicant
+        feed.journeyNo = item.journeyNo || null
+        feed.businessCode = item.journeyNo && /^[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : null
+        feed.companyOid = company.companyOID
+        feed.orderType = item.orderType
+        feed.payType = item.payType
+        feed.orderStatus = item.orderStatus
+        feed.auditStatus = item.auditStatus
+        feed.createdDate = item.orderCreateDate
+        feed.lastModifiedDate = item.lastModifiedDate
+        feed.extrasInfo = JSON.stringify(item)
+        bulkAdder.putObject(feed.fc_encode())
+      }
+      await bulkAdder.execute()
+    }
   }
 }
