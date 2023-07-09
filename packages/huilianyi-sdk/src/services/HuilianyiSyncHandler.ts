@@ -249,20 +249,9 @@ export class HuilianyiSyncHandler {
       bulkAdder.declareTimestampKey('last_modified_date')
       bulkAdder.declareTimestampKey('reload_time')
       for (const item of items) {
-        const feed = new HLY_OrderFlight()
-        feed.hlyId = Number(item.orderId)
-        feed.employeeId = item.employeeId
-        feed.applicantName = item.applicant
-        feed.journeyNo = item.journeyNo || null
-        feed.businessCode = item.journeyNo && /^[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : null
-        feed.companyOid = company.companyOID
-        feed.orderType = item.orderType
-        feed.payType = item.payType
-        feed.orderStatus = item.orderStatus
-        feed.auditStatus = item.auditStatus
-        feed.createdDate = item.orderCreateDate
-        feed.lastModifiedDate = item.lastModifiedDate
-        feed.extrasInfo = JSON.stringify(item)
+        const feed = HLY_OrderFlight.makeFeed(
+          HuilianyiFormatter.transferTravelOrderFlightModel(item, company.companyOID)
+        )
         bulkAdder.putObject(feed.fc_encode())
       }
       await bulkAdder.execute()

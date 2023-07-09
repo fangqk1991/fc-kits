@@ -152,3 +152,40 @@ export interface App_TravelAllowanceItem {
   daysCount: number
   allowanceAmount: number
 }
+
+export interface App_TravelFlightTicketInfo {
+  flightOrderOID: string
+  flightCode: string
+  airline: string
+  startDate: string // '2023-07-04 23:25:00'
+  endDate: string // '2023-07-05 01:40:00'
+  startCity: string // '北京'
+  endCity: string // '杭州'
+  startCityCode: string // 'BJS'
+  startPortCode: string // 'PKX'
+  endCityCode: string // 'HGH'
+  endPortCode: string // 'HGH'
+
+  employeeId: string
+  employeeName: string
+}
+
+export interface App_TravelOrderFlightExtras {
+  tickets: App_TravelFlightTicketInfo[]
+}
+
+export interface App_TravelOrderFlight {
+  hlyId: number
+  employeeId: string | null
+  applicantName: string
+  companyOid: string | null
+  journeyNo: string | null
+  businessCode: string | null
+  orderType: string
+  payType: string
+  orderStatus: string
+  auditStatus: string
+  createdDate: string | null
+  lastModifiedDate: string | null
+  extrasData: App_TravelOrderFlightExtras
+}

@@ -1,8 +1,15 @@
 import { HLY_ExpenseV2 } from '../core/HLY_ExpenseModels'
-import { App_ExpenseModel, App_TravelCoreItinerary, App_TravelModel, TravelMonthSection } from '../core/App_CoreModels'
+import {
+  App_ExpenseModel,
+  App_TravelCoreItinerary,
+  App_TravelModel,
+  App_TravelOrderFlight,
+  TravelMonthSection,
+} from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
 import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 import { TimeUtils } from '../core/TimeUtils'
+import { HLY_OrderFlight } from '../core/HLY_TravelOrderModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -164,5 +171,39 @@ export class HuilianyiFormatter {
         itineraryItems: itineraryItems,
       }
     })
+  }
+
+  public static transferTravelOrderFlightModel(item: HLY_OrderFlight, companyOid: string): App_TravelOrderFlight {
+    return {
+      hlyId: Number(item.orderId),
+      employeeId: item.employeeId,
+      applicantName: item.applicant,
+      companyOid: companyOid,
+      journeyNo: item.journeyNo || null,
+      businessCode: item.journeyNo && /^[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : null,
+      orderType: item.orderType,
+      payType: item.payType,
+      orderStatus: item.orderStatus,
+      auditStatus: item.auditStatus,
+      createdDate: item.orderCreateDate,
+      lastModifiedDate: item.lastModifiedDate,
+      extrasData: {
+        tickets: item.flightOrderDetails.map((detail) => ({
+          flightOrderOID: detail.flightOrderOID,
+          flightCode: detail.flightCode,
+          airline: detail.airline,
+          startDate: detail.startDate,
+          endDate: detail.endDate,
+          startCity: detail.startCity,
+          endCity: detail.endCity,
+          startCityCode: detail.startCityCode,
+          startPortCode: detail.startPortCode,
+          endCityCode: detail.endCityCode,
+          endPortCode: detail.endPortCode,
+          employeeId: detail.passengerInfo.CorpEid,
+          employeeName: detail.passengerInfo.PassengerName,
+        })),
+      },
+    }
   }
 }

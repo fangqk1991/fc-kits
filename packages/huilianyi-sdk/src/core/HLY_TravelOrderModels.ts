@@ -11,6 +11,11 @@ export interface HLY_OrderFlightCoreInfo {
   endCityCode: string // 'HGH'
   endPortCode: string // 'HGH'
 
+  passengerInfo: {
+    CorpEid: string
+    PassengerName: string
+  }
+
   // amount: number
   // price: number
   // printPrice: number
