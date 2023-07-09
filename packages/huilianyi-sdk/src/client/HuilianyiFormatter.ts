@@ -113,6 +113,8 @@ export class HuilianyiFormatter {
         const itineraryBudgetDTO = itineraryBudgetDTOList[0]
         const items = itineraryBudgetDTO.travelSubsidiesRequestItemDetailDTOs || []
         appItinerary.subsidyList = items.map((item) => ({
+          userName: item.userName,
+          userOID: item.userOID,
           date: TimeUtils.momentUTC8(item.subsidiesDate).format('YYYY-MM-DD'),
           amount: item.amount,
           cityName: item.cityName,

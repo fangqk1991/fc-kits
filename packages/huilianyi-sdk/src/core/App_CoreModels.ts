@@ -73,6 +73,8 @@ export interface App_TravelExtrasData {
 }
 
 export interface App_TravelSubsidyItem {
+  userName: string
+  userOID: string
   date: string
   amount: number
   cityName: string // '北京'
