@@ -6,7 +6,7 @@ import { SQLRemover } from './SQLRemover'
 import * as moment from 'moment'
 import { TransactionRunner } from './TransactionRunner'
 import { DBTableHandler } from './DBTableHandler'
-import { QueryOptionsWithType } from 'sequelize/types/lib/query-interface'
+import { QueryOptionsWithType } from 'sequelize/types'
 import { SequelizeProtocol } from './SequelizeProtocol'
 import * as assert from 'assert'
 
