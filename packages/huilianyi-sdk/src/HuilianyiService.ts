@@ -71,49 +71,56 @@ export class HuilianyiService {
     searcher.processor().addConditionKV('has_subsidy', 1)
     const items = await searcher.queryAllFeeds()
     for (const travelItem of items) {
+      const participants = travelItem.extrasData().participants
       const monthSections = travelItem.monthSectionInfos()
       for (const section of monthSections) {
-        const subsidyItems: App_TravelSubsidyItem[] = []
-        for (const item of section.itineraryItems) {
-          subsidyItems.push(...item.subsidyList.filter((item) => item.date.startsWith(section.month)))
-        }
+        for (const participant of participants) {
+          const subsidyItems: App_TravelSubsidyItem[] = []
+          for (const item of section.itineraryItems) {
+            subsidyItems.push(
+              ...item.subsidyList.filter(
+                (item) => item.date.startsWith(section.month) && item.userOID === participant.userOID
+              )
+            )
+          }
 
-        // const allowanceItems: App_TravelAllowanceItem[] = []
-        // let lastDate = '1970-01-01'
-        // for (const item of section.itineraryItems) {
-        //   const startDate = TimeUtils.max(item.startDate, monthStartDate, lastDate)
-        //   const endDate = TimeUtils.min(item.endDate, monthEndDate)
-        //   if (TimeUtils.diff(startDate, endDate) > 0) {
-        //     break
-        //   }
-        //   lastDate = moment(endDate).add(1, 'days').format('YYYY-MM-DD')
-        //   const daysCount = moment(endDate).diff(moment(startDate), 'days') + 1
-        //   const allowanceAmount = daysCount * 100
-        //   allowanceItems.push({
-        //     startDate: startDate,
-        //     endDate: endDate,
-        //     city: item.toCityName,
-        //     daysCount: daysCount,
-        //     allowanceAmount: allowanceAmount,
-        //   })
-        // }
-        const allowance = new HLY_TravelAllowance()
-        allowance.businessCode = travelItem.businessCode
-        allowance.targetMonth = section.month
-        allowance.applicantOid = travelItem.applicantOid
-        allowance.applicantName = travelItem.applicantName
-        allowance.title = travelItem.title
-        allowance.uid = md5([travelItem.businessCode, section.month, travelItem.applicantOid].join(','))
-        allowance.daysCount = subsidyItems.length
-        allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
-        allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
-        allowance.detailItemsStr = JSON.stringify([])
-        allowance.extrasInfo = JSON.stringify({
-          itineraryItems: section.itineraryItems,
-        })
-        allowance.isPretty = HLY_PrettyStatus.NotPretty
-        allowance.isVerified = HLY_VerifiedStatus.NotVerified
-        await allowance.strongAddToDB()
+          // const allowanceItems: App_TravelAllowanceItem[] = []
+          // let lastDate = '1970-01-01'
+          // for (const item of section.itineraryItems) {
+          //   const startDate = TimeUtils.max(item.startDate, monthStartDate, lastDate)
+          //   const endDate = TimeUtils.min(item.endDate, monthEndDate)
+          //   if (TimeUtils.diff(startDate, endDate) > 0) {
+          //     break
+          //   }
+          //   lastDate = moment(endDate).add(1, 'days').format('YYYY-MM-DD')
+          //   const daysCount = moment(endDate).diff(moment(startDate), 'days') + 1
+          //   const allowanceAmount = daysCount * 100
+          //   allowanceItems.push({
+          //     startDate: startDate,
+          //     endDate: endDate,
+          //     city: item.toCityName,
+          //     daysCount: daysCount,
+          //     allowanceAmount: allowanceAmount,
+          //   })
+          // }
+          const allowance = new HLY_TravelAllowance()
+          allowance.businessCode = travelItem.businessCode
+          allowance.targetMonth = section.month
+          allowance.applicantOid = participant.userOID
+          allowance.applicantName = participant.fullName
+          allowance.title = travelItem.title
+          allowance.uid = md5([travelItem.businessCode, section.month, participant.userOID].join(','))
+          allowance.daysCount = subsidyItems.length
+          allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
+          allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
+          allowance.detailItemsStr = JSON.stringify([])
+          allowance.extrasInfo = JSON.stringify({
+            itineraryItems: section.itineraryItems,
+          })
+          allowance.isPretty = HLY_PrettyStatus.NotPretty
+          allowance.isVerified = HLY_VerifiedStatus.NotVerified
+          await allowance.strongAddToDB()
+        }
       }
     }
   }
