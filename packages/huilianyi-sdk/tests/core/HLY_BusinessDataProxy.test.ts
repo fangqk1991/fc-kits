@@ -157,7 +157,7 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   })
 
   it(`getTravelApplicationDetail`, async () => {
-    const data = await businessDataProxy.getTravelApplicationDetail('TA00981318')
+    const data = await businessDataProxy.getTravelApplicationDetail('TA01004076')
     console.info(JSON.stringify(data, null, 2))
   })
 

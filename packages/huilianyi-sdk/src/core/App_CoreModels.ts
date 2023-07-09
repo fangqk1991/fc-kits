@@ -2,7 +2,7 @@ import { HLY_CustomFormValue } from './HLY_CoreModels'
 import { ExpenseFieldDTO, ExpenseReportInvoiceView, HLY_ExpenseType } from './HLY_ExpenseModels'
 import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
-import { ItineraryMap } from './HLY_TravelModels'
+import { HLY_TravelParticipant, ItineraryMap } from './HLY_TravelModels'
 import { HLY_Invoice } from './HLY_InvoiceModels'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { HLY_PrettyStatus } from './HLY_PrettyStatus'
@@ -62,6 +62,7 @@ export interface App_ExpenseModel extends App_FormBase<App_ExpenseExtrasData> {
 
 export interface App_TravelExtrasData {
   itineraryMap: ItineraryMap
+  participants: HLY_TravelParticipant[]
   customProps: {
     [propKey: string]: {
       fieldName: string

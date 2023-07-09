@@ -91,6 +91,7 @@ export class HuilianyiFormatter {
       itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
+        participants: customProps.field_participants ? JSON.parse(customProps.field_participants.value) : [],
         itineraryMap: item.travelApplication?.itineraryMap || {},
         customProps: customProps,
       },

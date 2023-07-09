@@ -368,3 +368,10 @@ export interface HLY_Travel {
 
   referenceExpenseReports: ReferenceEntityDTO[]
 }
+
+export interface HLY_TravelParticipant {
+  avatar: string
+  fullName: string
+  participantOID: string
+  userOID: string
+}

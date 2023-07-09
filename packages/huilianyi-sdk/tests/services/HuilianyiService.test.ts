@@ -19,7 +19,7 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`makeMonthAllowance`, async () => {
-    // await huilianyiService.syncHandler().dumpTravelRecords(true)
+    await huilianyiService.syncHandler().dumpTravelRecords(true)
     await huilianyiService.makeMonthAllowance()
   })
 
