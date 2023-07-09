@@ -75,4 +75,13 @@ export const HLY_BusinessDataApis = {
     route: '/gateway/api/open/train/orders',
     description: '查询火车订单信息',
   },
+
+  /**
+   * @description https://opendocs.huilianyi.com/implement/business-data/hotel/order.html
+   */
+  HotelOrdersGet: {
+    method: 'GET',
+    route: '/gateway/api/open/hotel/orders',
+    description: '查询酒店订单信息',
+  },
 }

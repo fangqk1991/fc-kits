@@ -12,11 +12,11 @@ export class PageDataFetcher {
         page: page,
         size: 100,
       })
-      assert.ok(Array.isArray(pageItems), `fetchAllPageItems' handler response error`, 500)
-      items = items.concat(pageItems || [])
-      if (pageItems.length === 0) {
+      if (!pageItems || pageItems.length === 0) {
         finished = true
       } else {
+        assert.ok(Array.isArray(pageItems), `fetchAllPageItems' handler response error`, 500)
+        items = items.concat(pageItems || [])
         ++page
       }
     }

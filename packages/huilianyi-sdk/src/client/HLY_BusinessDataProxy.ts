@@ -160,16 +160,30 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
   }
 
-  public async getTrainOrders(extras: {} = {}) {
+  public async getTrainOrders(companyOID: string, extras: {} = {}) {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.TrainOrdersGet))
       request.setQueryParams({
         ...params,
         // withApplicationParticipant: true,
         ...extras,
+        companyOID: companyOID,
       })
       const items = await request.quickSend<any[]>()
       return items || []
+    })
+  }
+
+  public async getHotelOrders(companyOID: string, extras: {} = {}) {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.HotelOrdersGet))
+      request.setQueryParams({
+        ...params,
+        // withApplicationParticipant: true,
+        ...extras,
+        companyOID: companyOID,
+      })
+      return await request.quickSend<any[]>()
     })
   }
 }

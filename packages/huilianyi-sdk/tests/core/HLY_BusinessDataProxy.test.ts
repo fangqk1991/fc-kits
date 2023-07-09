@@ -6,7 +6,7 @@ import {
   HLY_ExpenseStatus,
   HLY_ExpenseStatusDescriptor,
   HLY_OthersProxy,
-  HLY_PublicApplicationStatusDescriptor,
+  HLY_PublicApplicationStatusDescriptor
 } from '../../src'
 import { DiffMapper } from '@fangcha/tools'
 
@@ -215,9 +215,15 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   it(`getTrainOrders`, async () => {
     const companyList = await othersProxy.getCompanyList()
     for (const company of companyList) {
-      const items = await businessDataProxy.getTrainOrders({
-        companyOID: company.companyOID,
-      })
+      const items = await businessDataProxy.getTrainOrders(company.companyOID, {})
+      console.info(JSON.stringify(items, null, 2))
+    }
+  })
+
+  it(`getHotelOrders`, async () => {
+    const companyList = await othersProxy.getCompanyList()
+    for (const company of companyList) {
+      const items = await businessDataProxy.getHotelOrders(company.companyOID, {})
       console.info(JSON.stringify(items, null, 2))
     }
   })
