@@ -335,4 +335,50 @@ export class HuilianyiSyncHandler {
       await bulkAdder.execute()
     }
   }
+
+  public async dumpOrderHotelRecords(forceReload = false) {
+    const syncCore = this.syncCore
+    const OrderClass = syncCore.modelsCore.HLY_OrderHotel
+
+    const companyList = await syncCore.othersProxy.getCompanyList()
+    for (const company of companyList) {
+      let lastModifyStartDate = '2020-01-01 00:00:00'
+      if (!forceReload) {
+        const lastTime = await this.getLastTime(OrderClass, (searcher) => {
+          searcher.addConditionKV('company_oid', company.companyOID)
+        })
+        if (lastTime) {
+          lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
+        }
+      }
+
+      const items = await syncCore.dataProxy.getHotelOrders(company.companyOID, {
+        lastModifyStartDate: lastModifyStartDate,
+      })
+      const orderItems = items.map((item) =>
+        HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(item, company.companyOID, () => {
+          return {
+            usersStr: item.users,
+            tickets: [],
+            detailInfo: item.hotelOrderDetail,
+          }
+        })
+      )
+
+      console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
+      const dbSpec = new OrderClass().dbSpec()
+      const bulkAdder = new SQLBulkAdder(dbSpec.database)
+      bulkAdder.setTable(dbSpec.table)
+      bulkAdder.useUpdateWhenDuplicate()
+      bulkAdder.setInsertKeys(dbSpec.insertableCols())
+      bulkAdder.declareTimestampKey('created_date')
+      bulkAdder.declareTimestampKey('last_modified_date')
+      bulkAdder.declareTimestampKey('reload_time')
+      for (const orderItem of orderItems) {
+        const feed = OrderClass.makeFeed(orderItem)
+        bulkAdder.putObject(feed.fc_encode())
+      }
+      await bulkAdder.execute()
+    }
+  }
 }

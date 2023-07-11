@@ -208,3 +208,4 @@ export interface App_TravelOrderBase<T = any> {
 
 export interface App_TravelOrderFlight extends App_TravelOrderBase<App_TravelFlightTicketInfo> {}
 export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrainTicketInfo> {}
+export interface App_TravelOrderHotel extends App_TravelOrderBase {}

@@ -54,7 +54,7 @@ export interface HLY_OrderFlightCoreInfo {
 
 export interface HLY_OrderBase {
   orderId: string
-  orderType: 'TRAIN' | 'FLIGHT'
+  orderType: 'TRAIN' | 'FLIGHT' | 'HOTEL'
   amountRMB: number
   payType: string
   // CCARD:信用卡支付;
@@ -133,4 +133,43 @@ export interface HLY_OrderFlight extends HLY_OrderBase {
 
 export interface HLY_OrderTrain extends HLY_OrderBase {
   trainOrderDetails: HLY_OrderTrainCoreInfo[]
+}
+
+export interface HLY_OrderHotelClientInfo {
+  ClientName: string // 旅客姓名
+  EmployeeID: string // 员工号
+  CostCenter1: string
+  CostCenter2: string
+  Dept1: string
+  Dept3: string
+  Dept4: string
+}
+
+export interface HLY_OrderHotelRoomInfo {
+  RoomName: string
+  BedType: string
+  ETA: string // 入住时间 '2023-07-11 00:00:00'
+  ETD: string // 离店时间 '2023-07-12 00:00:00'
+  Price: number
+  Currency: string
+}
+
+export interface HLY_OrderHotelCoreInfo {
+  hotelOrderOID: string
+  hotelName: string
+
+  startDate: string // '2023-07-04 23:25:00'
+  endDate: string // '2023-07-05 01:40:00'
+
+  cityName: string
+  roomName: string
+  roomCount: number
+  roomDays: number
+
+  clientInfo: HLY_OrderHotelClientInfo[]
+  roomInfo: HLY_OrderHotelRoomInfo[]
+}
+
+export interface HLY_OrderHotel extends HLY_OrderBase {
+  hotelOrderDetail: HLY_OrderHotelCoreInfo
 }
