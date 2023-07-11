@@ -1,7 +1,7 @@
-import { _HLY_OrderFlight } from './_HLY_OrderFlight'
 import { App_TravelOrderTrain } from '../../core/App_CoreModels'
+import { _HLY_OrderBase } from './_HLY_OrderBase'
 
-export class _HLY_OrderTrain extends _HLY_OrderFlight {
+export class _HLY_OrderTrain extends _HLY_OrderBase {
   public constructor() {
     super()
   }

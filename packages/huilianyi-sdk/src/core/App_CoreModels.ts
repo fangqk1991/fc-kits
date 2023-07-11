@@ -170,7 +170,23 @@ export interface App_TravelFlightTicketInfo {
   employeeName: string
 }
 
+export interface App_TravelTrainTicketInfo {
+  trainOrderOID: string
+  trainName: string
+
+  startDate: string // '2023-07-04 23:25:00'
+  endDate: string // '2023-07-05 01:40:00'
+
+  departureCityName: string // "上海",
+  departureStationName: string // "上海虹桥",
+  arrivalCityName: string // "台州",
+  arrivalStationName: string // "台州西",
+
+  electronicOrderNo: string
+}
+
 export interface App_TravelOrderExtras<T = any> {
+  usersStr: string
   tickets: T[]
 }
 
@@ -191,4 +207,4 @@ export interface App_TravelOrderBase<T = any> {
 }
 
 export interface App_TravelOrderFlight extends App_TravelOrderBase<App_TravelFlightTicketInfo> {}
-export interface App_TravelOrderTrain extends App_TravelOrderBase<any> {}
+export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrainTicketInfo> {}

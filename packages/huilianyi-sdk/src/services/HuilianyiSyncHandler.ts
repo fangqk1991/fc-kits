@@ -4,6 +4,7 @@ import { SQLBulkAdder, SQLSearcher } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
 import { TimeUtils } from '../core/TimeUtils'
+import { App_TravelFlightTicketInfo, App_TravelTrainTicketInfo } from '../core/App_CoreModels'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -239,8 +240,9 @@ export class HuilianyiSyncHandler {
         lastModifyStartDate: lastModifyStartDate,
       })
       const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder(item, company.companyOID, () => {
+        HuilianyiFormatter.transferTravelOrder<App_TravelFlightTicketInfo>(item, company.companyOID, () => {
           return {
+            usersStr: item.users,
             tickets: item.flightOrderDetails.map((detail) => ({
               flightOrderOID: detail.flightOrderOID,
               flightCode: detail.flightCode,
@@ -296,23 +298,22 @@ export class HuilianyiSyncHandler {
         lastModifyStartDate: lastModifyStartDate,
       })
       const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder(item, company.companyOID, () => {
+        HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(item, company.companyOID, () => {
           return {
+            usersStr: item.users,
             tickets: item.trainOrderDetails.map((detail) => ({
-              ...detail,
-              // flightOrderOID: detail.flightOrderOID,
-              // flightCode: detail.flightCode,
-              // airline: detail.airline,
-              // startDate: detail.startDate,
-              // endDate: detail.endDate,
-              // startCity: detail.startCity,
-              // endCity: detail.endCity,
-              // startCityCode: detail.startCityCode,
-              // startPortCode: detail.startPortCode,
-              // endCityCode: detail.endCityCode,
-              // endPortCode: detail.endPortCode,
-              // employeeId: detail.passengerInfo.CorpEid,
-              // employeeName: detail.passengerInfo.PassengerName,
+              trainOrderOID: detail.trainOrderOID,
+              trainName: detail.trainName,
+
+              startDate: detail.startDate,
+              endDate: detail.endDate,
+
+              departureCityName: detail.departureCityName,
+              departureStationName: detail.departureStationName,
+              arrivalCityName: detail.arrivalCityName,
+              arrivalStationName: detail.arrivalStationName,
+
+              electronicOrderNo: detail.electronicOrderNo,
             })),
           }
         })
