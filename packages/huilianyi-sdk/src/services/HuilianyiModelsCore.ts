@@ -9,6 +9,7 @@ import { _HLY_TravelAllowance } from '../models/extensions/_HLY_TravelAllowance'
 import { _HLY_AllowanceSnapshot } from '../models/extensions/_HLY_AllowanceSnapshot'
 import { _HLY_SnapshotLog } from '../models/extensions/_HLY_SnapshotLog'
 import { _HLY_OrderFlight } from '../models/extensions/_HLY_OrderFlight'
+import { _HLY_OrderTrain } from '../models/extensions/_HLY_OrderTrain'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -23,6 +24,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_AllowanceSnapshot!: { new (): _HLY_AllowanceSnapshot } & typeof _HLY_AllowanceSnapshot
   public readonly HLY_SnapshotLog!: { new (): _HLY_SnapshotLog } & typeof _HLY_SnapshotLog
   public readonly HLY_OrderFlight!: { new (): _HLY_OrderFlight } & typeof _HLY_OrderFlight
+  public readonly HLY_OrderTrain!: { new (): _HLY_OrderTrain } & typeof _HLY_OrderTrain
 
   constructor(database: FCDatabase) {
     this.database = database
@@ -86,5 +88,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_OrderFlight = HLY_OrderFlight
+
+    class HLY_OrderTrain extends _HLY_OrderTrain {}
+    HLY_OrderTrain.addStaticOptions({
+      database: database,
+    })
+    this.HLY_OrderTrain = HLY_OrderTrain
   }
 }

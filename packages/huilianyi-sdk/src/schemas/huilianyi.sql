@@ -173,7 +173,7 @@ DROP TABLE IF EXISTS hly_order_flight;
 CREATE TABLE IF NOT EXISTS hly_order_flight
 (
     hly_id             BIGINT UNSIGNED NOT NULL PRIMARY KEY,
-    employee_id        VARCHAR(64)     NOT NULL COLLATE ascii_bin,
+    employee_id        VARCHAR(64)     NULL COLLATE ascii_bin,
     applicant_name     TEXT            NULL,
     journey_no         VARCHAR(20)     NULL,
     business_code      VARCHAR(20)     NULL COLLATE ascii_bin,
@@ -181,7 +181,33 @@ CREATE TABLE IF NOT EXISTS hly_order_flight
     order_type         VARCHAR(20)     NOT NULL COLLATE ascii_bin,
     pay_type           VARCHAR(20)     NOT NULL COLLATE ascii_bin,
     order_status       VARCHAR(20)     NOT NULL,
-    audit_status       VARCHAR(20)     NOT NULL,
+    audit_status       VARCHAR(20)     NULL,
+    created_date       TIMESTAMP       NULL,
+    last_modified_date TIMESTAMP       NULL,
+    extras_info        MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
+    create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX (business_code),
+    INDEX (last_modified_date),
+    INDEX (reload_time)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_order_train;
+CREATE TABLE IF NOT EXISTS hly_order_train
+(
+    hly_id             BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    employee_id        VARCHAR(64)     NULL COLLATE ascii_bin,
+    applicant_name     TEXT            NULL,
+    journey_no         VARCHAR(20)     NULL,
+    business_code      VARCHAR(20)     NULL COLLATE ascii_bin,
+    company_oid        CHAR(36)        NULL COLLATE ascii_bin,
+    order_type         VARCHAR(20)     NOT NULL COLLATE ascii_bin,
+    pay_type           VARCHAR(20)     NOT NULL COLLATE ascii_bin,
+    order_status       VARCHAR(20)     NOT NULL,
+    audit_status       VARCHAR(20)     NULL,
     created_date       TIMESTAMP       NULL,
     last_modified_date TIMESTAMP       NULL,
     extras_info        MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',

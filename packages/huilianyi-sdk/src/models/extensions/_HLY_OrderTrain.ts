@@ -1,11 +1,16 @@
-import { _HLY_TravelAllowance } from './_HLY_TravelAllowance'
+import { _HLY_OrderFlight } from './_HLY_OrderFlight'
+import { App_TravelOrderTrain } from '../../core/App_CoreModels'
 
-export class _HLY_AllowanceSnapshot extends _HLY_TravelAllowance {
+export class _HLY_OrderTrain extends _HLY_OrderFlight {
   public constructor() {
     super()
   }
+
+  public modelForClient(): App_TravelOrderTrain {
+    return super.modelForClient()
+  }
 }
 
-_HLY_AllowanceSnapshot.addStaticOptions({
-  table: 'hly_allowance_snapshot',
+_HLY_OrderTrain.addStaticOptions({
+  table: 'hly_order_train',
 })

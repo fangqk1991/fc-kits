@@ -30,4 +30,8 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
   it(`dumpOrderFlightRecords`, async () => {
     await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
   })
+
+  it(`dumpOrderTrainRecords`, async () => {
+    await huilianyiService.syncHandler().dumpOrderTrainRecords(true)
+  })
 })

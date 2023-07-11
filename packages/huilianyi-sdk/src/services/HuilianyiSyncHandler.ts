@@ -221,13 +221,13 @@ export class HuilianyiSyncHandler {
 
   public async dumpOrderFlightRecords(forceReload = false) {
     const syncCore = this.syncCore
-    const HLY_OrderFlight = syncCore.modelsCore.HLY_OrderFlight
+    const OrderClass = syncCore.modelsCore.HLY_OrderFlight
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
       let lastModifyStartDate = '2020-01-01 00:00:00'
       if (!forceReload) {
-        const lastTime = await this.getLastTime(HLY_OrderFlight, (searcher) => {
+        const lastTime = await this.getLastTime(OrderClass, (searcher) => {
           searcher.addConditionKV('company_oid', company.companyOID)
         })
         if (lastTime) {
@@ -238,9 +238,29 @@ export class HuilianyiSyncHandler {
       const items = await syncCore.dataProxy.getFlightOrders(company.companyOID, {
         lastModifyStartDate: lastModifyStartDate,
       })
-      console.info(`[dumpOrderFlightRecords](${company.name}) fetch ${items.length} items.`)
-
-      const dbSpec = new HLY_OrderFlight().dbSpec()
+      const orderItems = items.map((item) =>
+        HuilianyiFormatter.transferTravelOrder(item, company.companyOID, () => {
+          return {
+            tickets: item.flightOrderDetails.map((detail) => ({
+              flightOrderOID: detail.flightOrderOID,
+              flightCode: detail.flightCode,
+              airline: detail.airline,
+              startDate: detail.startDate,
+              endDate: detail.endDate,
+              startCity: detail.startCity,
+              endCity: detail.endCity,
+              startCityCode: detail.startCityCode,
+              startPortCode: detail.startPortCode,
+              endCityCode: detail.endCityCode,
+              endPortCode: detail.endPortCode,
+              employeeId: detail.passengerInfo.CorpEid,
+              employeeName: detail.passengerInfo.PassengerName,
+            })),
+          }
+        })
+      )
+      console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
+      const dbSpec = new OrderClass().dbSpec()
       const bulkAdder = new SQLBulkAdder(dbSpec.database)
       bulkAdder.setTable(dbSpec.table)
       bulkAdder.useUpdateWhenDuplicate()
@@ -248,10 +268,67 @@ export class HuilianyiSyncHandler {
       bulkAdder.declareTimestampKey('created_date')
       bulkAdder.declareTimestampKey('last_modified_date')
       bulkAdder.declareTimestampKey('reload_time')
-      for (const item of items) {
-        const feed = HLY_OrderFlight.makeFeed(
-          HuilianyiFormatter.transferTravelOrderFlightModel(item, company.companyOID)
-        )
+      for (const orderItem of orderItems) {
+        const feed = OrderClass.makeFeed(orderItem)
+        bulkAdder.putObject(feed.fc_encode())
+      }
+      await bulkAdder.execute()
+    }
+  }
+
+  public async dumpOrderTrainRecords(forceReload = false) {
+    const syncCore = this.syncCore
+    const OrderClass = syncCore.modelsCore.HLY_OrderTrain
+
+    const companyList = await syncCore.othersProxy.getCompanyList()
+    for (const company of companyList) {
+      let lastModifyStartDate = '2020-01-01 00:00:00'
+      if (!forceReload) {
+        const lastTime = await this.getLastTime(OrderClass, (searcher) => {
+          searcher.addConditionKV('company_oid', company.companyOID)
+        })
+        if (lastTime) {
+          lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
+        }
+      }
+
+      const items = await syncCore.dataProxy.getTrainOrders(company.companyOID, {
+        lastModifyStartDate: lastModifyStartDate,
+      })
+      const orderItems = items.map((item) =>
+        HuilianyiFormatter.transferTravelOrder(item, company.companyOID, () => {
+          return {
+            tickets: item.trainOrderDetails.map((detail) => ({
+              ...detail,
+              // flightOrderOID: detail.flightOrderOID,
+              // flightCode: detail.flightCode,
+              // airline: detail.airline,
+              // startDate: detail.startDate,
+              // endDate: detail.endDate,
+              // startCity: detail.startCity,
+              // endCity: detail.endCity,
+              // startCityCode: detail.startCityCode,
+              // startPortCode: detail.startPortCode,
+              // endCityCode: detail.endCityCode,
+              // endPortCode: detail.endPortCode,
+              // employeeId: detail.passengerInfo.CorpEid,
+              // employeeName: detail.passengerInfo.PassengerName,
+            })),
+          }
+        })
+      )
+
+      console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
+      const dbSpec = new OrderClass().dbSpec()
+      const bulkAdder = new SQLBulkAdder(dbSpec.database)
+      bulkAdder.setTable(dbSpec.table)
+      bulkAdder.useUpdateWhenDuplicate()
+      bulkAdder.setInsertKeys(dbSpec.insertableCols())
+      bulkAdder.declareTimestampKey('created_date')
+      bulkAdder.declareTimestampKey('last_modified_date')
+      bulkAdder.declareTimestampKey('reload_time')
+      for (const orderItem of orderItems) {
+        const feed = OrderClass.makeFeed(orderItem)
         bulkAdder.putObject(feed.fc_encode())
       }
       await bulkAdder.execute()

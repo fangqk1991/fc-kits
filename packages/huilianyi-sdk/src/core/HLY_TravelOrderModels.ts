@@ -52,9 +52,9 @@ export interface HLY_OrderFlightCoreInfo {
   // standardPrice: number
 }
 
-export interface HLY_OrderFlight {
+export interface HLY_OrderBase {
   orderId: string
-  orderType: 'FLIGHT'
+  orderType: 'TRAIN' | 'FLIGHT'
   amountRMB: number
   payType: string
   // CCARD:信用卡支付;
@@ -65,9 +65,10 @@ export interface HLY_OrderFlight {
   // TMPAY:礼品卡支付;
   // CASH:现金支付;
   // APPAY:AirPlus支付
-  productTypeId: 1
+  productTypeId: number // 1
   orderStatus: string
-  // 处理中;已取消;全部退票;部分退票;已成交;未出行;
+  // 机票: 处理中;已取消;全部退票;部分退票;已成交;未出行;
+  // 火车票: 已取消;待出票;已购票;出票失败
   auditStatus: string // '授权通过'
   employeeId: string
   companyOID: string
@@ -75,9 +76,42 @@ export interface HLY_OrderFlight {
   users: string
   journeyNo?: string
   orderCreateDate: string // '2023-07-04 20:40:08'
-  stringColumn1: string
-  stringColumn2: string
+  // stringColumn1: string
+  // stringColumn2: string
   enableArtInvoice: boolean
+
+  withReceipt: boolean
+  ticket: boolean
+  artInvoice: boolean
+  lastModifiedDate: string // '2023-07-04 21:23:25'
+}
+
+export interface HLY_OrderTrainCoreInfo {
+  trainOrderOID: string
+  trainName: string
+
+  startDate: string // '2023-07-04 23:25:00'
+  endDate: string // '2023-07-05 01:40:00'
+
+  departureCityName: string // "上海",
+  departureStationName: string // "上海虹桥",
+  arrivalCityName: string // "台州",
+  arrivalStationName: string // "台州西",
+  arriveStopType: number // 0,
+  firstSeatTypeId: number // 0,
+  firstSeatTypeName: string // "一等座",
+  ticketPrice: number // 327,
+  trainTypeId: number // 0,
+  electronicOrderNo: string
+  serviceFee: number // 4,
+  customType: number // 0,
+  deliverFee: number // 0,
+  paperTicketFee: number // 0,
+  trainTicketType: string // "一等座",
+  changeServiceFee: number // 4
+}
+
+export interface HLY_OrderFlight extends HLY_OrderBase {
   flightOrderInfo: {
     flightOrderInfoOID: string
     travelMoney: number
@@ -95,8 +129,8 @@ export interface HLY_OrderFlight {
     deliveryInfo: string // JSON string
   }
   flightOrderDetails: HLY_OrderFlightCoreInfo[]
-  withReceipt: boolean
-  ticket: boolean
-  artInvoice: boolean
-  lastModifiedDate: string // '2023-07-04 21:23:25'
+}
+
+export interface HLY_OrderTrain extends HLY_OrderBase {
+  trainOrderDetails: HLY_OrderTrainCoreInfo[]
 }

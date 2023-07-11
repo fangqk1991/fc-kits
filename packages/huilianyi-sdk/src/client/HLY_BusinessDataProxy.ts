@@ -9,7 +9,7 @@ import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
 import { HLY_Travel } from '../core/HLY_TravelModels'
 import { HLY_Invoice } from '../core/HLY_InvoiceModels'
 import { TimeUtils } from '../core/TimeUtils'
-import { HLY_OrderFlight } from '../core/HLY_TravelOrderModels'
+import { HLY_OrderFlight, HLY_OrderTrain } from '../core/HLY_TravelOrderModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPublicApplicationList() {
@@ -171,7 +171,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         integration: 'CTRIP',
         companyOID: companyOID,
       })
-      const items = await request.quickSend<any[]>()
+      const items = await request.quickSend<HLY_OrderTrain[]>()
       return items || []
     })
   }

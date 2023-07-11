@@ -170,11 +170,11 @@ export interface App_TravelFlightTicketInfo {
   employeeName: string
 }
 
-export interface App_TravelOrderFlightExtras {
-  tickets: App_TravelFlightTicketInfo[]
+export interface App_TravelOrderExtras<T = any> {
+  tickets: T[]
 }
 
-export interface App_TravelOrderFlight {
+export interface App_TravelOrderBase<T = any> {
   hlyId: number
   employeeId: string | null
   applicantName: string
@@ -187,5 +187,8 @@ export interface App_TravelOrderFlight {
   auditStatus: string
   createdDate: string | null
   lastModifiedDate: string | null
-  extrasData: App_TravelOrderFlightExtras
+  extrasData: App_TravelOrderExtras<T>
 }
+
+export interface App_TravelOrderFlight extends App_TravelOrderBase<App_TravelFlightTicketInfo> {}
+export interface App_TravelOrderTrain extends App_TravelOrderBase<any> {}

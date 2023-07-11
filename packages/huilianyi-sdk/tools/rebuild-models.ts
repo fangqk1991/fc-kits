@@ -71,8 +71,8 @@ const dbSchemas: DBModelSchema[] = [
   },
   {
     tableName: 'hly_order_flight',
-    outputFile: `${__dirname}/../src/models/auto-build/__HLY_OrderFlight.ts`,
-    extFile: `${__dirname}/../src/models/extensions/_HLY_OrderFlight.ts`,
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_OrderBase.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_OrderBase.ts`,
     primaryKey: ['hly_id'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
