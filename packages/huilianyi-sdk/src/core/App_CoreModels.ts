@@ -88,6 +88,8 @@ export interface App_TravelCoreItinerary {
   fromCityName: string
   toCityName: string
   subsidyList: App_TravelSubsidyItem[]
+  flightTickets: any[]
+  trainTickets: any[]
 }
 
 export interface TravelDateRange {
@@ -185,6 +187,7 @@ export interface App_TravelTrainTicketInfo {
   arrivalStationName: string // "台州西",
 
   electronicOrderNo: string
+  passengerName?: string
 }
 
 export interface App_TravelOrderExtras<T = any> {

@@ -6,12 +6,13 @@ import {
   App_TravelModel,
   App_TravelOrderBase,
   App_TravelOrderExtras,
+  App_TravelTrainTicketInfo,
   TravelMonthSection,
 } from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
 import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 import { TimeUtils } from '../core/TimeUtils'
-import { HLY_OrderBase, HLY_OrderFlightCoreInfo } from '../core/HLY_TravelOrderModels'
+import { HLY_OrderBase, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from '../core/HLY_TravelOrderModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -124,6 +125,8 @@ export class HuilianyiFormatter {
         fromCityName: itinerary.fromCityName,
         toCityName: itinerary.toCityName,
         subsidyList: [],
+        flightTickets: [],
+        trainTickets: [],
       }
       const itineraryBudgetDTOList = itinerary.itineraryBudgetDTOList || []
       if (itineraryBudgetDTOList.length > 0) {
@@ -136,6 +139,8 @@ export class HuilianyiFormatter {
           amount: item.amount,
           cityName: item.cityName,
         }))
+        appItinerary.flightTickets = itineraryBudgetDTO.flightOrderDetails
+        appItinerary.trainTickets = itineraryBudgetDTO.trainOrderInfoList
       }
       return appItinerary
     })
@@ -220,6 +225,24 @@ export class HuilianyiFormatter {
       endPortCode: detail.endPortCode,
       employeeId: detail.passengerInfo.CorpEid,
       employeeName: detail.passengerInfo.PassengerName,
+    }
+  }
+
+  public static transferTrainTicketInfo(detail: HLY_OrderTrainTicketInfo): App_TravelTrainTicketInfo {
+    return {
+      trainOrderOID: detail.orderId,
+      trainName: detail.trainName,
+
+      startDate: detail.departureDateTime,
+      endDate: detail.arrivalDateTime,
+
+      departureCityName: detail.departureCityName,
+      departureStationName: detail.departureStationName,
+      arrivalCityName: detail.arrivalCityName,
+      arrivalStationName: detail.arrivalStationName,
+
+      electronicOrderNo: detail.orderId,
+      passengerName: detail.passengerName,
     }
   }
 }

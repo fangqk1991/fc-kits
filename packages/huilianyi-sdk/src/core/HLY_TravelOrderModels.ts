@@ -111,6 +111,27 @@ export interface HLY_OrderTrainCoreInfo {
   changeServiceFee: number // 4
 }
 
+export interface HLY_OrderTrainTicketInfo {
+  departureDateTime: string // '2023-07-10T03:23:00.000+00:00'
+  arrivalDateTime: string // '2023-07-10T06:31:00.000+00:00'
+
+  orderId: string
+  trainName: string
+
+  detailType: string // 'TICKETED'
+  passengerName: string
+  jouneryId: string
+  employeeId: string | null
+  firstSeatTypeName: string // '一等座'
+  departureCityName: string
+  departureStationName: string
+  arrivalCityName: string
+  arrivalStationName: string
+  trainTicketType: null
+  ticketStatus: string // '已购票'
+  ticketStatusCode: string // 'TD'
+}
+
 export interface HLY_OrderFlight extends HLY_OrderBase {
   flightOrderInfo: {
     flightOrderInfoOID: string

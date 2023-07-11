@@ -1,5 +1,6 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HuilianyiService } from '../../src'
+import { App_TravelTrainTicketInfo, HuilianyiService } from '../../src'
+import { HuilianyiFormatter } from '../../src/client/HuilianyiFormatter'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = new HuilianyiService({
@@ -30,16 +31,36 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   it(`HLY_Travel`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
-    let feeds = await new HLY_Travel().fc_searcher().queryFeeds()
+    const feeds = await new HLY_Travel().fc_searcher().queryFeeds()
+    const dataList = feeds.map((item) => item.modelForClient())
     // feeds = feeds.filter((item) => item.travelStatus === HLY_TravelStatus.Passed)
     console.info(
       JSON.stringify(
-        feeds
-          .filter((item) => item.extrasData().flightItems.length > 0)
-          .map((item) => ({
-            businessCode: item.businessCode,
-            flightItems: item.extrasData().flightItems,
-          })),
+        dataList
+          .filter(
+            (item) =>
+              item.extrasData.itineraryMap.TRAIN &&
+              item.extrasData.itineraryMap.TRAIN.reduce((result, cur) => result + cur.trainOrderInfoList.length, 0) > 0
+          )
+          // .filter((item) => item.itineraryItems.length > 0)
+          .map((item) => {
+            const trainItems: App_TravelTrainTicketInfo[] = []
+            for (const order of item.extrasData.itineraryMap.TRAIN!) {
+              trainItems.push(
+                ...order.trainOrderInfoList.map((item) => HuilianyiFormatter.transferTrainTicketInfo(item))
+              )
+            }
+            return {
+              businessCode: item.businessCode,
+              trainItems: trainItems,
+              // itineraryCount: item.itineraryItems.length,
+              // itinerarySummary: item.itineraryItems.map((itinerary) => ({
+              //   // trainCount: itinerary.trainTickets?.length || 0,
+              //   flightCount: itinerary.flightTickets?.length || 0,
+              // })),
+              // flightCount: item.extrasData.flightItems.length,
+            }
+          }),
         null,
         2
       )

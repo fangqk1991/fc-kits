@@ -1,7 +1,7 @@
 import { HLY_StaffCoreDTO } from './HLY_CoreModels'
 import { HLY_CustomFormItem } from './HLY_CustomFormModels'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
-import { HLY_OrderFlight } from './HLY_TravelOrderModels'
+import { HLY_OrderFlight, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from './HLY_TravelOrderModels'
 
 export interface ItineraryFlight extends HLY_OrderFlight {
   flightItineraryOID: string
@@ -39,6 +39,7 @@ export interface ItineraryTrain {
   seatClass: string // 舱等、火车座席
   disabled: boolean
   isExtend: boolean
+  trainOrderInfoList: HLY_OrderTrainTicketInfo[]
 }
 
 export interface ItineraryHotel {
@@ -185,9 +186,9 @@ export interface ItineraryBudgetDTO {
   travelSubsidiesRequestItemDetailDTOs: TravelSubsidiesRequestItemDetailDTO[]
   travelSubsidiesRequestItemDTOs: []
   ctripOrders: null
-  flightOrderDetails: null
+  flightOrderDetails: HLY_OrderFlightCoreInfo[]
   travelHotelOrderInfoDTOs: null
-  trainOrderInfoList: null
+  trainOrderInfoList: HLY_OrderTrainTicketInfo[]
   carOrders: null
   labelList: null
   orderList: []
