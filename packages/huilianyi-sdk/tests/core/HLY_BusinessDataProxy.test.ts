@@ -6,7 +6,7 @@ import {
   HLY_ExpenseStatus,
   HLY_ExpenseStatusDescriptor,
   HLY_OthersProxy,
-  HLY_PublicApplicationStatusDescriptor
+  HLY_PublicApplicationStatusDescriptor,
 } from '../../src'
 import { DiffMapper } from '@fangcha/tools'
 

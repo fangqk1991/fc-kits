@@ -154,6 +154,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         ...params,
         // withApplicationParticipant: true,
         ...extras,
+        integration: 'CTRIP',
         companyOID: companyOID,
       })
       return await request.quickSend<HLY_OrderFlight[]>()
@@ -167,6 +168,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         ...params,
         // withApplicationParticipant: true,
         ...extras,
+        integration: 'CTRIP',
         companyOID: companyOID,
       })
       const items = await request.quickSend<any[]>()
@@ -181,6 +183,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         ...params,
         // withApplicationParticipant: true,
         ...extras,
+        integration: 'CTRIP',
         companyOID: companyOID,
       })
       return await request.quickSend<any[]>()
