@@ -8,6 +8,7 @@ import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { HLY_PrettyStatus } from './HLY_PrettyStatus'
 import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 import { HLY_SubsidyStatus } from './HLY_SubsidyStatus'
+import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
 
 export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
@@ -206,6 +207,8 @@ export interface App_TravelOrderBase<T = any> {
   extrasData: App_TravelOrderExtras<T>
 }
 
+export interface App_TravelHotelCoreInfo extends HLY_OrderHotelCoreInfo {}
+
 export interface App_TravelOrderFlight extends App_TravelOrderBase<App_TravelFlightTicketInfo> {}
 export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrainTicketInfo> {}
-export interface App_TravelOrderHotel extends App_TravelOrderBase {}
+export interface App_TravelOrderHotel extends App_TravelOrderBase<App_TravelHotelCoreInfo> {}

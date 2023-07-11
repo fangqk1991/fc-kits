@@ -4,7 +4,12 @@ import { SQLBulkAdder, SQLSearcher } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
 import { TimeUtils } from '../core/TimeUtils'
-import { App_TravelFlightTicketInfo, App_TravelTrainTicketInfo } from '../core/App_CoreModels'
+import {
+  App_TravelFlightTicketInfo,
+  App_TravelHotelCoreInfo,
+  App_TravelOrderHotel,
+  App_TravelTrainTicketInfo,
+} from '../core/App_CoreModels'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -356,11 +361,26 @@ export class HuilianyiSyncHandler {
         lastModifyStartDate: lastModifyStartDate,
       })
       const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(item, company.companyOID, () => {
+        HuilianyiFormatter.transferTravelOrder<App_TravelOrderHotel>(item, company.companyOID, () => {
+          const coreInfo = item.hotelOrderDetail
+          const simpleCoreInfo: App_TravelHotelCoreInfo = {
+            hotelOrderOID: coreInfo.hotelOrderOID,
+            hotelName: coreInfo.hotelName,
+
+            startDate: coreInfo.startDate,
+            endDate: coreInfo.endDate,
+
+            cityName: coreInfo.cityName,
+            roomName: coreInfo.roomName,
+            roomCount: coreInfo.roomCount,
+            roomDays: coreInfo.roomDays,
+
+            clientInfo: coreInfo.clientInfo,
+            roomInfo: coreInfo.roomInfo,
+          }
           return {
             usersStr: item.users,
-            tickets: [],
-            detailInfo: item.hotelOrderDetail,
+            tickets: [simpleCoreInfo] as any,
           }
         })
       )
