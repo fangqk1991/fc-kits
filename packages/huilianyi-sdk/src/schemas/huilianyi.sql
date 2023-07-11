@@ -57,6 +57,8 @@ CREATE TABLE IF NOT EXISTS hly_travel
     created_date           TIMESTAMP       NULL,
     last_modified_date     TIMESTAMP       NULL,
     extras_info            MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    raw_data_str           MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    raw_data_2_str         MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
     has_subsidy            TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有补贴数据',
     itinerary_items_str    MEDIUMTEXT COMMENT '行程单信息，空 | JSON 字符串',
     expense_form_codes_str VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联报销单编号集',

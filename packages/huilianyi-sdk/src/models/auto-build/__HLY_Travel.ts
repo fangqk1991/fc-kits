@@ -21,6 +21,8 @@ const _cols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'raw_data_str',
+  'raw_data_2_str',
   'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
@@ -49,6 +51,8 @@ const _insertableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'raw_data_str',
+  'raw_data_2_str',
   'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
@@ -73,6 +77,8 @@ const _modifiableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'raw_data_str',
+  'raw_data_2_str',
   'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
@@ -174,6 +180,14 @@ export default class __HLY_Travel extends FeedBase {
    */
   public extrasInfo!: string
   /**
+   * @description [mediumtext] 附加信息，空 | JSON 字符串
+   */
+  public rawDataStr!: string
+  /**
+   * @description [mediumtext] 附加信息，空 | JSON 字符串
+   */
+  public rawData2Str!: string
+  /**
    * @description [tinyint] 是否有补贴数据
    */
   public hasSubsidy!: number
@@ -249,6 +263,8 @@ export default class __HLY_Travel extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.rawDataStr = ''
+    this.rawData2Str = ''
     this.hasSubsidy = 0
     this.itineraryItemsStr = ''
     this.expenseFormCodesStr = ''
@@ -275,6 +291,8 @@ export default class __HLY_Travel extends FeedBase {
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
+      rawDataStr: 'raw_data_str',
+      rawData2Str: 'raw_data_2_str',
       hasSubsidy: 'has_subsidy',
       itineraryItemsStr: 'itinerary_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
