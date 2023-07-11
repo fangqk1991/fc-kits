@@ -1,8 +1,9 @@
 import { HLY_StaffCoreDTO } from './HLY_CoreModels'
 import { HLY_CustomFormItem } from './HLY_CustomFormModels'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
+import { HLY_OrderFlight } from './HLY_TravelOrderModels'
 
-export interface ItineraryFlight {
+export interface ItineraryFlight extends HLY_OrderFlight {
   flightItineraryOID: string
   applicationOID: string
   fromCity: string

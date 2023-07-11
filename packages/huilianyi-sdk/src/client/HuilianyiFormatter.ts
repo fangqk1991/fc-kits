@@ -2,6 +2,7 @@ import { HLY_ExpenseV2 } from '../core/HLY_ExpenseModels'
 import {
   App_ExpenseModel,
   App_TravelCoreItinerary,
+  App_TravelFlightTicketInfo,
   App_TravelModel,
   App_TravelOrderBase,
   App_TravelOrderExtras,
@@ -10,7 +11,7 @@ import {
 import * as moment from 'moment/moment'
 import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 import { TimeUtils } from '../core/TimeUtils'
-import { HLY_OrderBase } from '../core/HLY_TravelOrderModels'
+import { HLY_OrderBase, HLY_OrderFlightCoreInfo } from '../core/HLY_TravelOrderModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -75,7 +76,14 @@ export class HuilianyiFormatter {
       }
       return result
     }, {})
+    const itineraryMap = item.travelApplication?.itineraryMap || {}
     const itineraryItems = HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs)
+    const flightItems: App_TravelFlightTicketInfo[] = []
+    if (itineraryMap.FLIGHT) {
+      for (const rawData of itineraryMap.FLIGHT) {
+        flightItems.push(...rawData.flightOrderDetails.map((item) => HuilianyiFormatter.transferFlightInfo(item)))
+      }
+    }
     return {
       hlyId: Number(item.applicationId),
       businessCode: item.businessCode,
@@ -99,8 +107,9 @@ export class HuilianyiFormatter {
       itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
+        flightItems: flightItems,
         participants: customProps.field_participants ? JSON.parse(customProps.field_participants.value) : [],
-        itineraryMap: item.travelApplication?.itineraryMap || {},
+        itineraryMap: itineraryMap,
         customProps: customProps,
       },
     }
@@ -193,6 +202,24 @@ export class HuilianyiFormatter {
       createdDate: item.orderCreateDate,
       lastModifiedDate: item.lastModifiedDate,
       extrasData: extrasHandler(),
+    }
+  }
+
+  public static transferFlightInfo(detail: HLY_OrderFlightCoreInfo): App_TravelFlightTicketInfo {
+    return {
+      flightOrderOID: detail.flightOrderOID,
+      flightCode: detail.flightCode,
+      airline: detail.airline,
+      startDate: detail.startDate,
+      endDate: detail.endDate,
+      startCity: detail.startCity,
+      endCity: detail.endCity,
+      startCityCode: detail.startCityCode,
+      startPortCode: detail.startPortCode,
+      endCityCode: detail.endCityCode,
+      endPortCode: detail.endPortCode,
+      employeeId: detail.passengerInfo.CorpEid,
+      employeeName: detail.passengerInfo.PassengerName,
     }
   }
 }

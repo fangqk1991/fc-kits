@@ -34,8 +34,12 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     // feeds = feeds.filter((item) => item.travelStatus === HLY_TravelStatus.Passed)
     console.info(
       JSON.stringify(
-        feeds.map((item) => item.monthSectionInfos()),
-        // feeds.map((item) => item.monthSectionInfos()),
+        feeds
+          .filter((item) => item.extrasData().flightItems.length > 0)
+          .map((item) => ({
+            businessCode: item.businessCode,
+            flightItems: item.extrasData().flightItems,
+          })),
         null,
         2
       )

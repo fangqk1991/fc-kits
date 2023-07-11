@@ -248,21 +248,7 @@ export class HuilianyiSyncHandler {
         HuilianyiFormatter.transferTravelOrder<App_TravelFlightTicketInfo>(item, company.companyOID, () => {
           return {
             usersStr: item.users,
-            tickets: item.flightOrderDetails.map((detail) => ({
-              flightOrderOID: detail.flightOrderOID,
-              flightCode: detail.flightCode,
-              airline: detail.airline,
-              startDate: detail.startDate,
-              endDate: detail.endDate,
-              startCity: detail.startCity,
-              endCity: detail.endCity,
-              startCityCode: detail.startCityCode,
-              startPortCode: detail.startPortCode,
-              endCityCode: detail.endCityCode,
-              endPortCode: detail.endPortCode,
-              employeeId: detail.passengerInfo.CorpEid,
-              employeeName: detail.passengerInfo.PassengerName,
-            })),
+            tickets: item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail)),
           }
         })
       )

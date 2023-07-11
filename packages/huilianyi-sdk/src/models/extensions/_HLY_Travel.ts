@@ -33,6 +33,7 @@ export class _HLY_Travel extends __HLY_Travel {
 
   public extrasData(): App_TravelExtrasData {
     const defaultData: App_TravelExtrasData = {
+      flightItems: [],
       participants: [],
       itineraryMap: {},
       customProps: {},
