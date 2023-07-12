@@ -20,13 +20,13 @@ describe('Test HuilianyiService.test.ts', () => {
 
   it(`makeMonthAllowance`, async () => {
     await huilianyiService.syncHandler().dumpTravelRecords(true)
-    await huilianyiService.makeMonthAllowance()
+    await huilianyiService.monthAllowanceMaker().makeMonthAllowance()
   })
 
   it(`makeAllowanceSnapshot`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
-    await huilianyiService.makeAllowanceSnapshot('2023-05')
-    await huilianyiService.makeAllowanceSnapshot('2023-06')
-    await huilianyiService.makeAllowanceSnapshot('2023-07')
+    await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-05')
+    await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-06')
+    await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-07')
   })
 })
