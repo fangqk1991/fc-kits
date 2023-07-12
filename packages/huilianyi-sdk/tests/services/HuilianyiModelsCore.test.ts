@@ -1,6 +1,5 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HLY_Travel, HuilianyiService } from '../../src'
-import { _HLY_OrderFlight } from '../../src/models/extensions/_HLY_OrderFlight'
+import { App_TravelOrderFlight, HLY_Travel, HLY_TravelStatus, HuilianyiService } from '../../src'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = new HuilianyiService({
@@ -32,7 +31,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   it(`HLY_Travel`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
-    const mapper: { [businessCode: string]: _HLY_OrderFlight[] } = {}
+    const mapper: { [businessCode: string]: App_TravelOrderFlight[] } = {}
     {
       const searcher0 = new HLY_OrderFlight().fc_searcher()
       searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
@@ -42,14 +41,14 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
         if (!mapper[businessCode]) {
           mapper[businessCode] = []
         }
-        mapper[businessCode].push(item)
+        mapper[businessCode].push(item.modelForClient())
       }
     }
     const businessCodeList = Object.keys(mapper)
 
     const searcher = new HLY_Travel().fc_searcher()
     searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
-    // searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
+    searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
     const feeds = await searcher.queryFeeds()
     const dataList = feeds.map((item) => ({
       ...item.modelForClient(),
@@ -57,46 +56,24 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
       rawData2: JSON.parse(item.rawData2Str) as HLY_Travel,
     }))
     for (const item of dataList) {
+      // if (item.itineraryItems.filter((item) => item.flightTickets && item.flightTickets.length > 0).length === 0) {
+      //   continue
+      // }
+      // console.info(item.businessCode, item.extrasData.itineraryMap.FLIGHT)
       const orders = mapper[item.businessCode]
+      const count = orders.reduce((result, cur) => result + cur.extrasData.tickets.length, 0)
+      console.info(`[${item.businessCode}] tickets: ${count}, flightItems: ${item.extrasData.flightItems.length}`)
       console.info(
-        `[${item.businessCode}] orders: ${orders.length}, flightItems: ${item.extrasData.flightItems.length}`
+        JSON.stringify(
+          orders.map((item) => item.extrasData.tickets),
+          null,
+          2
+        )
       )
+      console.info(item.extrasData.flightItems)
       // console.info(JSON.stringify(diffItems, null, 2))
       // break
     }
-
-    // // feeds = feeds.filter((item) => item.travelStatus === HLY_TravelStatus.Passed)
-    // console.info(
-    //   JSON.stringify(
-    //     dataList
-    //       .filter(
-    //         (item) =>
-    //           item.extrasData.itineraryMap.TRAIN &&
-    //           item.extrasData.itineraryMap.TRAIN.reduce((result, cur) => result + cur.trainOrderInfoList.length, 0) > 0
-    //       )
-    //       // .filter((item) => item.itineraryItems.length > 0)
-    //       .map((item) => {
-    //         const trainItems: App_TravelTrainTicketInfo[] = []
-    //         for (const order of item.extrasData.itineraryMap.TRAIN!) {
-    //           trainItems.push(
-    //             ...order.trainOrderInfoList.map((item) => HuilianyiFormatter.transferTrainTicketInfo(item))
-    //           )
-    //         }
-    //         return {
-    //           businessCode: item.businessCode,
-    //           trainItems: trainItems,
-    //           // itineraryCount: item.itineraryItems.length,
-    //           // itinerarySummary: item.itineraryItems.map((itinerary) => ({
-    //           //   // trainCount: itinerary.trainTickets?.length || 0,
-    //           //   flightCount: itinerary.flightTickets?.length || 0,
-    //           // })),
-    //           // flightCount: item.extrasData.flightItems.length,
-    //         }
-    //       }),
-    //     null,
-    //     2
-    //   )
-    // )
   })
 
   it(`HLY_Invoice`, async () => {
