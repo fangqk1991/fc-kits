@@ -1,5 +1,5 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { App_TravelOrderFlight, HLY_Travel, HLY_TravelStatus, HuilianyiService } from '../../src'
+import { App_TravelOrderTrain, HLY_Travel, HLY_TravelStatus, HuilianyiService } from '../../src'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = new HuilianyiService({
@@ -10,7 +10,6 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
   const HLY_Invoice = huilianyiService.modelsCore.HLY_Invoice
   const HLY_TravelAllowance = huilianyiService.modelsCore.HLY_TravelAllowance
-  const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
   const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
 
   it(`HLY_Expense`, async () => {
@@ -31,9 +30,9 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   it(`HLY_Travel`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
-    const mapper: { [businessCode: string]: App_TravelOrderFlight[] } = {}
+    const mapper: { [businessCode: string]: App_TravelOrderTrain[] } = {}
     {
-      const searcher0 = new HLY_OrderFlight().fc_searcher()
+      const searcher0 = new HLY_OrderTrain().fc_searcher()
       searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
       const feeds = await searcher0.queryFeeds()
       for (const item of feeds) {
@@ -52,27 +51,34 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const feeds = await searcher.queryFeeds()
     const dataList = feeds.map((item) => ({
       ...item.modelForClient(),
-      rawData: JSON.parse(item.rawDataStr) as HLY_Travel,
-      rawData2: JSON.parse(item.rawData2Str) as HLY_Travel,
     }))
     for (const item of dataList) {
-      // if (item.itineraryItems.filter((item) => item.flightTickets && item.flightTickets.length > 0).length === 0) {
+      // if (item.itineraryItems.filter((item) => item.trainTickets && item.trainTickets.length > 0).length === 0) {
       //   continue
       // }
-      // console.info(item.businessCode, item.extrasData.itineraryMap.FLIGHT)
       const orders = mapper[item.businessCode]
       const count = orders.reduce((result, cur) => result + cur.extrasData.tickets.length, 0)
-      console.info(`[${item.businessCode}] tickets: ${count}, flightItems: ${item.extrasData.flightItems.length}`)
+
       console.info(
-        JSON.stringify(
-          orders.map((item) => item.extrasData.tickets),
-          null,
-          2
-        )
+        `[${item.businessCode}] tickets: ${count}, trainTickets(itineraryItems): ${item.itineraryItems.reduce(
+          (result, cur) => result + (cur.trainTickets?.length || 0),
+          0
+        )}`
       )
-      console.info(item.extrasData.flightItems)
-      // console.info(JSON.stringify(diffItems, null, 2))
-      // break
+      // console.info(
+      //   JSON.stringify(
+      //     orders.map((item) => item.extrasData.tickets),
+      //     null,
+      //     2
+      //   )
+      // )
+      // console.info(
+      //   JSON.stringify(
+      //     item.itineraryItems.map((item) => item.flightTickets),
+      //     null,
+      //     2
+      //   )
+      // )
     }
   })
 

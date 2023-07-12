@@ -79,12 +79,6 @@ export class HuilianyiFormatter {
     }, {})
     const itineraryMap = item.travelApplication?.itineraryMap || {}
     const itineraryItems = HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs)
-    const flightItems: App_TravelFlightTicketInfo[] = []
-    if (itineraryMap.FLIGHT) {
-      for (const rawData of itineraryMap.FLIGHT) {
-        flightItems.push(...rawData.flightOrderDetails.map((item) => HuilianyiFormatter.transferFlightInfo(item)))
-      }
-    }
     return {
       hlyId: Number(item.applicationId),
       businessCode: item.businessCode,
@@ -108,7 +102,6 @@ export class HuilianyiFormatter {
       itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
-        flightItems: flightItems,
         participants: customProps.field_participants ? JSON.parse(customProps.field_participants.value) : [],
         itineraryMap: itineraryMap,
         customProps: customProps,

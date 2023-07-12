@@ -21,11 +21,10 @@ const _cols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
-  'raw_data_str',
-  'raw_data_2_str',
   'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
+  'ticket_data_str',
   'travel_status',
   'reload_time',
   'create_time',
@@ -51,11 +50,10 @@ const _insertableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
-  'raw_data_str',
-  'raw_data_2_str',
   'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
+  'ticket_data_str',
   'travel_status',
   'reload_time',
 ]
@@ -77,11 +75,10 @@ const _modifiableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
-  'raw_data_str',
-  'raw_data_2_str',
   'has_subsidy',
   'itinerary_items_str',
   'expense_form_codes_str',
+  'ticket_data_str',
   'travel_status',
   'reload_time',
 ]
@@ -180,14 +177,6 @@ export default class __HLY_Travel extends FeedBase {
    */
   public extrasInfo!: string
   /**
-   * @description [mediumtext] 附加信息，空 | JSON 字符串
-   */
-  public rawDataStr!: string
-  /**
-   * @description [mediumtext] 附加信息，空 | JSON 字符串
-   */
-  public rawData2Str!: string
-  /**
    * @description [tinyint] 是否有补贴数据
    */
   public hasSubsidy!: number
@@ -199,6 +188,10 @@ export default class __HLY_Travel extends FeedBase {
    * @description [varchar(256)] 关联报销单编号集
    */
   public expenseFormCodesStr!: string
+  /**
+   * @description [mediumtext] 票据信息，空 | JSON 字符串
+   */
+  public ticketDataStr!: string
   /**
    * @description [int] HLY_TravelStatus
    */
@@ -263,11 +256,10 @@ export default class __HLY_Travel extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
-    this.rawDataStr = ''
-    this.rawData2Str = ''
     this.hasSubsidy = 0
     this.itineraryItemsStr = ''
     this.expenseFormCodesStr = ''
+    this.ticketDataStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
@@ -291,11 +283,10 @@ export default class __HLY_Travel extends FeedBase {
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
-      rawDataStr: 'raw_data_str',
-      rawData2Str: 'raw_data_2_str',
       hasSubsidy: 'has_subsidy',
       itineraryItemsStr: 'itinerary_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
+      ticketDataStr: 'ticket_data_str',
       travelStatus: 'travel_status',
       reloadTime: 'reload_time',
       createTime: 'create_time',

@@ -62,7 +62,6 @@ export interface App_ExpenseModel extends App_FormBase<App_ExpenseExtrasData> {
 }
 
 export interface App_TravelExtrasData {
-  flightItems: App_TravelFlightTicketInfo[]
   itineraryMap: ItineraryMap
   participants: HLY_TravelParticipant[]
   customProps: {

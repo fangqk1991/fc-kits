@@ -150,9 +150,13 @@ export class HuilianyiSyncHandler {
         .insertableCols()
         .filter(
           (col) =>
-            !['has_subsidy', 'itinerary_items_str', 'expense_form_codes_str', 'raw_data_2_str', 'reload_time'].includes(
-              col
-            )
+            ![
+              'has_subsidy',
+              'itinerary_items_str',
+              'expense_form_codes_str',
+              'ticket_data_str',
+              'reload_time',
+            ].includes(col)
         )
     )
     bulkAdder.declareTimestampKey('start_time')
@@ -162,7 +166,6 @@ export class HuilianyiSyncHandler {
 
     for (const item of items) {
       const feed = HLY_Travel.makeFeed(HuilianyiFormatter.transferTravelModel(item))
-      feed.rawDataStr = JSON.stringify(item)
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
@@ -184,7 +187,6 @@ export class HuilianyiSyncHandler {
       item.hasSubsidy = itineraryItems.find((item) => item.subsidyList.length > 0) ? 1 : 0
       item.itineraryItemsStr = JSON.stringify(itineraryItems)
       item.expenseFormCodesStr = (travelInfo.referenceExpenseReports || []).map((item) => item.businessCode).join(',')
-      item.rawData2Str = JSON.stringify(travelInfo)
       item.reloadTime = item.lastModifiedDate
       await item.updateToDB()
     }
