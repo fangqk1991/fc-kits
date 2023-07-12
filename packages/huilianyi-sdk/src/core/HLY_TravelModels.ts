@@ -278,7 +278,7 @@ export interface ReferenceEntityDTO {
   formName: string //	String	表单名称
 }
 
-export interface HLY_Travel {
+export interface HLY_TravelModel {
   applicationId: string
   businessCode: string
   applicationOID: string

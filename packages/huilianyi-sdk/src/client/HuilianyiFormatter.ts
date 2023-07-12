@@ -10,7 +10,7 @@ import {
   TravelMonthSection,
 } from '../core/App_CoreModels'
 import * as moment from 'moment/moment'
-import { HLY_Travel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
+import { HLY_TravelModel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 import { TimeUtils } from '../core/TimeUtils'
 import { HLY_OrderBase, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from '../core/HLY_TravelOrderModels'
 
@@ -62,7 +62,7 @@ export class HuilianyiFormatter {
     }
   }
 
-  public static transferTravelModel(item: HLY_Travel): App_TravelModel {
+  public static transferTravelModel(item: HLY_TravelModel): App_TravelModel {
     const customProps: {
       [propKey: string]: {
         fieldName: string

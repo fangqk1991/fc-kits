@@ -1,5 +1,5 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { App_TravelOrderTrain, HLY_Travel, HLY_TravelStatus, HuilianyiService } from '../../src'
+import { App_TravelOrderTrain, HLY_TravelStatus, HuilianyiService } from '../../src'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = new HuilianyiService({

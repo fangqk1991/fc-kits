@@ -6,7 +6,7 @@ import { HLY_ExpenseStatus, HLY_ExpenseStatusDescriptor } from '../core/HLY_Expe
 import { PageDataFetcher } from './PageDataFetcher'
 import { HuilianyiResponse } from '../core/HuilianyiModels'
 import { HLY_PublicApplicationDTO } from '../core/HLY_PublicApplicationModels'
-import { HLY_Travel } from '../core/HLY_TravelModels'
+import { HLY_TravelModel } from '../core/HLY_TravelModels'
 import { HLY_Invoice } from '../core/HLY_InvoiceModels'
 import { TimeUtils } from '../core/TimeUtils'
 import { HLY_OrderFlight, HLY_OrderHotel, HLY_OrderTrain } from '../core/HLY_TravelOrderModels'
@@ -96,7 +96,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         withApplicationParticipant: true,
         ...extras,
       })
-      return await request.quickSend<HLY_Travel[]>()
+      return await request.quickSend<HLY_TravelModel[]>()
     })
   }
 
@@ -108,7 +108,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       withReferenceDocument: true,
       ...extras,
     })
-    const data = await request.quickSend<HLY_Travel>()
+    const data = await request.quickSend<HLY_TravelModel>()
     if (data.travelApplication?.itineraryHeadDTOs) {
       data.travelApplication.itineraryHeadDTOs.forEach((item) => {
         item.startDate = TimeUtils.momentUTC8(item.startDate).format('YYYY-MM-DD')
