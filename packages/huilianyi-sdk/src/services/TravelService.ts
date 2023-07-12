@@ -9,29 +9,37 @@ export class TravelService {
   }
 
   public async getTravelTicketsData(businessCode: string) {
+    const mapper = await this.getTicketsDataMapper([businessCode])
+    return mapper[businessCode]
+  }
+
+  public async getTicketsDataMapper(businessCodeList: string[]) {
     const HLY_OrderFlight = this.modelsCore.HLY_OrderFlight
     const HLY_OrderTrain = this.modelsCore.HLY_OrderTrain
 
-    const ticketData: TravelTicketsDataInfo = {
-      flightTickets: [],
-      trainTickets: [],
+    const ticketDataMapper: { [businessCode: string]: TravelTicketsDataInfo } = {}
+    for (const businessCode of businessCodeList) {
+      ticketDataMapper[businessCode] = {
+        flightTickets: [],
+        trainTickets: [],
+      }
     }
     {
       const searcher = new HLY_OrderFlight().fc_searcher()
-      searcher.processor().addConditionKV('business_code', businessCode)
+      searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        ticketData.flightTickets.push(...item.modelForClient().extrasData.tickets)
+        ticketDataMapper[item.businessCode].flightTickets.push(...item.modelForClient().extrasData.tickets)
       }
     }
     {
       const searcher = new HLY_OrderTrain().fc_searcher()
-      searcher.processor().addConditionKV('business_code', businessCode)
+      searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        ticketData.trainTickets.push(...item.modelForClient().extrasData.tickets)
+        ticketDataMapper[item.businessCode].trainTickets.push(...item.modelForClient().extrasData.tickets)
       }
     }
-    return ticketData
+    return ticketDataMapper
   }
 }
