@@ -1,5 +1,5 @@
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { TravelTicketsDataInfo } from '../core/App_CoreModels'
+import { App_FullTravelModel, App_TravelModel, TravelTicketsDataInfo } from '../core/App_CoreModels'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -41,5 +41,17 @@ export class TravelService {
       }
     }
     return ticketDataMapper
+  }
+
+  public async getFullTravelInfos(travelItems: App_TravelModel[]) {
+    const mapper = await this.getTicketsDataMapper(travelItems.map((item) => item.businessCode))
+    return travelItems.map((item) => {
+      const data: App_FullTravelModel = {
+        ...item,
+        ticketsData: mapper[item.businessCode],
+      }
+      data.extrasData.itineraryMap = {}
+      return data
+    })
   }
 }

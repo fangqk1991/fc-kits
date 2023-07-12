@@ -9,6 +9,7 @@ describe('Test HuilianyiService.test.ts', () => {
   const travelService = huilianyiService.travelService()
   const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
   const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
+  const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
 
   it(`getTravelTicketsData - Train`, async () => {
     const searcher0 = new HLY_OrderTrain().fc_searcher()
@@ -26,5 +27,11 @@ describe('Test HuilianyiService.test.ts', () => {
 
     const ticketsData = await travelService.getTravelTicketsData(travelItem.businessCode)
     console.info(ticketsData)
+  })
+
+  it(`getFullTravelInfos`, async () => {
+    const items = await new HLY_Travel().fc_searcher().queryFeeds()
+    const fullInfos = await travelService.getFullTravelInfos(items.map((item) => item.modelForClient()))
+    console.info(JSON.stringify(fullInfos, null, 2))
   })
 })

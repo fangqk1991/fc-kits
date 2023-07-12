@@ -112,6 +112,10 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   expenseFormCodes: string[]
 }
 
+export interface App_FullTravelModel extends App_TravelModel {
+  ticketsData: TravelTicketsDataInfo
+}
+
 export interface App_Invoice {
   invoiceOid: string
   invoiceStatus: HLY_InvoiceStatus
