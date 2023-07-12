@@ -314,6 +314,8 @@ export class HuilianyiSyncHandler {
               arrivalStationName: detail.arrivalStationName,
 
               electronicOrderNo: detail.electronicOrderNo,
+
+              passengerName: item.users,
             })),
           }
         })

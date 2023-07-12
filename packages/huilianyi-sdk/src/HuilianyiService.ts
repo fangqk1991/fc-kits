@@ -5,6 +5,7 @@ import { HuilianyiSyncHandler } from './services/HuilianyiSyncHandler'
 import { HuilianyiModelsCore } from './services/HuilianyiModelsCore'
 import { RetainConfigKey } from './core/App_CoreModels'
 import { MonthAllowanceMaker } from './services/MonthAllowanceMaker'
+import { TravelService } from './services/TravelService'
 
 interface Options {
   database: FCDatabase
@@ -63,5 +64,9 @@ export class HuilianyiService {
 
   public monthAllowanceMaker() {
     return new MonthAllowanceMaker(this.modelsCore)
+  }
+
+  public travelService() {
+    return new TravelService(this.modelsCore)
   }
 }

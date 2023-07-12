@@ -215,3 +215,8 @@ export interface App_TravelHotelCoreInfo extends HLY_OrderHotelCoreInfo {}
 export interface App_TravelOrderFlight extends App_TravelOrderBase<App_TravelFlightTicketInfo> {}
 export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrainTicketInfo> {}
 export interface App_TravelOrderHotel extends App_TravelOrderBase<App_TravelHotelCoreInfo> {}
+
+export interface TravelTicketsDataInfo {
+  flightTickets: App_TravelFlightTicketInfo[]
+  trainTickets: App_TravelTrainTicketInfo[]
+}
