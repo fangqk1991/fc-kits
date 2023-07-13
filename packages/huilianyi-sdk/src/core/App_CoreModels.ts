@@ -107,6 +107,7 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   hasSubsidy: HLY_SubsidyStatus
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
+  ticketItems: App_TrafficTicket[]
   expenseFormCodes: string[]
 }
 

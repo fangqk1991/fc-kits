@@ -40,4 +40,11 @@ describe('Test HuilianyiService.test.ts', () => {
       )
     )
   })
+
+  it(`refreshTravelTicketItemsData`, async () => {
+    await huilianyiService.syncHandler().dumpTravelRecords(true)
+    await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
+    await huilianyiService.syncHandler().dumpOrderTrainRecords(true)
+    await travelService.refreshTravelTicketItemsData()
+  })
 })

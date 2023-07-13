@@ -89,4 +89,35 @@ export class TravelService {
       return data
     })
   }
+
+  public async refreshTravelTicketItemsData() {
+    const businessCodeList: string[] = []
+    {
+      const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
+      searcher.processor().markDistinct()
+      searcher.processor().setColumns(['business_code'])
+      searcher.processor().addSpecialCondition('business_code IS NOT NULL')
+      const feeds = await searcher.queryAllFeeds()
+      businessCodeList.push(...feeds.map((feed) => feed.businessCode))
+    }
+    {
+      const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
+      searcher.processor().markDistinct()
+      searcher.processor().setColumns(['business_code'])
+      searcher.processor().addSpecialCondition('business_code IS NOT NULL')
+      const feeds = await searcher.queryAllFeeds()
+      businessCodeList.push(...feeds.map((feed) => feed.businessCode))
+    }
+    const mapper = await this.getTicketsDataMapper(businessCodeList)
+
+    const searcher = new this.modelsCore.HLY_Travel().fc_searcher()
+    searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
+    const todoItems = await searcher.queryAllFeeds()
+
+    for (const travelItem of todoItems) {
+      travelItem.fc_edit()
+      travelItem.ticketItemsStr = JSON.stringify(mapper[travelItem.businessCode].trafficTickets)
+      await travelItem.updateToDB()
+    }
+  }
 }
