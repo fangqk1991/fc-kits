@@ -59,12 +59,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
       const orders = mapper[item.businessCode]
       const count = orders.reduce((result, cur) => result + cur.extrasData.tickets.length, 0)
 
-      console.info(
-        `[${item.businessCode}] tickets: ${count}, trainTickets(itineraryItems): ${item.itineraryItems.reduce(
-          (result, cur) => result + (cur.trainTickets?.length || 0),
-          0
-        )}`
-      )
+      console.info(`[${item.businessCode}] tickets: ${count}`)
       // console.info(
       //   JSON.stringify(
       //     orders.map((item) => item.extrasData.tickets),

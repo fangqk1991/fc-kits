@@ -87,8 +87,6 @@ export interface App_TravelCoreItinerary {
   fromCityName: string
   toCityName: string
   subsidyList: App_TravelSubsidyItem[]
-  flightTickets: any[]
-  trainTickets: any[]
 }
 
 export interface TravelDateRange {
@@ -160,6 +158,18 @@ export interface App_TravelAllowanceItem {
   allowanceAmount: number
 }
 
+export interface App_TrafficTicket {
+  tagName: string
+  ticketId: string
+  trafficCode: string
+  fromTime: string
+  toTime: string
+  fromCity: string
+  toCity: string
+  employeeId: string
+  employeeName: string
+}
+
 export interface App_TravelFlightTicketInfo {
   flightOrderOID: string
   flightCode: string
@@ -223,4 +233,5 @@ export interface App_TravelOrderHotel extends App_TravelOrderBase<App_TravelHote
 export interface TravelTicketsDataInfo {
   flightTickets: App_TravelFlightTicketInfo[]
   trainTickets: App_TravelTrainTicketInfo[]
+  trafficTickets: App_TrafficTicket[]
 }

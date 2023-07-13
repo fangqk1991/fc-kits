@@ -32,6 +32,12 @@ describe('Test HuilianyiService.test.ts', () => {
   it(`getFullTravelInfos`, async () => {
     const items = await new HLY_Travel().fc_searcher().queryFeeds()
     const fullInfos = await travelService.getFullTravelInfos(items.map((item) => item.modelForClient()))
-    console.info(JSON.stringify(fullInfos, null, 2))
+    console.info(
+      JSON.stringify(
+        fullInfos.map((item) => item.ticketsData.trafficTickets).filter((tickets) => tickets.length > 0),
+        null,
+        2
+      )
+    )
   })
 })

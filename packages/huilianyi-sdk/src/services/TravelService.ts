@@ -1,5 +1,6 @@
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import { App_FullTravelModel, App_TravelModel, TravelTicketsDataInfo } from '../core/App_CoreModels'
+import * as moment from 'moment'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -22,6 +23,7 @@ export class TravelService {
       ticketDataMapper[businessCode] = {
         flightTickets: [],
         trainTickets: [],
+        trafficTickets: [],
       }
     }
     {
@@ -29,7 +31,21 @@ export class TravelService {
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        ticketDataMapper[item.businessCode].flightTickets.push(...item.modelForClient().extrasData.tickets)
+        const tickets = item.modelForClient().extrasData.tickets
+        ticketDataMapper[item.businessCode].flightTickets.push(...tickets)
+        ticketDataMapper[item.businessCode].trafficTickets.push(
+          ...tickets.map((ticket) => ({
+            tagName: '机票',
+            ticketId: ticket.flightOrderOID,
+            trafficCode: ticket.flightCode,
+            fromTime: ticket.startDate,
+            toTime: ticket.endDate,
+            fromCity: ticket.startCity,
+            toCity: ticket.endCity,
+            employeeId: ticket.employeeId,
+            employeeName: ticket.employeeName,
+          }))
+        )
       }
     }
     {
@@ -37,8 +53,27 @@ export class TravelService {
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        ticketDataMapper[item.businessCode].trainTickets.push(...item.modelForClient().extrasData.tickets)
+        const tickets = item.modelForClient().extrasData.tickets
+        ticketDataMapper[item.businessCode].trainTickets.push(...tickets)
+        ticketDataMapper[item.businessCode].trafficTickets.push(
+          ...tickets.map((ticket) => ({
+            tagName: '火车票',
+            ticketId: ticket.trainOrderOID,
+            trafficCode: ticket.trainName,
+            fromTime: ticket.startDate,
+            toTime: ticket.endDate,
+            fromCity: ticket.departureCityName,
+            toCity: ticket.arrivalCityName,
+            employeeId: '',
+            employeeName: ticket.passengerName || '',
+          }))
+        )
       }
+    }
+    for (const businessCode of businessCodeList) {
+      ticketDataMapper[businessCode].trafficTickets.sort(
+        (a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf()
+      )
     }
     return ticketDataMapper
   }

@@ -118,8 +118,6 @@ export class HuilianyiFormatter {
         fromCityName: itinerary.fromCityName,
         toCityName: itinerary.toCityName,
         subsidyList: [],
-        flightTickets: [],
-        trainTickets: [],
       }
       const itineraryBudgetDTOList = itinerary.itineraryBudgetDTOList || []
       if (itineraryBudgetDTOList.length > 0) {
@@ -132,8 +130,6 @@ export class HuilianyiFormatter {
           amount: item.amount,
           cityName: item.cityName,
         }))
-        appItinerary.flightTickets = itineraryBudgetDTO.flightOrderDetails
-        appItinerary.trainTickets = itineraryBudgetDTO.trainOrderInfoList
       }
       return appItinerary
     })
