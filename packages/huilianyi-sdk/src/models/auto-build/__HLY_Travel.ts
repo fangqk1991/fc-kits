@@ -22,9 +22,10 @@ const _cols: string[] = [
   'last_modified_date',
   'extras_info',
   'has_subsidy',
+  'match_closed_loop',
+  'is_pretty',
   'itinerary_items_str',
   'employee_traffic_items_str',
-  'is_pretty',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -52,9 +53,10 @@ const _insertableCols: string[] = [
   'last_modified_date',
   'extras_info',
   'has_subsidy',
+  'match_closed_loop',
+  'is_pretty',
   'itinerary_items_str',
   'employee_traffic_items_str',
-  'is_pretty',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -78,9 +80,10 @@ const _modifiableCols: string[] = [
   'last_modified_date',
   'extras_info',
   'has_subsidy',
+  'match_closed_loop',
+  'is_pretty',
   'itinerary_items_str',
   'employee_traffic_items_str',
-  'is_pretty',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -184,6 +187,14 @@ export default class __HLY_Travel extends FeedBase {
    */
   public hasSubsidy!: number
   /**
+   * @description [tinyint] 是否满足闭环行程
+   */
+  public matchClosedLoop!: number
+  /**
+   * @description [tinyint] 是否为标准情况
+   */
+  public isPretty!: number
+  /**
    * @description [mediumtext] 行程单信息，空 | JSON 字符串
    */
   public itineraryItemsStr!: string
@@ -191,10 +202,6 @@ export default class __HLY_Travel extends FeedBase {
    * @description [mediumtext] 员工行程票据信息，空 | JSON 字符串
    */
   public employeeTrafficItemsStr!: string
-  /**
-   * @description [tinyint] 是否为标准情况
-   */
-  public isPretty!: number
   /**
    * @description [varchar(256)] 关联报销单编号集
    */
@@ -264,9 +271,10 @@ export default class __HLY_Travel extends FeedBase {
     this.lastModifiedDate = null
     this.extrasInfo = ''
     this.hasSubsidy = 0
+    this.matchClosedLoop = 0
+    this.isPretty = 0
     this.itineraryItemsStr = ''
     this.employeeTrafficItemsStr = ''
-    this.isPretty = 0
     this.expenseFormCodesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
@@ -292,9 +300,10 @@ export default class __HLY_Travel extends FeedBase {
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
       hasSubsidy: 'has_subsidy',
+      matchClosedLoop: 'match_closed_loop',
+      isPretty: 'is_pretty',
       itineraryItemsStr: 'itinerary_items_str',
       employeeTrafficItemsStr: 'employee_traffic_items_str',
-      isPretty: 'is_pretty',
       expenseFormCodesStr: 'expense_form_codes_str',
       travelStatus: 'travel_status',
       reloadTime: 'reload_time',

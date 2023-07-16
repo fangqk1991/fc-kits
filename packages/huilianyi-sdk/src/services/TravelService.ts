@@ -8,6 +8,7 @@ import {
 } from '../core/App_CoreModels'
 import * as moment from 'moment'
 import { HLY_PrettyStatus } from '../core/HLY_PrettyStatus'
+import { HLY_ClosedLoopStatus } from '../core/HLY_ClosedLoopStatus'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -184,10 +185,12 @@ export class TravelService {
       const ticketData = mapper[travelItem.businessCode]
       const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)
       travelItem.fc_edit()
-      travelItem.isPretty =
+      travelItem.matchClosedLoop =
         employeeTrafficItems.map((item) => item.isClosedLoop).length === extrasData.participants.length
-          ? HLY_PrettyStatus.Pretty
-          : HLY_PrettyStatus.NotPretty
+          ? HLY_ClosedLoopStatus.HasClosedLoop
+          : HLY_ClosedLoopStatus.NoneClosedLoop
+      travelItem.isPretty =
+        travelItem.matchClosedLoop && travelItem.hasSubsidy ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
       travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
       await travelItem.updateToDB()
     }

@@ -9,6 +9,7 @@ import { HLY_PrettyStatus } from './HLY_PrettyStatus'
 import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 import { HLY_SubsidyStatus } from './HLY_SubsidyStatus'
 import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
+import { HLY_ClosedLoopStatus } from './HLY_ClosedLoopStatus'
 
 export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
@@ -105,6 +106,8 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   startTime: string
   endTime: string
   hasSubsidy: HLY_SubsidyStatus
+  matchClosedLoop: HLY_ClosedLoopStatus
+  isPretty: HLY_PrettyStatus
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
   employeeTrafficItems: App_EmployeeTrafficData[]

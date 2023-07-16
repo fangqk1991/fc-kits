@@ -93,6 +93,8 @@ export class HuilianyiFormatter {
       formName: item.formName,
       submittedBy: item.submittedBy,
       title: item.title,
+      matchClosedLoop: 0,
+      isPretty: 0,
       hasSubsidy: itineraryItems.find((item) => item.subsidyList.length > 0) ? 1 : 0,
       startTime: customProps.field_start_date ? customProps.field_start_date.value : '2000-01-01T00:00:00Z',
       endTime: customProps.field_end_date ? customProps.field_end_date.value : '2000-01-01T00:00:00Z',

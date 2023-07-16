@@ -152,6 +152,8 @@ export class HuilianyiSyncHandler {
           (col) =>
             ![
               'has_subsidy',
+              'match_closed_loop',
+              'is_pretty',
               'itinerary_items_str',
               'employee_traffic_items_str',
               'expense_form_codes_str',
