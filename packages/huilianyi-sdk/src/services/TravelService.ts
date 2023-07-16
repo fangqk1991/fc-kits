@@ -2,10 +2,12 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_EmployeeTrafficData,
   App_FullTravelModel,
+  App_TrafficTicket,
   App_TravelModel,
   TravelTicketsDataInfo,
 } from '../core/App_CoreModels'
 import * as moment from 'moment'
+import { HLY_PrettyStatus } from '../core/HLY_PrettyStatus'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -72,17 +74,26 @@ export class TravelService {
       for (const item of feeds) {
         const tickets = item.modelForClient().extrasData.tickets
         const ticketData = ticketDataMapper[item.businessCode]
-        const commonTickets = tickets.map((ticket) => ({
-          tagName: '火车票',
-          ticketId: ticket.trainOrderOID,
-          trafficCode: ticket.trainName,
-          fromTime: ticket.startDate,
-          toTime: ticket.endDate,
-          fromCity: ticket.departureCityName,
-          toCity: ticket.arrivalCityName,
-          employeeId: '',
-          employeeName: ticket.passengerName || '',
-        }))
+        const commonTickets: App_TrafficTicket[] = []
+        for (const ticket of tickets) {
+          const nameList = (ticket.passengerName || '')
+            .split(',')
+            .map((item) => item.trim())
+            .filter((item) => !!item)
+          for (const passengerName of nameList) {
+            commonTickets.push({
+              tagName: '火车票',
+              ticketId: ticket.trainOrderOID,
+              trafficCode: ticket.trainName,
+              fromTime: ticket.startDate,
+              toTime: ticket.endDate,
+              fromCity: ticket.departureCityName,
+              toCity: ticket.arrivalCityName,
+              employeeId: '',
+              employeeName: passengerName,
+            })
+          }
+        }
         ticketData.trainTickets.push(...tickets)
         ticketData.trafficTickets.push(...commonTickets)
         for (const ticket of commonTickets) {
@@ -169,13 +180,14 @@ export class TravelService {
     const todoItems = await searcher.queryAllFeeds()
 
     for (const travelItem of todoItems) {
+      const extrasData = travelItem.extrasData()
       const ticketData = mapper[travelItem.businessCode]
       const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)
-      for (const trafficItem of employeeTrafficItems) {
-      }
-
       travelItem.fc_edit()
-      travelItem.ticketItemsStr = JSON.stringify(ticketData.trafficTickets)
+      travelItem.isPretty =
+        employeeTrafficItems.map((item) => item.isClosedLoop).length === extrasData.participants.length
+          ? HLY_PrettyStatus.Pretty
+          : HLY_PrettyStatus.NotPretty
       travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
       await travelItem.updateToDB()
     }

@@ -48,12 +48,13 @@ describe('Test HuilianyiService.test.ts', () => {
     await travelService.refreshTravelTicketItemsData()
 
     const searcher = new HLY_Travel().fc_searcher()
-    searcher.processor().addSpecialCondition('ticket_items_str IS NOT NULL')
+    searcher.processor().addSpecialCondition('employee_traffic_items_str IS NOT NULL')
     const items = await searcher.queryAllFeeds()
     for (const travelItem of items) {
       const trafficItems = travelItem.employeeTrafficItems()
-      if (trafficItems.length > 1) {
-        console.info(JSON.stringify(trafficItems, null, 2))
+      if (trafficItems.filter((item) => item.isClosedLoop).length > 0) {
+        console.info(travelItem.businessCode, travelItem.isPretty)
+        // console.info(travelItem.businessCode, JSON.stringify(trafficItems, null, 2))
       }
     }
   })

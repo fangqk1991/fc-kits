@@ -153,7 +153,7 @@ export class HuilianyiSyncHandler {
             ![
               'has_subsidy',
               'itinerary_items_str',
-              'ticket_items_str',
+              'employee_traffic_items_str',
               'expense_form_codes_str',
               'ticket_data_str',
               'reload_time',

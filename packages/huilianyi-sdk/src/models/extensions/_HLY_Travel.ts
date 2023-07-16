@@ -1,7 +1,6 @@
 import __HLY_Travel from '../auto-build/__HLY_Travel'
 import {
   App_EmployeeTrafficData,
-  App_TrafficTicket,
   App_TravelCoreItinerary,
   App_TravelExtrasData,
   App_TravelModel,
@@ -53,14 +52,6 @@ export class _HLY_Travel extends __HLY_Travel {
     return defaultData
   }
 
-  public ticketItems(): App_TrafficTicket[] {
-    const defaultData: any[] = []
-    try {
-      return JSON.parse(this.ticketItemsStr) || defaultData
-    } catch (e) {}
-    return defaultData
-  }
-
   public employeeTrafficItems(): App_EmployeeTrafficData[] {
     const defaultData: any[] = []
     try {
@@ -82,11 +73,9 @@ export class _HLY_Travel extends __HLY_Travel {
     data.expenseFormCodes = this.expenseFormCodes()
     data.extrasData = this.extrasData()
     data.itineraryItems = this.itineraryItems()
-    data.ticketItems = this.ticketItems()
     data.employeeTrafficItems = this.employeeTrafficItems()
     delete data['expenseFormCodesStr']
     delete data['itineraryItemsStr']
-    delete data['ticketItemsStr']
     delete data['employeeTrafficItemsStr']
     delete data['extrasInfo']
     delete data['createTime']

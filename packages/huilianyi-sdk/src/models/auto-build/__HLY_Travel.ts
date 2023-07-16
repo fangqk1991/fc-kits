@@ -23,8 +23,8 @@ const _cols: string[] = [
   'extras_info',
   'has_subsidy',
   'itinerary_items_str',
-  'ticket_items_str',
   'employee_traffic_items_str',
+  'is_pretty',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -53,8 +53,8 @@ const _insertableCols: string[] = [
   'extras_info',
   'has_subsidy',
   'itinerary_items_str',
-  'ticket_items_str',
   'employee_traffic_items_str',
+  'is_pretty',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -79,8 +79,8 @@ const _modifiableCols: string[] = [
   'extras_info',
   'has_subsidy',
   'itinerary_items_str',
-  'ticket_items_str',
   'employee_traffic_items_str',
+  'is_pretty',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -188,13 +188,13 @@ export default class __HLY_Travel extends FeedBase {
    */
   public itineraryItemsStr!: string
   /**
-   * @description [mediumtext] 票据信息，空 | JSON 字符串
-   */
-  public ticketItemsStr!: string
-  /**
    * @description [mediumtext] 员工行程票据信息，空 | JSON 字符串
    */
   public employeeTrafficItemsStr!: string
+  /**
+   * @description [tinyint] 是否为标准情况
+   */
+  public isPretty!: number
   /**
    * @description [varchar(256)] 关联报销单编号集
    */
@@ -265,8 +265,8 @@ export default class __HLY_Travel extends FeedBase {
     this.extrasInfo = ''
     this.hasSubsidy = 0
     this.itineraryItemsStr = ''
-    this.ticketItemsStr = ''
     this.employeeTrafficItemsStr = ''
+    this.isPretty = 0
     this.expenseFormCodesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
@@ -293,8 +293,8 @@ export default class __HLY_Travel extends FeedBase {
       extrasInfo: 'extras_info',
       hasSubsidy: 'has_subsidy',
       itineraryItemsStr: 'itinerary_items_str',
-      ticketItemsStr: 'ticket_items_str',
       employeeTrafficItemsStr: 'employee_traffic_items_str',
+      isPretty: 'is_pretty',
       expenseFormCodesStr: 'expense_form_codes_str',
       travelStatus: 'travel_status',
       reloadTime: 'reload_time',

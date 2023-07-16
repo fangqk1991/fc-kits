@@ -99,7 +99,6 @@ export class HuilianyiFormatter {
       travelStatus: item.status,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
-      ticketItems: [],
       employeeTrafficItems: [],
       itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),

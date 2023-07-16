@@ -52,6 +52,10 @@ export class MonthAllowanceMaker {
           //     allowanceAmount: allowanceAmount,
           //   })
           // }
+          const trafficItem = travelItem
+            .employeeTrafficItems()
+            .find((trafficItem) => trafficItem.employeeName === participant.fullName)
+          const isPretty = !!trafficItem && trafficItem.isClosedLoop
           const allowance = new HLY_TravelAllowance()
           allowance.businessCode = travelItem.businessCode
           allowance.targetMonth = section.month
@@ -66,8 +70,8 @@ export class MonthAllowanceMaker {
           allowance.extrasInfo = JSON.stringify({
             itineraryItems: section.itineraryItems,
           })
-          allowance.isPretty = HLY_PrettyStatus.NotPretty
-          allowance.isVerified = HLY_VerifiedStatus.NotVerified
+          allowance.isPretty = isPretty ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
+          allowance.isVerified = isPretty ? HLY_VerifiedStatus.Verified : HLY_VerifiedStatus.NotVerified
           await allowance.strongAddToDB()
         }
       }
