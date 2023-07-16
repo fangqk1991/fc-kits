@@ -42,9 +42,19 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`refreshTravelTicketItemsData`, async () => {
-    await huilianyiService.syncHandler().dumpTravelRecords(true)
-    await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
-    await huilianyiService.syncHandler().dumpOrderTrainRecords(true)
+    // await huilianyiService.syncHandler().dumpTravelRecords(true)
+    // await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
+    // await huilianyiService.syncHandler().dumpOrderTrainRecords(true)
     await travelService.refreshTravelTicketItemsData()
+
+    const searcher = new HLY_Travel().fc_searcher()
+    searcher.processor().addSpecialCondition('ticket_items_str IS NOT NULL')
+    const items = await searcher.queryAllFeeds()
+    for (const travelItem of items) {
+      const trafficItems = travelItem.employeeTrafficItems()
+      if (trafficItems.length > 1) {
+        console.info(JSON.stringify(trafficItems, null, 2))
+      }
+    }
   })
 })

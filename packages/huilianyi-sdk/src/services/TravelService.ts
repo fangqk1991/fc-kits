@@ -24,7 +24,7 @@ export class TravelService {
         flightTickets: [],
         trainTickets: [],
         trafficTickets: [],
-        closedLoopItems: [],
+        employeeTrafficData: {},
       }
     }
     {
@@ -33,20 +33,31 @@ export class TravelService {
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const tickets = item.modelForClient().extrasData.tickets
-        ticketDataMapper[item.businessCode].flightTickets.push(...tickets)
-        ticketDataMapper[item.businessCode].trafficTickets.push(
-          ...tickets.map((ticket) => ({
-            tagName: '机票',
-            ticketId: ticket.flightOrderOID,
-            trafficCode: ticket.flightCode,
-            fromTime: ticket.startDate,
-            toTime: ticket.endDate,
-            fromCity: ticket.startCity,
-            toCity: ticket.endCity,
-            employeeId: ticket.employeeId,
-            employeeName: ticket.employeeName,
-          }))
-        )
+        const ticketData = ticketDataMapper[item.businessCode]
+        const commonTickets = tickets.map((ticket) => ({
+          tagName: '机票',
+          ticketId: ticket.flightOrderOID,
+          trafficCode: ticket.flightCode,
+          fromTime: ticket.startDate,
+          toTime: ticket.endDate,
+          fromCity: ticket.startCity,
+          toCity: ticket.endCity,
+          employeeId: ticket.employeeId,
+          employeeName: ticket.employeeName,
+        }))
+        ticketData.flightTickets.push(...tickets)
+        ticketData.trafficTickets.push(...commonTickets)
+        for (const ticket of commonTickets) {
+          if (!ticketData.employeeTrafficData[ticket.employeeName]) {
+            ticketData.employeeTrafficData[ticket.employeeName] = {
+              employeeId: ticket.employeeId,
+              employeeName: ticket.employeeName,
+              isClosedLoop: false,
+              tickets: [],
+            }
+          }
+          ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
+        }
       }
     }
     {
@@ -55,26 +66,36 @@ export class TravelService {
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const tickets = item.modelForClient().extrasData.tickets
-        ticketDataMapper[item.businessCode].trainTickets.push(...tickets)
-        ticketDataMapper[item.businessCode].trafficTickets.push(
-          ...tickets.map((ticket) => ({
-            tagName: '火车票',
-            ticketId: ticket.trainOrderOID,
-            trafficCode: ticket.trainName,
-            fromTime: ticket.startDate,
-            toTime: ticket.endDate,
-            fromCity: ticket.departureCityName,
-            toCity: ticket.arrivalCityName,
-            employeeId: '',
-            employeeName: ticket.passengerName || '',
-          }))
-        )
+        const ticketData = ticketDataMapper[item.businessCode]
+        const commonTickets = tickets.map((ticket) => ({
+          tagName: '火车票',
+          ticketId: ticket.trainOrderOID,
+          trafficCode: ticket.trainName,
+          fromTime: ticket.startDate,
+          toTime: ticket.endDate,
+          fromCity: ticket.departureCityName,
+          toCity: ticket.arrivalCityName,
+          employeeId: '',
+          employeeName: ticket.passengerName || '',
+        }))
+        ticketData.trainTickets.push(...tickets)
+        ticketData.trafficTickets.push(...commonTickets)
+        for (const ticket of commonTickets) {
+          if (!ticketData.employeeTrafficData[ticket.employeeName]) {
+            ticketData.employeeTrafficData[ticket.employeeName] = {
+              employeeId: ticket.employeeId,
+              employeeName: ticket.employeeName,
+              isClosedLoop: false,
+              tickets: [],
+            }
+          }
+          ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
+        }
       }
     }
     for (const businessCode of businessCodeList) {
-      ticketDataMapper[businessCode].trafficTickets.sort(
-        (a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf()
-      )
+      const ticketData = ticketDataMapper[businessCode]
+      ticketData.trafficTickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
     }
     return ticketDataMapper
   }
@@ -116,8 +137,10 @@ export class TravelService {
     const todoItems = await searcher.queryAllFeeds()
 
     for (const travelItem of todoItems) {
+      const ticketData = mapper[travelItem.businessCode]
       travelItem.fc_edit()
-      travelItem.ticketItemsStr = JSON.stringify(mapper[travelItem.businessCode].trafficTickets)
+      travelItem.ticketItemsStr = JSON.stringify(ticketData.trafficTickets)
+      travelItem.employeeTrafficItemsStr = JSON.stringify(Object.values(ticketData.employeeTrafficData))
       await travelItem.updateToDB()
     }
   }
