@@ -24,6 +24,7 @@ const _cols: string[] = [
   'has_subsidy',
   'itinerary_items_str',
   'ticket_items_str',
+  'closed_loop_items_str',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -53,6 +54,7 @@ const _insertableCols: string[] = [
   'has_subsidy',
   'itinerary_items_str',
   'ticket_items_str',
+  'closed_loop_items_str',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -78,6 +80,7 @@ const _modifiableCols: string[] = [
   'has_subsidy',
   'itinerary_items_str',
   'ticket_items_str',
+  'closed_loop_items_str',
   'expense_form_codes_str',
   'travel_status',
   'reload_time',
@@ -189,6 +192,10 @@ export default class __HLY_Travel extends FeedBase {
    */
   public ticketItemsStr!: string
   /**
+   * @description [mediumtext] 闭环行程信息，空 | JSON 字符串
+   */
+  public closedLoopItemsStr!: string
+  /**
    * @description [varchar(256)] 关联报销单编号集
    */
   public expenseFormCodesStr!: string
@@ -259,6 +266,7 @@ export default class __HLY_Travel extends FeedBase {
     this.hasSubsidy = 0
     this.itineraryItemsStr = ''
     this.ticketItemsStr = ''
+    this.closedLoopItemsStr = ''
     this.expenseFormCodesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
@@ -286,6 +294,7 @@ export default class __HLY_Travel extends FeedBase {
       hasSubsidy: 'has_subsidy',
       itineraryItemsStr: 'itinerary_items_str',
       ticketItemsStr: 'ticket_items_str',
+      closedLoopItemsStr: 'closed_loop_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
       travelStatus: 'travel_status',
       reloadTime: 'reload_time',

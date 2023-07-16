@@ -24,6 +24,7 @@ export class TravelService {
         flightTickets: [],
         trainTickets: [],
         trafficTickets: [],
+        closedLoopItems: [],
       }
     }
     {

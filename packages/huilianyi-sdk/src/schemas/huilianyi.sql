@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS hly_travel
     has_subsidy            TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有补贴数据',
     itinerary_items_str    MEDIUMTEXT COMMENT '行程单信息，空 | JSON 字符串',
     ticket_items_str       MEDIUMTEXT COMMENT '票据信息，空 | JSON 字符串',
+    closed_loop_items_str  MEDIUMTEXT COMMENT '闭环行程信息，空 | JSON 字符串',
     expense_form_codes_str VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联报销单编号集',
     travel_status          INT             NOT NULL COMMENT 'HLY_TravelStatus',
     reload_time            TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',

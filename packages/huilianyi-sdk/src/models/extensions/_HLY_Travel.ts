@@ -1,5 +1,6 @@
 import __HLY_Travel from '../auto-build/__HLY_Travel'
 import {
+  App_ClosedLoopTraffic,
   App_TrafficTicket,
   App_TravelCoreItinerary,
   App_TravelExtrasData,
@@ -60,6 +61,14 @@ export class _HLY_Travel extends __HLY_Travel {
     return defaultData
   }
 
+  public closedLoopItems(): App_ClosedLoopTraffic[] {
+    const defaultData: any[] = []
+    try {
+      return JSON.parse(this.closedLoopItemsStr) || defaultData
+    } catch (e) {}
+    return defaultData
+  }
+
   public monthSectionInfos(): TravelMonthSection[] {
     return HuilianyiFormatter.transferMonthSectionInfos(this.itineraryItems())
   }
@@ -74,9 +83,11 @@ export class _HLY_Travel extends __HLY_Travel {
     data.extrasData = this.extrasData()
     data.itineraryItems = this.itineraryItems()
     data.ticketItems = this.ticketItems()
+    data.closedLoopItems = this.closedLoopItems()
     delete data['expenseFormCodesStr']
     delete data['itineraryItemsStr']
     delete data['ticketItemsStr']
+    delete data['closedLoopItemsStr']
     delete data['extrasInfo']
     delete data['createTime']
     delete data['updateTime']

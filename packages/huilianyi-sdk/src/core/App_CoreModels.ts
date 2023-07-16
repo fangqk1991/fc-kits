@@ -108,6 +108,7 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   travelStatus: HLY_TravelStatus
   itineraryItems: App_TravelCoreItinerary[]
   ticketItems: App_TrafficTicket[]
+  closedLoopItems: App_ClosedLoopTraffic[]
   expenseFormCodes: string[]
 }
 
@@ -169,6 +170,12 @@ export interface App_TrafficTicket {
   toCity: string
   employeeId: string
   employeeName: string
+}
+
+export interface App_ClosedLoopTraffic {
+  employeeId: string
+  employeeName: string
+  tickets: App_TrafficTicket[]
 }
 
 export interface App_TravelFlightTicketInfo {
@@ -235,4 +242,5 @@ export interface TravelTicketsDataInfo {
   flightTickets: App_TravelFlightTicketInfo[]
   trainTickets: App_TravelTrainTicketInfo[]
   trafficTickets: App_TrafficTicket[]
+  closedLoopItems: App_ClosedLoopTraffic[]
 }
