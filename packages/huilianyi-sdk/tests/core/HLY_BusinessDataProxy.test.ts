@@ -156,6 +156,15 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     )
   })
 
+  it(`getExpenseApplicationList`, async () => {
+    const items = await businessDataProxy.getExpenseApplicationList({
+      // startDate: '2023-06-09 17:24:07',
+    })
+    // const keyTextList = items.map((item) => `${item.fullName} - ${item.departmentPath}`)
+    console.info(`${items.length} items.`)
+    console.info(JSON.stringify(items, null, 2))
+  })
+
   it(`getTravelApplicationDetail`, async () => {
     const data = await businessDataProxy.getTravelApplicationDetail('TA01004076')
     console.info(JSON.stringify(data, null, 2))

@@ -10,6 +10,7 @@ import { HLY_TravelModel } from '../core/HLY_TravelModels'
 import { HLY_Invoice } from '../core/HLY_InvoiceModels'
 import { TimeUtils } from '../core/TimeUtils'
 import { HLY_OrderFlight, HLY_OrderHotel, HLY_OrderTrain } from '../core/HLY_TravelOrderModels'
+import { HLY_ExpenseApplicationModel } from '../core/HLY_ExpenseApplicationModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPublicApplicationList() {
@@ -97,6 +98,19 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         ...extras,
       })
       return await request.quickSend<HLY_TravelModel[]>()
+    })
+  }
+
+  public async getExpenseApplicationList(extras: {} = {}) {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.ExpenseApplicationListGet))
+      request.setQueryParams({
+        ...params,
+        withApprovalHistory: false,
+        ...extras,
+      })
+      const response = await request.quickSend<HuilianyiResponse<HLY_ExpenseApplicationModel[]>>()
+      return response.data
     })
   }
 

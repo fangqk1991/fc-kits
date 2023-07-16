@@ -39,6 +39,18 @@ export const HLY_BusinessDataApis = {
     description: '查询单个差旅申请单详情(单号)',
   },
 
+  ExpenseApplicationListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/expenseApplication',
+    // 包含明细数据
+    description: '增量查询费用申请单',
+  },
+  ExpenseApplicationDetailGet: {
+    method: 'GET',
+    route: '/gateway/api/open/expenseApplication/detail',
+    description: '查询单个费用申请单详情(单号)',
+  },
+
   InvoiceListGet: {
     method: 'GET',
     route: '/gateway/api/open/invoice',
