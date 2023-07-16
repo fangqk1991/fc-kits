@@ -1,5 +1,10 @@
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_FullTravelModel, App_TravelModel, TravelTicketsDataInfo } from '../core/App_CoreModels'
+import {
+  App_EmployeeTrafficData,
+  App_FullTravelModel,
+  App_TravelModel,
+  TravelTicketsDataInfo,
+} from '../core/App_CoreModels'
 import * as moment from 'moment'
 
 export class TravelService {
@@ -96,6 +101,33 @@ export class TravelService {
     for (const businessCode of businessCodeList) {
       const ticketData = ticketDataMapper[businessCode]
       ticketData.trafficTickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
+
+      for (const trafficData of Object.values(ticketData.employeeTrafficData) as App_EmployeeTrafficData[]) {
+        trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
+
+        let isClosedLoop = true
+        let startCity = ''
+        let curCity = ''
+        for (const ticket of trafficData.tickets) {
+          if (!startCity) {
+            startCity = ticket.fromCity
+            curCity = ticket.fromCity
+          }
+
+          if (ticket.fromCity !== curCity) {
+            isClosedLoop = false
+            break
+          }
+
+          if (startCity === ticket.toCity) {
+            startCity = ''
+            curCity = ''
+            continue
+          }
+          curCity = ticket.toCity
+        }
+        trafficData.isClosedLoop = isClosedLoop && curCity === startCity
+      }
     }
     return ticketDataMapper
   }
@@ -138,9 +170,13 @@ export class TravelService {
 
     for (const travelItem of todoItems) {
       const ticketData = mapper[travelItem.businessCode]
+      const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)
+      for (const trafficItem of employeeTrafficItems) {
+      }
+
       travelItem.fc_edit()
       travelItem.ticketItemsStr = JSON.stringify(ticketData.trafficTickets)
-      travelItem.employeeTrafficItemsStr = JSON.stringify(Object.values(ticketData.employeeTrafficData))
+      travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
       await travelItem.updateToDB()
     }
   }
