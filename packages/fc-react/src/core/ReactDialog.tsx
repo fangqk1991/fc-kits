@@ -43,8 +43,8 @@ export const BaseDialog: React.FC<Props> = (props) => {
       onOk={async () => {
         if (props.callback) {
           setLoading(true)
-          const result = await props.context.handleResult()
           try {
+            const result = await props.context.handleResult()
             await props.callback(result)
             setLoading(false)
           } catch (e) {
