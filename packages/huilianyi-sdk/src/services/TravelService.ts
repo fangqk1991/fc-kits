@@ -184,9 +184,10 @@ export class TravelService {
       const extrasData = travelItem.extrasData()
       const ticketData = mapper[travelItem.businessCode]
       const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)
+      const closedLoopCount = employeeTrafficItems.filter((item) => item.isClosedLoop).length
       travelItem.fc_edit()
       travelItem.matchClosedLoop =
-        employeeTrafficItems.map((item) => item.isClosedLoop).length === extrasData.participants.length
+        closedLoopCount > 0 && closedLoopCount === extrasData.participants.length
           ? HLY_ClosedLoopStatus.HasClosedLoop
           : HLY_ClosedLoopStatus.NoneClosedLoop
       travelItem.isPretty =

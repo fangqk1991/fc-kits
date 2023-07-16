@@ -53,7 +53,7 @@ describe('Test HuilianyiService.test.ts', () => {
     for (const travelItem of items) {
       const trafficItems = travelItem.employeeTrafficItems()
       if (trafficItems.filter((item) => item.isClosedLoop).length > 0) {
-        console.info(travelItem.businessCode, travelItem.isPretty)
+        console.info(travelItem.businessCode, travelItem.matchClosedLoop, travelItem.isPretty)
         // console.info(travelItem.businessCode, JSON.stringify(trafficItems, null, 2))
       }
     }
