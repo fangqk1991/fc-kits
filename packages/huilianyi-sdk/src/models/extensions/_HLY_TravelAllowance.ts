@@ -46,6 +46,7 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     data.extrasData = this.extrasData()
     data.detailItems = this.detailItems()
     data.subsidyItems = this.subsidyItems()
+    delete data['subsidyItemsStr']
     delete data['detailItemsStr']
     delete data['extrasInfo']
     delete data['createTime']
