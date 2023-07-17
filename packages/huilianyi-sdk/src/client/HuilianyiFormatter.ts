@@ -13,6 +13,8 @@ import { HLY_TravelModel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 import { TimeUtils } from '../core/TimeUtils'
 import { HLY_OrderBase, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from '../core/HLY_TravelOrderModels'
 import { App_ExpenseModel } from '../core/App_ExpenseModels'
+import { HLY_ExpenseApplicationModel } from '../core/HLY_ExpenseApplicationModels'
+import { App_ExpenseApplicationModel } from '../core/App_ApplicationModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -58,6 +60,32 @@ export class HuilianyiFormatter {
           return result
         }, {}),
         expenseFieldVOList: expenseFieldVOList,
+      },
+    }
+  }
+
+  public static transferExpenseApplicationModel(item: HLY_ExpenseApplicationModel): App_ExpenseApplicationModel {
+    return {
+      hlyId: Number(item.businessCode.replace(/^[A-Z]+0*/, '')),
+      businessCode: item.businessCode,
+      applicationOid: item.applicationOID,
+      applicantOid: item.applicant.userOID,
+      applicantName: item.applicant.fullName,
+      companyOid: item.companyOID,
+      departmentOid: item.applicant.department.departmentOID,
+      corporationOid: null,
+      formCode: item.formCode,
+      formOid: item.applicationOID,
+      formName: item.formName,
+      submittedBy: item.applicant.userOID,
+      title: item.title,
+      totalAmount: item.totalAmount,
+      createdDate: item.createdDate ? moment(item.createdDate).format() : null,
+      lastModifiedDate: null,
+      formStatus: item.status,
+      extrasData: {
+        customProps: {},
+        ...item,
       },
     }
   }

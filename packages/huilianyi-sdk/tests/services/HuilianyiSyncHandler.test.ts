@@ -38,4 +38,8 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
   it(`dumpOrderHotelRecords`, async () => {
     await huilianyiService.syncHandler().dumpOrderHotelRecords(true)
   })
+
+  it(`dumpExpenseApplicationRecords`, async () => {
+    await huilianyiService.syncHandler().dumpExpenseApplicationRecords(true)
+  })
 })

@@ -401,4 +401,36 @@ export class HuilianyiSyncHandler {
       await bulkAdder.execute()
     }
   }
+
+  public async dumpExpenseApplicationRecords(forceReload = false) {
+    const syncCore = this.syncCore
+    const HLY_ExpenseApplication = syncCore.modelsCore.HLY_ExpenseApplication
+
+    let lastModifyStartDate = '2020-01-01 00:00:00'
+    if (!forceReload) {
+      const lastTime = await this.getLastTime(HLY_ExpenseApplication)
+      if (lastTime) {
+        lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
+      }
+    }
+
+    const items = await syncCore.dataProxy.getExpenseApplicationList({
+      lastModifyStartDate: lastModifyStartDate,
+    })
+    console.info(`[dumpExpenseApplicationRecords] fetch ${items.length} items.`)
+
+    const dbSpec = new HLY_ExpenseApplication().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey('created_date')
+    bulkAdder.declareTimestampKey('last_modified_date')
+    bulkAdder.declareTimestampKey('reload_time')
+    for (const item of items) {
+      const feed = HLY_ExpenseApplication.makeFeed(HuilianyiFormatter.transferExpenseApplicationModel(item) as any)
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
 }
