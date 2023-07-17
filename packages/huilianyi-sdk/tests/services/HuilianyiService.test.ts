@@ -8,13 +8,13 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`reloadExpenseTypeMetadata`, async () => {
-    await huilianyiService.reloadExpenseTypeMetadata()
-    const metadata = await huilianyiService.getExpenseTypeMetadata()
+    await huilianyiService.configHandler().reloadExpenseTypeMetadata()
+    const metadata = await huilianyiService.configHandler().getExpenseTypeMetadata()
     console.info(JSON.stringify(metadata, null, 2))
   })
 
   it(`getExpenseTypeMetadata`, async () => {
-    const metadata = await huilianyiService.getExpenseTypeMetadata()
+    const metadata = await huilianyiService.configHandler().getExpenseTypeMetadata()
     console.info(JSON.stringify(metadata, null, 2))
   })
 

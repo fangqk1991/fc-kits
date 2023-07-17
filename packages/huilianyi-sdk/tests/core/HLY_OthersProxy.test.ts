@@ -23,8 +23,9 @@ describe('Test HLY_OthersProxy.test.ts', () => {
   })
 
   it(`getUserGroupMembers`, async () => {
-    const [userGroup] = await huilianyiProxy.getUserGroupList()
-    const members = await huilianyiProxy.getUserGroupMembers(userGroup.code)
+    const groupList = await huilianyiProxy.getUserGroupList()
+    const group = groupList.find((group) => group.name === '管理层')!
+    const members = await huilianyiProxy.getUserGroupMembers(group.code)
     console.info(members)
   })
 
