@@ -65,6 +65,20 @@ export class HuilianyiFormatter {
   }
 
   public static transferExpenseApplicationModel(item: HLY_ExpenseApplicationModel): App_ExpenseApplicationModel {
+    const customProps: {
+      [propKey: string]: {
+        fieldName: string
+        value: string
+        showValue: string
+      }
+    } = item.custFormValues.reduce((result, cur) => {
+      result[cur.fieldCode] = {
+        fieldName: cur.fieldName,
+        value: cur.value,
+        showValue: cur.showValue || cur.value,
+      }
+      return result
+    }, {})
     return {
       hlyId: Number(item.businessCode.replace(/^[A-Z]+0*/, '')),
       businessCode: item.businessCode,
@@ -84,8 +98,7 @@ export class HuilianyiFormatter {
       lastModifiedDate: null,
       formStatus: item.status,
       extrasData: {
-        customProps: {},
-        ...item,
+        customProps: customProps,
       },
     }
   }
