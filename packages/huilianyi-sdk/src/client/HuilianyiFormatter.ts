@@ -12,7 +12,7 @@ import * as moment from 'moment/moment'
 import { HLY_TravelModel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
 import { TimeUtils } from '../core/TimeUtils'
 import { HLY_OrderBase, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from '../core/HLY_TravelOrderModels'
-import { App_ExpenseModel } from '../core/App_CoreModels'
+import { App_ExpenseModel } from '../core/App_ExpenseModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
