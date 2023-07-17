@@ -6,13 +6,9 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     authConfig: HuilianyiConfigTest,
     database: HuilianyiDBTest,
   })
-  const HLY_Expense = huilianyiService.modelsCore.HLY_Expense
-  const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
-  const HLY_Invoice = huilianyiService.modelsCore.HLY_Invoice
-  const HLY_TravelAllowance = huilianyiService.modelsCore.HLY_TravelAllowance
-  const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
 
   it(`HLY_Expense`, async () => {
+    const HLY_Expense = huilianyiService.modelsCore.HLY_Expense
     await huilianyiService.syncHandler().dumpExpenseRecords(true)
 
     const feeds = await new HLY_Expense().fc_searcher().queryFeeds()
@@ -28,6 +24,8 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   })
 
   it(`HLY_Travel`, async () => {
+    const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
+    const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
     const mapper: { [businessCode: string]: App_TravelOrderTrain[] } = {}
@@ -78,6 +76,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   })
 
   it(`HLY_Invoice`, async () => {
+    const HLY_Invoice = huilianyiService.modelsCore.HLY_Invoice
     const feeds = await new HLY_Invoice().fc_searcher().queryFeeds()
     console.info(
       JSON.stringify(
@@ -107,6 +106,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   it(`HLY_TravelAllowance`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
+    const HLY_TravelAllowance = huilianyiService.modelsCore.HLY_TravelAllowance
     let feeds = await new HLY_TravelAllowance().fc_searcher().queryFeeds()
     console.info(
       JSON.stringify(
@@ -118,6 +118,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   })
 
   it(`HLY_OrderTrain`, async () => {
+    const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
 
     let feeds = await new HLY_OrderTrain().fc_searcher().queryFeeds()
@@ -137,5 +138,23 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const HLY_ExpenseApplication = huilianyiService.modelsCore.HLY_ExpenseApplication
     const formNameList = await HLY_ExpenseApplication.getFormNameList()
     console.info(formNameList)
+  })
+
+  it(`HLY_OrderTrain.getOrderStatusList`, async () => {
+    const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
+    const statusList = await HLY_OrderTrain.getOrderStatusList()
+    console.info(statusList)
+  })
+
+  it(`HLY_OrderFlight.getOrderStatusList`, async () => {
+    const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
+    const statusList = await HLY_OrderFlight.getOrderStatusList()
+    console.info(statusList)
+  })
+
+  it(`HLY_OrderHotel.getOrderStatusList`, async () => {
+    const HLY_OrderHotel = huilianyiService.modelsCore.HLY_OrderHotel
+    const statusList = await HLY_OrderHotel.getOrderStatusList()
+    console.info(statusList)
   })
 })

@@ -15,6 +15,14 @@ export class _HLY_OrderBase extends __HLY_OrderBase {
     return feed
   }
 
+  public static async getOrderStatusList() {
+    const searcher = new this().fc_searcher()
+    searcher.processor().setColumns(['order_status'])
+    searcher.processor().markDistinct()
+    const feeds = await searcher.queryAllFeeds()
+    return feeds.map((item) => item.orderStatus)
+  }
+
   public extrasData(): App_TravelOrderExtras {
     const defaultData: App_TravelOrderExtras = {
       usersStr: '',
