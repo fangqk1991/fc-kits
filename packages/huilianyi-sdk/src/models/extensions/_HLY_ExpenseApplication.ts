@@ -18,6 +18,14 @@ export class _HLY_ExpenseApplication extends __HLY_ExpenseApplication {
     return feed
   }
 
+  public static async getFormNameList() {
+    const searcher = new this().fc_searcher()
+    searcher.processor().setColumns(['form_name'])
+    searcher.processor().markDistinct()
+    const feeds = await searcher.queryAllFeeds()
+    return feeds.map((item) => item.formName)
+  }
+
   public extrasData(): App_ApplicationExtrasData {
     const defaultData: App_ApplicationExtrasData = {
       customProps: {},
