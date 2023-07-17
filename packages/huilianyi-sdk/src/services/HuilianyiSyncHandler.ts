@@ -9,7 +9,7 @@ import {
   App_TravelHotelCoreInfo,
   App_TravelOrderHotel,
   App_TravelTrainTicketInfo,
-} from '../core/App_CoreModels'
+} from '../core/App_TravelModels'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore

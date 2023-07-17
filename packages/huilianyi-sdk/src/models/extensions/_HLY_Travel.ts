@@ -5,7 +5,7 @@ import {
   App_TravelExtrasData,
   App_TravelModel,
   TravelMonthSection,
-} from '../../core/App_CoreModels'
+} from '../../core/App_TravelModels'
 import { HLY_TravelStatus } from '../../core/HLY_TravelStatus'
 import { HuilianyiFormatter } from '../../client/HuilianyiFormatter'
 

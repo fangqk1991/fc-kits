@@ -1,6 +1,6 @@
 import { md5 } from '@fangcha/tools/lib'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_TravelSubsidyItem } from '../core/App_CoreModels'
+import { App_TravelSubsidyItem } from '../core/App_TravelModels'
 import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
 import { HLY_PrettyStatus } from '../core/HLY_PrettyStatus'
 import { HLY_VerifiedStatus } from '../core/HLY_VerifiedStatus'
