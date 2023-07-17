@@ -1,6 +1,6 @@
-import { HuilianyiSyncCore } from './services/HuilianyiSyncCore'
-import { HuilianyiModelsCore } from './services/HuilianyiModelsCore'
-import { RetainConfigKey } from './core/App_CoreModels'
+import { HuilianyiSyncCore } from './HuilianyiSyncCore'
+import { HuilianyiModelsCore } from './HuilianyiModelsCore'
+import { RetainConfigKey } from '../core/App_CoreModels'
 
 export class SystemConfigHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -42,6 +42,28 @@ export class SystemConfigHandler {
   public async getExpenseTypeMetadata() {
     return await this.getConfig(RetainConfigKey.ExpenseTypeMetadata, async () => {
       return this.reloadExpenseTypeMetadata()
+    })
+  }
+
+  public async reloadManagerMetadata() {
+    const proxy = this.syncCore.othersProxy
+    let mapper: { [userOID: string]: string } = {}
+    const groupList = await proxy.getUserGroupList()
+    const group = groupList.find((group) => group.name === '管理层')!
+    if (group) {
+      const members = await proxy.getUserGroupMembers(group.code)
+      mapper = members.reduce((result, cur) => {
+        result[cur.userOID] = cur.fullName
+        return result
+      }, {})
+    }
+    await this.setConfig(RetainConfigKey.ManagerMetadata, mapper)
+    return mapper
+  }
+
+  public async getManagerMetadata() {
+    return await this.getConfig(RetainConfigKey.ManagerMetadata, async () => {
+      return this.reloadManagerMetadata()
     })
   }
 }

@@ -5,7 +5,7 @@ import { HuilianyiSyncHandler } from './services/HuilianyiSyncHandler'
 import { HuilianyiModelsCore } from './services/HuilianyiModelsCore'
 import { MonthAllowanceMaker } from './services/MonthAllowanceMaker'
 import { TravelService } from './services/TravelService'
-import { SystemConfigHandler } from './SystemConfigHandler'
+import { SystemConfigHandler } from './services/SystemConfigHandler'
 
 interface Options {
   database: FCDatabase

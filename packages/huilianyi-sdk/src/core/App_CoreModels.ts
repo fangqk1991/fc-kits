@@ -1,5 +1,6 @@
 export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
+  ManagerMetadata = 'ManagerMetadata',
 }
 
 export interface App_FormBase<T = any> {
