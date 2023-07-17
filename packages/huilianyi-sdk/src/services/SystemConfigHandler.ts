@@ -21,6 +21,15 @@ export class SystemConfigHandler {
     return feed
   }
 
+  public async getWholeConfigs(): Promise<{ [configKey: string]: any }> {
+    const searcher = await new this.modelsCore.HLY_Config().fc_searcher()
+    const feeds = await searcher.queryAllFeeds()
+    return feeds.reduce((result, cur) => {
+      result[cur.configKey] = cur.configData()
+      return result
+    }, {})
+  }
+
   public async getConfig(key: string, fetchFunc?: () => Promise<any>) {
     let feed = await this.modelsCore.HLY_Config.findWithUid(key)
     if (!feed) {
