@@ -80,7 +80,7 @@ export default class __HLY_OrderBase extends FeedBase {
   /**
    * @description [varchar(64)]
    */
-  public employeeId!: string
+  public employeeId!: string | null
   /**
    * @description [text]
    */
@@ -88,7 +88,7 @@ export default class __HLY_OrderBase extends FeedBase {
   /**
    * @description [varchar(20)]
    */
-  public journeyNo!: string | null
+  public journeyNo!: string
   /**
    * @description [varchar(20)]
    */
@@ -112,7 +112,7 @@ export default class __HLY_OrderBase extends FeedBase {
   /**
    * @description [varchar(20)]
    */
-  public auditStatus!: string
+  public auditStatus!: string | null
   /**
    * @description [timestamp]
    */
@@ -169,10 +169,13 @@ export default class __HLY_OrderBase extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
+    this.employeeId = null
     this.applicantName = ''
-    this.journeyNo = null
+    this.journeyNo = ''
     this.businessCode = null
     this.companyOid = null
+    this.payType = ''
+    this.auditStatus = null
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''

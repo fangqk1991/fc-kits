@@ -151,7 +151,7 @@ export interface App_TravelOrderBase<T = any> {
   employeeId: string | null
   applicantName: string
   companyOid: string | null
-  journeyNo: string | null
+  journeyNo: string
   businessCode: string | null
   orderType: string
   payType: string

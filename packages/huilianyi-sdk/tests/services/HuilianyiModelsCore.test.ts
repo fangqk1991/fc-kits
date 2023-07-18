@@ -1,5 +1,6 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { App_TravelOrderTrain, HLY_TravelStatus, HuilianyiService } from '../../src'
+import { App_OrderBizType, App_TravelOrderTrain, HLY_TravelStatus, HuilianyiService } from '../../src'
+import * as assert from 'assert'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = new HuilianyiService({
@@ -156,5 +157,43 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const HLY_OrderHotel = huilianyiService.modelsCore.HLY_OrderHotel
     const statusList = await HLY_OrderHotel.getOrderStatusList()
     console.info(statusList)
+  })
+
+  it(`Orders.fc_searcher`, async () => {
+    const OrderModels = [
+      huilianyiService.modelsCore.HLY_OrderFlight,
+      huilianyiService.modelsCore.HLY_OrderTrain,
+      huilianyiService.modelsCore.HLY_OrderHotel,
+    ]
+    for (const OrderModel of OrderModels) {
+      {
+        const searcher = new OrderModel().fc_searcher({
+          bizType: App_OrderBizType.HasBusinessCode,
+        })
+        const feeds = await searcher.queryAllFeeds()
+        for (const item of feeds) {
+          assert.ok(!!item.businessCode)
+        }
+      }
+      {
+        const searcher = new OrderModel().fc_searcher({
+          bizType: App_OrderBizType.SpecialOrder,
+        })
+        const feeds = await searcher.queryAllFeeds()
+        for (const item of feeds) {
+          assert.ok(['紧急预订', '紧急预定'].includes(item.journeyNo))
+        }
+      }
+      {
+        const searcher = new OrderModel().fc_searcher({
+          bizType: App_OrderBizType.Others,
+        })
+        const feeds = await searcher.queryAllFeeds()
+        for (const item of feeds) {
+          assert.ok(!['紧急预订', '紧急预定'].includes(item.journeyNo))
+          assert.ok(!item.businessCode)
+        }
+      }
+    }
   })
 })

@@ -154,7 +154,7 @@ export default class __HLY_ExpenseApplication extends FeedBase {
   /**
    * @description [int] HLY_ExpenseApplicationStatus
    */
-  public formStatus!: number
+  public formStatus!: number | null
   /**
    * @description [double] 总金额
    */
@@ -217,6 +217,7 @@ export default class __HLY_ExpenseApplication extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.formStatus = null
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
