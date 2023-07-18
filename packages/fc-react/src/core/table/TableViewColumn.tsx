@@ -119,6 +119,9 @@ export class TableViewColumn {
       <div style={{ padding: '8px' }}>
         {typeof title === 'string' && <h4 style={{ margin: '0 0 8px' }}>{title}</h4>}
         <Checkbox.Group
+          style={{
+            display: 'inline-block',
+          }}
           options={options}
           value={checkedValues || []}
           onChange={(newValues) => {

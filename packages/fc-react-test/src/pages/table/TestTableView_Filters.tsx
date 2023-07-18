@@ -100,6 +100,16 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
               return `multiStrValue: ${multiStrValue}`
             },
           }),
+          TableViewColumn.strMultiSelectorColumn({
+            title: 'Many Options',
+            options: new Array(20).fill(null).map(() => ({
+              label: `${Math.random()}`,
+              value: `${Math.random()}`,
+            })),
+            render: () => {
+              return 'Nothing'
+            },
+          }),
           TableViewColumn.textSearcherColumn({
             title: 'TextSearcher',
             value: textValue,
