@@ -136,8 +136,12 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
   })
 
   it(`HLY_ExpenseApplication.getFormNameList`, async () => {
-    const HLY_ExpenseApplication = huilianyiService.modelsCore.HLY_ExpenseApplication
-    const formNameList = await HLY_ExpenseApplication.getFormNameList()
+    const formNameList = await huilianyiService.modelsCore.HLY_ExpenseApplication.getFormNameList()
+    console.info(formNameList)
+  })
+
+  it(`HLY_Expense.getFormNameList`, async () => {
+    const formNameList = await huilianyiService.modelsCore.HLY_Expense.getFormNameList()
     console.info(formNameList)
   })
 
