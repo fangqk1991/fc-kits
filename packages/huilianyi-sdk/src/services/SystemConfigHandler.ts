@@ -62,7 +62,11 @@ export class SystemConfigHandler {
     if (group) {
       const members = await proxy.getUserGroupMembers(group.code)
       mapper = members.reduce((result, cur) => {
-        result[cur.userOID] = cur.fullName
+        result[cur.userOID] = {
+          userOID: cur.userOID,
+          employeeID: cur.employeeID,
+          fullName: cur.fullName,
+        }
         return result
       }, {})
     }
