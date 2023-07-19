@@ -224,10 +224,12 @@ export class HuilianyiFormatter {
   public static transferTravelOrder<T>(
     item: HLY_OrderBase,
     companyOid: string,
+    employeeIdToUserOidMapper: { [p: string]: string },
     extrasHandler: () => App_TravelOrderExtras<T>
   ): App_TravelOrderBase<T> {
     return {
       hlyId: Number(item.orderId),
+      userOid: employeeIdToUserOidMapper[item.employeeId] || '',
       employeeId: item.employeeId,
       applicantName: item.applicant,
       companyOid: companyOid,

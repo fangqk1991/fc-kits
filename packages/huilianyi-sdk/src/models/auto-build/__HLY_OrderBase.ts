@@ -4,6 +4,7 @@ import { DBProtocolV2, FCDatabase } from 'fc-sql'
 const _cols: string[] = [
   // prettier-ignore
   'hly_id',
+  'user_oid',
   'employee_id',
   'applicant_name',
   'journey_no',
@@ -23,6 +24,7 @@ const _cols: string[] = [
 const _insertableCols: string[] = [
   // prettier-ignore
   'hly_id',
+  'user_oid',
   'employee_id',
   'applicant_name',
   'journey_no',
@@ -39,6 +41,7 @@ const _insertableCols: string[] = [
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
+  'user_oid',
   'employee_id',
   'applicant_name',
   'journey_no',
@@ -77,6 +80,10 @@ export default class __HLY_OrderBase extends FeedBase {
    * @description [bigint unsigned]
    */
   public hlyId!: number
+  /**
+   * @description [char(36)]
+   */
+  public userOid!: string
   /**
    * @description [varchar(64)]
    */
@@ -169,6 +176,7 @@ export default class __HLY_OrderBase extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
+    this.userOid = ''
     this.employeeId = null
     this.applicantName = ''
     this.journeyNo = ''
@@ -185,6 +193,7 @@ export default class __HLY_OrderBase extends FeedBase {
   public fc_propertyMapper() {
     return {
       hlyId: 'hly_id',
+      userOid: 'user_oid',
       employeeId: 'employee_id',
       applicantName: 'applicant_name',
       journeyNo: 'journey_no',

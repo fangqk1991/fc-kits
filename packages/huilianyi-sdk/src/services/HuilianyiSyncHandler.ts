@@ -245,6 +245,7 @@ export class HuilianyiSyncHandler {
   public async dumpOrderFlightRecords(forceReload = false) {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderFlight
+    const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -262,12 +263,17 @@ export class HuilianyiSyncHandler {
         lastModifyStartDate: lastModifyStartDate,
       })
       const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder<App_TravelFlightTicketInfo>(item, company.companyOID, () => {
-          return {
-            usersStr: item.users,
-            tickets: item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail)),
+        HuilianyiFormatter.transferTravelOrder<App_TravelFlightTicketInfo>(
+          item,
+          company.companyOID,
+          employeeIdToUserOidMapper,
+          () => {
+            return {
+              usersStr: item.users,
+              tickets: item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail)),
+            }
           }
-        })
+        )
       )
       console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
       const dbSpec = new OrderClass().dbSpec()
@@ -289,6 +295,7 @@ export class HuilianyiSyncHandler {
   public async dumpOrderTrainRecords(forceReload = false) {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderTrain
+    const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -306,27 +313,32 @@ export class HuilianyiSyncHandler {
         lastModifyStartDate: lastModifyStartDate,
       })
       const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(item, company.companyOID, () => {
-          return {
-            usersStr: item.users,
-            tickets: item.trainOrderDetails.map((detail) => ({
-              trainOrderOID: detail.trainOrderOID,
-              trainName: detail.trainName,
+        HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(
+          item,
+          company.companyOID,
+          employeeIdToUserOidMapper,
+          () => {
+            return {
+              usersStr: item.users,
+              tickets: item.trainOrderDetails.map((detail) => ({
+                trainOrderOID: detail.trainOrderOID,
+                trainName: detail.trainName,
 
-              startDate: detail.startDate,
-              endDate: detail.endDate,
+                startDate: detail.startDate,
+                endDate: detail.endDate,
 
-              departureCityName: detail.departureCityName,
-              departureStationName: detail.departureStationName,
-              arrivalCityName: detail.arrivalCityName,
-              arrivalStationName: detail.arrivalStationName,
+                departureCityName: detail.departureCityName,
+                departureStationName: detail.departureStationName,
+                arrivalCityName: detail.arrivalCityName,
+                arrivalStationName: detail.arrivalStationName,
 
-              electronicOrderNo: detail.electronicOrderNo,
+                electronicOrderNo: detail.electronicOrderNo,
 
-              passengerName: item.users,
-            })),
+                passengerName: item.users,
+              })),
+            }
           }
-        })
+        )
       )
 
       console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
@@ -349,6 +361,7 @@ export class HuilianyiSyncHandler {
   public async dumpOrderHotelRecords(forceReload = false) {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderHotel
+    const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -366,28 +379,33 @@ export class HuilianyiSyncHandler {
         lastModifyStartDate: lastModifyStartDate,
       })
       const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder<App_TravelOrderHotel>(item, company.companyOID, () => {
-          const coreInfo = item.hotelOrderDetail
-          const simpleCoreInfo: App_TravelHotelCoreInfo = {
-            hotelOrderOID: coreInfo.hotelOrderOID,
-            hotelName: coreInfo.hotelName,
+        HuilianyiFormatter.transferTravelOrder<App_TravelOrderHotel>(
+          item,
+          company.companyOID,
+          employeeIdToUserOidMapper,
+          () => {
+            const coreInfo = item.hotelOrderDetail
+            const simpleCoreInfo: App_TravelHotelCoreInfo = {
+              hotelOrderOID: coreInfo.hotelOrderOID,
+              hotelName: coreInfo.hotelName,
 
-            startDate: coreInfo.startDate,
-            endDate: coreInfo.endDate,
+              startDate: coreInfo.startDate,
+              endDate: coreInfo.endDate,
 
-            cityName: coreInfo.cityName,
-            roomName: coreInfo.roomName,
-            roomCount: coreInfo.roomCount,
-            roomDays: coreInfo.roomDays,
+              cityName: coreInfo.cityName,
+              roomName: coreInfo.roomName,
+              roomCount: coreInfo.roomCount,
+              roomDays: coreInfo.roomDays,
 
-            clientInfo: coreInfo.clientInfo,
-            roomInfo: coreInfo.roomInfo,
+              clientInfo: coreInfo.clientInfo,
+              roomInfo: coreInfo.roomInfo,
+            }
+            return {
+              usersStr: item.users,
+              tickets: [simpleCoreInfo] as any,
+            }
           }
-          return {
-            usersStr: item.users,
-            tickets: [simpleCoreInfo] as any,
-          }
-        })
+        )
       )
 
       console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)

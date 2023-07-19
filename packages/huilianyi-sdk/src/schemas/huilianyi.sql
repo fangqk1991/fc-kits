@@ -208,6 +208,7 @@ DROP TABLE IF EXISTS hly_order_flight;
 CREATE TABLE IF NOT EXISTS hly_order_flight
 (
     hly_id             BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    user_oid           CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
     employee_id        VARCHAR(64)     NULL COLLATE ascii_bin,
     applicant_name     TEXT            NULL,
     journey_no         VARCHAR(20)     NOT NULL DEFAULT '',
@@ -223,6 +224,7 @@ CREATE TABLE IF NOT EXISTS hly_order_flight
     reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX (user_oid),
     INDEX (business_code),
     INDEX (journey_no),
     INDEX (business_code),
@@ -236,6 +238,7 @@ DROP TABLE IF EXISTS hly_order_train;
 CREATE TABLE IF NOT EXISTS hly_order_train
 (
     hly_id             BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    user_oid           CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
     employee_id        VARCHAR(64)     NULL COLLATE ascii_bin,
     applicant_name     TEXT            NULL,
     journey_no         VARCHAR(20)     NOT NULL DEFAULT '',
@@ -251,6 +254,7 @@ CREATE TABLE IF NOT EXISTS hly_order_train
     reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX (user_oid),
     INDEX (business_code),
     INDEX (journey_no),
     INDEX (business_code),
@@ -264,6 +268,7 @@ DROP TABLE IF EXISTS hly_order_hotel;
 CREATE TABLE IF NOT EXISTS hly_order_hotel
 (
     hly_id             BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    user_oid           CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
     employee_id        VARCHAR(64)     NULL COLLATE ascii_bin,
     applicant_name     TEXT            NULL,
     journey_no         VARCHAR(20)     NOT NULL DEFAULT '',
@@ -279,6 +284,7 @@ CREATE TABLE IF NOT EXISTS hly_order_hotel
     reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX (user_oid),
     INDEX (business_code),
     INDEX (journey_no),
     INDEX (business_code),

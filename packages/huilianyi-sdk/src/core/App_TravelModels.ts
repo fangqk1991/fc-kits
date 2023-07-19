@@ -148,6 +148,7 @@ export interface App_TravelOrderExtras<T = any> {
 
 export interface App_TravelOrderBase<T = any> {
   hlyId: number
+  userOid: string
   employeeId: string | null
   applicantName: string
   companyOid: string | null
