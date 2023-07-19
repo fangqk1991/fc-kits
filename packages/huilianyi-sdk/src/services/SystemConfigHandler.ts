@@ -1,6 +1,6 @@
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { RetainConfigKey } from '../core/App_CoreModels'
+import { App_StaffCore, RetainConfigKey } from '../core/App_CoreModels'
 
 export class SystemConfigHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -30,12 +30,12 @@ export class SystemConfigHandler {
     }, {})
   }
 
-  public async getConfig(key: string, fetchFunc?: () => Promise<any>) {
+  public async getConfig<T = any>(key: string, fetchFunc?: () => Promise<T>) {
     let feed = await this.modelsCore.HLY_Config.findWithUid(key)
     if (!feed) {
       feed = await this.setConfig(key, fetchFunc ? await fetchFunc() : null)
     }
-    return feed.configData()
+    return feed.configData() as T
   }
 
   public async reloadExpenseTypeMetadata() {
@@ -56,7 +56,7 @@ export class SystemConfigHandler {
 
   public async reloadManagerMetadata() {
     const proxy = this.syncCore.othersProxy
-    let mapper: { [userOID: string]: string } = {}
+    let mapper: { [userOID: string]: App_StaffCore } = {}
     const groupList = await proxy.getUserGroupList()
     const group = groupList.find((group) => group.name === '管理层')!
     if (group) {
@@ -68,7 +68,7 @@ export class SystemConfigHandler {
           fullName: cur.fullName,
         }
         return result
-      }, {})
+      }, {} as { [p: string]: App_StaffCore })
     }
     await this.setConfig(RetainConfigKey.ManagerMetadata, mapper)
     return mapper

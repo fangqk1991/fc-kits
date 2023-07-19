@@ -21,3 +21,9 @@ export interface App_FormBase<T = any> {
   lastModifiedDate: string | null
   extrasData: T
 }
+
+export interface App_StaffCore {
+  userOID: string
+  employeeID: string
+  fullName: string
+}

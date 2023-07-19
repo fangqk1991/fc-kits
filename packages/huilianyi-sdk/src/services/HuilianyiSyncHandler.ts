@@ -10,6 +10,8 @@ import {
   App_TravelOrderHotel,
   App_TravelTrainTicketInfo,
 } from '../core/App_TravelModels'
+import { SystemConfigHandler } from './SystemConfigHandler'
+import { HLY_StaffRole } from '../core/HLY_StaffRole'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -40,6 +42,8 @@ export class HuilianyiSyncHandler {
     const items = await syncCore.basicDataProxy.getAllStaffs()
     console.info(`[dumpStaffRecords] fetch ${items.length} items.`)
 
+    const managerMapper = await new SystemConfigHandler(syncCore.modelsCore, syncCore).getManagerMetadata()
+
     const dbSpec = new HLY_Staff().dbSpec()
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
@@ -52,6 +56,7 @@ export class HuilianyiSyncHandler {
       feed.userOid = item.userOID
       feed.companyCode = item.companyCode
       feed.fullName = item.fullName
+      feed.staffRole = managerMapper[item.userOID] ? HLY_StaffRole.Manager : HLY_StaffRole.Normal
       feed.departmentOid = item.departmentOID
       feed.departmentPath = item.departmentPath
       feed.employeeId = item.employeeID

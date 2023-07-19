@@ -5,6 +5,7 @@ const _cols: string[] = [
   // prettier-ignore
   'user_oid',
   'employee_id',
+  'staff_role',
   'company_code',
   'full_name',
   'email',
@@ -21,6 +22,7 @@ const _insertableCols: string[] = [
   // prettier-ignore
   'user_oid',
   'employee_id',
+  'staff_role',
   'company_code',
   'full_name',
   'email',
@@ -33,6 +35,7 @@ const _insertableCols: string[] = [
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
+  'staff_role',
   'company_code',
   'full_name',
   'email',
@@ -70,6 +73,10 @@ export default class __HLY_Staff extends FeedBase {
    * @description [varchar(64)]
    */
   public employeeId!: string
+  /**
+   * @description [enum('Normal','Manager')] 员工类型
+   */
+  public staffRole!: string
   /**
    * @description [varchar(20)]
    */
@@ -146,6 +153,7 @@ export default class __HLY_Staff extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
+    this.staffRole = 'Normal'
     this.companyCode = null
     this.fullName = ''
     this.email = null
@@ -160,6 +168,7 @@ export default class __HLY_Staff extends FeedBase {
     return {
       userOid: 'user_oid',
       employeeId: 'employee_id',
+      staffRole: 'staff_role',
       companyCode: 'company_code',
       fullName: 'full_name',
       email: 'email',
