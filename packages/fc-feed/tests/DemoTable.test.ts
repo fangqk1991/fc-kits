@@ -114,4 +114,18 @@ describe('Test DemoTable', (): void => {
       console.info(item)
     })
   })
+
+  it(`Test getAggregationData`, async () => {
+    const groupByResult = await DemoTable.getAggregationData({
+      columns: ['MOD(uid, 5) AS groupVal', 'COUNT(*) AS count'],
+      groupByKeys: ['groupVal'],
+      filterParams: {
+        [`uid.$gt`]: 10,
+      },
+      customHandler: (searcher) => {
+        searcher.setOptionStr('ORDER BY groupVal ASC')
+      }
+    })
+    console.info(groupByResult)
+  })
 })

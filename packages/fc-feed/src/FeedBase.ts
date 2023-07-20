@@ -1,4 +1,4 @@
-import { DBProtocolV2, DBSpec, DBTools, Transaction } from 'fc-sql'
+import { DBProtocolV2, DBSpec, DBTools, SQLSearcher, Transaction } from 'fc-sql'
 import { FCModel } from 'fc-model'
 import { FeedSearcher } from './FeedSearcher'
 import * as assert from 'assert'
@@ -487,5 +487,23 @@ export class FeedBase extends FCModel {
       totalCount: await searcher.queryCount(),
       items: feeds.map((feed) => feed.toJSON() as Model),
     }
+  }
+
+  public static async getAggregationData<T = any>(options: {
+    columns: string[]
+    groupByKeys?: string[]
+    filterParams?: FilterOptions
+    customHandler?: (searcher: SQLSearcher) => void
+  }) {
+    const groupByKeys = options.groupByKeys || []
+    const feed = new this() as FeedBase
+    const searcher = feed.fc_searcher(options.filterParams)
+    const processor = searcher.processor()
+    processor.setColumns(options.columns)
+    processor.setGroupByKeys(groupByKeys)
+    if (options.customHandler) {
+      options.customHandler(processor)
+    }
+    return (await processor.queryList()) as T[]
   }
 }
