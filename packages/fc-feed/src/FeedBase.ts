@@ -288,54 +288,54 @@ export class FeedBase extends FCModel {
         searcher.processor().addConditionKV(mapper[key], params[key])
       })
     for (const key of paramsKeys) {
-      const matches = key.match(/^([a-zA-Z]\w+)\.\$(\w+)$/)
+      const matches = key.match(/^([a-zA-Z]\w+)\.(\$\w+)$/)
       if (!matches || !(matches[1] in mapper)) {
         continue
       }
       const columnKey = mapper[matches[1]]
       const symbol = matches[2]
-      if (['in', 'notIn'].includes(symbol) && Array.isArray(params[key])) {
-        if (symbol === 'in') {
+      if (['$in', '$notIn'].includes(symbol) && Array.isArray(params[key])) {
+        if (symbol === '$in') {
           searcher.processor().addConditionKeyInArray(columnKey, params[key])
-        } else if (symbol === 'notIn') {
+        } else if (symbol === '$notIn') {
           searcher.processor().addConditionKeyNotInArray(columnKey, params[key])
         }
-      } else if (['inStr', 'notInStr'].includes(symbol) && typeof params[key] === 'string') {
+      } else if (['$inStr', '$notInStr'].includes(symbol) && typeof params[key] === 'string') {
         const values = (params[key] as string)
           .split(',')
           .map((item) => item.trim())
           .filter((item) => !!item)
-        if (symbol === 'inStr') {
+        if (symbol === '$inStr') {
           searcher.processor().addConditionKeyInArray(columnKey, values)
-        } else if (symbol === 'notInStr') {
+        } else if (symbol === '$notInStr') {
           searcher.processor().addConditionKeyNotInArray(columnKey, values)
         }
-      } else if (['eq', 'ne'].includes(symbol) && typeof params[key] === 'string') {
+      } else if (['$eq', '$ne'].includes(symbol) && typeof params[key] === 'string') {
         const value = params[key]
-        if (symbol === 'eq') {
+        if (symbol === '$eq') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` = ?`, value)
-        } else if (symbol === 'ne') {
+        } else if (symbol === '$ne') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` != ?`, value)
         }
       } else if (
-        ['lt', 'le', 'gt', 'ge', 'eq', 'ne'].includes(symbol) &&
+        ['$lt', '$le', '$gt', '$ge', '$eq', '$ne'].includes(symbol) &&
         ((typeof params[key] === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(params[key])) ||
           typeof params[key] === 'number')
       ) {
         const isTimestamp = this.dbSpec().checkTimestampKey(columnKey)
         const placeholder = isTimestamp ? 'FROM_UNIXTIME(?)' : '?'
         const value = Number(params[key])
-        if (symbol === 'lt') {
+        if (symbol === '$lt') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` < ${placeholder}`, value)
-        } else if (symbol === 'le') {
+        } else if (symbol === '$le') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` <= ${placeholder}`, value)
-        } else if (symbol === 'gt') {
+        } else if (symbol === '$gt') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` > ${placeholder}`, value)
-        } else if (symbol === 'ge') {
+        } else if (symbol === '$ge') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` >= ${placeholder}`, value)
-        } else if (symbol === 'eq') {
+        } else if (symbol === '$eq') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` = ${placeholder}`, value)
-        } else if (symbol === 'ne') {
+        } else if (symbol === '$ne') {
           searcher.processor().addSpecialCondition(`\`${columnKey}\` != ${placeholder}`, value)
         }
       }
