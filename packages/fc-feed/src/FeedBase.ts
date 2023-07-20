@@ -294,7 +294,9 @@ export class FeedBase extends FCModel {
       }
       const columnKey = mapper[matches[1]]
       const symbol = matches[2]
-      if (['$in', '$notIn'].includes(symbol) && Array.isArray(params[key])) {
+      if (symbol === '$like') {
+        searcher.processor().addConditionLikeKeywords(columnKey, params[key])
+      } else if (['$in', '$notIn'].includes(symbol) && Array.isArray(params[key])) {
         if (symbol === '$in') {
           searcher.processor().addConditionKeyInArray(columnKey, params[key])
         } else if (symbol === '$notIn') {
