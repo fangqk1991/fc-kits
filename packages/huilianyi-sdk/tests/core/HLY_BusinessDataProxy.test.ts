@@ -14,6 +14,30 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
   const businessDataProxy = new HLY_BusinessDataProxy(HuilianyiConfigTest, CustomRequestFollower)
   const othersProxy = new HLY_OthersProxy(HuilianyiConfigTest, CustomRequestFollower)
 
+  it(`getPrepaymentApplyList`, async () => {
+    const items = await businessDataProxy.getPrepaymentApplyList()
+    const dataList = items
+    // const dataList = items.map((item) => ({
+    //   version: item.version,
+    //   title: `[${item.formName}] ${item.title}`,
+    //   applicantName: item.applicant.fullName,
+    //   createdDate: item.createdDate,
+    //   totalAmount: `${item.originCurrencyCode} ${item.totalAmount}`,
+    //   status: `${item.status} (${HLY_PublicApplicationStatusDescriptor.describe(item.status)})`,
+    //   formData: item.custFormValues.reduce((result, cur) => {
+    //     result[cur.fieldName] = cur.value
+    //     return result
+    //   }, {}),
+    //   formData2: item.custFormValues.reduce((result, cur) => {
+    //     result[cur.fieldCode || cur.fieldOID] = cur.value
+    //     return result
+    //   }, {}),
+    // }))
+    console.info(`${dataList.length} items.`)
+    console.info(JSON.stringify(dataList, null, 2))
+    // console.info(JSON.stringify(items[0]))
+  })
+
   it(`getPublicApplicationList`, async () => {
     const items = await businessDataProxy.getPublicApplicationList()
     const dataList = items.map((item) => ({

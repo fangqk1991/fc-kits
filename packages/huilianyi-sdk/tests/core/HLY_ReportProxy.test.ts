@@ -52,4 +52,10 @@ describe('Test HLY_ReportProxy.test.ts', () => {
     console.info(`${items.length} items.`)
     console.info(JSON.stringify(items, null, 2))
   })
+
+  it(`searchCorpExpDetailReport`, async () => {
+    const items = await huilianyiProxy.searchCorpExpDetailReport('')
+    console.info(`${items.length} items.`)
+    console.info(JSON.stringify(items, null, 2))
+  })
 })

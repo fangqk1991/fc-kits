@@ -96,4 +96,11 @@ export const HLY_BusinessDataApis = {
     route: '/gateway/api/open/hotel/orders',
     description: '查询酒店订单信息',
   },
+
+  PrepaymentApplyListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/prepayment/apply',
+    // 包含明细数据
+    description: '对公收款单增量查询',
+  },
 }

@@ -13,6 +13,17 @@ import { HLY_OrderFlight, HLY_OrderHotel, HLY_OrderTrain } from '../core/HLY_Tra
 import { HLY_ExpenseApplicationModel } from '../core/HLY_ExpenseApplicationModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
+  public async getPrepaymentApplyList() {
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.PrepaymentApplyListGet))
+      request.setQueryParams({
+        ...params,
+      })
+      const response = await request.quickSend<HuilianyiResponse<any[]>>()
+      return response.data
+    })
+  }
+
   public async getPublicApplicationList() {
     return await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.PublicApplicationListGet))

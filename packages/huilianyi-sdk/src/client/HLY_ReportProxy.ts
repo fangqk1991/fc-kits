@@ -47,6 +47,17 @@ export class HLY_ReportProxy extends HuilianyiProxyBase {
     })
   }
 
+  public async searchCorpExpDetailReport(setOfBooksCode: string) {
+    return await this.getAllPageItems(async (pageParams) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_ReportApis.CorpExpDetailReportSearch))
+      request.setBodyData({
+        setOfBooksCode: setOfBooksCode,
+        ...pageParams,
+      })
+      return await request.quickSend<HuilianyiResponse<any[]>>()
+    })
+  }
+
   private async getAllPageItems<T>(
     handler: (params: { page: number; size: number }) => Promise<HuilianyiResponse<T[]>>
   ) {
