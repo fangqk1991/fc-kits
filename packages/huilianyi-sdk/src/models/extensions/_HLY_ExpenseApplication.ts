@@ -1,6 +1,8 @@
 import __HLY_ExpenseApplication from '../auto-build/__HLY_ExpenseApplication'
 import { HLY_ExpenseApplicationStatus } from '../../core/HLY_ExpenseApplicationStatus'
 import { App_ApplicationExtrasData, App_ExpenseApplicationModel } from '../../core/App_ApplicationModels'
+import { FilterOptions } from 'fc-feed'
+import { MonthAmountReport } from '../../core/App_CoreModels'
 
 export class _HLY_ExpenseApplication extends __HLY_ExpenseApplication {
   public lastModifiedDate!: string
@@ -47,5 +49,16 @@ export class _HLY_ExpenseApplication extends __HLY_ExpenseApplication {
     delete data['createTime']
     delete data['updateTime']
     return data
+  }
+
+  public static async getMonthReports(filterOptions: FilterOptions = {}) {
+    return await this.getAggregationData<MonthAmountReport>({
+      columns: ['DATE_FORMAT(created_date, "%Y-%m") AS month', 'COUNT(*) AS count', 'SUM(total_amount) AS totalAmount'],
+      groupByKeys: ['month'],
+      customHandler: (searcher) => {
+        searcher.setOptionStr('ORDER BY month ASC')
+      },
+      filterOptions: filterOptions,
+    })
   }
 }

@@ -27,3 +27,9 @@ export interface App_StaffCore {
   employeeID: string
   fullName: string
 }
+
+export interface MonthAmountReport {
+  month: string
+  total: number
+  totalAmount: number
+}
