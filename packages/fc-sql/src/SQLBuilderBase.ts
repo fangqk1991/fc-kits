@@ -44,6 +44,11 @@ export abstract class SQLBuilderBase {
     return this
   }
 
+  public addConditionLikeKeywords(key: string, keywords: string) {
+    this.addConditionKV(key, `%${keywords}%`)
+    return this
+  }
+
   /**
    * @description Add special condition, for instance, passing ('age > ?', 10) means (age > 10)
    * @param condition {string}
