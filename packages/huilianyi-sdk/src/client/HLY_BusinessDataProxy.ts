@@ -59,6 +59,16 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
   }
 
+  public async getPublicPaymentList(
+    options: { statusList?: HLY_ExpenseStatus[]; lastModifyStartDate?: string } = {},
+    extras: {} = {}
+  ) {
+    return this.getExpenseReportListV2(options, {
+      ...extras,
+      corporateFlag: true,
+    })
+  }
+
   public async getExpenseReportListV2(
     options: { statusList?: HLY_ExpenseStatus[]; lastModifyStartDate?: string } = {},
     extras: {} = {}

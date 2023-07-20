@@ -12,6 +12,7 @@ import { _HLY_OrderFlight } from '../models/extensions/_HLY_OrderFlight'
 import { _HLY_OrderTrain } from '../models/extensions/_HLY_OrderTrain'
 import { _HLY_OrderHotel } from '../models/extensions/_HLY_OrderHotel'
 import { _HLY_ExpenseApplication } from '../models/extensions/_HLY_ExpenseApplication'
+import { _HLY_PublicPayment } from '../models/extensions/_HLY_PublicPayment'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -28,6 +29,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_OrderFlight!: { new (): _HLY_OrderFlight } & typeof _HLY_OrderFlight
   public readonly HLY_OrderTrain!: { new (): _HLY_OrderTrain } & typeof _HLY_OrderTrain
   public readonly HLY_OrderHotel!: { new (): _HLY_OrderHotel } & typeof _HLY_OrderHotel
+  public readonly HLY_PublicPayment!: { new (): _HLY_PublicPayment } & typeof _HLY_PublicPayment
 
   public readonly HLY_ExpenseApplication!: { new (): _HLY_ExpenseApplication } & typeof _HLY_ExpenseApplication
 
@@ -111,5 +113,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_ExpenseApplication = HLY_ExpenseApplication
+
+    class HLY_PublicPayment extends _HLY_PublicPayment {}
+    HLY_PublicPayment.addStaticOptions({
+      database: database,
+    })
+    this.HLY_PublicPayment = HLY_PublicPayment
   }
 }

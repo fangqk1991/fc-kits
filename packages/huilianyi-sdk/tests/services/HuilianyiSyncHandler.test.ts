@@ -19,6 +19,10 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     await huilianyiService.syncHandler().dumpExpenseRecords(true)
   })
 
+  it(`dumpPublicPaymentRecords`, async () => {
+    await huilianyiService.syncHandler().dumpPublicPaymentRecords(true)
+  })
+
   it(`dumpTravelRecords`, async () => {
     await huilianyiService.syncHandler().dumpTravelRecords(true)
   })

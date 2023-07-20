@@ -110,6 +110,32 @@ describe('Test HLY_BusinessDataProxy.test.ts', () => {
     )
   })
 
+  it(`getPublicPaymentList`, async () => {
+    const items = await businessDataProxy.getPublicPaymentList({
+      // statusList: [HLY_ExpenseStatus.Passed, HLY_ExpenseStatus.Paid],
+      lastModifyStartDate: '2023-06-09 17:24:07',
+    })
+    const dataList = items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      applicantName: item.applicantName,
+      createdDate: item.createdDate,
+      lastModifiedDate: item.lastModifiedDate,
+      status: item.status,
+      statusText: HLY_ExpenseStatusDescriptor.describe(item.status),
+    }))
+    console.info(`${dataList.length} items.`)
+    // console.info(JSON.stringify(items, null, 2))
+    console.info(
+      JSON.stringify(
+        items.map((item) => item),
+        null,
+        2
+      )
+    )
+    // console.info(JSON.stringify(items[1]))
+  })
+
   it(`getExpenseReportListV2`, async () => {
     const items = await businessDataProxy.getExpenseReportListV2({
       // statusList: [HLY_ExpenseStatus.Passed, HLY_ExpenseStatus.Paid],
