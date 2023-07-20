@@ -45,7 +45,10 @@ export abstract class SQLBuilderBase {
   }
 
   public addConditionLikeKeywords(key: string, keywords: string) {
-    this.addConditionKV(key, `%${keywords}%`)
+    if (/^\w+$/.test(key)) {
+      key = `\`${key}\``
+    }
+    this.addSpecialCondition(`${key} LIKE ?`, `%${keywords}%`)
     return this
   }
 
