@@ -48,8 +48,8 @@ export class HuilianyiFormatter {
           }
           return result
         }, {}),
-        customFormValueVOList: item.customFormValueVOList,
-        invoiceVOList: item.invoiceVOList,
+        customFormValueVOList: item.customFormValueVOList || [],
+        invoiceVOList: item.invoiceVOList || [],
         expenseProps: expenseFieldVOList.reduce((result, cur) => {
           result[cur.fieldOID] = {
             name: cur.name,
