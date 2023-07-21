@@ -99,6 +99,7 @@ export class SystemConfigHandler {
         }, {} as { [p: string]: App_CostCenterItem }),
       }
     }
+    await this.setConfig(RetainConfigKey.CostCenterMetadata, metadata)
     return metadata
   }
 
