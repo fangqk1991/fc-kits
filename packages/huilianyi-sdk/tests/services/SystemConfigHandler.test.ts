@@ -21,4 +21,9 @@ describe('Test SystemConfigHandler.test.ts', () => {
     const data = await huilianyiService.configHandler().getWholeConfigs()
     console.info(data)
   })
+
+  it(`getCostCenterMetadata`, async () => {
+    const data = await huilianyiService.configHandler().getCostCenterMetadata()
+    console.info(data)
+  })
 })

@@ -1,6 +1,6 @@
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_StaffCore, RetainConfigKey } from '../core/App_CoreModels'
+import { App_CostCenterItem, App_CostCenterMetadata, App_StaffCore, RetainConfigKey } from '../core/App_CoreModels'
 
 export class SystemConfigHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -77,6 +77,34 @@ export class SystemConfigHandler {
   public async getManagerMetadata() {
     return await this.getConfig(RetainConfigKey.ManagerMetadata, async () => {
       return this.reloadManagerMetadata()
+    })
+  }
+
+  public async reloadCostCenterMetadata() {
+    const basicDataProxy = this.syncCore.basicDataProxy
+    const metadata: App_CostCenterMetadata = {}
+    const costCenterList = await basicDataProxy.getEnabledCostCenterList()
+    for (const costCenter of costCenterList) {
+      const items = await basicDataProxy.getCostCenterItems(costCenter.code)
+      metadata[costCenter.code] = {
+        costCenterOID: costCenter.costCenterOID,
+        name: costCenter.name,
+        code: costCenter.code,
+        itemMap: items.reduce((result, cur) => {
+          result[cur.costCenterItemOID] = {
+            itemId: cur.costCenterItemOID,
+            name: cur.name,
+          }
+          return result
+        }, {} as { [p: string]: App_CostCenterItem }),
+      }
+    }
+    return metadata
+  }
+
+  public async getCostCenterMetadata() {
+    return await this.getConfig(RetainConfigKey.CostCenterMetadata, async () => {
+      return this.reloadCostCenterMetadata()
     })
   }
 }
