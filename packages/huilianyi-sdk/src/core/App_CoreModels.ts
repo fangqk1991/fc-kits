@@ -2,6 +2,7 @@ export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
   ManagerMetadata = 'ManagerMetadata',
   CostCenterMetadata = 'CostCenterMetadata',
+  ExpenseAvgMonthN = 'ExpenseAvgMonthN',
 }
 
 export interface App_FormBase<T = any> {
@@ -34,6 +35,21 @@ export interface MonthAmountReport {
   month: string
   total: number
   totalAmount: number
+}
+
+export interface CostMonthlyReport {
+  costOwnerOid: string
+  month: string
+  totalCount: number
+  totalAmount: number
+}
+
+export interface CostOwnerReport {
+  costOwnerOid: string
+  totalCount: number
+  totalAmount: number
+  avgAmount: number
+  monthItems: CostMonthlyReport[]
 }
 
 export interface App_CostCenterMetadata {

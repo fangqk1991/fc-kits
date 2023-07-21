@@ -6,6 +6,7 @@ import { HuilianyiModelsCore } from './services/HuilianyiModelsCore'
 import { MonthAllowanceMaker } from './services/MonthAllowanceMaker'
 import { TravelService } from './services/TravelService'
 import { SystemConfigHandler } from './services/SystemConfigHandler'
+import { PublicPaymentService } from './services/PublicPaymentService'
 
 interface Options {
   database: FCDatabase
@@ -38,5 +39,9 @@ export class HuilianyiService {
 
   public configHandler() {
     return new SystemConfigHandler(this.modelsCore, this.syncCore)
+  }
+
+  public publicPaymentService() {
+    return new PublicPaymentService(this.syncCore)
   }
 }
