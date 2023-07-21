@@ -26,12 +26,13 @@ export class PublicPaymentService {
 
     const items = await modelsCore.HLY_PublicPayment.getAggregationData<CostMonthlyReport>({
       columns: [
+        'cost_type_oid AS costTypeOid',
         'cost_owner_oid AS costOwnerOid',
         'DATE_FORMAT(created_date, "%Y-%m") AS month',
-        'COUNT(*) AS count',
+        'COUNT(*) AS totalCount',
         'SUM(total_amount) AS totalAmount',
       ],
-      groupByKeys: ['costOwnerOid', 'month'],
+      groupByKeys: ['costTypeOid', 'costOwnerOid', 'month'],
       customHandler: (searcher) => {
         searcher.addSpecialCondition(
           'created_date >= FROM_UNIXTIME(?) AND created_date < FROM_UNIXTIME(?)',
