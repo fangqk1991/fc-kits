@@ -19,7 +19,8 @@ import { App_ExpenseApplicationModel } from '../core/App_ApplicationModels'
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
     const expenseFieldVOList = item.expenseFieldVOList || []
-    const field = item.customFormValueVOList.find((item) => item.fieldName === '预算归口')
+    const typeField = item.customFormValueVOList.find((item) => item.fieldName === '单据类型')
+    const ownerField = item.customFormValueVOList.find((item) => item.fieldName === '预算归口')
     return {
       hlyId: Number(item.id),
       businessCode: item.businessCode,
@@ -37,7 +38,8 @@ export class HuilianyiFormatter {
       expenseType: item.type,
       expenseStatus: item.status,
       totalAmount: item.totalAmount,
-      costOwnerOid: field?.value || null,
+      costTypeOid: typeField?.value || null,
+      costOwnerOid: ownerField?.value || null,
       applyFormCodes: (item.expenseReportApplicationVOList || []).map((item) => item.applicationBusinessCode),
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
@@ -81,7 +83,8 @@ export class HuilianyiFormatter {
       }
       return result
     }, {})
-    const field = item.custFormValues.find((item) => item.fieldName === '预算归口')
+    const typeField = item.custFormValues.find((item) => item.fieldName === '单据类型')
+    const ownerField = item.custFormValues.find((item) => item.fieldName === '预算归口')
     return {
       hlyId: Number(item.businessCode.replace(/^[A-Z]+0*/, '')),
       businessCode: item.businessCode,
@@ -100,7 +103,8 @@ export class HuilianyiFormatter {
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: null,
       formStatus: item.status,
-      costOwnerOid: field?.value || null,
+      costTypeOid: typeField?.value || null,
+      costOwnerOid: ownerField?.value || null,
       extrasData: {
         customProps: customProps,
       },

@@ -45,8 +45,10 @@ export class PublicPaymentService {
       [p: string]: CostOwnerReport
     } = {}
     for (const item of items) {
-      if (!ownerMapper[item.costOwnerOid]) {
-        ownerMapper[item.costOwnerOid] = {
+      const key = `${item.costOwnerOid}|${item.costOwnerOid}`
+      if (!ownerMapper[key]) {
+        ownerMapper[key] = {
+          costTypeOid: item.costTypeOid,
           costOwnerOid: item.costOwnerOid,
           totalCount: 0,
           totalAmount: 0,
@@ -54,7 +56,8 @@ export class PublicPaymentService {
           monthItems: [],
         }
       }
-      ownerMapper[item.costOwnerOid].monthItems.push({
+      ownerMapper[key].monthItems.push({
+        costTypeOid: item.costTypeOid,
         costOwnerOid: item.costOwnerOid,
         month: item.month,
         totalCount: item.totalCount,

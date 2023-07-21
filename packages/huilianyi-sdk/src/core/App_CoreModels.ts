@@ -18,6 +18,7 @@ export interface App_FormBase<T = any> {
   formOid: string | null
   formName: string
   submittedBy: string | null
+  costTypeOid?: string | null
   costOwnerOid?: string | null
   title: string
   createdDate: string | null
@@ -38,6 +39,7 @@ export interface MonthAmountReport {
 }
 
 export interface CostMonthlyReport {
+  costTypeOid: string
   costOwnerOid: string
   month: string
   totalCount: number
@@ -46,6 +48,7 @@ export interface CostMonthlyReport {
 
 export interface CostOwnerReport {
   costOwnerOid: string
+  costTypeOid: string
   totalCount: number
   totalAmount: number
   avgAmount: number

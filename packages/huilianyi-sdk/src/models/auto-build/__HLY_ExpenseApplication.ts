@@ -15,6 +15,7 @@ const _cols: string[] = [
   'form_oid',
   'form_name',
   'submitted_by',
+  'cost_type_oid',
   'cost_owner_oid',
   'title',
   'created_date',
@@ -40,6 +41,7 @@ const _insertableCols: string[] = [
   'form_oid',
   'form_name',
   'submitted_by',
+  'cost_type_oid',
   'cost_owner_oid',
   'title',
   'created_date',
@@ -61,6 +63,7 @@ const _modifiableCols: string[] = [
   'form_oid',
   'form_name',
   'submitted_by',
+  'cost_type_oid',
   'cost_owner_oid',
   'title',
   'created_date',
@@ -138,6 +141,10 @@ export default class __HLY_ExpenseApplication extends FeedBase {
    * @description [char(36)]
    */
   public submittedBy!: string | null
+  /**
+   * @description [char(36)]
+   */
+  public costTypeOid!: string | null
   /**
    * @description [char(36)]
    */
@@ -220,6 +227,7 @@ export default class __HLY_ExpenseApplication extends FeedBase {
     this.formOid = null
     this.formName = ''
     this.submittedBy = null
+    this.costTypeOid = null
     this.costOwnerOid = null
     this.title = ''
     this.createdDate = null
@@ -243,6 +251,7 @@ export default class __HLY_ExpenseApplication extends FeedBase {
       formOid: 'form_oid',
       formName: 'form_name',
       submittedBy: 'submitted_by',
+      costTypeOid: 'cost_type_oid',
       costOwnerOid: 'cost_owner_oid',
       title: 'title',
       createdDate: 'created_date',
