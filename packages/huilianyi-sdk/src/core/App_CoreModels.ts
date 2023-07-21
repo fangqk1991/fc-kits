@@ -17,6 +17,7 @@ export interface App_FormBase<T = any> {
   formOid: string | null
   formName: string
   submittedBy: string | null
+  costOwnerOid?: string | null
   title: string
   createdDate: string | null
   lastModifiedDate: string | null

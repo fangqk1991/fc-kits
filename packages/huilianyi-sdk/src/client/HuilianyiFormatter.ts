@@ -36,6 +36,7 @@ export class HuilianyiFormatter {
       expenseType: item.type,
       expenseStatus: item.status,
       totalAmount: item.totalAmount,
+      costOwnerOid: item.costCenterItemOID,
       applyFormCodes: (item.expenseReportApplicationVOList || []).map((item) => item.applicationBusinessCode),
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
@@ -97,6 +98,7 @@ export class HuilianyiFormatter {
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: null,
       formStatus: item.status,
+      costOwnerOid: item.expenseApplication?.costCenterItemOID,
       extrasData: {
         customProps: customProps,
       },
