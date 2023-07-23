@@ -1,7 +1,7 @@
 import { HLY_StaffRole } from './HLY_StaffRole'
 import { HLY_StaffStatus } from './HLY_StaffStatus'
 
-export interface App_Staff {
+export interface App_StaffModel {
   userOid: string
   employeeId: string
   staffRole: HLY_StaffRole
@@ -16,4 +16,11 @@ export interface App_Staff {
   groupOids: string[]
   groupCodes: string[]
   groupNames: string[]
+}
+
+export interface App_StaffGroupModel {
+  groupOid: string
+  groupCode: string
+  groupName: string
+  isEnabled: number
 }

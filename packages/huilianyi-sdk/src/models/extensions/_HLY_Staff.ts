@@ -1,5 +1,5 @@
 import __HLY_Staff from '../auto-build/__HLY_Staff'
-import { App_Staff } from '../../core/App_StaffModels'
+import { App_StaffModel } from '../../core/App_StaffModels'
 
 export class _HLY_Staff extends __HLY_Staff {
   public constructor() {
@@ -42,7 +42,7 @@ export class _HLY_Staff extends __HLY_Staff {
   }
 
   public modelForClient() {
-    const data = this.fc_pureModel() as App_Staff
+    const data = this.fc_pureModel() as App_StaffModel
     data.groupOids = this.groupOids()
     data.groupCodes = this.groupCodes()
     data.groupNames = this.groupNames()
