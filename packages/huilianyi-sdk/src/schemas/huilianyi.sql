@@ -428,3 +428,20 @@ CREATE TABLE IF NOT EXISTS hly_config
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_allowance_rule;
+CREATE TABLE IF NOT EXISTS hly_allowance_rule
+(
+    _rid            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uid             CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'UUID',
+    role_match_type VARCHAR(20)     NOT NULL COLLATE ascii_bin DEFAULT '',
+    role_list_str   TEXT,
+    city_match_type VARCHAR(20)     NOT NULL COLLATE ascii_bin DEFAULT '',
+    city_list_str   TEXT,
+    amount          DOUBLE          NOT NULL COMMENT '金额',
+    create_time     TIMESTAMP       NOT NULL                   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     TIMESTAMP       NOT NULL                   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (uid)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;

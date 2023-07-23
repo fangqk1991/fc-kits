@@ -15,6 +15,7 @@ import { _HLY_ExpenseApplication } from '../models/extensions/_HLY_ExpenseApplic
 import { _HLY_PublicPayment } from '../models/extensions/_HLY_PublicPayment'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { _HLY_StaffGroupMember } from '../models/extensions/_HLY_StaffGroupMember'
+import { _HLY_AllowanceRule } from '../models/extensions/_HLY_AllowanceRule'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -34,6 +35,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_OrderTrain!: { new (): _HLY_OrderTrain } & typeof _HLY_OrderTrain
   public readonly HLY_OrderHotel!: { new (): _HLY_OrderHotel } & typeof _HLY_OrderHotel
   public readonly HLY_PublicPayment!: { new (): _HLY_PublicPayment } & typeof _HLY_PublicPayment
+  public readonly HLY_AllowanceRule!: { new (): _HLY_AllowanceRule } & typeof _HLY_AllowanceRule
 
   public readonly HLY_ExpenseApplication!: { new (): _HLY_ExpenseApplication } & typeof _HLY_ExpenseApplication
 
@@ -135,5 +137,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_PublicPayment = HLY_PublicPayment
+
+    class HLY_AllowanceRule extends _HLY_AllowanceRule {}
+    HLY_AllowanceRule.addStaticOptions({
+      database: database,
+    })
+    this.HLY_AllowanceRule = HLY_AllowanceRule
   }
 }
