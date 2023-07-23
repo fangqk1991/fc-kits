@@ -61,13 +61,14 @@ export class HLY_BasicDataProxy extends HuilianyiProxyBase {
     })
   }
   public async getUserGroupList() {
-    const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.UserGroupListGet))
-    request.setQueryParams({
-      page: 1,
-      size: 100,
+    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.UserGroupListGet))
+      request.setQueryParams({
+        ...params,
+      })
+      const response = (await request.quickSend()) as HuilianyiResponse<HLY_UserGroup[]>
+      return response.data
     })
-    const response = (await request.quickSend()) as HuilianyiResponse<HLY_UserGroup[]>
-    return response.data
   }
 
   public async getUserGroupMembers(groupCode: string) {

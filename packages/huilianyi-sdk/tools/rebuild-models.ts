@@ -43,6 +43,13 @@ const dbSchemas: DBModelSchema[] = [
     modifiableBlackList: ['create_time', 'update_time'],
   },
   {
+    tableName: 'hly_staff_group',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_StaffGroup.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_StaffGroup.ts`,
+    primaryKey: ['group_oid'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
+  {
     tableName: 'hly_department',
     outputFile: `${__dirname}/../src/models/auto-build/__HLY_Department.ts`,
     extFile: `${__dirname}/../src/models/extensions/_HLY_Department.ts`,

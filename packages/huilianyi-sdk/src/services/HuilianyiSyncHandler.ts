@@ -35,6 +35,30 @@ export class HuilianyiSyncHandler {
     return result['last_time']
   }
 
+  public async dumpStaffGroupRecords() {
+    const syncCore = this.syncCore
+    const HLY_StaffGroup = syncCore.modelsCore.HLY_StaffGroup
+
+    const items = await syncCore.basicDataProxy.getUserGroupList()
+    console.info(`[dumpStaffGroupRecords] fetch ${items.length} items.`)
+
+    const dbSpec = new HLY_StaffGroup().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    for (const item of items) {
+      const feed = new HLY_StaffGroup()
+      feed.groupOid = item.userGroupOID
+      feed.groupCode = item.code
+      feed.groupName = item.name
+      feed.isEnabled = item.enabled ? 1 : 0
+      feed.extrasInfo = JSON.stringify(item)
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
+
   public async dumpStaffRecords() {
     const syncCore = this.syncCore
     const HLY_Staff = syncCore.modelsCore.HLY_Staff

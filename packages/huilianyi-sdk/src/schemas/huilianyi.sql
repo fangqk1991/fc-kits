@@ -363,6 +363,36 @@ CREATE TABLE IF NOT EXISTS hly_staff
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 
+DROP TABLE IF EXISTS hly_staff_group;
+CREATE TABLE IF NOT EXISTS hly_staff_group
+(
+    _rid        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    group_oid   CHAR(36)        NOT NULL COLLATE ascii_bin,
+    group_code  VARCHAR(32)     NULL COLLATE ascii_bin,
+    group_name  VARCHAR(64)     NOT NULL DEFAULT '',
+    is_enabled  TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为标准情况',
+    extras_info MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    create_time TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (group_oid),
+    INDEX (is_enabled)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS hly_staff_group_member;
+CREATE TABLE IF NOT EXISTS hly_staff_group_member
+(
+    _rid        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    group_oid   CHAR(36)        NOT NULL COLLATE ascii_bin,
+    user_oid    CHAR(36)        NOT NULL COLLATE ascii_bin,
+    create_time TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (group_oid, user_oid)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
 DROP TABLE IF EXISTS hly_department;
 CREATE TABLE IF NOT EXISTS hly_department
 (
