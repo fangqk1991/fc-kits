@@ -1,5 +1,5 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HuilianyiService } from '../../src'
+import { HuilianyiService } from '../../src/HuilianyiService'
 
 describe('Test HLY_Staff.test.ts', () => {
   const huilianyiService = new HuilianyiService({

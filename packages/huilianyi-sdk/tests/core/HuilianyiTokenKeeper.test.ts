@@ -1,7 +1,7 @@
 import { loggerForDev } from '@fangcha/logger'
 import { CustomRequestFollower } from '@fangcha/backend-kit'
-import { HuilianyiTokenKeeper } from '../../src'
 import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
+import { HuilianyiTokenKeeper } from '../../src/client/HuilianyiTokenKeeper'
 
 describe('Test HuilianyiTokenKeeper.test.ts', () => {
   const keeper = new HuilianyiTokenKeeper(HuilianyiConfigTest, CustomRequestFollower)

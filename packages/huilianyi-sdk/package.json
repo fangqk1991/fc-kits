@@ -16,6 +16,7 @@
   "license": "MIT",
   "files": [
     "lib/*",
+    "backend/*",
     "src/*"
   ],
   "devDependencies": {

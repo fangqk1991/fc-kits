@@ -1,6 +1,6 @@
 import { CustomRequestFollower } from '@fangcha/backend-kit'
 import { HuilianyiConfigTest } from '../HuilianyiConfigTest'
-import { HLY_ReportProxy } from '../../src'
+import { HLY_ReportProxy } from '../../src/client/HLY_ReportProxy'
 
 describe('Test HLY_ReportProxy.test.ts', () => {
   const huilianyiProxy = new HLY_ReportProxy(HuilianyiConfigTest, CustomRequestFollower)

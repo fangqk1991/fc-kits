@@ -1,5 +1,6 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { App_CostCenterItem, App_CostCenterMetadata, HuilianyiService } from '../../src'
+import { App_CostCenterItem, App_CostCenterMetadata } from '../../src'
+import { HuilianyiService } from '../../src/HuilianyiService'
 
 describe('Test CostCenter.test.ts', () => {
   const huilianyiService = new HuilianyiService({
