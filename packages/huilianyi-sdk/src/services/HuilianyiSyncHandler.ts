@@ -57,6 +57,40 @@ export class HuilianyiSyncHandler {
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
+
+    const HLY_StaffGroupMember = syncCore.modelsCore.HLY_StaffGroupMember
+
+    for (const group of items) {
+      const dbSpec = new HLY_StaffGroupMember().dbSpec()
+      const newMembers = await syncCore.basicDataProxy.getUserGroupMembers(group.code)
+
+      const runner = dbSpec.database.createTransactionRunner()
+      await runner.commit(async (transaction) => {
+        const bulkAdder = new SQLBulkAdder(dbSpec.database)
+        bulkAdder.transaction = transaction
+        bulkAdder.setTable(dbSpec.table)
+        bulkAdder.useUpdateWhenDuplicate()
+        bulkAdder.setInsertKeys(dbSpec.insertableCols())
+        const userOidList = newMembers.map((item) => item.userOID)
+        for (const userOid of userOidList) {
+          const feed = new HLY_StaffGroupMember()
+          feed.groupOid = group.userGroupOID
+          feed.userOid = userOid
+          bulkAdder.putObject(feed.fc_encode())
+        }
+        await bulkAdder.execute()
+
+        const searcher = new HLY_StaffGroupMember().fc_searcher()
+        searcher.processor().transaction = transaction
+        searcher.processor().addConditionKV('group_oid', group.userGroupOID)
+        searcher.processor().addConditionKeyNotInArray('user_oid', userOidList)
+        const toRemoveItems = await searcher.queryAllFeeds()
+
+        for (const member of toRemoveItems) {
+          await member.deleteFromDB(transaction)
+        }
+      })
+    }
   }
 
   public async dumpStaffRecords() {
