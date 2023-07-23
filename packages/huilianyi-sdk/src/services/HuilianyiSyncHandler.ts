@@ -10,8 +10,8 @@ import {
   App_TravelOrderHotel,
   App_TravelTrainTicketInfo,
 } from '../core/App_TravelModels'
-import { SystemConfigHandler } from './SystemConfigHandler'
 import { HLY_StaffRole } from '../core/HLY_StaffRole'
+import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -96,11 +96,24 @@ export class HuilianyiSyncHandler {
   public async dumpStaffRecords() {
     const syncCore = this.syncCore
     const HLY_Staff = syncCore.modelsCore.HLY_Staff
+    const HLY_StaffGroup = syncCore.modelsCore.HLY_StaffGroup
+    const HLY_StaffGroupMember = syncCore.modelsCore.HLY_StaffGroupMember
 
     const items = await syncCore.basicDataProxy.getAllStaffs()
     console.info(`[dumpStaffRecords] fetch ${items.length} items.`)
 
-    const managerMapper = await new SystemConfigHandler(syncCore.modelsCore, syncCore).getManagerMetadata()
+    const groupMapper = await HLY_StaffGroup.wholeGroupMapper()
+    const groupMembers = await new HLY_StaffGroupMember().fc_searcher().queryAllFeeds()
+    const userGroupsMapper: { [p: string]: _HLY_StaffGroup[] } = {}
+    for (const member of groupMembers) {
+      if (!userGroupsMapper[member.userOid]) {
+        userGroupsMapper[member.userOid] = []
+      }
+      const group = groupMapper[member.groupOid]
+      if (group) {
+        userGroupsMapper[member.userOid].push(group)
+      }
+    }
 
     const dbSpec = new HLY_Staff().dbSpec()
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
@@ -110,11 +123,11 @@ export class HuilianyiSyncHandler {
     bulkAdder.declareTimestampKey('entry_date')
     bulkAdder.declareTimestampKey('leaving_date')
     for (const item of items) {
+      const groupList = userGroupsMapper[item.userOID] || []
       const feed = new HLY_Staff()
       feed.userOid = item.userOID
       feed.companyCode = item.companyCode
       feed.fullName = item.fullName
-      feed.staffRole = managerMapper[item.userOID] ? HLY_StaffRole.Manager : HLY_StaffRole.Normal
       feed.departmentOid = item.departmentOID
       feed.departmentPath = item.departmentPath
       feed.employeeId = item.employeeID
@@ -122,6 +135,12 @@ export class HuilianyiSyncHandler {
       feed.staffStatus = item.status
       feed.entryDate = item.entryDate
       feed.leavingDate = item.leavingDate
+      feed.groupOidsStr = groupList.map((item) => item.groupOid).join(',')
+      feed.groupCodesStr = groupList.map((item) => item.groupCode).join(',')
+      feed.groupNamesStr = groupList.map((item) => item.groupName).join(',')
+      feed.staffRole = groupList.find((item) => item.groupName === '管理层')
+        ? HLY_StaffRole.Manager
+        : HLY_StaffRole.Normal
       feed.extrasInfo = JSON.stringify(item)
       bulkAdder.putObject(feed.fc_encode())
     }

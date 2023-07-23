@@ -14,6 +14,9 @@ const _cols: string[] = [
   'staff_status',
   'entry_date',
   'leaving_date',
+  'group_oids_str',
+  'group_codes_str',
+  'group_names_str',
   'extras_info',
   'create_time',
   'update_time',
@@ -31,6 +34,9 @@ const _insertableCols: string[] = [
   'staff_status',
   'entry_date',
   'leaving_date',
+  'group_oids_str',
+  'group_codes_str',
+  'group_names_str',
   'extras_info',
 ]
 const _modifiableCols: string[] = [
@@ -44,6 +50,9 @@ const _modifiableCols: string[] = [
   'staff_status',
   'entry_date',
   'leaving_date',
+  'group_oids_str',
+  'group_codes_str',
+  'group_names_str',
   'extras_info',
 ]
 
@@ -110,6 +119,18 @@ export default class __HLY_Staff extends FeedBase {
    */
   public leavingDate!: string | null
   /**
+   * @description [text]
+   */
+  public groupOidsStr!: string
+  /**
+   * @description [text]
+   */
+  public groupCodesStr!: string
+  /**
+   * @description [text]
+   */
+  public groupNamesStr!: string
+  /**
    * @description [mediumtext] 附加信息，空 | JSON 字符串
    */
   public extrasInfo!: string
@@ -161,6 +182,9 @@ export default class __HLY_Staff extends FeedBase {
     this.departmentPath = ''
     this.entryDate = null
     this.leavingDate = null
+    this.groupOidsStr = ''
+    this.groupCodesStr = ''
+    this.groupNamesStr = ''
     this.extrasInfo = ''
   }
 
@@ -177,6 +201,9 @@ export default class __HLY_Staff extends FeedBase {
       staffStatus: 'staff_status',
       entryDate: 'entry_date',
       leavingDate: 'leaving_date',
+      groupOidsStr: 'group_oids_str',
+      groupCodesStr: 'group_codes_str',
+      groupNamesStr: 'group_names_str',
       extrasInfo: 'extras_info',
       createTime: 'create_time',
       updateTime: 'update_time',

@@ -8,6 +8,7 @@ describe('Test SystemConfigHandler.test.ts', () => {
   })
 
   it(`getManagerMetadata`, async () => {
+    await huilianyiService.configHandler().reloadManagerMetadata()
     const data = await huilianyiService.configHandler().getManagerMetadata()
     console.info(data)
   })

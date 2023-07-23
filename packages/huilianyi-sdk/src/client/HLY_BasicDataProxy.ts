@@ -76,6 +76,7 @@ export class HLY_BasicDataProxy extends HuilianyiProxyBase {
       const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.UserGroupMembersGet, groupCode))
       request.setQueryParams({
         ...params,
+        page: params.page - 1,
       })
       return await request.quickSend<HLY_User[]>()
     })

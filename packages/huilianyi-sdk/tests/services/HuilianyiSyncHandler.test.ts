@@ -16,6 +16,7 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
   })
 
   it(`dumpStaffRecords`, async () => {
+    await huilianyiService.syncHandler().dumpStaffGroupRecords()
     await huilianyiService.syncHandler().dumpStaffRecords()
   })
 
