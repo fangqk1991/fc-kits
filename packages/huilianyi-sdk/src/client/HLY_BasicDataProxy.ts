@@ -3,7 +3,10 @@ import {
   HLY_CostCenter,
   HLY_CostCenterItem,
   HLY_ExpenseTypeEntity,
-  HLY_SimpleDepartment
+  HLY_SimpleDepartment,
+  HLY_User,
+  HLY_UserGroup,
+  HuilianyiResponse,
 } from '../core/HuilianyiModels'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BasicDataApis } from './HLY_BasicDataApis'
@@ -56,6 +59,20 @@ export class HLY_BasicDataProxy extends HuilianyiProxyBase {
       })
       return await request.quickSend<HLY_Staff[]>()
     })
+  }
+  public async getUserGroupList() {
+    const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.UserGroupListGet))
+    request.setQueryParams({
+      page: 1,
+      size: 100,
+    })
+    const response = (await request.quickSend()) as HuilianyiResponse<HLY_UserGroup[]>
+    return response.data
+  }
+
+  public async getUserGroupMembers(groupCode: string) {
+    const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.UserGroupMembersGet, groupCode))
+    return await request.quickSend<HLY_User[]>()
   }
 
   public async getAllDepartments() {

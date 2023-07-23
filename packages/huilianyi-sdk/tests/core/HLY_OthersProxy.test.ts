@@ -17,18 +17,6 @@ describe('Test HLY_OthersProxy.test.ts', () => {
     console.info(companyDetail)
   })
 
-  it(`getUserGroupList`, async () => {
-    const items = await huilianyiProxy.getUserGroupList()
-    console.info(items)
-  })
-
-  it(`getUserGroupMembers`, async () => {
-    const groupList = await huilianyiProxy.getUserGroupList()
-    const group = groupList.find((group) => group.name === '管理层')!
-    const members = await huilianyiProxy.getUserGroupMembers(group.code)
-    console.info(members)
-  })
-
   it(`getLegalEntityList`, async () => {
     const items = await huilianyiProxy.getLegalEntityList()
     console.info(items)

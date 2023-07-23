@@ -12,6 +12,18 @@ describe('Test HLY_BasicDataProxy.test.ts', () => {
     console.info(JSON.stringify(items, null, 2))
   })
 
+  it(`getUserGroupList`, async () => {
+    const items = await basicDataProxy.getUserGroupList()
+    console.info(items)
+  })
+
+  it(`getUserGroupMembers`, async () => {
+    const groupList = await basicDataProxy.getUserGroupList()
+    const group = groupList.find((group) => group.name === '管理层')!
+    const members = await basicDataProxy.getUserGroupMembers(group.code)
+    console.info(members)
+  })
+
   it(`getAllDepartments`, async () => {
     const items = await basicDataProxy.getAllDepartments()
     const keyTextList = items.map((item) => `${item.departmentPath} - (${item.managerName || 'None'})`)

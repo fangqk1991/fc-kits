@@ -9,6 +9,16 @@ export const HLY_BasicDataApis = {
     route: '/gateway/api/open/user',
     description: '增量查询员工',
   },
+  UserGroupListGet: {
+    method: 'GET',
+    route: '/gateway/api/open/userGroup/all',
+    description: '查询租户下所有人员组',
+  },
+  UserGroupMembersGet: {
+    method: 'GET',
+    route: '/gateway/api/open/userGroup/:groupCode',
+    description: '根据人员组 OID 或者编码查询该人员组详情',
+  },
   DepartmentListGet: {
     method: 'GET',
     route: '/gateway/api/open/department',

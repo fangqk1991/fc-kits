@@ -55,7 +55,7 @@ export class SystemConfigHandler {
   }
 
   public async reloadManagerMetadata() {
-    const proxy = this.syncCore.othersProxy
+    const proxy = this.syncCore.basicDataProxy
     let mapper: { [userOID: string]: App_StaffCore } = {}
     const groupList = await proxy.getUserGroupList()
     const group = groupList.find((group) => group.name === '管理层')!
