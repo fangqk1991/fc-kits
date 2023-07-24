@@ -1,5 +1,5 @@
 import __HLY_AllowanceRule from '../auto-build/__HLY_AllowanceRule'
-import { App_AllowanceRuleModel } from '../../core/App_AllowanceModels'
+import { App_AllowanceRuleModel } from '../../core/allowance/App_AllowanceModels'
 
 export class _HLY_AllowanceRule extends __HLY_AllowanceRule {
   public constructor() {

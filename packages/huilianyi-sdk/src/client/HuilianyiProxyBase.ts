@@ -2,7 +2,7 @@ import { ApiOptions, axiosBuilder } from '@fangcha/app-request'
 import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { HuilianyiTokenKeeper } from './HuilianyiTokenKeeper'
 import { BasicAuthConfig } from '@fangcha/tools'
-import { HuilianyiResponse } from '../core/HuilianyiModels'
+import { HuilianyiResponse } from '../core/basic/HuilianyiModels'
 import AppError from '@fangcha/app-error'
 
 export class HuilianyiProxyBase extends ServiceProxy<BasicAuthConfig> {

@@ -1,9 +1,9 @@
-import { md5 } from '@fangcha/tools/lib'
+import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_TravelSubsidyItem } from '../core/App_TravelModels'
-import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
-import { HLY_PrettyStatus } from '../core/HLY_PrettyStatus'
-import { HLY_VerifiedStatus } from '../core/HLY_VerifiedStatus'
+import { App_TravelSubsidyItem } from '../core/travel/App_TravelModels'
+import { HLY_TravelStatus } from '../core/travel/HLY_TravelStatus'
+import { HLY_PrettyStatus } from '../core/travel/HLY_PrettyStatus'
+import { HLY_VerifiedStatus } from '../core/travel/HLY_VerifiedStatus'
 
 export class MonthAllowanceMaker {
   public readonly modelsCore: HuilianyiModelsCore

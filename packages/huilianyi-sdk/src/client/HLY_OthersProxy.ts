@@ -5,7 +5,7 @@ import {
   HLY_ReceiptedInvoice,
   HLY_SimpleLegalEntity,
   HuilianyiResponse,
-} from '../core/HuilianyiModels'
+} from '../core/basic/HuilianyiModels'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HuilianyiApis } from './HuilianyiApis'
 

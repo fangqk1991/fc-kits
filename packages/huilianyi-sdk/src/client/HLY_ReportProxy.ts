@@ -1,9 +1,9 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HLY_ReportApis } from './HLY_ReportApis'
-import { HLY_ExpenseDetail, HLY_TravelApplyForm, HuilianyiResponse } from '../core/HuilianyiModels'
+import { HLY_ExpenseDetail, HLY_TravelApplyForm, HuilianyiResponse } from '../core/basic/HuilianyiModels'
 import * as moment from 'moment'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
-import { HLY_ReimbursementReport } from '../core/HLY_ExpenseModels'
+import { HLY_ReimbursementReport } from '../core/expense/HLY_ExpenseModels'
 
 export class HLY_ReportProxy extends HuilianyiProxyBase {
   public async searchReimbursementData() {

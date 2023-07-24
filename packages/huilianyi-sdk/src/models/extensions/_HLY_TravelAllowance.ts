@@ -4,7 +4,7 @@ import {
   App_TravelAllowanceItem,
   App_TravelAllowanceModel,
   App_TravelSubsidyItem,
-} from '../../core/App_TravelModels'
+} from '../../core/travel/App_TravelModels'
 
 export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   public constructor() {

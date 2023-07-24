@@ -1,5 +1,5 @@
 import __HLY_StaffGroup from '../auto-build/__HLY_StaffGroup'
-import { App_StaffGroupModel } from '../../core/App_StaffModels'
+import { App_StaffGroupModel } from '../../core/staff/App_StaffModels'
 
 export class _HLY_StaffGroup extends __HLY_StaffGroup {
   public constructor() {

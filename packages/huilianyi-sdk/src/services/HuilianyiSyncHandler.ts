@@ -2,15 +2,15 @@ import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder, SQLSearcher } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
-import { HLY_TravelStatus } from '../core/HLY_TravelStatus'
-import { TimeUtils } from '../core/TimeUtils'
+import { HLY_TravelStatus } from '../core/travel/HLY_TravelStatus'
+import { TimeUtils } from '../core/tools/TimeUtils'
 import {
   App_TravelFlightTicketInfo,
   App_TravelHotelCoreInfo,
   App_TravelOrderHotel,
   App_TravelTrainTicketInfo,
-} from '../core/App_TravelModels'
-import { HLY_StaffRole } from '../core/HLY_StaffRole'
+} from '../core/travel/App_TravelModels'
+import { HLY_StaffRole } from '../core/staff/HLY_StaffRole'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 
 export class HuilianyiSyncHandler {

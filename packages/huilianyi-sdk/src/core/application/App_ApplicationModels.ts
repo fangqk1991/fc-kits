@@ -1,5 +1,5 @@
-import { App_FormBase } from './App_CoreModels'
-import { HLY_ExpenseApplicationStatus } from './HLY_ExpenseApplicationStatus'
+import { App_FormBase } from '../basic/App_CoreModels'
+import { HLY_ExpenseApplicationStatus } from '../expense/HLY_ExpenseApplicationStatus'
 
 export interface App_ApplicationExtrasData {
   customProps?: {

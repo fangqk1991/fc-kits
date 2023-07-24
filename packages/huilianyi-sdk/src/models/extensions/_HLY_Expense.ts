@@ -1,7 +1,7 @@
 import __HLY_Expense from '../auto-build/__HLY_Expense'
-import { HLY_ExpenseType } from '../../core/HLY_ExpenseModels'
-import { HLY_ExpenseStatus } from '../../core/HLY_ExpenseStatus'
-import { App_ExpenseExtrasData, App_ExpenseModel } from '../../core/App_ExpenseModels'
+import { HLY_ExpenseType } from '../../core/expense/HLY_ExpenseModels'
+import { HLY_ExpenseStatus } from '../../core/expense/HLY_ExpenseStatus'
+import { App_ExpenseExtrasData, App_ExpenseModel } from '../../core/expense/App_ExpenseModels'
 
 export class _HLY_Expense extends __HLY_Expense {
   public lastModifiedDate!: string

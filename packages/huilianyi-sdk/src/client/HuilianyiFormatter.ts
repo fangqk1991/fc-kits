@@ -1,4 +1,4 @@
-import { HLY_ExpenseV2 } from '../core/HLY_ExpenseModels'
+import { HLY_ExpenseV2 } from '../core/expense/HLY_ExpenseModels'
 import {
   App_TravelCoreItinerary,
   App_TravelFlightTicketInfo,
@@ -7,14 +7,14 @@ import {
   App_TravelOrderExtras,
   App_TravelTrainTicketInfo,
   TravelMonthSection,
-} from '../core/App_TravelModels'
+} from '../core/travel/App_TravelModels'
 import * as moment from 'moment/moment'
-import { HLY_TravelModel, ItineraryHeadDTO } from '../core/HLY_TravelModels'
-import { TimeUtils } from '../core/TimeUtils'
-import { HLY_OrderBase, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from '../core/HLY_TravelOrderModels'
-import { App_ExpenseModel } from '../core/App_ExpenseModels'
-import { HLY_ExpenseApplicationModel } from '../core/HLY_ExpenseApplicationModels'
-import { App_ExpenseApplicationModel } from '../core/App_ApplicationModels'
+import { HLY_TravelModel, ItineraryHeadDTO } from '../core/travel/HLY_TravelModels'
+import { TimeUtils } from '../core/tools/TimeUtils'
+import { HLY_OrderBase, HLY_OrderFlightCoreInfo, HLY_OrderTrainTicketInfo } from '../core/travel/HLY_TravelOrderModels'
+import { App_ExpenseModel } from '../core/expense/App_ExpenseModels'
+import { HLY_ExpenseApplicationModel } from '../core/expense/HLY_ExpenseApplicationModels'
+import { App_ExpenseApplicationModel } from '../core/application/App_ApplicationModels'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {

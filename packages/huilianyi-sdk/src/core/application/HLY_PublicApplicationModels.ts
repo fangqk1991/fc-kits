@@ -1,4 +1,4 @@
-import { HLY_CustomFormValue, HLY_StaffCoreDTO } from './HLY_CoreModels'
+import { HLY_CustomFormValue, HLY_StaffCoreDTO } from '../basic/HLY_CoreModels'
 import { HLY_PublicApplicationStatus } from './HLY_PublicApplicationStatus'
 
 export interface HLY_PublicApplicationDTO {

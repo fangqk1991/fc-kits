@@ -1,5 +1,5 @@
-import { HLY_StaffCoreDTO } from './HLY_CoreModels'
-import { HLY_CustomFormItem } from './HLY_CustomFormModels'
+import { HLY_StaffCoreDTO } from '../basic/HLY_CoreModels'
+import { HLY_CustomFormItem } from '../basic/HLY_CustomFormModels'
 import { HLY_ExpenseApplicationStatus } from './HLY_ExpenseApplicationStatus'
 
 export interface HLY_ExpenseApplicationEntity {

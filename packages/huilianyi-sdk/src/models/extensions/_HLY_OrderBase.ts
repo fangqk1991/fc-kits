@@ -1,6 +1,6 @@
 import __HLY_OrderBase from '../auto-build/__HLY_OrderBase'
-import { App_TravelOrderBase, App_TravelOrderExtras } from '../../core/App_TravelModels'
-import { App_OrderBizType } from '../../core/App_OrderBizType'
+import { App_TravelOrderBase, App_TravelOrderExtras } from '../../core/travel/App_TravelModels'
+import { App_OrderBizType } from '../../core/travel/App_OrderBizType'
 
 export class _HLY_OrderBase extends __HLY_OrderBase {
   public businessCode!: string

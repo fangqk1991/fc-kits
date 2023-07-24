@@ -1,6 +1,6 @@
-import { HLY_CustomFormValue, HLY_EntityLabelDTO, HLY_Staff } from './HLY_CoreModels'
+import { HLY_CustomFormValue, HLY_EntityLabelDTO, HLY_Staff } from '../basic/HLY_CoreModels'
 import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
-import { HLY_FieldBusinessCode, HLY_FieldType } from './HLY_FieldType'
+import { HLY_FieldBusinessCode, HLY_FieldType } from '../basic/HLY_FieldType'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { InvoiceLabelDTO } from './HLY_InvoiceModels'
 

@@ -4,13 +4,13 @@ import {
   HLY_CostCenterItem,
   HLY_ExpenseTypeEntity,
   HLY_SimpleDepartment,
+  HLY_Staff,
   HLY_User,
   HLY_UserGroup,
   HuilianyiResponse,
-} from '../core/HuilianyiModels'
+} from '../core'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BasicDataApis } from './HLY_BasicDataApis'
-import { HLY_Staff } from '../core/HLY_CoreModels'
 import { PageDataFetcher } from './PageDataFetcher'
 
 export class HLY_BasicDataProxy extends HuilianyiProxyBase {

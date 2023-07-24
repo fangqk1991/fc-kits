@@ -5,7 +5,7 @@ import { HLY_PrettyStatus } from './HLY_PrettyStatus'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
 import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
-import { App_FormBase } from './App_CoreModels'
+import { App_FormBase } from '../basic/App_CoreModels'
 
 export interface App_TravelExtrasData {
   itineraryMap: ItineraryMap

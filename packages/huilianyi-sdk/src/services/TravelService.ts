@@ -5,10 +5,10 @@ import {
   App_TrafficTicket,
   App_TravelModel,
   TravelTicketsDataInfo,
-} from '../core/App_TravelModels'
+} from '../core/travel/App_TravelModels'
 import * as moment from 'moment'
-import { HLY_PrettyStatus } from '../core/HLY_PrettyStatus'
-import { HLY_ClosedLoopStatus } from '../core/HLY_ClosedLoopStatus'
+import { HLY_PrettyStatus } from '../core/travel/HLY_PrettyStatus'
+import { HLY_ClosedLoopStatus } from '../core/travel/HLY_ClosedLoopStatus'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore

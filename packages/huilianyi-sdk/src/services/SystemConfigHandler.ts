@@ -1,6 +1,6 @@
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_CostCenterItem, App_CostCenterMetadata, App_StaffCore, RetainConfigKey } from '../core/App_CoreModels'
+import { App_CostCenterItem, App_CostCenterMetadata, App_StaffCore, RetainConfigKey } from '../core/basic/App_CoreModels'
 
 export class SystemConfigHandler {
   public readonly syncCore: HuilianyiSyncCore

@@ -1,9 +1,9 @@
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
 import { HLY_Invoice } from './HLY_InvoiceModels'
-import { HLY_CustomFormValue } from './HLY_CoreModels'
+import { HLY_CustomFormValue } from '../basic/HLY_CoreModels'
 import { ExpenseFieldDTO, ExpenseReportInvoiceView, HLY_ExpenseType } from './HLY_ExpenseModels'
 import { HLY_ExpenseStatus } from './HLY_ExpenseStatus'
-import { App_FormBase } from './App_CoreModels'
+import { App_FormBase } from '../basic/App_CoreModels'
 
 export interface App_Invoice {
   invoiceOid: string

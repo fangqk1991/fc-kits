@@ -1,6 +1,6 @@
-import { HLY_Staff } from './HLY_CoreModels'
+import { HLY_Staff } from '../basic/HLY_CoreModels'
 import { HLY_InvoiceStatus } from './HLY_InvoiceStatus'
-import { HLY_ExpenseField } from './HuilianyiModels'
+import { HLY_ExpenseField } from '../basic/HuilianyiModels'
 
 export interface InvoiceLabelDTO {
   type: string

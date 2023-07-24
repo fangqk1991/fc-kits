@@ -1,8 +1,8 @@
 import __HLY_ExpenseApplication from '../auto-build/__HLY_ExpenseApplication'
-import { HLY_ExpenseApplicationStatus } from '../../core/HLY_ExpenseApplicationStatus'
-import { App_ApplicationExtrasData, App_ExpenseApplicationModel } from '../../core/App_ApplicationModels'
+import { HLY_ExpenseApplicationStatus } from '../../core/expense/HLY_ExpenseApplicationStatus'
+import { App_ApplicationExtrasData, App_ExpenseApplicationModel } from '../../core/application/App_ApplicationModels'
 import { FilterOptions } from 'fc-feed'
-import { MonthAmountReport } from '../../core/App_CoreModels'
+import { MonthAmountReport } from '../../core/basic/App_CoreModels'
 
 export class _HLY_ExpenseApplication extends __HLY_ExpenseApplication {
   public lastModifiedDate!: string

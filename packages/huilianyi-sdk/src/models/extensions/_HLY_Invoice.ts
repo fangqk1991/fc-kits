@@ -1,6 +1,6 @@
 import __HLY_Invoice from '../auto-build/__HLY_Invoice'
-import { HLY_Invoice } from '../../core/HLY_InvoiceModels'
-import { App_Invoice } from '../../core/App_ExpenseModels'
+import { HLY_Invoice } from '../../core/expense/HLY_InvoiceModels'
+import { App_Invoice } from '../../core/expense/App_ExpenseModels'
 
 export class _HLY_Invoice extends __HLY_Invoice {
   public constructor() {

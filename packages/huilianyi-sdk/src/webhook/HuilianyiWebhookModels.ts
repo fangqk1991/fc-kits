@@ -1,4 +1,4 @@
-import { HuilianyiApiCode } from '../core/HuilianyiApiCode'
+import { HuilianyiApiCode } from '../core/basic/HuilianyiApiCode'
 
 export interface HuilianyiWebhookBody {
   apiCode: HuilianyiApiCode

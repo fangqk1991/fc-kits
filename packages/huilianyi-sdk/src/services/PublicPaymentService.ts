@@ -1,6 +1,6 @@
 import { SystemConfigHandler } from './SystemConfigHandler'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
-import { CostMonthlyReport, CostOwnerReport, RetainConfigKey } from '../core/App_CoreModels'
+import { CostMonthlyReport, CostOwnerReport, RetainConfigKey } from '../core/basic/App_CoreModels'
 import * as moment from 'moment'
 
 export class PublicPaymentService {
