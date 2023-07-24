@@ -60,6 +60,7 @@ export interface App_FullTravelModel extends App_TravelModel {
 
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
+  closedLoopTickets: App_TrafficTicket[]
 }
 
 export interface App_TravelAllowanceModel {

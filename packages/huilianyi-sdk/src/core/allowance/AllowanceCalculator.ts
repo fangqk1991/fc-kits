@@ -1,5 +1,6 @@
-import { AllowanceMatchResult, App_AllowanceRuleModel } from './App_AllowanceModels'
+import { AllowanceDayItem, AllowanceUnitPriceInfo, App_AllowanceRuleModel } from './App_AllowanceModels'
 import { App_MatchType } from './App_MatchType'
+import { App_TrafficTicket } from '../travel/App_TravelModels'
 
 export class AllowanceCalculator {
   public rules: App_AllowanceRuleModel[]
@@ -8,8 +9,8 @@ export class AllowanceCalculator {
     this.rules = rules
   }
 
-  public calculateResult(roleCode: string, cityName: string) {
-    const result: AllowanceMatchResult = {
+  public calculateRules(roleCode: string, cityName: string) {
+    const result: AllowanceUnitPriceInfo = {
       unitPrice: 0,
       matchedRules: this.rules.filter((rule) => {
         const roleMatches =
@@ -25,5 +26,9 @@ export class AllowanceCalculator {
       result.unitPrice = Math.min(...result.matchedRules.map((item) => item.amount))
     }
     return result
+  }
+
+  public calculateAllowanceDayItem(roleCode: string, tickets: App_TrafficTicket[]) {
+
   }
 }

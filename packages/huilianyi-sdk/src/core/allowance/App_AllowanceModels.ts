@@ -8,7 +8,14 @@ export interface App_AllowanceRuleModel {
   amount: number
 }
 
-export interface AllowanceMatchResult {
+export interface AllowanceUnitPriceInfo {
   unitPrice: number
   matchedRules: App_AllowanceRuleModel[]
+}
+
+export interface AllowanceDayItem {
+  date: string
+  factor: number // 1 or 0.5
+  cityName: string
+  amount: number
 }

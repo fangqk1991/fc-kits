@@ -1,9 +1,6 @@
 import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_TravelSubsidyItem } from '../core/travel/App_TravelModels'
-import { HLY_TravelStatus } from '../core/travel/HLY_TravelStatus'
-import { HLY_PrettyStatus } from '../core/travel/HLY_PrettyStatus'
-import { HLY_VerifiedStatus } from '../core/travel/HLY_VerifiedStatus'
+import { App_TravelSubsidyItem, HLY_PrettyStatus, HLY_TravelStatus, HLY_VerifiedStatus } from '../core'
 
 export class MonthAllowanceMaker {
   public readonly modelsCore: HuilianyiModelsCore
@@ -17,7 +14,7 @@ export class MonthAllowanceMaker {
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const searcher = new HLY_Travel().fc_searcher()
     searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
-    searcher.processor().addConditionKV('has_subsidy', 1)
+    // searcher.processor().addConditionKV('has_subsidy', 1)
     const items = await searcher.queryAllFeeds()
     for (const travelItem of items) {
       const participants = travelItem.extrasData().participants
@@ -68,6 +65,7 @@ export class MonthAllowanceMaker {
           allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
           allowance.detailItemsStr = JSON.stringify([])
           allowance.extrasInfo = JSON.stringify({
+            closedLoopTickets: isPretty ? trafficItem.tickets : [],
             itineraryItems: section.itineraryItems,
           })
           allowance.isPretty = isPretty ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
