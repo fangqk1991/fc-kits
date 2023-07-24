@@ -21,7 +21,7 @@ export class PublicPaymentService {
       }
     )
 
-    const endMoment = moment().utcOffset('+08:00').startOf('month')
+    const endMoment = moment().utcOffset('+08:00', true).startOf('month')
     const startMoment = moment(endMoment).subtract(N, 'month')
 
     const items = await modelsCore.HLY_PublicPayment.getAggregationData<CostMonthlyReport>({

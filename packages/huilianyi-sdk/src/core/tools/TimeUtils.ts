@@ -2,7 +2,7 @@ import * as moment from 'moment/moment'
 
 export class TimeUtils {
   public static momentUTC8(time: string) {
-    return moment(time).utcOffset('+08:00')
+    return moment(time).utcOffset('+08:00', true)
   }
 
   public static timeStrUTC8(time: string) {

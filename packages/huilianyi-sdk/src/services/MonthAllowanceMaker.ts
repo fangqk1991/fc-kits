@@ -58,7 +58,6 @@ export class MonthAllowanceMaker {
           const trafficItem = travelItem
             .employeeTrafficItems()
             .find((trafficItem) => trafficItem.employeeName === participant.fullName)
-          console.info(trafficItem?.closedLoops)
           const isPretty = !!trafficItem && trafficItem.isClosedLoop
           const allowance = new HLY_TravelAllowance()
           allowance.businessCode = travelItem.businessCode
@@ -67,16 +66,31 @@ export class MonthAllowanceMaker {
           allowance.applicantName = participant.fullName
           allowance.title = travelItem.title
           allowance.uid = md5([travelItem.businessCode, section.month, participant.userOID].join(','))
-          allowance.daysCount = subsidyItems.length
-          allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
-          allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
-          allowance.detailItemsStr = JSON.stringify([])
-          allowance.extrasInfo = JSON.stringify({
-            closedLoops: isPretty ? trafficItem.closedLoops : [],
-            itineraryItems: section.itineraryItems,
-          } as App_TravelAllowanceExtrasData)
-          allowance.isPretty = isPretty ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
-          allowance.isVerified = isPretty ? HLY_VerifiedStatus.Verified : HLY_VerifiedStatus.NotVerified
+          if (isPretty) {
+            const closedLoops = trafficItem.closedLoops
+            // TODO
+            allowance.daysCount = subsidyItems.length
+            allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
+            allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
+            allowance.detailItemsStr = JSON.stringify([])
+            allowance.extrasInfo = JSON.stringify({
+              closedLoops: closedLoops,
+              itineraryItems: section.itineraryItems,
+            } as App_TravelAllowanceExtrasData)
+            allowance.isPretty = HLY_PrettyStatus.Pretty
+            allowance.isVerified = HLY_VerifiedStatus.Verified
+          } else {
+            allowance.daysCount = subsidyItems.length
+            allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
+            allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
+            allowance.detailItemsStr = JSON.stringify([])
+            allowance.extrasInfo = JSON.stringify({
+              closedLoops: [],
+              itineraryItems: section.itineraryItems,
+            } as App_TravelAllowanceExtrasData)
+            allowance.isPretty = HLY_PrettyStatus.NotPretty
+            allowance.isVerified = HLY_VerifiedStatus.NotVerified
+          }
           await allowance.strongAddToDB()
         }
       }
