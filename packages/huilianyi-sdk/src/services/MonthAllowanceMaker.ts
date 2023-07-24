@@ -1,6 +1,7 @@
 import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
+  AllowanceCalculator,
   App_TravelAllowanceExtrasData,
   App_TravelSubsidyItem,
   HLY_PrettyStatus,
@@ -16,6 +17,9 @@ export class MonthAllowanceMaker {
   }
 
   public async makeMonthAllowance() {
+    const rules = await this.modelsCore.HLY_AllowanceRule.allRules()
+    const calculator = new AllowanceCalculator(rules)
+
     const HLY_Travel = this.modelsCore.HLY_Travel
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const searcher = new HLY_Travel().fc_searcher()
@@ -55,6 +59,7 @@ export class MonthAllowanceMaker {
           //     allowanceAmount: allowanceAmount,
           //   })
           // }
+
           const trafficItem = travelItem
             .employeeTrafficItems()
             .find((trafficItem) => trafficItem.employeeName === participant.fullName)
@@ -68,11 +73,12 @@ export class MonthAllowanceMaker {
           allowance.uid = md5([travelItem.businessCode, section.month, participant.userOID].join(','))
           if (isPretty) {
             const closedLoops = trafficItem.closedLoops
-            // TODO
-            allowance.daysCount = subsidyItems.length
-            allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
+            const staff = (await this.modelsCore.HLY_Staff.findWithUid(participant.userOID))!
+            const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
+            allowance.daysCount = dayItems.length
+            allowance.amount = dayItems.reduce((result, cur) => result + cur.amount, 0)
             allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
-            allowance.detailItemsStr = JSON.stringify([])
+            allowance.detailItemsStr = JSON.stringify(dayItems)
             allowance.extrasInfo = JSON.stringify({
               closedLoops: closedLoops,
               itineraryItems: section.itineraryItems,
@@ -83,7 +89,14 @@ export class MonthAllowanceMaker {
             allowance.daysCount = subsidyItems.length
             allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
             allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
-            allowance.detailItemsStr = JSON.stringify([])
+            allowance.detailItemsStr = JSON.stringify(
+              subsidyItems.map((item) => ({
+                date: item.date,
+                cityName: item.cityName,
+                amount: item.amount,
+                halfDay: false,
+              }))
+            )
             allowance.extrasInfo = JSON.stringify({
               closedLoops: [],
               itineraryItems: section.itineraryItems,
