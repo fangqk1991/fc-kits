@@ -14,7 +14,7 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   public extrasData(): App_TravelAllowanceExtrasData {
     const defaultData: App_TravelAllowanceExtrasData = {
       itineraryItems: [],
-      closedLoopTickets: [],
+      closedLoops: [],
     }
     try {
       return JSON.parse(this.extrasInfo) || defaultData

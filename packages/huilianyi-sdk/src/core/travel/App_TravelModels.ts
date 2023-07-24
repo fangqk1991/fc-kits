@@ -60,7 +60,7 @@ export interface App_FullTravelModel extends App_TravelModel {
 
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
-  closedLoopTickets: App_TrafficTicket[]
+  closedLoops: App_ClosedLoop[]
 }
 
 export interface App_TravelAllowanceModel {
@@ -102,11 +102,16 @@ export interface App_TrafficTicket {
   employeeName: string
 }
 
+export interface App_ClosedLoop {
+  tickets: App_TrafficTicket[]
+}
+
 export interface App_EmployeeTrafficData {
   employeeId: string
   employeeName: string
   isClosedLoop: boolean
   tickets: App_TrafficTicket[]
+  closedLoops: App_ClosedLoop[]
 }
 
 export interface App_TravelFlightTicketInfo {

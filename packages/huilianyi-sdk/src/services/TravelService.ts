@@ -1,5 +1,6 @@
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
+  App_ClosedLoop,
   App_EmployeeTrafficData,
   App_FullTravelModel,
   App_TrafficTicket,
@@ -62,6 +63,7 @@ export class TravelService {
               employeeName: ticket.employeeName,
               isClosedLoop: false,
               tickets: [],
+              closedLoops: [],
             }
           }
           ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
@@ -104,6 +106,7 @@ export class TravelService {
               employeeName: ticket.employeeName,
               isClosedLoop: false,
               tickets: [],
+              closedLoops: [],
             }
           }
           ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
@@ -116,11 +119,19 @@ export class TravelService {
 
       for (const trafficData of Object.values(ticketData.employeeTrafficData) as App_EmployeeTrafficData[]) {
         trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
+        const closedLoops: App_ClosedLoop[] = [
+          {
+            tickets: [],
+          },
+        ]
 
         let isClosedLoop = true
         let startCity = ''
         let curCity = ''
         for (const ticket of trafficData.tickets) {
+          const lastLoop = closedLoops[closedLoops.length - 1]
+          lastLoop.tickets.push(ticket)
+
           if (!startCity) {
             startCity = ticket.fromCity
             curCity = ticket.fromCity
@@ -132,6 +143,9 @@ export class TravelService {
           }
 
           if (startCity === ticket.toCity) {
+            closedLoops.push({
+              tickets: [],
+            })
             startCity = ''
             curCity = ''
             continue
@@ -139,6 +153,12 @@ export class TravelService {
           curCity = ticket.toCity
         }
         trafficData.isClosedLoop = isClosedLoop && curCity === startCity
+        if (trafficData.isClosedLoop) {
+          if (closedLoops[closedLoops.length - 1].tickets.length === 0) {
+            closedLoops.pop()
+          }
+          trafficData.closedLoops = closedLoops
+        }
       }
     }
     return ticketDataMapper

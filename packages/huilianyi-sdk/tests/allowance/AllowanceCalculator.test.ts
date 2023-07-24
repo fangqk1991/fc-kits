@@ -21,7 +21,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
     const feeds = await searcher.queryAllFeeds()
     console.info(
       JSON.stringify(
-        feeds.map((item) => item.extrasData().closedLoopTickets),
+        feeds.map((item) => item.extrasData().closedLoops),
         null,
         2
       )

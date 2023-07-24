@@ -1,6 +1,12 @@
 import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_TravelSubsidyItem, HLY_PrettyStatus, HLY_TravelStatus, HLY_VerifiedStatus } from '../core'
+import {
+  App_TravelAllowanceExtrasData,
+  App_TravelSubsidyItem,
+  HLY_PrettyStatus,
+  HLY_TravelStatus,
+  HLY_VerifiedStatus,
+} from '../core'
 
 export class MonthAllowanceMaker {
   public readonly modelsCore: HuilianyiModelsCore
@@ -52,6 +58,7 @@ export class MonthAllowanceMaker {
           const trafficItem = travelItem
             .employeeTrafficItems()
             .find((trafficItem) => trafficItem.employeeName === participant.fullName)
+          console.info(trafficItem?.closedLoops)
           const isPretty = !!trafficItem && trafficItem.isClosedLoop
           const allowance = new HLY_TravelAllowance()
           allowance.businessCode = travelItem.businessCode
@@ -65,9 +72,9 @@ export class MonthAllowanceMaker {
           allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
           allowance.detailItemsStr = JSON.stringify([])
           allowance.extrasInfo = JSON.stringify({
-            closedLoopTickets: isPretty ? trafficItem.tickets : [],
+            closedLoops: isPretty ? trafficItem.closedLoops : [],
             itineraryItems: section.itineraryItems,
-          })
+          } as App_TravelAllowanceExtrasData)
           allowance.isPretty = isPretty ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
           allowance.isVerified = isPretty ? HLY_VerifiedStatus.Verified : HLY_VerifiedStatus.NotVerified
           await allowance.strongAddToDB()
