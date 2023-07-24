@@ -7,3 +7,8 @@ export interface App_AllowanceRuleModel {
   cityList: string[]
   amount: number
 }
+
+export interface AllowanceMatchResult {
+  unitPrice: number
+  matchedRules: App_AllowanceRuleModel[]
+}

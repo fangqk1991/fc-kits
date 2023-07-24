@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { DiffMapper, makeRandomStr } from '@fangcha/tools'
+import { DiffMapper, makeRandomStr } from '@fangcha/tools/lib'
 import { HuilianyiEncryptionBox } from '../../src/webhook/HuilianyiEncryptionBox'
 
 describe('Test HuilianyiEncryptionBox.test.ts', () => {
