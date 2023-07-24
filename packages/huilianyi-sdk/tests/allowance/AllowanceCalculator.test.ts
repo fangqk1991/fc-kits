@@ -12,7 +12,19 @@ describe('Test AllowanceCalculator.test.ts', () => {
   it(`AllowanceCalculator`, async () => {
     const rules = await huilianyiService.modelsCore.HLY_AllowanceRule.allRules()
     const calculator = new AllowanceCalculator(rules)
-    loggerForDev.info(calculator.calculateResult('01', '北京'))
-    loggerForDev.info(calculator.calculateResult('NULL', '北京'))
+    loggerForDev.info(calculator.calculateRules('01', '北京'))
+    loggerForDev.info(calculator.calculateRules('NULL', '北京'))
+  })
+
+  it(`calculateRules`, async () => {
+    const searcher = await new huilianyiService.modelsCore.HLY_TravelAllowance().fc_searcher()
+    const feeds = await searcher.queryAllFeeds()
+    console.info(
+      JSON.stringify(
+        feeds.map((item) => item.extrasData().closedLoopTickets),
+        null,
+        2
+      )
+    )
   })
 })
