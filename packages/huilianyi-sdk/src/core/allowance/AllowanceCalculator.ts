@@ -48,7 +48,7 @@ export class AllowanceCalculator {
       for (let i = 1; i < closedLoop.tickets.length; ++i) {
         const ticket = closedLoop.tickets[i]
         const lastCity = ticket.fromCity
-        while (curDate.valueOf() <= TimeUtils.momentUTC8(ticket.toTime).startOf('day').valueOf()) {
+        while (curDate.valueOf() < TimeUtils.momentUTC8(ticket.toTime).startOf('day').valueOf()) {
           curDate.add(1, 'day')
           dayItems.push({
             date: curDate.format('YYYY-MM-DD'),
