@@ -349,12 +349,18 @@ export class FeedBase extends FCModel {
       const fuzzySearchCols = dbSpec.fuzzySearchCols()
       const conditionList: string[] = []
       const stmtValues: any[] = []
-      for (const col of exactSearchCols) {
-        conditionList.push(`\`${col}\` = ? COLLATE utf8mb4_general_ci`)
+      for (let col of exactSearchCols) {
+        if (/^\w+$/.test(col)) {
+          col = `\`${col}\``
+        }
+        conditionList.push(`${col} = ? COLLATE utf8mb4_general_ci`)
         stmtValues.push(keywords)
       }
-      for (const col of fuzzySearchCols) {
-        conditionList.push(`\`${col}\` LIKE ? COLLATE utf8mb4_general_ci`)
+      for (let col of fuzzySearchCols) {
+        if (/^\w+$/.test(col)) {
+          col = `\`${col}\``
+        }
+        conditionList.push(`${col} LIKE ? COLLATE utf8mb4_general_ci`)
         stmtValues.push(`%${keywords}%`)
       }
       if (conditionList.length > 0) {
