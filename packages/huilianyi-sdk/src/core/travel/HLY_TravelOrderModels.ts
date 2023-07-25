@@ -119,7 +119,7 @@ export interface HLY_OrderTrainTicketInfo {
   trainName: string
 
   detailType: string // 'TICKETED'
-  passengerName: string
+  passengerName: string // passengerName 多个人用 , 分隔
   jouneryId: string
   employeeId: string | null
   firstSeatTypeName: string // '一等座'

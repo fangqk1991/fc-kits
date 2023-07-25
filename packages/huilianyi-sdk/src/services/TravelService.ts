@@ -2,9 +2,7 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_ClosedLoop,
   App_EmployeeTrafficData,
-  App_FullTravelModel,
   App_TrafficTicket,
-  App_TravelModel,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
   HLY_TravelParticipant,

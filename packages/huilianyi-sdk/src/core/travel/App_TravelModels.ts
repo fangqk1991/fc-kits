@@ -147,6 +147,8 @@ export interface App_TravelTrainTicketInfo {
 
   electronicOrderNo: string
   passengerName?: string
+
+  // passengerName 多个人用 , 分隔
 }
 
 export interface App_TravelOrderExtras<T = any> {
