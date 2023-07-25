@@ -26,6 +26,18 @@ const _timestampTypeCols: string[] = [
   '<%-item.columnName%>',
 <% }) -%>
 ]
+const _exactSearchCols: string[] = [
+  // prettier-ignore
+<% exactSearchCols.forEach((item) => { -%>
+  '<%-item%>',
+<% }) -%>
+]
+const _fuzzySearchCols: string[] = [
+  // prettier-ignore
+<% fuzzySearchCols.forEach((item) => { -%>
+  '<%-item%>',
+<% }) -%>
+]
 
 const dbOptions = {
   table: '<%-tableName%>',
@@ -34,6 +46,8 @@ const dbOptions = {
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
   timestampTypeCols: _timestampTypeCols,
+  exactSearchCols: _exactSearchCols,
+  fuzzySearchCols: _fuzzySearchCols,
 }
 
 export default class <%-className%> extends FeedBase {

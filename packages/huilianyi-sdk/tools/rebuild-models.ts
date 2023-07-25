@@ -26,6 +26,8 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['hly_id'],
     forceInsertableWhiteList: ['created_date', 'last_modified_date'],
     modifiableBlackList: ['create_time', 'update_time'],
+    exactSearchCols: ['business_code'],
+    fuzzySearchCols: ['applicant_name'],
   },
   {
     tableName: 'hly_expense_application',
@@ -104,6 +106,8 @@ const dbSchemas: DBModelSchema[] = [
     extFile: `${__dirname}/../src/models/extensions/_HLY_OrderBase.ts`,
     primaryKey: ['hly_id'],
     modifiableBlackList: ['create_time', 'update_time'],
+    exactSearchCols: ['business_code'],
+    fuzzySearchCols: ['applicant_name'],
   },
 ]
 

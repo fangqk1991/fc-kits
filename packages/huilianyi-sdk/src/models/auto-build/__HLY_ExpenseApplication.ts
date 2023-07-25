@@ -82,6 +82,12 @@ const _timestampTypeCols: string[] = [
   'create_time',
   'update_time',
 ]
+const _exactSearchCols: string[] = [
+  // prettier-ignore
+]
+const _fuzzySearchCols: string[] = [
+  // prettier-ignore
+]
 
 const dbOptions = {
   table: 'hly_expense_application',
@@ -90,6 +96,8 @@ const dbOptions = {
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
   timestampTypeCols: _timestampTypeCols,
+  exactSearchCols: _exactSearchCols,
+  fuzzySearchCols: _fuzzySearchCols,
 }
 
 export default class __HLY_ExpenseApplication extends FeedBase {

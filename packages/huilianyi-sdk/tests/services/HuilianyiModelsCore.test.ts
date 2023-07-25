@@ -201,4 +201,11 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
       }
     }
   })
+
+  it(`$keywords`, async () => {
+    const pageResult = await huilianyiService.modelsCore.HLY_Travel.getPageResult({
+      $keywords: '方',
+    })
+    console.info(JSON.stringify(pageResult, null, 2))
+  })
 })
