@@ -40,6 +40,7 @@ export class TravelService {
     {
       const searcher = new HLY_OrderFlight().fc_searcher()
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
+      searcher.processor().addConditionKeyInArray('order_status', ['已成交'])
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const tickets = item.modelForClient().extrasData.tickets
@@ -75,6 +76,7 @@ export class TravelService {
     {
       const searcher = new HLY_OrderTrain().fc_searcher()
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
+      searcher.processor().addConditionKeyInArray('order_status', ['已购票', '待出票'])
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const tickets = item.modelForClient().extrasData.tickets
