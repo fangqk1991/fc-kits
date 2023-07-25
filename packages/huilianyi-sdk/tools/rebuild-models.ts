@@ -43,6 +43,8 @@ const dbSchemas: DBModelSchema[] = [
     extFile: `${__dirname}/../src/models/extensions/_HLY_Staff.ts`,
     primaryKey: ['user_oid'],
     modifiableBlackList: ['create_time', 'update_time'],
+    exactSearchCols: ['user_oid', 'employee_id'],
+    fuzzySearchCols: ['full_name', 'email'],
   },
   {
     tableName: 'hly_staff_group',

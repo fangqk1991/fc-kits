@@ -65,9 +65,13 @@ const _timestampTypeCols: string[] = [
 ]
 const _exactSearchCols: string[] = [
   // prettier-ignore
+  'user_oid',
+  'employee_id',
 ]
 const _fuzzySearchCols: string[] = [
   // prettier-ignore
+  'full_name',
+  'email',
 ]
 
 const dbOptions = {
