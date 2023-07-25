@@ -196,18 +196,6 @@ export class TravelService {
     return ticketDataMapper
   }
 
-  public async getFullTravelInfos(travelItems: App_TravelModel[]) {
-    const mapper = await this.getTicketsDataMapper(travelItems.map((item) => item.businessCode))
-    return travelItems.map((item) => {
-      const data: App_FullTravelModel = {
-        ...item,
-        ticketsData: mapper[item.businessCode],
-      }
-      data.extrasData.itineraryMap = {}
-      return data
-    })
-  }
-
   public async refreshTravelTicketItemsData() {
     const businessCodeList: string[] = []
     {
