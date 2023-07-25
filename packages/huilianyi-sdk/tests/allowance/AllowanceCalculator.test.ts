@@ -1,4 +1,4 @@
-import { loggerForDev } from '@fangcha/logger/lib'
+import { loggerForDev } from '@fangcha/logger'
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
 import { HuilianyiService } from '../../src/HuilianyiService'
 import { AllowanceCalculator } from '../../src'
@@ -83,6 +83,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
         },
       ]
     )
+    console.info(dayItems)
   })
 
   it(`moments`, async () => {

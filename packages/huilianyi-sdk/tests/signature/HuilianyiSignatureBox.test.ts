@@ -1,4 +1,4 @@
-import { makeRandomStr } from '@fangcha/tools/lib'
+import { makeRandomStr } from '@fangcha/tools'
 import { HuilianyiSignatureBox } from '../../src/webhook/HuilianyiSignatureBox'
 
 describe('Test HuilianyiSignatureBox.test.ts', () => {
