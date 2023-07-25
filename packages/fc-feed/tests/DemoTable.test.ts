@@ -124,8 +124,15 @@ describe('Test DemoTable', (): void => {
       },
       customHandler: (searcher) => {
         searcher.setOptionStr('ORDER BY groupVal ASC')
-      }
+      },
     })
     console.info(groupByResult)
+  })
+
+  it(`Test $keywords`, async () => {
+    const items = await DemoTable.getPageResult({
+      $keywords: '0.2',
+    })
+    console.info(items)
   })
 })

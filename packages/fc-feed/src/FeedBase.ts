@@ -342,6 +342,25 @@ export class FeedBase extends FCModel {
         }
       }
     }
+    if (params['$keywords'] && `${params['$keywords']}`.trim()) {
+      const keywords = `${params['$keywords']}`.trim()
+      const dbSpec = this.dbSpec()
+      const exactSearchCols = dbSpec.exactSearchCols()
+      const fuzzySearchCols = dbSpec.fuzzySearchCols()
+      const conditionList: string[] = []
+      const stmtValues: any[] = []
+      for (const col of exactSearchCols) {
+        conditionList.push(`\`${col}\` = ? COLLATE utf8mb4_general_ci`)
+        stmtValues.push(keywords)
+      }
+      for (const col of fuzzySearchCols) {
+        conditionList.push(`\`${col}\` LIKE ? COLLATE utf8mb4_general_ci`)
+        stmtValues.push(`%${keywords}%`)
+      }
+      if (conditionList.length > 0) {
+        searcher.processor().addSpecialCondition(conditionList.join(' OR '), ...stmtValues)
+      }
+    }
     const limitInfo = _buildLimitInfo(params)
     if (limitInfo.offset >= 0 && limitInfo.length > 0) {
       searcher.processor().setLimitInfo(limitInfo.offset, limitInfo.length)

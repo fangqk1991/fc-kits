@@ -40,6 +40,9 @@ export interface DBProtocolV2 {
    * @description Declare timestamp type columns.
    */
   timestampTypeCols?: string[] | (() => string[])
+
+  exactSearchCols?: string[] | (() => string[])
+  fuzzySearchCols?: string[] | (() => string[])
 }
 
 export class DBSpec implements DBProtocolV2 {
@@ -52,6 +55,8 @@ export class DBSpec implements DBProtocolV2 {
   private readonly _insertableCols!: string[]
   private readonly _modifiableCols!: string[]
   private readonly _timestampTypeCols: string[] = []
+  private readonly _exactSearchCols: string[] = []
+  private readonly _fuzzySearchCols: string[] = []
   private readonly _timestampMap: { [p: string]: boolean } = {}
 
   constructor(protocol: DBProtocolV2) {
@@ -67,6 +72,13 @@ export class DBSpec implements DBProtocolV2 {
     const modifiableCols =
       protocol.modifiableCols instanceof Function ? protocol.modifiableCols() : protocol.modifiableCols
     this._modifiableCols = modifiableCols || []
+    const exactSearchCols =
+      protocol.exactSearchCols instanceof Function ? protocol.exactSearchCols() : protocol.exactSearchCols
+    this._exactSearchCols = exactSearchCols || []
+    const fuzzySearchCols =
+      protocol.fuzzySearchCols instanceof Function ? protocol.fuzzySearchCols() : protocol.fuzzySearchCols
+    this._fuzzySearchCols = fuzzySearchCols || []
+
     this.autoIncrementKey = protocol.autoIncrementKey || ''
     {
       this._timestampMap = {}
@@ -98,6 +110,14 @@ export class DBSpec implements DBProtocolV2 {
 
   public modifiableCols() {
     return [...this._modifiableCols]
+  }
+
+  public exactSearchCols() {
+    return [...this._exactSearchCols]
+  }
+
+  public fuzzySearchCols() {
+    return [...this._fuzzySearchCols]
   }
 
   public timestampTypeCols() {

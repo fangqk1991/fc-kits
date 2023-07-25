@@ -45,6 +45,14 @@ export class DemoProtocol implements DBProtocolV2 {
   timestampTypeCols(): string[] {
     return ['create_time', 'update_time']
   }
+
+  exactSearchCols(): string[] {
+    return ['key1']
+  }
+
+  fuzzySearchCols(): string[] {
+    return ['key2']
+  }
 }
 
 class MyObserver implements DBObserver {
