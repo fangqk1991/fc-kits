@@ -72,7 +72,7 @@ export class MonthAllowanceMaker {
           allowance.title = travelItem.title
           allowance.uid = md5([travelItem.businessCode, section.month, participant.userOID].join(','))
           if (isPretty) {
-            const closedLoops = trafficItem.closedLoops
+            const closedLoops = trafficItem.closedLoops || []
             const staff = (await this.modelsCore.HLY_Staff.findWithUid(participant.userOID))!
             const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
             allowance.daysCount = dayItems.length

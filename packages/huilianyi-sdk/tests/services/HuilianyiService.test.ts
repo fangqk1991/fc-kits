@@ -17,4 +17,8 @@ describe('Test HuilianyiService.test.ts', () => {
     const metadata = await huilianyiService.configHandler().getExpenseTypeMetadata()
     console.info(JSON.stringify(metadata, null, 2))
   })
+
+  it(`syncAndRefreshData`, async () => {
+    await huilianyiService.syncAndRefreshData()
+  })
 })

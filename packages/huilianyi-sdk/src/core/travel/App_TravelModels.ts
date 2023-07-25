@@ -6,6 +6,7 @@ import { HLY_TravelStatus } from './HLY_TravelStatus'
 import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
 import { App_FormBase } from '../basic/App_CoreModels'
+import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
 
 export interface App_TravelExtrasData {
   itineraryMap: ItineraryMap
@@ -112,6 +113,7 @@ export interface App_EmployeeTrafficData {
   isClosedLoop: boolean
   tickets: App_TrafficTicket[]
   closedLoops: App_ClosedLoop[]
+  allowanceDayItems: AllowanceDayItem[]
 }
 
 export interface App_TravelFlightTicketInfo {

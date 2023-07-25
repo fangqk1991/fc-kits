@@ -7,6 +7,7 @@ import {
   App_TravelModel,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
+  HLY_TravelParticipant,
   TravelTicketsDataInfo,
 } from '../core'
 import * as moment from 'moment'
@@ -64,6 +65,7 @@ export class TravelService {
               isClosedLoop: false,
               tickets: [],
               closedLoops: [],
+              allowanceDayItems: [],
             }
           }
           ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
@@ -107,12 +109,15 @@ export class TravelService {
               isClosedLoop: false,
               tickets: [],
               closedLoops: [],
+              allowanceDayItems: [],
             }
           }
           ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
         }
       }
     }
+    const calculator = await this.modelsCore.HLY_AllowanceRule.calculator()
+
     for (const businessCode of businessCodeList) {
       const ticketData = ticketDataMapper[businessCode]
       ticketData.trafficTickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
@@ -153,12 +158,37 @@ export class TravelService {
           curCity = ticket.toCity
         }
         trafficData.isClosedLoop = isClosedLoop && curCity === startCity
-        if (trafficData.isClosedLoop) {
-          if (closedLoops[closedLoops.length - 1].tickets.length === 0) {
-            closedLoops.pop()
-          }
-          trafficData.closedLoops = closedLoops
+        if (!trafficData.isClosedLoop) {
+          continue
         }
+
+        if (closedLoops[closedLoops.length - 1].tickets.length === 0) {
+          closedLoops.pop()
+        }
+        trafficData.closedLoops = closedLoops
+
+        const travelItem = (await this.modelsCore.HLY_Travel.findWithBusinessCode(businessCode))!
+        if (!travelItem) {
+          console.error(`TravelItem[${businessCode}] missing.`)
+          continue
+        }
+
+        const staffMap = travelItem.extrasData().participants.reduce((result, cur) => {
+          result[cur.fullName] = cur
+          return result
+        }, {} as { [name: string]: HLY_TravelParticipant })
+
+        const simpleStaff = staffMap[trafficData.employeeName]
+        if (!simpleStaff) {
+          console.error(`employeeName[${trafficData.employeeName}] missing.`)
+          continue
+        }
+        const staff = (await this.modelsCore.HLY_Staff.findWithUid(simpleStaff.userOID))!
+        if (!staff) {
+          console.error(`staff[${simpleStaff.userOID}] missing.`)
+          continue
+        }
+        trafficData.allowanceDayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
       }
     }
     return ticketDataMapper

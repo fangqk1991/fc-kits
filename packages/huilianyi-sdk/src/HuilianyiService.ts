@@ -44,4 +44,22 @@ export class HuilianyiService {
   public publicPaymentService() {
     return new PublicPaymentService(this.syncCore)
   }
+
+  public async syncAndRefreshData(forceReload?: boolean) {
+    const syncHandler = this.syncHandler()
+
+    await syncHandler.dumpExpenseApplicationRecords(forceReload)
+    await syncHandler.dumpExpenseRecords(forceReload)
+    await syncHandler.dumpPublicPaymentRecords(forceReload)
+    await syncHandler.dumpTravelRecords(forceReload)
+    await syncHandler.dumpInvoiceRecords(forceReload)
+
+    await syncHandler.dumpStaffRecords()
+    await syncHandler.dumpOrderFlightRecords(forceReload)
+    await syncHandler.dumpOrderTrainRecords(forceReload)
+    await syncHandler.dumpOrderHotelRecords(forceReload)
+
+    await this.travelService().refreshTravelTicketItemsData()
+    await this.monthAllowanceMaker().makeMonthAllowance()
+  }
 }

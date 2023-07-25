@@ -17,6 +17,12 @@ export class _HLY_Travel extends __HLY_Travel {
     super()
   }
 
+  public static async findWithBusinessCode(businessCode: string) {
+    return (await this.findOne({
+      business_code: businessCode,
+    }))!
+  }
+
   public static makeFeed(data: App_TravelModel) {
     const feed = new this()
     feed.fc_generateWithModel(data)

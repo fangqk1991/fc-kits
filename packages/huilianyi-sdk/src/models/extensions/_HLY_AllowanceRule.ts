@@ -1,5 +1,5 @@
 import __HLY_AllowanceRule from '../auto-build/__HLY_AllowanceRule'
-import { App_AllowanceRuleModel } from '../../core'
+import { AllowanceCalculator, App_AllowanceRuleModel } from '../../core'
 
 export class _HLY_AllowanceRule extends __HLY_AllowanceRule {
   public constructor() {
@@ -10,6 +10,11 @@ export class _HLY_AllowanceRule extends __HLY_AllowanceRule {
     const searcher = new this().fc_searcher()
     const items = await searcher.queryAllFeeds()
     return items.map((item) => item.modelForClient())
+  }
+
+  public static async calculator() {
+    const rules = await this.allRules()
+    return new AllowanceCalculator(rules)
   }
 
   public roleList() {
