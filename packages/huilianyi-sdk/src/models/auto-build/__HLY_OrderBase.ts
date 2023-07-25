@@ -67,6 +67,7 @@ const _timestampTypeCols: string[] = [
 ]
 const _exactSearchCols: string[] = [
   // prettier-ignore
+  'hly_id',
   'business_code',
 ]
 const _fuzzySearchCols: string[] = [

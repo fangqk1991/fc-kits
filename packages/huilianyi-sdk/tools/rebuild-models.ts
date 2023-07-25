@@ -106,7 +106,7 @@ const dbSchemas: DBModelSchema[] = [
     extFile: `${__dirname}/../src/models/extensions/_HLY_OrderBase.ts`,
     primaryKey: ['hly_id'],
     modifiableBlackList: ['create_time', 'update_time'],
-    exactSearchCols: ['business_code'],
+    exactSearchCols: ['hly_id', 'business_code'],
     fuzzySearchCols: ['applicant_name'],
   },
 ]
