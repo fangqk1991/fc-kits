@@ -47,9 +47,9 @@ export default class __OSSResource extends FeedBase {
    */
   public resourceId!: string
   /**
-   * @description [enum('Aliyun')] 服务商
+   * @description [varchar(16)] 服务商
    */
-  public provider!: string | null
+  public provider!: string
   /**
    * @description [varchar(127)] Bucket Name
    */
@@ -114,7 +114,7 @@ export default class __OSSResource extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
-    this.provider = null
+    this.provider = 'Aliyun'
     this.bucketName = ''
     this.ossKey = ''
     this.mimeType = ''

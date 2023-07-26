@@ -1,8 +1,12 @@
+DROP TABLE IF EXISTS oss_resource;
+DROP TABLE IF EXISTS user_resource_task;
+DROP TABLE IF EXISTS resource_task;
+
 CREATE TABLE IF NOT EXISTS oss_resource
 (
     _rid        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     resource_id CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT '资源唯一 ID',
-    provider    ENUM ('Aliyun') COMMENT '服务商',
+    provider    VARCHAR(16)     NOT NULL DEFAULT 'Aliyun' COMMENT '服务商',
     bucket_name VARCHAR(127)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT 'Bucket Name',
     oss_key     TEXT COMMENT 'OSS Key',
     mime_type   VARCHAR(127)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT 'MIME Type',
@@ -21,7 +25,7 @@ CREATE TABLE IF NOT EXISTS resource_task
     _rid           BIGINT UNSIGNED                                   NOT NULL AUTO_INCREMENT PRIMARY KEY,
     task_key       CHAR(32)                                          NOT NULL COLLATE ascii_bin COMMENT '任务 Key',
     resource_id    CHAR(32)                                          NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '资源唯一 ID',
-    provider       ENUM ('Aliyun')                                   NOT NULL DEFAULT 'Aliyun' COMMENT '服务商',
+    provider       VARCHAR(16)                                       NOT NULL DEFAULT 'Aliyun' COMMENT '服务商',
     bucket_name    VARCHAR(127)                                      NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT 'Bucket Name',
     oss_key        TEXT COMMENT 'OSS Key',
     mime_type      VARCHAR(127)                                      NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT 'MIME Type',
@@ -31,7 +35,7 @@ CREATE TABLE IF NOT EXISTS resource_task
     current        BIGINT                                            NOT NULL DEFAULT 0 COMMENT '当前已完成',
     total          BIGINT                                            NOT NULL DEFAULT 0 COMMENT '总数',
     task_status    ENUM ('Pending', 'Processing', 'Success', 'Fail') NOT NULL DEFAULT 'Pending' COMMENT '任务状态，ResourceTaskStatus',
-    error_message   TEXT COMMENT '错误信息',
+    error_message  TEXT COMMENT '错误信息',
     raw_params_str TEXT COMMENT '任务原始参数',
     create_time    TIMESTAMP                                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time    TIMESTAMP                                         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

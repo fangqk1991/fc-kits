@@ -30,6 +30,7 @@ export interface OSSResourceParams {
   size: number
   uploader: string
   mimeType?: string
+  provider?: OSSProvider
 }
 
 export interface OSSResourceModel extends OSSResourceParams {

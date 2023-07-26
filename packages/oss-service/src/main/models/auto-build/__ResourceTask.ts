@@ -73,7 +73,7 @@ export default class __ResourceTask extends FeedBase {
    */
   public resourceId!: string
   /**
-   * @description [enum('Aliyun')] 服务商
+   * @description [varchar(16)] 服务商
    */
   public provider!: string
   /**

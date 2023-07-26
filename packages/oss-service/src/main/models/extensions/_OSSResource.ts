@@ -15,7 +15,7 @@ export class _OSSResource extends __OSSResource {
   public static async generateOSSResource<T extends _OSSResource>(this: { new (): T }, params: OSSResourceParams) {
     const feed = new this()
     feed.resourceId = makeUUID()
-    feed.provider = OSSProvider.Aliyun
+    feed.provider = params.provider || OSSProvider.Aliyun
     feed.ossStatus = OSSStatus.Pending
     feed.bucketName = params.bucketName
     feed.ossKey = params.ossKey

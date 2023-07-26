@@ -1,5 +1,5 @@
 import { _OSSResource, OSSService, TaskHandlerProtocol } from '../src'
-import { ResourceTaskParams } from '../src/common/models'
+import { OSSProvider, ResourceTaskParams } from '../src/common/models'
 import { BackendFile } from '@fangcha/tools/lib/file-backend'
 import { makeUUID } from '@fangcha/tools'
 
@@ -39,6 +39,7 @@ export class DemoXlsExportTask implements TaskHandlerProtocol {
     return await _OSSResource.generateOSSResource({
       bucketName: 'fc-demo',
       ossKey: ossKey,
+      provider: OSSProvider.Local,
       size: BackendFile.getFileSize(filePath),
       uploader: rawParams._userEmail || '',
       mimeType: BackendFile.getFileMime(filePath),
