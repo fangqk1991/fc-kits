@@ -94,6 +94,8 @@ const dbSchemas: DBModelSchema[] = [
     extFile: `${__dirname}/../src/models/extensions/_HLY_TravelAllowance.ts`,
     primaryKey: ['uid'],
     modifiableBlackList: ['create_time', 'update_time'],
+    exactSearchCols: ['business_code'],
+    fuzzySearchCols: ['applicant_name'],
   },
   {
     tableName: 'hly_snapshot_log',

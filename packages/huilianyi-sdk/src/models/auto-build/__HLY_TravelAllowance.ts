@@ -58,9 +58,11 @@ const _timestampTypeCols: string[] = [
 ]
 const _exactSearchCols: string[] = [
   // prettier-ignore
+  'business_code',
 ]
 const _fuzzySearchCols: string[] = [
   // prettier-ignore
+  'applicant_name',
 ]
 
 const dbOptions = {

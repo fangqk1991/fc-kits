@@ -143,8 +143,8 @@ CREATE TABLE IF NOT EXISTS hly_travel
     update_time                TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (business_code),
     INDEX (form_code),
-    INDEX (end_time),
     INDEX (start_time),
+    INDEX (end_time),
     INDEX (has_subsidy),
     INDEX (expense_form_codes_str),
     INDEX (travel_status),
@@ -263,6 +263,8 @@ CREATE TABLE IF NOT EXISTS hly_order_flight
     created_date       TIMESTAMP       NULL,
     last_modified_date TIMESTAMP       NULL,
     extras_info        MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    start_time         TIMESTAMP       NULL COMMENT '开始时间',
+    end_time           TIMESTAMP       NULL COMMENT '结束时间',
     reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -270,6 +272,8 @@ CREATE TABLE IF NOT EXISTS hly_order_flight
     INDEX (business_code),
     INDEX (journey_no),
     INDEX (business_code),
+    INDEX (start_time),
+    INDEX (end_time),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
@@ -293,6 +297,8 @@ CREATE TABLE IF NOT EXISTS hly_order_train
     created_date       TIMESTAMP       NULL,
     last_modified_date TIMESTAMP       NULL,
     extras_info        MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    start_time         TIMESTAMP       NULL COMMENT '开始时间',
+    end_time           TIMESTAMP       NULL COMMENT '结束时间',
     reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -300,6 +306,8 @@ CREATE TABLE IF NOT EXISTS hly_order_train
     INDEX (business_code),
     INDEX (journey_no),
     INDEX (business_code),
+    INDEX (start_time),
+    INDEX (end_time),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
@@ -323,6 +331,8 @@ CREATE TABLE IF NOT EXISTS hly_order_hotel
     created_date       TIMESTAMP       NULL,
     last_modified_date TIMESTAMP       NULL,
     extras_info        MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    start_time         TIMESTAMP       NULL COMMENT '开始时间',
+    end_time           TIMESTAMP       NULL COMMENT '结束时间',
     reload_time        TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -330,6 +340,8 @@ CREATE TABLE IF NOT EXISTS hly_order_hotel
     INDEX (business_code),
     INDEX (journey_no),
     INDEX (business_code),
+    INDEX (start_time),
+    INDEX (end_time),
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
