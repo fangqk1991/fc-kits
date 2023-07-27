@@ -1,7 +1,6 @@
 import { _OSSResource, OSSService, TaskHandlerProtocol } from '../src'
 import { OSSProvider, ResourceTaskParams } from '../src/common/models'
 import { BackendFile } from '@fangcha/tools/lib/file-backend'
-import { makeUUID } from '@fangcha/tools'
 
 interface Params {
   options: {}
@@ -27,22 +26,26 @@ export class DemoXlsExportTask implements TaskHandlerProtocol {
 
   public async private_executeTask() {
     const rawParams = this.params.rawParams as Params
-    const options = rawParams.options
+    // const options = rawParams.options
     const downloader = OSSService.getDownloader()
-    const file = downloader.saveContent('!!!!')
-    // const file = downloader.saveTmpFile(tmpPath)
-    const filePath = file.filePath()
-    // const fileExt = BackendFile.getFileExt(filePath)
-    // const ossKey = await ossTools.ossUtils.autoUpload(filePath, fileExt)
-    const ossKey = makeUUID()
+    const tmpFile = downloader.saveContent('!!!!')
+    const hash = tmpFile.getHash()!
+
+    const fileExt = BackendFile.getFileExt(tmpFile.filePath())
+    const size = BackendFile.getFileSize(tmpFile.filePath())
+    const mimeType = BackendFile.getFileMime(tmpFile.filePath())
+    const suffix = fileExt ? `.${fileExt}` : ''
+    const ossKey = `${hash.substring(0, 2)}/${hash.substring(2, 4)}/${hash}${suffix}`
+
+    downloader.moveTmpFileToTarget(tmpFile.filePath(), ossKey)
 
     return await _OSSResource.generateOSSResource({
       bucketName: 'fc-demo',
       ossKey: ossKey,
       provider: OSSProvider.Local,
-      size: BackendFile.getFileSize(filePath),
+      size: size,
       uploader: rawParams._userEmail || '',
-      mimeType: BackendFile.getFileMime(filePath),
+      mimeType: mimeType,
     })
   }
 }

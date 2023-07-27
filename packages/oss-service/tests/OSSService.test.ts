@@ -2,7 +2,7 @@ import { OSSService } from '../src'
 import { GlobalAppConfig } from 'fc-config'
 import { DemoXlsExportTask } from './DemoXlsExportTask'
 import * as moment from 'moment'
-import { FCDatabase } from 'fc-sql/lib'
+import { FCDatabase } from 'fc-sql'
 import { DBOptionsBuilder } from '@fangcha/tools/lib/database'
 
 describe('Test OSSService.test.ts', () => {

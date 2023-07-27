@@ -55,4 +55,8 @@ export class MyDownloader {
   public saveTmpFile(tmpPath: string) {
     return ReceivedFile.fileWithSpaceAndTempPath(this._rootDir, tmpPath)
   }
+
+  public moveTmpFileToTarget(tmpPath: string, relativePath: string) {
+    fs.renameSync(tmpPath, `${this._rootDir}/${relativePath}`)
+  }
 }
