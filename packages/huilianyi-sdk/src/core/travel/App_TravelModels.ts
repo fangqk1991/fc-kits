@@ -154,6 +154,7 @@ export interface App_TravelTrainTicketInfo {
 export interface App_TravelOrderExtras<T = any> {
   usersStr: string
   tickets: T[]
+  commonTickets: App_TrafficTicket[]
 }
 
 export interface App_TravelOrderBase<T = any> {

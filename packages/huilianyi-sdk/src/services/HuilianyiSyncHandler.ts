@@ -5,6 +5,7 @@ import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HLY_TravelStatus } from '../core/travel/HLY_TravelStatus'
 import { TimeUtils } from '../core/tools/TimeUtils'
 import {
+  App_TrafficTicket,
   App_TravelFlightTicketInfo,
   App_TravelHotelCoreInfo,
   App_TravelOrderHotel,
@@ -377,9 +378,21 @@ export class HuilianyiSyncHandler {
           company.companyOID,
           employeeIdToUserOidMapper,
           () => {
+            const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
             return {
               usersStr: item.users,
-              tickets: item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail)),
+              tickets: tickets,
+              commonTickets: tickets.map((ticket) => ({
+                tagName: '机票',
+                ticketId: ticket.flightOrderOID,
+                trafficCode: ticket.flightCode,
+                fromTime: ticket.startDate,
+                toTime: ticket.endDate,
+                fromCity: ticket.startCity,
+                toCity: ticket.endCity,
+                employeeId: ticket.employeeId,
+                employeeName: ticket.employeeName,
+              })),
             }
           }
         )
@@ -421,34 +434,56 @@ export class HuilianyiSyncHandler {
       const items = await syncCore.dataProxy.getTrainOrders(company.companyOID, {
         lastModifyStartDate: lastModifyStartDate,
       })
-      const orderItems = items.map((item) =>
-        HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(
+      const orderItems = items.map((item) => {
+        return HuilianyiFormatter.transferTravelOrder<App_TravelTrainTicketInfo>(
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
           () => {
+            const tickets = item.trainOrderDetails.map((detail) => ({
+              trainOrderOID: detail.trainOrderOID,
+              trainName: detail.trainName,
+
+              startDate: detail.startDate,
+              endDate: detail.endDate,
+
+              departureCityName: detail.departureCityName,
+              departureStationName: detail.departureStationName,
+              arrivalCityName: detail.arrivalCityName,
+              arrivalStationName: detail.arrivalStationName,
+
+              electronicOrderNo: detail.electronicOrderNo,
+
+              passengerName: item.users,
+            }))
+            const commonTickets: App_TrafficTicket[] = []
+            for (const ticket of tickets) {
+              const nameList = (ticket.passengerName || '')
+                .split(',')
+                .map((item) => item.trim())
+                .filter((item) => !!item)
+              for (const passengerName of nameList) {
+                commonTickets.push({
+                  tagName: '火车票',
+                  ticketId: ticket.trainOrderOID,
+                  trafficCode: ticket.trainName,
+                  fromTime: ticket.startDate,
+                  toTime: ticket.endDate,
+                  fromCity: ticket.departureCityName,
+                  toCity: ticket.arrivalCityName,
+                  employeeId: '',
+                  employeeName: passengerName,
+                })
+              }
+            }
             return {
               usersStr: item.users,
-              tickets: item.trainOrderDetails.map((detail) => ({
-                trainOrderOID: detail.trainOrderOID,
-                trainName: detail.trainName,
-
-                startDate: detail.startDate,
-                endDate: detail.endDate,
-
-                departureCityName: detail.departureCityName,
-                departureStationName: detail.departureStationName,
-                arrivalCityName: detail.arrivalCityName,
-                arrivalStationName: detail.arrivalStationName,
-
-                electronicOrderNo: detail.electronicOrderNo,
-
-                passengerName: item.users,
-              })),
+              tickets: tickets,
+              commonTickets: commonTickets,
             }
           }
         )
-      )
+      })
 
       console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
       const dbSpec = new OrderClass().dbSpec()
@@ -512,6 +547,7 @@ export class HuilianyiSyncHandler {
             return {
               usersStr: item.users,
               tickets: [simpleCoreInfo] as any,
+              commonTickets: [],
             }
           }
         )

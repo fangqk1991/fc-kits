@@ -1,6 +1,5 @@
 import __HLY_OrderBase from '../auto-build/__HLY_OrderBase'
-import { App_TravelOrderBase, App_TravelOrderExtras } from '../../core/travel/App_TravelModels'
-import { App_OrderBizType } from '../../core/travel/App_OrderBizType'
+import { App_OrderBizType, App_TravelOrderBase, App_TravelOrderExtras } from '../../core'
 
 export class _HLY_OrderBase extends __HLY_OrderBase {
   public businessCode!: string
@@ -48,6 +47,7 @@ export class _HLY_OrderBase extends __HLY_OrderBase {
     const defaultData: App_TravelOrderExtras = {
       usersStr: '',
       tickets: [],
+      commonTickets: [],
     }
     try {
       return JSON.parse(this.extrasInfo) || defaultData
