@@ -392,15 +392,15 @@ export class HuilianyiSyncHandler {
             }))
             let [startTime, endTime] = ['', '']
             if (commonTickets.length > 0) {
-              startTime = commonTickets[0].fromTime
-              endTime = commonTickets[commonTickets.length - 1].toTime
+              startTime = TimeUtils.momentUTC8(commonTickets[0].fromTime).format()
+              endTime = TimeUtils.momentUTC8(commonTickets[commonTickets.length - 1].toTime).format()
             }
             return {
               usersStr: item.users,
               tickets: tickets,
               commonTickets: commonTickets,
-              startTime: startTime,
-              endTime: endTime,
+              startTime: startTime || null,
+              endTime: endTime || null,
             }
           }
         )
@@ -414,6 +414,8 @@ export class HuilianyiSyncHandler {
       bulkAdder.declareTimestampKey('created_date')
       bulkAdder.declareTimestampKey('last_modified_date')
       bulkAdder.declareTimestampKey('reload_time')
+      bulkAdder.declareTimestampKey('start_time')
+      bulkAdder.declareTimestampKey('end_time')
       for (const orderItem of orderItems) {
         const feed = OrderClass.makeFeed(orderItem)
         bulkAdder.putObject(feed.fc_encode())
@@ -486,15 +488,15 @@ export class HuilianyiSyncHandler {
             }
             let [startTime, endTime] = ['', '']
             if (commonTickets.length > 0) {
-              startTime = commonTickets[0].fromTime
-              endTime = commonTickets[commonTickets.length - 1].toTime
+              startTime = TimeUtils.momentUTC8(commonTickets[0].fromTime).format()
+              endTime = TimeUtils.momentUTC8(commonTickets[commonTickets.length - 1].toTime).format()
             }
             return {
               usersStr: item.users,
               tickets: tickets,
               commonTickets: commonTickets,
-              startTime: startTime,
-              endTime: endTime,
+              startTime: startTime || null,
+              endTime: endTime || null,
             }
           }
         )
@@ -509,6 +511,8 @@ export class HuilianyiSyncHandler {
       bulkAdder.declareTimestampKey('created_date')
       bulkAdder.declareTimestampKey('last_modified_date')
       bulkAdder.declareTimestampKey('reload_time')
+      bulkAdder.declareTimestampKey('start_time')
+      bulkAdder.declareTimestampKey('end_time')
       for (const orderItem of orderItems) {
         const feed = OrderClass.makeFeed(orderItem)
         bulkAdder.putObject(feed.fc_encode())
@@ -563,8 +567,8 @@ export class HuilianyiSyncHandler {
               usersStr: item.users,
               tickets: [simpleCoreInfo] as any,
               commonTickets: [],
-              startTime: '',
-              endTime: '',
+              startTime: null,
+              endTime: null,
             }
           }
         )
@@ -579,6 +583,8 @@ export class HuilianyiSyncHandler {
       bulkAdder.declareTimestampKey('created_date')
       bulkAdder.declareTimestampKey('last_modified_date')
       bulkAdder.declareTimestampKey('reload_time')
+      bulkAdder.declareTimestampKey('start_time')
+      bulkAdder.declareTimestampKey('end_time')
       for (const orderItem of orderItems) {
         const feed = OrderClass.makeFeed(orderItem)
         bulkAdder.putObject(feed.fc_encode())

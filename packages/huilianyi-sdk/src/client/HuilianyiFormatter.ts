@@ -235,6 +235,7 @@ export class HuilianyiFormatter {
     employeeIdToUserOidMapper: { [p: string]: string },
     extrasHandler: () => App_TravelOrderExtras<T>
   ): App_TravelOrderBase<T> {
+    const extrasData = extrasHandler()
     return {
       hlyId: Number(item.orderId),
       userOid: employeeIdToUserOidMapper[item.employeeId] || '',
@@ -249,7 +250,9 @@ export class HuilianyiFormatter {
       auditStatus: item.auditStatus,
       createdDate: item.orderCreateDate,
       lastModifiedDate: item.lastModifiedDate,
-      extrasData: extrasHandler(),
+      startTime: extrasData.startTime,
+      endTime: extrasData.endTime,
+      extrasData: extrasData,
     }
   }
 

@@ -17,6 +17,8 @@ const _cols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'start_time',
+  'end_time',
   'reload_time',
   'create_time',
   'update_time',
@@ -37,6 +39,8 @@ const _insertableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'start_time',
+  'end_time',
   'reload_time',
 ]
 const _modifiableCols: string[] = [
@@ -54,6 +58,8 @@ const _modifiableCols: string[] = [
   'created_date',
   'last_modified_date',
   'extras_info',
+  'start_time',
+  'end_time',
   'reload_time',
 ]
 
@@ -61,6 +67,8 @@ const _timestampTypeCols: string[] = [
   // prettier-ignore
   'created_date',
   'last_modified_date',
+  'start_time',
+  'end_time',
   'reload_time',
   'create_time',
   'update_time',
@@ -144,6 +152,14 @@ export default class __HLY_OrderBase extends FeedBase {
    */
   public extrasInfo!: string
   /**
+   * @description [timestamp] 开始时间
+   */
+  public startTime!: string | null
+  /**
+   * @description [timestamp] 结束时间
+   */
+  public endTime!: string | null
+  /**
    * @description [timestamp]
    */
   public reloadTime!: string
@@ -198,6 +214,8 @@ export default class __HLY_OrderBase extends FeedBase {
     this.createdDate = null
     this.lastModifiedDate = null
     this.extrasInfo = ''
+    this.startTime = null
+    this.endTime = null
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
@@ -217,6 +235,8 @@ export default class __HLY_OrderBase extends FeedBase {
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
+      startTime: 'start_time',
+      endTime: 'end_time',
       reloadTime: 'reload_time',
       createTime: 'create_time',
       updateTime: 'update_time',
