@@ -379,20 +379,28 @@ export class HuilianyiSyncHandler {
           employeeIdToUserOidMapper,
           () => {
             const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
+            const commonTickets = tickets.map((ticket) => ({
+              tagName: '机票',
+              ticketId: ticket.flightOrderOID,
+              trafficCode: ticket.flightCode,
+              fromTime: ticket.startDate,
+              toTime: ticket.endDate,
+              fromCity: ticket.startCity,
+              toCity: ticket.endCity,
+              employeeId: ticket.employeeId,
+              employeeName: ticket.employeeName,
+            }))
+            let [startTime, endTime] = ['', '']
+            if (commonTickets.length > 0) {
+              startTime = commonTickets[0].fromTime
+              endTime = commonTickets[commonTickets.length - 1].toTime
+            }
             return {
               usersStr: item.users,
               tickets: tickets,
-              commonTickets: tickets.map((ticket) => ({
-                tagName: '机票',
-                ticketId: ticket.flightOrderOID,
-                trafficCode: ticket.flightCode,
-                fromTime: ticket.startDate,
-                toTime: ticket.endDate,
-                fromCity: ticket.startCity,
-                toCity: ticket.endCity,
-                employeeId: ticket.employeeId,
-                employeeName: ticket.employeeName,
-              })),
+              commonTickets: commonTickets,
+              startTime: startTime,
+              endTime: endTime,
             }
           }
         )
@@ -476,10 +484,17 @@ export class HuilianyiSyncHandler {
                 })
               }
             }
+            let [startTime, endTime] = ['', '']
+            if (commonTickets.length > 0) {
+              startTime = commonTickets[0].fromTime
+              endTime = commonTickets[commonTickets.length - 1].toTime
+            }
             return {
               usersStr: item.users,
               tickets: tickets,
               commonTickets: commonTickets,
+              startTime: startTime,
+              endTime: endTime,
             }
           }
         )
@@ -548,6 +563,8 @@ export class HuilianyiSyncHandler {
               usersStr: item.users,
               tickets: [simpleCoreInfo] as any,
               commonTickets: [],
+              startTime: '',
+              endTime: '',
             }
           }
         )

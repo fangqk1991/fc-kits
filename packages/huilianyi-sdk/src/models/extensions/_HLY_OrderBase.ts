@@ -48,6 +48,8 @@ export class _HLY_OrderBase extends __HLY_OrderBase {
       usersStr: '',
       tickets: [],
       commonTickets: [],
+      startTime: '',
+      endTime: '',
     }
     try {
       return JSON.parse(this.extrasInfo) || defaultData
