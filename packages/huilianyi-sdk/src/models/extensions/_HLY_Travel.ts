@@ -28,6 +28,7 @@ export class _HLY_Travel extends __HLY_Travel {
     feed.fc_generateWithModel(data)
     feed.extrasInfo = JSON.stringify(data.extrasData)
     feed.expenseFormCodesStr = data.expenseFormCodes.join(',')
+    feed.participantUserOidsStr = data.extrasData.participants.map((item) => item.userOID).join(',')
     return feed
   }
 
@@ -80,6 +81,7 @@ export class _HLY_Travel extends __HLY_Travel {
     data.extrasData = this.extrasData()
     data.itineraryItems = this.itineraryItems()
     data.employeeTrafficItems = this.employeeTrafficItems()
+    delete data['participantUserOidsStr']
     delete data['expenseFormCodesStr']
     delete data['itineraryItemsStr']
     delete data['employeeTrafficItemsStr']

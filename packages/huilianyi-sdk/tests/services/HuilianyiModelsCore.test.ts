@@ -1,5 +1,5 @@
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { App_OrderBizType, App_TravelOrderTrain, HLY_TravelStatus } from '../../src'
+import { App_OrderBizType } from '../../src'
 import * as assert from 'assert'
 import { HuilianyiService } from '../../src/HuilianyiService'
 
@@ -23,58 +23,6 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
         2
       )
     )
-  })
-
-  it(`HLY_Travel`, async () => {
-    const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
-    const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
-    // await huilianyiService.syncHandler().dumpTravelRecords(true)
-
-    const mapper: { [businessCode: string]: App_TravelOrderTrain[] } = {}
-    {
-      const searcher0 = new HLY_OrderTrain().fc_searcher()
-      searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
-      const feeds = await searcher0.queryFeeds()
-      for (const item of feeds) {
-        const businessCode = item.businessCode!
-        if (!mapper[businessCode]) {
-          mapper[businessCode] = []
-        }
-        mapper[businessCode].push(item.modelForClient())
-      }
-    }
-    const businessCodeList = Object.keys(mapper)
-
-    const searcher = new HLY_Travel().fc_searcher()
-    searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
-    searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
-    const feeds = await searcher.queryFeeds()
-    const dataList = feeds.map((item) => ({
-      ...item.modelForClient(),
-    }))
-    for (const item of dataList) {
-      // if (item.itineraryItems.filter((item) => item.trainTickets && item.trainTickets.length > 0).length === 0) {
-      //   continue
-      // }
-      const orders = mapper[item.businessCode]
-      const count = orders.reduce((result, cur) => result + cur.extrasData.tickets.length, 0)
-
-      console.info(`[${item.businessCode}] tickets: ${count}`)
-      // console.info(
-      //   JSON.stringify(
-      //     orders.map((item) => item.extrasData.tickets),
-      //     null,
-      //     2
-      //   )
-      // )
-      // console.info(
-      //   JSON.stringify(
-      //     item.itineraryItems.map((item) => item.flightTickets),
-      //     null,
-      //     2
-      //   )
-      // )
-    }
   })
 
   it(`HLY_Invoice`, async () => {

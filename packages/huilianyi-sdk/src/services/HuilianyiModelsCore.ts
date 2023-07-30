@@ -16,12 +16,14 @@ import { _HLY_PublicPayment } from '../models/extensions/_HLY_PublicPayment'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { _HLY_StaffGroupMember } from '../models/extensions/_HLY_StaffGroupMember'
 import { _HLY_AllowanceRule } from '../models/extensions/_HLY_AllowanceRule'
+import { _HLY_TravelParticipant } from '../models/extensions/_HLY_TravelParticipant'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
 
   public readonly HLY_Expense!: { new (): _HLY_Expense } & typeof _HLY_Expense
   public readonly HLY_Travel!: { new (): _HLY_Travel } & typeof _HLY_Travel
+  public readonly HLY_TravelParticipant!: { new (): _HLY_TravelParticipant } & typeof _HLY_TravelParticipant
   public readonly HLY_Invoice!: { new (): _HLY_Invoice } & typeof _HLY_Invoice
   public readonly HLY_Staff!: { new (): _HLY_Staff } & typeof _HLY_Staff
   public readonly HLY_StaffGroup!: { new (): _HLY_StaffGroup } & typeof _HLY_StaffGroup
@@ -53,6 +55,12 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_Travel = HLY_Travel
+
+    class HLY_TravelParticipant extends _HLY_TravelParticipant {}
+    HLY_TravelParticipant.addStaticOptions({
+      database: database,
+    })
+    this.HLY_TravelParticipant = HLY_TravelParticipant
 
     class HLY_Invoice extends _HLY_Invoice {}
     HLY_Invoice.addStaticOptions({

@@ -30,6 +30,13 @@ const dbSchemas: DBModelSchema[] = [
     fuzzySearchCols: ['applicant_name'],
   },
   {
+    tableName: 'hly_travel_participant',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_TravelParticipant.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_TravelParticipant.ts`,
+    primaryKey: ['business_code', 'user_oid'],
+    modifiableBlackList: ['create_time', 'update_time'],
+  },
+  {
     tableName: 'hly_expense_application',
     outputFile: `${__dirname}/../src/models/auto-build/__HLY_ExpenseApplication.ts`,
     extFile: `${__dirname}/../src/models/extensions/_HLY_ExpenseApplication.ts`,

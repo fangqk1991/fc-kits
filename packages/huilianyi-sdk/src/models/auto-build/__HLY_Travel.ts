@@ -27,6 +27,7 @@ const _cols: string[] = [
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
+  'participant_user_oids_str',
   'travel_status',
   'reload_time',
   'create_time',
@@ -58,6 +59,7 @@ const _insertableCols: string[] = [
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
+  'participant_user_oids_str',
   'travel_status',
   'reload_time',
 ]
@@ -85,6 +87,7 @@ const _modifiableCols: string[] = [
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
+  'participant_user_oids_str',
   'travel_status',
   'reload_time',
 ]
@@ -217,6 +220,10 @@ export default class __HLY_Travel extends FeedBase {
    */
   public expenseFormCodesStr!: string
   /**
+   * @description [text]
+   */
+  public participantUserOidsStr!: string
+  /**
    * @description [int] HLY_TravelStatus
    */
   public travelStatus!: number
@@ -286,6 +293,7 @@ export default class __HLY_Travel extends FeedBase {
     this.itineraryItemsStr = ''
     this.employeeTrafficItemsStr = ''
     this.expenseFormCodesStr = ''
+    this.participantUserOidsStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
@@ -315,6 +323,7 @@ export default class __HLY_Travel extends FeedBase {
       itineraryItemsStr: 'itinerary_items_str',
       employeeTrafficItemsStr: 'employee_traffic_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
+      participantUserOidsStr: 'participant_user_oids_str',
       travelStatus: 'travel_status',
       reloadTime: 'reload_time',
       createTime: 'create_time',
