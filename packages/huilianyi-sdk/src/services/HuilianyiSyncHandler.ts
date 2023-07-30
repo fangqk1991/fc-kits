@@ -396,7 +396,8 @@ export class HuilianyiSyncHandler {
               endTime = TimeUtils.momentUTC8(commonTickets[commonTickets.length - 1].toTime).format()
             }
             return {
-              usersStr: item.users,
+              userOidsStr: '',
+              userNamesStr: item.users,
               tickets: tickets,
               commonTickets: commonTickets,
               startTime: startTime || null,
@@ -492,7 +493,8 @@ export class HuilianyiSyncHandler {
               endTime = TimeUtils.momentUTC8(commonTickets[commonTickets.length - 1].toTime).format()
             }
             return {
-              usersStr: item.users,
+              userOidsStr: '',
+              userNamesStr: item.users,
               tickets: tickets,
               commonTickets: commonTickets,
               startTime: startTime || null,
@@ -564,7 +566,8 @@ export class HuilianyiSyncHandler {
               roomInfo: coreInfo.roomInfo,
             }
             return {
-              usersStr: item.users,
+              userOidsStr: '',
+              userNamesStr: item.users,
               tickets: [simpleCoreInfo] as any,
               commonTickets: [],
               startTime: null,

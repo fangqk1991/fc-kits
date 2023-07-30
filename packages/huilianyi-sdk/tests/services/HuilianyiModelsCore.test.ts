@@ -128,7 +128,7 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
       JSON.stringify(
         feeds.map((item) => ({
           orderId: item.hlyId,
-          count: item.modelForClient().extrasData.usersStr,
+          count: item.modelForClient().extrasData.userNamesStr,
         })),
         null,
         2

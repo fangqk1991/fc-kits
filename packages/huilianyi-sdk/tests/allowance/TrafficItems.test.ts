@@ -26,7 +26,7 @@ describe('Test TrafficItems.test.ts', () => {
     const items = await searcher.queryAllFeeds()
     for (const item of items) {
       const extrasData = item.extrasData()
-      if (extrasData.usersStr.split(',').length > 1) {
+      if (extrasData.userNamesStr.split(',').length > 1) {
         console.info(JSON.stringify(item.modelForClient(), null, 2))
       }
     }

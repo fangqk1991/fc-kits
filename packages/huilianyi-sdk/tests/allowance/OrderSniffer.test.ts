@@ -24,7 +24,7 @@ describe('Test OrderSniffer.test.ts', () => {
       // console.info(
       //   item.applicantName,
       //   item.userOid,
-      //   extrasData.usersStr,
+      //   extrasData.userNamesStr,
       //   extrasData.tickets.length,
       //   extrasData.tickets.map((ticket) => `${ticket.startDate} ~ ${ticket.endDate}`)
       // )
@@ -72,7 +72,7 @@ describe('Test OrderSniffer.test.ts', () => {
       // console.info(
       //   item.applicantName,
       //   item.userOid,
-      //   extrasData.usersStr,
+      //   extrasData.userNamesStr,
       //   extrasData.tickets.length,
       //   extrasData.tickets.map((ticket) => `${ticket.startDate} ~ ${ticket.endDate}`)
       // )

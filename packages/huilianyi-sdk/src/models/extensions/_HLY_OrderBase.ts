@@ -45,7 +45,8 @@ export class _HLY_OrderBase extends __HLY_OrderBase {
 
   public extrasData(): App_TravelOrderExtras {
     const defaultData: App_TravelOrderExtras = {
-      usersStr: '',
+      userOidsStr: '',
+      userNamesStr: '',
       tickets: [],
       commonTickets: [],
       startTime: '',
