@@ -7,6 +7,7 @@ import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
 import { App_FormBase } from '../basic/App_CoreModels'
 import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
+import { HLY_OrderType } from './HLY_OrderType'
 
 export interface App_TravelExtrasData {
   itineraryMap: ItineraryMap
@@ -92,15 +93,21 @@ export interface App_TravelAllowanceItem {
 }
 
 export interface App_TrafficTicket {
-  tagName: string
+  ticketId: string
+  orderType: HLY_OrderType
+  orderId: number
   orderOid: string
+  userOid: string
+  employeeId: string
+  userName: string
   trafficCode: string
   fromTime: string
   toTime: string
   fromCity: string
   toCity: string
-  employeeId: string
-  employeeName: string
+  journeyNo: string
+  businessCode: string
+  isValid: number
 }
 
 export interface App_ClosedLoop {

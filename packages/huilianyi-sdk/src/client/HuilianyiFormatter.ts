@@ -233,33 +233,11 @@ export class HuilianyiFormatter {
     item: HLY_OrderBase,
     companyOid: string,
     employeeIdToUserOidMapper: { [p: string]: string },
-    nameToUserOidsMapper: { [p: string]: string[] },
-    extrasHandler: () => App_TravelOrderExtras<T>
+    extrasHandler: (orderItem: App_TravelOrderBase<T>) => App_TravelOrderExtras<T>
   ): App_TravelOrderBase<T> {
-    const extrasData = extrasHandler()
-    let ticketUserOids: string[] = []
-    const userOid = employeeIdToUserOidMapper[item.employeeId] || ''
-    if (item.applicant === extrasData.userNamesStr && userOid) {
-      ticketUserOids = [userOid]
-    }
-    let ticketUserNames = extrasData.userNamesStr ? extrasData.userNamesStr.split(',') : []
-    if (ticketUserOids.length === 0) {
-      ticketUserOids = extrasData.commonTickets
-        .map((ticket) => {
-          if (employeeIdToUserOidMapper[ticket.employeeId]) {
-            return employeeIdToUserOidMapper[ticket.employeeId]
-          }
-          if (nameToUserOidsMapper[ticket.employeeName] && nameToUserOidsMapper[ticket.employeeName].length === 1) {
-            return nameToUserOidsMapper[ticket.employeeName][0]
-          }
-          return ''
-        })
-        .filter((item) => !!item)
-      // ticketUserNames = extrasData.commonTickets.map((ticket) => ticket.employeeName).filter((item) => !!item)
-    }
-    return {
+    const orderItem: App_TravelOrderBase<T> = {
       hlyId: Number(item.orderId),
-      userOid: userOid,
+      userOid: employeeIdToUserOidMapper[item.employeeId] || '',
       employeeId: item.employeeId,
       applicantName: item.applicant,
       companyOid: companyOid,
@@ -271,12 +249,19 @@ export class HuilianyiFormatter {
       auditStatus: item.auditStatus,
       createdDate: item.orderCreateDate,
       lastModifiedDate: item.lastModifiedDate,
-      startTime: extrasData.startTime,
-      endTime: extrasData.endTime,
-      ticketUserOids: ticketUserOids,
-      ticketUserNames: ticketUserNames,
-      extrasData: extrasData,
+      startTime: '',
+      endTime: '',
+      ticketUserOids: [],
+      ticketUserNames: [],
+      extrasData: {} as any,
     }
+    const extrasData = extrasHandler(orderItem)
+    orderItem.startTime = extrasData.startTime
+    orderItem.endTime = extrasData.endTime
+    orderItem.ticketUserOids = extrasData.commonTickets.map((item) => item.userOid)
+    orderItem.ticketUserNames = extrasData.commonTickets.map((item) => item.userName)
+    orderItem.extrasData = extrasData
+    return orderItem
   }
 
   public static transferFlightInfo(detail: HLY_OrderFlightCoreInfo): App_TravelFlightTicketInfo {

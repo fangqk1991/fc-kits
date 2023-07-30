@@ -15,7 +15,6 @@ const _cols: string[] = [
   'to_time',
   'from_city',
   'to_city',
-  'tag_name',
   'journey_no',
   'business_code',
   'is_invalid',
@@ -37,7 +36,6 @@ const _insertableCols: string[] = [
   'to_time',
   'from_city',
   'to_city',
-  'tag_name',
   'journey_no',
   'business_code',
   'is_invalid',
@@ -56,7 +54,6 @@ const _modifiableCols: string[] = [
   'to_time',
   'from_city',
   'to_city',
-  'tag_name',
   'journey_no',
   'business_code',
   'is_invalid',
@@ -103,7 +100,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public ticketId!: string
   /**
-   * @description [varchar(20)]
+   * @description [varchar(20)] HLY_OrderType
    */
   public orderType!: string
   /**
@@ -146,10 +143,6 @@ export default class __HLY_TrafficTicket extends FeedBase {
    * @description [varchar(16)]
    */
   public toCity!: string
-  /**
-   * @description [varchar(20)]
-   */
-  public tagName!: string
   /**
    * @description [varchar(20)]
    */
@@ -213,7 +206,6 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.trafficCode = ''
     this.fromTime = null
     this.toTime = null
-    this.tagName = ''
     this.journeyNo = ''
     this.businessCode = null
     this.isInvalid = 0
@@ -234,7 +226,6 @@ export default class __HLY_TrafficTicket extends FeedBase {
       toTime: 'to_time',
       fromCity: 'from_city',
       toCity: 'to_city',
-      tagName: 'tag_name',
       journeyNo: 'journey_no',
       businessCode: 'business_code',
       isInvalid: 'is_invalid',

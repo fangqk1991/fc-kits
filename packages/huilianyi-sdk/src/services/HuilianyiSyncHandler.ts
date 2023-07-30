@@ -13,6 +13,8 @@ import {
 } from '../core/travel/App_TravelModels'
 import { HLY_StaffRole } from '../core/staff/HLY_StaffRole'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
+import { HLY_OrderType } from '../core'
+import { md5 } from '@fangcha/tools/lib'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -378,20 +380,42 @@ export class HuilianyiSyncHandler {
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
-          nameToUserOidsMapper,
-          () => {
+          (orderItem) => {
             const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
-            const commonTickets = tickets.map((ticket) => ({
-              tagName: '机票',
-              orderOid: ticket.flightOrderOID,
-              trafficCode: ticket.flightCode,
-              fromTime: ticket.startDate,
-              toTime: ticket.endDate,
-              fromCity: ticket.startCity,
-              toCity: ticket.endCity,
-              employeeId: ticket.employeeId,
-              employeeName: ticket.employeeName,
-            }))
+            const commonTickets = tickets.map((ticket) => {
+              let userOid = employeeIdToUserOidMapper[ticket.employeeId] || ''
+              if (!userOid && item.applicant === ticket.employeeName) {
+                userOid = employeeIdToUserOidMapper[item.employeeId] || ''
+              }
+              if (
+                !userOid &&
+                nameToUserOidsMapper[ticket.employeeName] &&
+                nameToUserOidsMapper[ticket.employeeName].length === 1
+              ) {
+                userOid = nameToUserOidsMapper[ticket.employeeName][0]
+              }
+              const data: App_TrafficTicket = {
+                ticketId: '',
+                orderType: HLY_OrderType.FLIGHT,
+                orderId: Number(item.orderId),
+                orderOid: ticket.flightOrderOID,
+                trafficCode: ticket.flightCode,
+                fromTime: ticket.startDate,
+                toTime: ticket.endDate,
+                fromCity: ticket.startCity,
+                toCity: ticket.endCity,
+                userOid: userOid,
+                employeeId: ticket.employeeId,
+                userName: ticket.employeeName,
+                journeyNo: orderItem.journeyNo,
+                businessCode: orderItem.businessCode || '',
+                isValid: orderItem.orderStatus === '已成交' ? 1 : 0,
+              }
+              data.ticketId = md5(
+                [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')
+              )
+              return data
+            })
             let [startTime, endTime] = ['', '']
             if (commonTickets.length > 0) {
               startTime = TimeUtils.momentUTC8(commonTickets[0].fromTime).format()
@@ -452,8 +476,7 @@ export class HuilianyiSyncHandler {
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
-          nameToUserOidsMapper,
-          () => {
+          (orderItem) => {
             const tickets = item.trainOrderDetails.map((detail) => ({
               trainOrderOID: detail.trainOrderOID,
               trainName: detail.trainName,
@@ -477,17 +500,38 @@ export class HuilianyiSyncHandler {
                 .map((item) => item.trim())
                 .filter((item) => !!item)
               for (const passengerName of nameList) {
-                commonTickets.push({
-                  tagName: '火车票',
+                let userOid = ''
+                if (!userOid && item.applicant === passengerName) {
+                  userOid = employeeIdToUserOidMapper[item.employeeId] || ''
+                }
+                if (
+                  !userOid &&
+                  nameToUserOidsMapper[passengerName] &&
+                  nameToUserOidsMapper[passengerName].length === 1
+                ) {
+                  userOid = nameToUserOidsMapper[passengerName][0]
+                }
+                const data: App_TrafficTicket = {
+                  ticketId: '',
+                  orderType: HLY_OrderType.TRAIN,
+                  orderId: Number(item.orderId),
                   orderOid: ticket.trainOrderOID,
                   trafficCode: ticket.trainName,
                   fromTime: ticket.startDate,
                   toTime: ticket.endDate,
                   fromCity: ticket.departureCityName,
                   toCity: ticket.arrivalCityName,
+                  userOid: userOid,
                   employeeId: '',
-                  employeeName: passengerName,
-                })
+                  userName: passengerName,
+                  journeyNo: orderItem.journeyNo,
+                  businessCode: orderItem.businessCode || '',
+                  isValid: ['已购票', '待出票'].includes(orderItem.orderStatus) ? 1 : 0,
+                }
+                data.ticketId = md5(
+                  [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')
+                )
+                commonTickets.push(data)
               }
             }
             let [startTime, endTime] = ['', '']
@@ -551,7 +595,6 @@ export class HuilianyiSyncHandler {
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
-          nameToUserOidsMapper,
           () => {
             const coreInfo = item.hotelOrderDetail
             const simpleCoreInfo: App_TravelHotelCoreInfo = {

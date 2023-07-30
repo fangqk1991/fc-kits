@@ -2,7 +2,6 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_ClosedLoop,
   App_EmployeeTrafficData,
-  App_TrafficTicket,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
   HLY_TravelParticipant,
@@ -42,33 +41,22 @@ export class TravelService {
       searcher.processor().addConditionKeyInArray('order_status', ['已成交'])
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const tickets = item.modelForClient().extrasData.tickets
+        const extrasData = item.extrasData()
         const ticketData = ticketDataMapper[item.businessCode]
-        const commonTickets = tickets.map((ticket) => ({
-          tagName: '机票',
-          orderOid: ticket.flightOrderOID,
-          trafficCode: ticket.flightCode,
-          fromTime: ticket.startDate,
-          toTime: ticket.endDate,
-          fromCity: ticket.startCity,
-          toCity: ticket.endCity,
-          employeeId: ticket.employeeId,
-          employeeName: ticket.employeeName,
-        }))
-        ticketData.flightTickets.push(...tickets)
-        ticketData.trafficTickets.push(...commonTickets)
-        for (const ticket of commonTickets) {
-          if (!ticketData.employeeTrafficData[ticket.employeeName]) {
-            ticketData.employeeTrafficData[ticket.employeeName] = {
+        ticketData.flightTickets.push(...extrasData.tickets)
+        ticketData.trafficTickets.push(...extrasData.commonTickets)
+        for (const ticket of extrasData.commonTickets) {
+          if (!ticketData.employeeTrafficData[ticket.userName]) {
+            ticketData.employeeTrafficData[ticket.userName] = {
               employeeId: ticket.employeeId,
-              employeeName: ticket.employeeName,
+              employeeName: ticket.userName,
               isClosedLoop: false,
               tickets: [],
               closedLoops: [],
               allowanceDayItems: [],
             }
           }
-          ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
+          ticketData.employeeTrafficData[ticket.userName].tickets.push(ticket)
         }
       }
     }
@@ -78,42 +66,22 @@ export class TravelService {
       searcher.processor().addConditionKeyInArray('order_status', ['已购票', '待出票'])
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const tickets = item.modelForClient().extrasData.tickets
+        const extrasData = item.extrasData()
         const ticketData = ticketDataMapper[item.businessCode]
-        const commonTickets: App_TrafficTicket[] = []
-        for (const ticket of tickets) {
-          const nameList = (ticket.passengerName || '')
-            .split(',')
-            .map((item) => item.trim())
-            .filter((item) => !!item)
-          for (const passengerName of nameList) {
-            commonTickets.push({
-              tagName: '火车票',
-              orderOid: ticket.trainOrderOID,
-              trafficCode: ticket.trainName,
-              fromTime: ticket.startDate,
-              toTime: ticket.endDate,
-              fromCity: ticket.departureCityName,
-              toCity: ticket.arrivalCityName,
-              employeeId: '',
-              employeeName: passengerName,
-            })
-          }
-        }
-        ticketData.trainTickets.push(...tickets)
-        ticketData.trafficTickets.push(...commonTickets)
-        for (const ticket of commonTickets) {
-          if (!ticketData.employeeTrafficData[ticket.employeeName]) {
-            ticketData.employeeTrafficData[ticket.employeeName] = {
+        ticketData.trainTickets.push(...extrasData.tickets)
+        ticketData.trafficTickets.push(...extrasData.commonTickets)
+        for (const ticket of extrasData.commonTickets) {
+          if (!ticketData.employeeTrafficData[ticket.userName]) {
+            ticketData.employeeTrafficData[ticket.userName] = {
               employeeId: ticket.employeeId,
-              employeeName: ticket.employeeName,
+              employeeName: ticket.userName,
               isClosedLoop: false,
               tickets: [],
               closedLoops: [],
               allowanceDayItems: [],
             }
           }
-          ticketData.employeeTrafficData[ticket.employeeName].tickets.push(ticket)
+          ticketData.employeeTrafficData[ticket.userName].tickets.push(ticket)
         }
       }
     }
@@ -261,6 +229,18 @@ export class TravelService {
         order.businessCode = item.businessCode
         await order.updateToDB()
       }
+    }
+  }
+
+  public async makeCommonTrafficTickets() {
+    const businessCodeList: string[] = []
+    {
+      const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
+      const feeds = await searcher.queryAllFeeds()
+    }
+    {
+      const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
+      const feeds = await searcher.queryAllFeeds()
     }
   }
 

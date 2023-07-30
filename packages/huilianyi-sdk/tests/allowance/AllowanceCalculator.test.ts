@@ -1,7 +1,7 @@
 import { loggerForDev } from '@fangcha/logger'
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
 import { HuilianyiService } from '../../src/HuilianyiService'
-import { AllowanceCalculator } from '../../src'
+import { AllowanceCalculator, HLY_OrderType } from '../../src'
 import * as moment from 'moment'
 
 describe('Test AllowanceCalculator.test.ts', () => {
@@ -47,37 +47,55 @@ describe('Test AllowanceCalculator.test.ts', () => {
         {
           tickets: [
             {
-              tagName: '机票',
+              ticketId: '',
+              orderType: HLY_OrderType.FLIGHT,
+              orderId: 0,
               orderOid: '',
+              userOid: '',
               trafficCode: '',
+              employeeId: '',
+              userName: '',
+              journeyNo: '',
+              businessCode: '',
+              isValid: 1,
               fromTime: '2023-07-05 20:10:00',
               toTime: '2023-07-05 22:40:00',
               fromCity: '上海',
               toCity: '珠海',
-              employeeId: '',
-              employeeName: '',
             },
             {
-              tagName: '机票',
+              ticketId: '',
+              orderType: HLY_OrderType.FLIGHT,
+              orderId: 0,
               orderOid: '',
+              userOid: '',
               trafficCode: '',
+              employeeId: '',
+              userName: '',
+              journeyNo: '',
+              businessCode: '',
+              isValid: 1,
               fromTime: '2023-07-07 16:50:00',
               toTime: '2023-07-07 19:05:00',
               fromCity: '珠海',
               toCity: '广州',
-              employeeId: '',
-              employeeName: '',
             },
             {
-              tagName: '机票',
+              ticketId: '',
+              orderType: HLY_OrderType.FLIGHT,
+              orderId: 0,
               orderOid: '',
+              userOid: '',
               trafficCode: '',
+              employeeId: '',
+              userName: '',
+              journeyNo: '',
+              businessCode: '',
+              isValid: 1,
               fromTime: '2023-07-11 16:50:00',
               toTime: '2023-07-11 19:05:00',
               fromCity: '广州',
               toCity: '上海',
-              employeeId: '',
-              employeeName: '',
             },
           ],
         },

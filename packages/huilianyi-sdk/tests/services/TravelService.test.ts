@@ -33,6 +33,10 @@ describe('Test HuilianyiService.test.ts', () => {
     await travelService.fillTravelOrdersBusinessCode()
   })
 
+  it(`makeCommonTrafficTickets`, async () => {
+    await travelService.makeCommonTrafficTickets()
+  })
+
   it(`refreshTravelTicketItemsData`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
     // await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
