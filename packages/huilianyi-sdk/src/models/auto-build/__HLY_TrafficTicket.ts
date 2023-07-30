@@ -17,7 +17,7 @@ const _cols: string[] = [
   'to_city',
   'journey_no',
   'business_code',
-  'is_invalid',
+  'is_valid',
   'use_for_allowance',
   'create_time',
   'update_time',
@@ -38,7 +38,7 @@ const _insertableCols: string[] = [
   'to_city',
   'journey_no',
   'business_code',
-  'is_invalid',
+  'is_valid',
   'use_for_allowance',
 ]
 const _modifiableCols: string[] = [
@@ -56,7 +56,7 @@ const _modifiableCols: string[] = [
   'to_city',
   'journey_no',
   'business_code',
-  'is_invalid',
+  'is_valid',
   'use_for_allowance',
 ]
 
@@ -154,7 +154,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
   /**
    * @description [tinyint] 是否有效
    */
-  public isInvalid!: number
+  public isValid!: number
   /**
    * @description [tinyint] 是否参与补贴计算
    */
@@ -208,7 +208,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.toTime = null
     this.journeyNo = ''
     this.businessCode = null
-    this.isInvalid = 0
+    this.isValid = 0
     this.useForAllowance = 0
   }
 
@@ -228,7 +228,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
       toCity: 'to_city',
       journeyNo: 'journey_no',
       businessCode: 'business_code',
-      isInvalid: 'is_invalid',
+      isValid: 'is_valid',
       useForAllowance: 'use_for_allowance',
       createTime: 'create_time',
       updateTime: 'update_time',

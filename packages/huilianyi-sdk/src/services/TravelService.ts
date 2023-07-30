@@ -2,6 +2,7 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_ClosedLoop,
   App_EmployeeTrafficData,
+  App_TrafficTicket,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
   HLY_TravelParticipant,
@@ -9,6 +10,7 @@ import {
   TravelTicketsDataInfo,
 } from '../core'
 import * as moment from 'moment'
+import { SQLBulkAdder } from 'fc-sql'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -233,15 +235,36 @@ export class TravelService {
   }
 
   public async makeCommonTrafficTickets() {
-    const businessCodeList: string[] = []
+    const todoTickets: App_TrafficTicket[] = []
     {
       const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
       const feeds = await searcher.queryAllFeeds()
+      for (const item of feeds) {
+        const extrasData = item.extrasData()
+        todoTickets.push(...extrasData.commonTickets)
+      }
     }
     {
       const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
       const feeds = await searcher.queryAllFeeds()
+      for (const item of feeds) {
+        const extrasData = item.extrasData()
+        todoTickets.push(...extrasData.commonTickets)
+      }
     }
+    const dbSpec = new this.modelsCore.HLY_TrafficTicket().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey('from_time')
+    bulkAdder.declareTimestampKey('to_time')
+    for (const ticketData of todoTickets) {
+      const feed = new this.modelsCore.HLY_TrafficTicket()
+      feed.fc_generateWithModel(ticketData)
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
   }
 
   public async refreshTravelTicketItemsData() {
