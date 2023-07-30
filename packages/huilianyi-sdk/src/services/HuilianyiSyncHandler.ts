@@ -383,7 +383,7 @@ export class HuilianyiSyncHandler {
             const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
             const commonTickets = tickets.map((ticket) => ({
               tagName: '机票',
-              ticketId: ticket.flightOrderOID,
+              orderOid: ticket.flightOrderOID,
               trafficCode: ticket.flightCode,
               fromTime: ticket.startDate,
               toTime: ticket.endDate,
@@ -479,7 +479,7 @@ export class HuilianyiSyncHandler {
               for (const passengerName of nameList) {
                 commonTickets.push({
                   tagName: '火车票',
-                  ticketId: ticket.trainOrderOID,
+                  orderOid: ticket.trainOrderOID,
                   trafficCode: ticket.trainName,
                   fromTime: ticket.startDate,
                   toTime: ticket.endDate,

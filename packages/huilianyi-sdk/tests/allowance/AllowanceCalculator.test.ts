@@ -48,7 +48,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
           tickets: [
             {
               tagName: '机票',
-              ticketId: '',
+              orderOid: '',
               trafficCode: '',
               fromTime: '2023-07-05 20:10:00',
               toTime: '2023-07-05 22:40:00',
@@ -59,7 +59,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
             },
             {
               tagName: '机票',
-              ticketId: '',
+              orderOid: '',
               trafficCode: '',
               fromTime: '2023-07-07 16:50:00',
               toTime: '2023-07-07 19:05:00',
@@ -70,7 +70,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
             },
             {
               tagName: '机票',
-              ticketId: '',
+              orderOid: '',
               trafficCode: '',
               fromTime: '2023-07-11 16:50:00',
               toTime: '2023-07-11 19:05:00',

@@ -93,7 +93,7 @@ export interface App_TravelAllowanceItem {
 
 export interface App_TrafficTicket {
   tagName: string
-  ticketId: string
+  orderOid: string
   trafficCode: string
   fromTime: string
   toTime: string
