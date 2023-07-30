@@ -152,7 +152,6 @@ export interface App_TravelTrainTicketInfo {
 }
 
 export interface App_TravelOrderExtras<T = any> {
-  userOidsStr: string
   userNamesStr: string
   tickets: T[]
   commonTickets: App_TrafficTicket[]
@@ -176,6 +175,8 @@ export interface App_TravelOrderBase<T = any> {
   lastModifiedDate: string | null
   startTime: string | null
   endTime: string | null
+  ticketUserOidsStr: string
+  ticketUserNamesStr: string
   extrasData: App_TravelOrderExtras<T>
 }
 

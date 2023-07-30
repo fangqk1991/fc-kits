@@ -236,9 +236,14 @@ export class HuilianyiFormatter {
     extrasHandler: () => App_TravelOrderExtras<T>
   ): App_TravelOrderBase<T> {
     const extrasData = extrasHandler()
+    let ticketUserOidsStr = ''
+    const userOid = employeeIdToUserOidMapper[item.employeeId] || ''
+    if (item.applicant === extrasData.userNamesStr && userOid) {
+      ticketUserOidsStr = userOid
+    }
     return {
       hlyId: Number(item.orderId),
-      userOid: employeeIdToUserOidMapper[item.employeeId] || '',
+      userOid: userOid,
       employeeId: item.employeeId,
       applicantName: item.applicant,
       companyOid: companyOid,
@@ -252,6 +257,8 @@ export class HuilianyiFormatter {
       lastModifiedDate: item.lastModifiedDate,
       startTime: extrasData.startTime,
       endTime: extrasData.endTime,
+      ticketUserOidsStr: ticketUserOidsStr,
+      ticketUserNamesStr: extrasData.userNamesStr,
       extrasData: extrasData,
     }
   }

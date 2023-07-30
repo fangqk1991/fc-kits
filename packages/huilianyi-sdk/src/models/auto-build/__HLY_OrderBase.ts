@@ -19,6 +19,8 @@ const _cols: string[] = [
   'extras_info',
   'start_time',
   'end_time',
+  'ticket_user_oids_str',
+  'ticket_user_names_str',
   'reload_time',
   'create_time',
   'update_time',
@@ -41,6 +43,8 @@ const _insertableCols: string[] = [
   'extras_info',
   'start_time',
   'end_time',
+  'ticket_user_oids_str',
+  'ticket_user_names_str',
   'reload_time',
 ]
 const _modifiableCols: string[] = [
@@ -60,6 +64,8 @@ const _modifiableCols: string[] = [
   'extras_info',
   'start_time',
   'end_time',
+  'ticket_user_oids_str',
+  'ticket_user_names_str',
   'reload_time',
 ]
 
@@ -160,6 +166,14 @@ export default class __HLY_OrderBase extends FeedBase {
    */
   public endTime!: string | null
   /**
+   * @description [text]
+   */
+  public ticketUserOidsStr!: string
+  /**
+   * @description [text]
+   */
+  public ticketUserNamesStr!: string
+  /**
    * @description [timestamp]
    */
   public reloadTime!: string
@@ -216,6 +230,8 @@ export default class __HLY_OrderBase extends FeedBase {
     this.extrasInfo = ''
     this.startTime = null
     this.endTime = null
+    this.ticketUserOidsStr = ''
+    this.ticketUserNamesStr = ''
     this.reloadTime = '2000-01-01 00:00:00'
   }
 
@@ -237,6 +253,8 @@ export default class __HLY_OrderBase extends FeedBase {
       extrasInfo: 'extras_info',
       startTime: 'start_time',
       endTime: 'end_time',
+      ticketUserOidsStr: 'ticket_user_oids_str',
+      ticketUserNamesStr: 'ticket_user_names_str',
       reloadTime: 'reload_time',
       createTime: 'create_time',
       updateTime: 'update_time',
