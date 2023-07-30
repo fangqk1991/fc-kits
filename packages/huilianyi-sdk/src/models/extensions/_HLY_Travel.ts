@@ -39,6 +39,13 @@ export class _HLY_Travel extends __HLY_Travel {
       .filter((item) => !!item)
   }
 
+  public participantUserOids() {
+    return this.participantUserOidsStr
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+  }
+
   public extrasData(): App_TravelExtrasData {
     const defaultData: App_TravelExtrasData = {
       participants: [],

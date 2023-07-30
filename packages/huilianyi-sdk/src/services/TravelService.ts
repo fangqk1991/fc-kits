@@ -194,6 +194,22 @@ export class TravelService {
     return ticketDataMapper
   }
 
+  public async refreshTravelParticipants() {
+    const searcher = new this.modelsCore.HLY_Travel().fc_searcher()
+    searcher.processor().addSpecialCondition('NOT EXISTS (SELECT hly_travel_participant.business_code FROM hly_travel_participant WHERE hly_travel_participant.business_code = hly_travel.business_code)')
+    const travelItems = await searcher.queryAllFeeds()
+    console.info(`[refreshTravelParticipants] ${travelItems.length} TODO travelItems`)
+    for (const travelItem of travelItems) {
+      const oidList = travelItem.participantUserOids()
+      for (const userOid of oidList) {
+        const feed = new this.modelsCore.HLY_TravelParticipant()
+        feed.businessCode = travelItem.businessCode
+        feed.userOid = userOid
+        await feed.strongAddToDB()
+      }
+    }
+  }
+
   public async refreshTravelTicketItemsData() {
     const businessCodeList: string[] = []
     {

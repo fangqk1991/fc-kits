@@ -46,4 +46,8 @@ describe('Test HuilianyiService.test.ts', () => {
       }
     }
   })
+
+  it(`refreshTravelParticipants`, async () => {
+    await travelService.refreshTravelParticipants()
+  })
 })
