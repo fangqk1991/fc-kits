@@ -175,8 +175,8 @@ export interface App_TravelOrderBase<T = any> {
   lastModifiedDate: string | null
   startTime: string | null
   endTime: string | null
-  ticketUserOidsStr: string
-  ticketUserNamesStr: string
+  ticketUserOids: string[]
+  ticketUserNames: string[]
   extrasData: App_TravelOrderExtras<T>
 }
 

@@ -16,6 +16,19 @@ export class _HLY_Staff extends __HLY_Staff {
     }, {} as { [p: string]: string })
   }
 
+  public static async nameToUserOidsMapper() {
+    const searcher = new this().fc_searcher()
+    searcher.processor().setColumns(['user_oid', 'full_name'])
+    const feeds = await searcher.queryAllFeeds()
+    return feeds.reduce((result, cur) => {
+      if (!result[cur.fullName]) {
+        result[cur.fullName] = []
+      }
+      result[cur.fullName].push(cur.userOid)
+      return result
+    }, {} as { [p: string]: string[] })
+  }
+
   public groupOids() {
     return this.groupOidsStr
       .split(',')

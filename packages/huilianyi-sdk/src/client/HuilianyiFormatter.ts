@@ -233,13 +233,29 @@ export class HuilianyiFormatter {
     item: HLY_OrderBase,
     companyOid: string,
     employeeIdToUserOidMapper: { [p: string]: string },
+    nameToUserOidsMapper: { [p: string]: string[] },
     extrasHandler: () => App_TravelOrderExtras<T>
   ): App_TravelOrderBase<T> {
     const extrasData = extrasHandler()
-    let ticketUserOidsStr = ''
+    let ticketUserOids: string[] = []
     const userOid = employeeIdToUserOidMapper[item.employeeId] || ''
     if (item.applicant === extrasData.userNamesStr && userOid) {
-      ticketUserOidsStr = userOid
+      ticketUserOids = [userOid]
+    }
+    let ticketUserNames = extrasData.userNamesStr ? extrasData.userNamesStr.split(',') : []
+    if (ticketUserOids.length === 0) {
+      ticketUserOids = extrasData.commonTickets
+        .map((ticket) => {
+          if (employeeIdToUserOidMapper[ticket.employeeId]) {
+            return employeeIdToUserOidMapper[ticket.employeeId]
+          }
+          if (nameToUserOidsMapper[ticket.employeeName] && nameToUserOidsMapper[ticket.employeeName].length === 1) {
+            return nameToUserOidsMapper[ticket.employeeName][0]
+          }
+          return ''
+        })
+        .filter((item) => !!item)
+      // ticketUserNames = extrasData.commonTickets.map((ticket) => ticket.employeeName).filter((item) => !!item)
     }
     return {
       hlyId: Number(item.orderId),
@@ -257,8 +273,8 @@ export class HuilianyiFormatter {
       lastModifiedDate: item.lastModifiedDate,
       startTime: extrasData.startTime,
       endTime: extrasData.endTime,
-      ticketUserOidsStr: ticketUserOidsStr,
-      ticketUserNamesStr: extrasData.userNamesStr,
+      ticketUserOids: ticketUserOids,
+      ticketUserNames: ticketUserNames,
       extrasData: extrasData,
     }
   }

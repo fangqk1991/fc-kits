@@ -356,6 +356,7 @@ export class HuilianyiSyncHandler {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderFlight
     const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
+    const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -377,6 +378,7 @@ export class HuilianyiSyncHandler {
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
+          nameToUserOidsMapper,
           () => {
             const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
             const commonTickets = tickets.map((ticket) => ({
@@ -428,6 +430,7 @@ export class HuilianyiSyncHandler {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderTrain
     const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
+    const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -449,6 +452,7 @@ export class HuilianyiSyncHandler {
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
+          nameToUserOidsMapper,
           () => {
             const tickets = item.trainOrderDetails.map((detail) => ({
               trainOrderOID: detail.trainOrderOID,
@@ -525,6 +529,7 @@ export class HuilianyiSyncHandler {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderHotel
     const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
+    const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -546,6 +551,7 @@ export class HuilianyiSyncHandler {
           item,
           company.companyOID,
           employeeIdToUserOidMapper,
+          nameToUserOidsMapper,
           () => {
             const coreInfo = item.hotelOrderDetail
             const simpleCoreInfo: App_TravelHotelCoreInfo = {

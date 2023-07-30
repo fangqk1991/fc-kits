@@ -32,6 +32,8 @@ export class _HLY_OrderBase extends __HLY_OrderBase {
     const feed = new this()
     feed.fc_generateWithModel(data)
     feed.extrasInfo = JSON.stringify(data.extrasData)
+    feed.ticketUserOidsStr = data.ticketUserOids.join(',')
+    feed.ticketUserNamesStr = data.ticketUserNames.join(',')
     return feed
   }
 
@@ -61,9 +63,27 @@ export class _HLY_OrderBase extends __HLY_OrderBase {
     return this.modelForClient()
   }
 
+  public ticketUserOids() {
+    return this.ticketUserOidsStr
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+  }
+
+  public ticketUserNames() {
+    return this.ticketUserNamesStr
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+  }
+
   public modelForClient() {
     const data = this.fc_pureModel() as App_TravelOrderBase
+    data.ticketUserOids = this.ticketUserOids()
+    data.ticketUserNames = this.ticketUserNames()
     data.extrasData = this.extrasData()
+    delete data['ticketUserOidsStr']
+    delete data['ticketUserNamesStr']
     delete data['extrasInfo']
     delete data['createTime']
     delete data['updateTime']
