@@ -17,6 +17,7 @@ import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { _HLY_StaffGroupMember } from '../models/extensions/_HLY_StaffGroupMember'
 import { _HLY_AllowanceRule } from '../models/extensions/_HLY_AllowanceRule'
 import { _HLY_TravelParticipant } from '../models/extensions/_HLY_TravelParticipant'
+import { _HLY_TrafficTicket } from '../models/extensions/_HLY_TrafficTicket'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -40,6 +41,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_AllowanceRule!: { new (): _HLY_AllowanceRule } & typeof _HLY_AllowanceRule
 
   public readonly HLY_ExpenseApplication!: { new (): _HLY_ExpenseApplication } & typeof _HLY_ExpenseApplication
+  public readonly HLY_TrafficTicket!: { new (): _HLY_TrafficTicket } & typeof _HLY_TrafficTicket
 
   constructor(database: FCDatabase) {
     this.database = database
@@ -151,5 +153,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_AllowanceRule = HLY_AllowanceRule
+
+    class HLY_TrafficTicket extends _HLY_TrafficTicket {}
+    HLY_TrafficTicket.addStaticOptions({
+      database: database,
+    })
+    this.HLY_TrafficTicket = HLY_TrafficTicket
   }
 }

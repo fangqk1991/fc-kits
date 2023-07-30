@@ -120,6 +120,24 @@ const dbSchemas: DBModelSchema[] = [
     exactSearchCols: ['hly_id', 'business_code'],
     fuzzySearchCols: ['applicant_name'],
   },
+  {
+    tableName: 'hly_traffic_ticket',
+    outputFile: `${__dirname}/../src/models/auto-build/__HLY_TrafficTicket.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_HLY_TrafficTicket.ts`,
+    primaryKey: ['ticket_id'],
+    modifiableBlackList: ['create_time', 'update_time'],
+    exactSearchCols: [
+      'ticket_id',
+      'order_id',
+      'order_oid',
+      'journey_no',
+      'business_code',
+      'from_city',
+      'to_city',
+      'traffic_code',
+    ],
+    fuzzySearchCols: ['user_name'],
+  },
 ]
 
 const main = async () => {

@@ -1,0 +1,246 @@
+import { DBObserver, FeedBase } from 'fc-feed'
+import { DBProtocolV2, FCDatabase } from 'fc-sql'
+
+const _cols: string[] = [
+  // prettier-ignore
+  'ticket_id',
+  'order_type',
+  'order_id',
+  'order_oid',
+  'user_oid',
+  'employee_id',
+  'user_name',
+  'traffic_code',
+  'from_time',
+  'to_time',
+  'from_city',
+  'to_city',
+  'tag_name',
+  'journey_no',
+  'business_code',
+  'is_invalid',
+  'use_for_allowance',
+  'create_time',
+  'update_time',
+]
+const _insertableCols: string[] = [
+  // prettier-ignore
+  'ticket_id',
+  'order_type',
+  'order_id',
+  'order_oid',
+  'user_oid',
+  'employee_id',
+  'user_name',
+  'traffic_code',
+  'from_time',
+  'to_time',
+  'from_city',
+  'to_city',
+  'tag_name',
+  'journey_no',
+  'business_code',
+  'is_invalid',
+  'use_for_allowance',
+]
+const _modifiableCols: string[] = [
+  // prettier-ignore
+  'order_type',
+  'order_id',
+  'order_oid',
+  'user_oid',
+  'employee_id',
+  'user_name',
+  'traffic_code',
+  'from_time',
+  'to_time',
+  'from_city',
+  'to_city',
+  'tag_name',
+  'journey_no',
+  'business_code',
+  'is_invalid',
+  'use_for_allowance',
+]
+
+const _timestampTypeCols: string[] = [
+  // prettier-ignore
+  'from_time',
+  'to_time',
+  'create_time',
+  'update_time',
+]
+const _exactSearchCols: string[] = [
+  // prettier-ignore
+  'ticket_id',
+  'order_id',
+  'order_oid',
+  'journey_no',
+  'business_code',
+  'from_city',
+  'to_city',
+  'traffic_code',
+]
+const _fuzzySearchCols: string[] = [
+  // prettier-ignore
+  'user_name',
+]
+
+const dbOptions = {
+  table: 'hly_traffic_ticket',
+  primaryKey: ['ticket_id'],
+  cols: _cols,
+  insertableCols: _insertableCols,
+  modifiableCols: _modifiableCols,
+  timestampTypeCols: _timestampTypeCols,
+  exactSearchCols: _exactSearchCols,
+  fuzzySearchCols: _fuzzySearchCols,
+}
+
+export default class __HLY_TrafficTicket extends FeedBase {
+  /**
+   * @description [char(32)] order_type + order_id + user_oid(user_name) + traffic_code MD5
+   */
+  public ticketId!: string
+  /**
+   * @description [varchar(20)]
+   */
+  public orderType!: string
+  /**
+   * @description [bigint unsigned]
+   */
+  public orderId!: number
+  /**
+   * @description [char(36)]
+   */
+  public orderOid!: string
+  /**
+   * @description [char(36)]
+   */
+  public userOid!: string
+  /**
+   * @description [varchar(64)]
+   */
+  public employeeId!: string | null
+  /**
+   * @description [varchar(64)]
+   */
+  public userName!: string
+  /**
+   * @description [varchar(16)]
+   */
+  public trafficCode!: string
+  /**
+   * @description [timestamp] 开始时间
+   */
+  public fromTime!: string | null
+  /**
+   * @description [timestamp] 结束时间
+   */
+  public toTime!: string | null
+  /**
+   * @description [varchar(16)]
+   */
+  public fromCity!: string
+  /**
+   * @description [varchar(16)]
+   */
+  public toCity!: string
+  /**
+   * @description [varchar(20)]
+   */
+  public tagName!: string
+  /**
+   * @description [varchar(20)]
+   */
+  public journeyNo!: string
+  /**
+   * @description [varchar(20)]
+   */
+  public businessCode!: string | null
+  /**
+   * @description [tinyint] 是否有效
+   */
+  public isInvalid!: number
+  /**
+   * @description [tinyint] 是否参与补贴计算
+   */
+  public useForAllowance!: number
+  /**
+   * @description [timestamp] 创建时间
+   */
+  public createTime!: string
+  /**
+   * @description [timestamp] 更新时间
+   */
+  public updateTime!: string
+
+  protected static _staticDBOptions: DBProtocolV2
+  protected static _staticDBObserver?: DBObserver
+
+  public static setDatabase(database: FCDatabase, dbObserver?: DBObserver) {
+    this.addStaticOptions({ database: database }, dbObserver)
+  }
+
+  public static setStaticProtocol(protocol: Partial<DBProtocolV2>, dbObserver?: DBObserver) {
+    this._staticDBOptions = Object.assign({}, dbOptions, protocol) as DBProtocolV2
+    this._staticDBObserver = dbObserver
+    this._onStaticDBOptionsUpdate(this._staticDBOptions)
+  }
+
+  public static addStaticOptions(protocol: Partial<DBProtocolV2>, dbObserver?: DBObserver) {
+    this._staticDBOptions = Object.assign({}, dbOptions, this._staticDBOptions, protocol) as DBProtocolV2
+    this._staticDBObserver = dbObserver
+    this._onStaticDBOptionsUpdate(this._staticDBOptions)
+  }
+
+  public static _onStaticDBOptionsUpdate(_protocol: DBProtocolV2) {}
+
+  public constructor() {
+    super()
+    this.setDBProtocolV2(this.constructor['_staticDBOptions'])
+    if (this.constructor['_staticDBObserver']) {
+      this.dbObserver = this.constructor['_staticDBObserver']
+    }
+  }
+
+  public fc_defaultInit() {
+    // This function is invoked by constructor of FCModel
+    this.orderOid = ''
+    this.userOid = ''
+    this.employeeId = null
+    this.userName = ''
+    this.trafficCode = ''
+    this.fromTime = null
+    this.toTime = null
+    this.tagName = ''
+    this.journeyNo = ''
+    this.businessCode = null
+    this.isInvalid = 0
+    this.useForAllowance = 0
+  }
+
+  public fc_propertyMapper() {
+    return {
+      ticketId: 'ticket_id',
+      orderType: 'order_type',
+      orderId: 'order_id',
+      orderOid: 'order_oid',
+      userOid: 'user_oid',
+      employeeId: 'employee_id',
+      userName: 'user_name',
+      trafficCode: 'traffic_code',
+      fromTime: 'from_time',
+      toTime: 'to_time',
+      fromCity: 'from_city',
+      toCity: 'to_city',
+      tagName: 'tag_name',
+      journeyNo: 'journey_no',
+      businessCode: 'business_code',
+      isInvalid: 'is_invalid',
+      useForAllowance: 'use_for_allowance',
+      createTime: 'create_time',
+      updateTime: 'update_time',
+    }
+  }
+}
