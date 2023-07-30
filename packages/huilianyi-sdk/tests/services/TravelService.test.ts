@@ -29,6 +29,10 @@ describe('Test HuilianyiService.test.ts', () => {
     console.info(ticketsData)
   })
 
+  it(`fillTravelOrdersBusinessCode`, async () => {
+    await travelService.fillTravelOrdersBusinessCode()
+  })
+
   it(`refreshTravelTicketItemsData`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
     // await huilianyiService.syncHandler().dumpOrderFlightRecords(true)

@@ -51,15 +51,17 @@ export class HuilianyiService {
     await syncHandler.dumpExpenseApplicationRecords(forceReload)
     await syncHandler.dumpExpenseRecords(forceReload)
     await syncHandler.dumpPublicPaymentRecords(forceReload)
-    await syncHandler.dumpTravelRecords(forceReload)
     await syncHandler.dumpInvoiceRecords(forceReload)
+
+    await syncHandler.dumpTravelRecords(forceReload)
+    await this.travelService().refreshTravelParticipants()
 
     await syncHandler.dumpStaffRecords()
     await syncHandler.dumpOrderFlightRecords(forceReload)
     await syncHandler.dumpOrderTrainRecords(forceReload)
     await syncHandler.dumpOrderHotelRecords(forceReload)
 
-    await this.travelService().refreshTravelParticipants()
+    await this.travelService().fillTravelOrdersBusinessCode()
     await this.travelService().refreshTravelTicketItemsData()
     await this.monthAllowanceMaker().makeMonthAllowance()
   }

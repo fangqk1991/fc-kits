@@ -1,5 +1,5 @@
 import { _HLY_OrderBase } from './_HLY_OrderBase'
-import { App_TravelOrderFlight } from '../../core/travel/App_TravelModels'
+import { App_TravelOrderFlight } from '../../core'
 
 export class _HLY_OrderFlight extends _HLY_OrderBase {
   public constructor() {

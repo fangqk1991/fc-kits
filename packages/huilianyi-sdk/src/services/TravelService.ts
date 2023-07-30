@@ -6,6 +6,7 @@ import {
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
   HLY_TravelParticipant,
+  HLY_TravelStatus,
   TravelTicketsDataInfo,
 } from '../core'
 import * as moment from 'moment'
@@ -196,7 +197,11 @@ export class TravelService {
 
   public async refreshTravelParticipants() {
     const searcher = new this.modelsCore.HLY_Travel().fc_searcher()
-    searcher.processor().addSpecialCondition('NOT EXISTS (SELECT hly_travel_participant.business_code FROM hly_travel_participant WHERE hly_travel_participant.business_code = hly_travel.business_code)')
+    searcher
+      .processor()
+      .addSpecialCondition(
+        'NOT EXISTS (SELECT hly_travel_participant.business_code FROM hly_travel_participant WHERE hly_travel_participant.business_code = hly_travel.business_code)'
+      )
     const travelItems = await searcher.queryAllFeeds()
     console.info(`[refreshTravelParticipants] ${travelItems.length} TODO travelItems`)
     for (const travelItem of travelItems) {
@@ -206,6 +211,55 @@ export class TravelService {
         feed.businessCode = travelItem.businessCode
         feed.userOid = userOid
         await feed.strongAddToDB()
+      }
+    }
+  }
+
+  public async fillTravelOrdersBusinessCode() {
+    {
+      const items = (await this.modelsCore.database.query(`
+        SELECT hly_order_flight.hly_id   AS hlyId,
+               hly_travel.business_code AS businessCode
+        FROM hly_travel_participant
+                 INNER JOIN hly_travel ON hly_travel_participant.business_code = hly_travel.business_code
+                 INNER JOIN hly_order_flight
+                            ON FIND_IN_SET(hly_travel_participant.user_oid, hly_order_flight.ticket_user_oids_str)
+                                AND hly_order_flight.start_time BETWEEN hly_travel.start_time AND hly_travel.end_time
+        WHERE hly_order_flight.journey_no IN ('紧急预订', '紧急预定')
+          AND hly_order_flight.business_code IS NULL
+          AND order_status NOT IN ('出票失败', '已取消')
+          AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
+    `)) as { hlyId: number; businessCode: string }[]
+      console.info(`TODO FlightOrder: ${items.length} items`)
+      for (const item of items) {
+        const order = new this.modelsCore.HLY_OrderFlight()
+        order.hlyId = item.hlyId
+        order.fc_edit()
+        order.businessCode = item.businessCode
+        await order.updateToDB()
+      }
+    }
+    {
+      const items = (await this.modelsCore.database.query(`
+        SELECT hly_order_train.hly_id   AS hlyId,
+               hly_travel.business_code AS businessCode
+        FROM hly_travel_participant
+                 INNER JOIN hly_travel ON hly_travel_participant.business_code = hly_travel.business_code
+                 INNER JOIN hly_order_train
+                            ON FIND_IN_SET(hly_travel_participant.user_oid, hly_order_train.ticket_user_oids_str)
+                                AND hly_order_train.start_time BETWEEN hly_travel.start_time AND hly_travel.end_time
+        WHERE hly_order_train.journey_no IN ('紧急预订', '紧急预定')
+          AND hly_order_train.business_code IS NULL
+          AND order_status NOT IN ('出票失败', '已取消')
+          AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
+    `)) as { hlyId: number; businessCode: string }[]
+      console.info(`TODO TrainOrder: ${items.length} items`)
+      for (const item of items) {
+        const order = new this.modelsCore.HLY_OrderTrain()
+        order.hlyId = item.hlyId
+        order.fc_edit()
+        order.businessCode = item.businessCode
+        await order.updateToDB()
       }
     }
   }
