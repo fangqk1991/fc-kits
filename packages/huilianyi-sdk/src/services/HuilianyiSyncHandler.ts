@@ -10,11 +10,11 @@ import {
   App_TravelHotelCoreInfo,
   App_TravelOrderHotel,
   App_TravelTrainTicketInfo,
-} from '../core/travel/App_TravelModels'
-import { HLY_StaffRole } from '../core/staff/HLY_StaffRole'
+  HLY_OrderType,
+  HLY_StaffRole,
+} from '../core'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
-import { HLY_OrderType } from '../core'
-import { md5 } from '@fangcha/tools/lib'
+import { md5 } from '@fangcha/tools'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -573,7 +573,6 @@ export class HuilianyiSyncHandler {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderHotel
     const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
-    const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
