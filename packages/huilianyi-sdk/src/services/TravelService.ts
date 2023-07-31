@@ -25,68 +25,38 @@ export class TravelService {
   }
 
   public async getTicketsDataMapper(businessCodeList: string[]) {
-    const HLY_OrderFlight = this.modelsCore.HLY_OrderFlight
-    const HLY_OrderTrain = this.modelsCore.HLY_OrderTrain
+    const HLY_TrafficTicket = this.modelsCore.HLY_TrafficTicket
 
     const ticketDataMapper: { [businessCode: string]: TravelTicketsDataInfo } = {}
     for (const businessCode of businessCodeList) {
       ticketDataMapper[businessCode] = {
-        flightTickets: [],
-        trainTickets: [],
         trafficTickets: [],
         employeeTrafficData: {},
       }
     }
     {
-      const searcher = new HLY_OrderFlight().fc_searcher()
+      const searcher = new HLY_TrafficTicket().fc_searcher()
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
-      searcher.processor().addConditionKeyInArray('order_status', ['已成交'])
+      searcher.processor().addOrderRule('from_time', 'ASC')
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const extrasData = item.extrasData()
-        const ticketData = ticketDataMapper[item.businessCode]
-        ticketData.flightTickets.push(...extrasData.tickets)
-        ticketData.trafficTickets.push(...extrasData.commonTickets)
-        for (const ticket of extrasData.commonTickets) {
-          if (!ticketData.employeeTrafficData[ticket.userName]) {
-            ticketData.employeeTrafficData[ticket.userName] = {
-              employeeId: ticket.employeeId,
-              employeeName: ticket.userName,
-              isClosedLoop: false,
-              tickets: [],
-              closedLoops: [],
-              allowanceDayItems: [],
-            }
+        const commonTicket = item.modelForClient()
+        const ticketData = ticketDataMapper[commonTicket.businessCode]
+        ticketData.trafficTickets.push(commonTicket)
+        if (!ticketData.employeeTrafficData[commonTicket.userName]) {
+          ticketData.employeeTrafficData[commonTicket.userName] = {
+            employeeId: commonTicket.employeeId,
+            employeeName: commonTicket.userName,
+            isClosedLoop: false,
+            tickets: [],
+            closedLoops: [],
+            allowanceDayItems: [],
           }
-          ticketData.employeeTrafficData[ticket.userName].tickets.push(ticket)
         }
+        ticketData.employeeTrafficData[commonTicket.userName].tickets.push(commonTicket)
       }
     }
-    {
-      const searcher = new HLY_OrderTrain().fc_searcher()
-      searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
-      searcher.processor().addConditionKeyInArray('order_status', ['已购票', '待出票'])
-      const feeds = await searcher.queryAllFeeds()
-      for (const item of feeds) {
-        const extrasData = item.extrasData()
-        const ticketData = ticketDataMapper[item.businessCode]
-        ticketData.trainTickets.push(...extrasData.tickets)
-        ticketData.trafficTickets.push(...extrasData.commonTickets)
-        for (const ticket of extrasData.commonTickets) {
-          if (!ticketData.employeeTrafficData[ticket.userName]) {
-            ticketData.employeeTrafficData[ticket.userName] = {
-              employeeId: ticket.employeeId,
-              employeeName: ticket.userName,
-              isClosedLoop: false,
-              tickets: [],
-              closedLoops: [],
-              allowanceDayItems: [],
-            }
-          }
-          ticketData.employeeTrafficData[ticket.userName].tickets.push(ticket)
-        }
-      }
-    }
+
     const calculator = await this.modelsCore.HLY_AllowanceRule.calculator()
 
     for (const businessCode of businessCodeList) {
@@ -267,31 +237,28 @@ export class TravelService {
     await bulkAdder.execute()
   }
 
+  public async getTicketBusinessCodeList() {
+    const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
+    searcher.processor().markDistinct()
+    searcher.processor().setColumns(['business_code'])
+    searcher.processor().addSpecialCondition('business_code IS NOT NULL AND business_code != ?', '')
+    const feeds = await searcher.queryAllFeeds()
+    return feeds.map((feed) => feed.businessCode!)
+  }
+
   public async refreshTravelTicketItemsData() {
-    const businessCodeList: string[] = []
-    {
-      const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
-      searcher.processor().markDistinct()
-      searcher.processor().setColumns(['business_code'])
-      searcher.processor().addSpecialCondition('business_code IS NOT NULL')
-      const feeds = await searcher.queryAllFeeds()
-      businessCodeList.push(...feeds.map((feed) => feed.businessCode))
-    }
-    {
-      const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
-      searcher.processor().markDistinct()
-      searcher.processor().setColumns(['business_code'])
-      searcher.processor().addSpecialCondition('business_code IS NOT NULL')
-      const feeds = await searcher.queryAllFeeds()
-      businessCodeList.push(...feeds.map((feed) => feed.businessCode))
-    }
+    const businessCodeList = await this.getTicketBusinessCodeList()
+    console.info(`[refreshTravelTicketItemsData] ${businessCodeList.length} businessCode items`)
+
     const mapper = await this.getTicketsDataMapper(businessCodeList)
 
     const searcher = new this.modelsCore.HLY_Travel().fc_searcher()
     searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
     const todoItems = await searcher.queryAllFeeds()
 
-    for (const travelItem of todoItems) {
+    for (let i = 0; i < todoItems.length; ++i) {
+      const travelItem = todoItems[i]
+      console.info(`[refreshTravelTicketItemsData] ${i} / ${todoItems.length}`)
       const extrasData = travelItem.extrasData()
       const ticketData = mapper[travelItem.businessCode]
       const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)

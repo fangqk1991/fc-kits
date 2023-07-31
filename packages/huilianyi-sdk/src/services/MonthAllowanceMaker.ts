@@ -24,7 +24,7 @@ export class MonthAllowanceMaker {
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const searcher = new HLY_Travel().fc_searcher()
     searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
-    // searcher.processor().addConditionKV('has_subsidy', 1)
+    searcher.processor().addConditionKV('match_closed_loop', 1)
     const items = await searcher.queryAllFeeds()
     for (const travelItem of items) {
       const participants = travelItem.extrasData().participants

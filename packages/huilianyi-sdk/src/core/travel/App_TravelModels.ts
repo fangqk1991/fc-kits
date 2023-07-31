@@ -196,8 +196,6 @@ export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrai
 export interface App_TravelOrderHotel extends App_TravelOrderBase<App_TravelHotelCoreInfo> {}
 
 export interface TravelTicketsDataInfo {
-  flightTickets: App_TravelFlightTicketInfo[]
-  trainTickets: App_TravelTrainTicketInfo[]
   trafficTickets: App_TrafficTicket[]
   employeeTrafficData: { [employeeName: string]: App_EmployeeTrafficData }
 }
