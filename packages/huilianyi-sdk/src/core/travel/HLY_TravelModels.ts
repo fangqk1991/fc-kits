@@ -204,8 +204,8 @@ export interface ItineraryBudgetDTO {
 export interface ItineraryHeadDTO {
   itineraryHeadId: string // Long	行程头id
   applicationOID: string //	申请单OID
-  startDate: string //	开始时间
-  endDate: string //	结束时间
+  startDate: string //	开始日期
+  endDate: string //	结束日期
   fromCityName: string //	出发地
   fromCityCode: string //	出发地 code
   toCityName: string //	目的地

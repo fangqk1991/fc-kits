@@ -1,16 +1,23 @@
 import { CommonAPI } from '@fangcha/app-request'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HLY_BusinessDataApis } from './HLY_BusinessDataApis'
-import { HLY_ApprovalParams, HLY_Expense, HLY_ExpenseV2 } from '../core/expense/HLY_ExpenseModels'
-import { HLY_ExpenseStatus, HLY_ExpenseStatusDescriptor } from '../core/expense/HLY_ExpenseStatus'
+import {
+  HLY_ApprovalParams,
+  HLY_Expense,
+  HLY_ExpenseApplicationModel,
+  HLY_ExpenseStatus,
+  HLY_ExpenseStatusDescriptor,
+  HLY_ExpenseV2,
+  HLY_Invoice,
+  HLY_OrderFlight,
+  HLY_OrderHotel,
+  HLY_OrderTrain,
+  HLY_PublicApplicationDTO,
+  HLY_TravelModel,
+  HuilianyiResponse
+} from '../core'
 import { PageDataFetcher } from './PageDataFetcher'
-import { HuilianyiResponse } from '../core/basic/HuilianyiModels'
-import { HLY_PublicApplicationDTO } from '../core/application/HLY_PublicApplicationModels'
-import { HLY_TravelModel } from '../core/travel/HLY_TravelModels'
-import { HLY_Invoice } from '../core/expense/HLY_InvoiceModels'
 import { TimeUtils } from '../core/tools/TimeUtils'
-import { HLY_OrderFlight, HLY_OrderHotel, HLY_OrderTrain } from '../core/travel/HLY_TravelOrderModels'
-import { HLY_ExpenseApplicationModel } from '../core/expense/HLY_ExpenseApplicationModels'
 
 export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   public async getPrepaymentApplyList() {
@@ -146,10 +153,11 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
     const data = await request.quickSend<HLY_TravelModel>()
     if (data.travelApplication?.itineraryHeadDTOs) {
-      data.travelApplication.itineraryHeadDTOs.forEach((item) => {
-        item.startDate = TimeUtils.momentUTC8(item.startDate).format('YYYY-MM-DD')
-        item.endDate = TimeUtils.momentUTC8(item.endDate).format('YYYY-MM-DD')
-      })
+      // UTC 时间无需纠正
+      // data.travelApplication.itineraryHeadDTOs.forEach((item) => {
+      //   item.startDate = TimeUtils.momentUTC8(item.startDate).format('YYYY-MM-DD')
+      //   item.endDate = TimeUtils.momentUTC8(item.endDate).format('YYYY-MM-DD')
+      // })
     }
     return data
   }
