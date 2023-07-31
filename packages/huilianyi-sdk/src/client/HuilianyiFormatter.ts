@@ -180,7 +180,7 @@ export class HuilianyiFormatter {
         appItinerary.subsidyList = items.map((item) => ({
           userName: item.userName,
           userOID: item.userOID,
-          date: TimeUtils.momentUTC8(item.subsidiesDate, false).format('YYYY-MM-DD'),
+          date: TimeUtils.momentUTC8(item.subsidiesDate).format('YYYY-MM-DD'),
           amount: item.amount,
           cityName: item.cityName,
         }))
@@ -198,37 +198,6 @@ export class HuilianyiFormatter {
       startMoment.startOf('month').add(1, 'month')
     }
     return monthList
-  }
-
-  public static transferMonthSectionInfos(
-    itineraryItems: { startDate: string; endDate: string }[]
-  ): TravelMonthSection[] {
-    const monthMapper: { [p: string]: { startDate: string; endDate: string }[] } = {}
-    for (const itinerary of itineraryItems) {
-      const monthList = HuilianyiFormatter.extractMonthList(itinerary.startDate, itinerary.endDate)
-      for (const month of monthList) {
-        if (!monthMapper[month]) {
-          monthMapper[month] = []
-        }
-        monthMapper[month].push(itinerary)
-      }
-    }
-    const monthList = Object.keys(monthMapper)
-    monthList.sort()
-    return monthList.map((month) => {
-      const itineraryItems = monthMapper[month] as App_TravelCoreItinerary[]
-      const startMoment1 = TimeUtils.momentUTC8(itineraryItems[0].startDate)
-      const endMoment1 = TimeUtils.momentUTC8(itineraryItems[itineraryItems.length - 1].endDate)
-      const startMoment2 = TimeUtils.momentUTC8(month).startOf('month')
-      const endMoment2 = TimeUtils.momentUTC8(month).endOf('month')
-
-      return {
-        month: month,
-        startDate: (startMoment1.valueOf() < startMoment2.valueOf() ? startMoment2 : startMoment1).format('YYYY-MM-DD'),
-        endDate: (endMoment1.valueOf() > endMoment2.valueOf() ? endMoment2 : endMoment1).format('YYYY-MM-DD'),
-        itineraryItems: itineraryItems,
-      }
-    })
   }
 
   public static transferTravelOrder<T>(

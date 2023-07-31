@@ -6,8 +6,8 @@ export class TimeUtils {
     return moment(timeStr).utcOffset('+08:00', true).format()
   }
 
-  public static momentUTC8(time: string, keepLocalTime = true) {
-    return moment(time).utcOffset('+08:00', keepLocalTime)
+  public static momentUTC8(time: string) {
+    return moment(time).utcOffset('+08:00', false)
   }
 
   public static timeStrUTC8(time: string) {
