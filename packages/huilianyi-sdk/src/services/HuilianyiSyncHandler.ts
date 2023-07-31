@@ -418,8 +418,8 @@ export class HuilianyiSyncHandler {
             })
             let [startTime, endTime] = ['', '']
             if (commonTickets.length > 0) {
-              startTime = TimeUtils.momentUTC8(commonTickets[0].fromTime).format()
-              endTime = TimeUtils.momentUTC8(commonTickets[commonTickets.length - 1].toTime).format()
+              startTime = commonTickets[0].fromTime
+              endTime = commonTickets[commonTickets.length - 1].toTime
             }
             return {
               userNamesStr: item.users,
@@ -536,8 +536,8 @@ export class HuilianyiSyncHandler {
             }
             let [startTime, endTime] = ['', '']
             if (commonTickets.length > 0) {
-              startTime = TimeUtils.momentUTC8(commonTickets[0].fromTime).format()
-              endTime = TimeUtils.momentUTC8(commonTickets[commonTickets.length - 1].toTime).format()
+              startTime = commonTickets[0].fromTime
+              endTime = commonTickets[commonTickets.length - 1].toTime
             }
             return {
               userNamesStr: item.users,

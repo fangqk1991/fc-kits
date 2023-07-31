@@ -6,8 +6,8 @@ export class TimeUtils {
     return moment(timeStr).utcOffset('+08:00', true).format()
   }
 
-  public static momentUTC8(time: string) {
-    return moment(time).utcOffset('+08:00', true)
+  public static momentUTC8(time: string, keepLocalTime = true) {
+    return moment(time).utcOffset('+08:00', keepLocalTime)
   }
 
   public static timeStrUTC8(time: string) {
@@ -34,13 +34,5 @@ export class TimeUtils {
       }
     }
     return timeStr
-  }
-
-  public static monthStartDate(time: string) {
-    return this.momentUTC8(time).startOf('month').format('YYYY-MM-DD')
-  }
-
-  public static monthEndDate(time: string) {
-    return this.momentUTC8(time).endOf('month').format('YYYY-MM-DD')
   }
 }

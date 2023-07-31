@@ -36,7 +36,7 @@ export class AllowanceCalculator {
       // 最后一段行程按出发地，其他均按目的地
       const firstTicket = closedLoop.tickets[0]
       const lastTicket = closedLoop.tickets[closedLoop.tickets.length - 1]
-      let curDate = TimeUtils.momentUTC8(firstTicket.fromTime).startOf('day')
+      let curDate = TimeUtils.momentUTC8(firstTicket.fromTime, false).startOf('day')
       const ruleResult = this.calculateRules(roleCodeList, firstTicket.toCity)
 
       const dayItems: AllowanceDayItem[] = [
@@ -51,7 +51,7 @@ export class AllowanceCalculator {
         const ticket = closedLoop.tickets[i]
         const lastCity = ticket.fromCity
         const ruleResult = this.calculateRules(roleCodeList, lastCity)
-        while (curDate.valueOf() < TimeUtils.momentUTC8(ticket.toTime).startOf('day').valueOf()) {
+        while (curDate.valueOf() < TimeUtils.momentUTC8(ticket.toTime, false).startOf('day').valueOf()) {
           curDate.add(1, 'day')
           dayItems.push({
             date: curDate.format('YYYY-MM-DD'),
@@ -61,11 +61,11 @@ export class AllowanceCalculator {
           })
         }
       }
-      dayItems[0].halfDay = TimeUtils.momentUTC8(firstTicket.fromTime).hours() >= 12
+      dayItems[0].halfDay = TimeUtils.momentUTC8(firstTicket.fromTime, false).hours() >= 12
       if (dayItems[0].halfDay) {
         dayItems[0].amount /= 2
       }
-      dayItems[dayItems.length - 1].halfDay = TimeUtils.momentUTC8(lastTicket.toTime).hours() < 12
+      dayItems[dayItems.length - 1].halfDay = TimeUtils.momentUTC8(lastTicket.toTime, false).hours() < 12
       if (dayItems[dayItems.length - 1].halfDay) {
         dayItems[dayItems.length - 1].amount /= 2
       }
