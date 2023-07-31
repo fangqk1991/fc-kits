@@ -214,7 +214,7 @@ export class TravelService {
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const commonTickets = item.extrasData().commonTickets
-        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode))
+        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode || ''))
         todoTickets.push(...commonTickets)
       }
     }
@@ -223,7 +223,7 @@ export class TravelService {
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const commonTickets = item.extrasData().commonTickets
-        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode))
+        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode || ''))
         todoTickets.push(...commonTickets)
       }
     }

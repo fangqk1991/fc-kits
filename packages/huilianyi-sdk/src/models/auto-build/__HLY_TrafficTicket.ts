@@ -150,7 +150,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
   /**
    * @description [varchar(20)]
    */
-  public businessCode!: string | null
+  public businessCode!: string
   /**
    * @description [tinyint] 是否有效
    */
@@ -207,7 +207,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.fromTime = null
     this.toTime = null
     this.journeyNo = ''
-    this.businessCode = null
+    this.businessCode = ''
     this.isValid = 0
     this.useForAllowance = 0
   }

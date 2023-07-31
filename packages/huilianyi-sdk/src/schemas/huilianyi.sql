@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS hly_traffic_ticket
     from_city         VARCHAR(16)     NOT NULL,
     to_city           VARCHAR(16)     NOT NULL,
     journey_no        VARCHAR(20)     NOT NULL DEFAULT '',
-    business_code     VARCHAR(20)     NULL COLLATE ascii_bin,
+    business_code     VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
     is_valid          TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有效',
     use_for_allowance TINYINT         NOT NULL DEFAULT 0 COMMENT '是否参与补贴计算',
     create_time       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
