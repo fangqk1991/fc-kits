@@ -3,11 +3,11 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   AllowanceCalculator,
   App_TravelAllowanceExtrasData,
-  App_TravelSubsidyItem,
   HLY_PrettyStatus,
   HLY_TravelStatus,
   HLY_VerifiedStatus,
 } from '../core'
+import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 
 export class MonthAllowanceMaker {
   public readonly modelsCore: HuilianyiModelsCore
@@ -27,83 +27,43 @@ export class MonthAllowanceMaker {
     searcher.processor().addConditionKV('match_closed_loop', 1)
     const items = await searcher.queryAllFeeds()
     for (const travelItem of items) {
-      const participants = travelItem.extrasData().participants
-      const monthSections = travelItem.monthSectionInfos()
-      for (const section of monthSections) {
-        for (const participant of participants) {
-          const subsidyItems: App_TravelSubsidyItem[] = []
-          for (const item of section.itineraryItems) {
-            subsidyItems.push(
-              ...item.subsidyList.filter(
-                (item) => item.date.startsWith(section.month) && item.userOID === participant.userOID
-              )
-            )
-          }
+      const extrasData = travelItem.extrasData()
+      const participants = extrasData.participants
+      const itineraryItems = travelItem.itineraryItems()
+      for (const participant of participants) {
+        const trafficItem = travelItem
+          .employeeTrafficItems()
+          .find((trafficItem) => trafficItem.employeeName === participant.fullName)
+        if (!trafficItem || trafficItem.tickets.length === 0) {
+          continue
+        }
+        const monthList = HuilianyiFormatter.extractMonthList(
+          trafficItem.tickets[0].fromTime,
+          trafficItem.tickets[trafficItem.tickets.length - 1].toTime
+        )
+        const staff = (await this.modelsCore.HLY_Staff.findWithUid(participant.userOID))!
+        const closedLoops = trafficItem.closedLoops || []
+        const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
 
-          // const allowanceItems: App_TravelAllowanceItem[] = []
-          // let lastDate = '1970-01-01'
-          // for (const item of section.itineraryItems) {
-          //   const startDate = TimeUtils.max(item.startDate, monthStartDate, lastDate)
-          //   const endDate = TimeUtils.min(item.endDate, monthEndDate)
-          //   if (TimeUtils.diff(startDate, endDate) > 0) {
-          //     break
-          //   }
-          //   lastDate = moment(endDate).add(1, 'days').format('YYYY-MM-DD')
-          //   const daysCount = moment(endDate).diff(moment(startDate), 'days') + 1
-          //   const allowanceAmount = daysCount * 100
-          //   allowanceItems.push({
-          //     startDate: startDate,
-          //     endDate: endDate,
-          //     city: item.toCityName,
-          //     daysCount: daysCount,
-          //     allowanceAmount: allowanceAmount,
-          //   })
-          // }
-
-          const trafficItem = travelItem
-            .employeeTrafficItems()
-            .find((trafficItem) => trafficItem.employeeName === participant.fullName)
-          const isPretty = !!trafficItem && trafficItem.isClosedLoop
+        for (const month of monthList) {
+          const subDayItems = dayItems.filter((dayItem) => dayItem.date.startsWith(month))
           const allowance = new HLY_TravelAllowance()
           allowance.businessCode = travelItem.businessCode
-          allowance.targetMonth = section.month
+          allowance.targetMonth = month
           allowance.applicantOid = participant.userOID
           allowance.applicantName = participant.fullName
           allowance.title = travelItem.title
-          allowance.uid = md5([travelItem.businessCode, section.month, participant.userOID].join(','))
-          if (isPretty) {
-            const closedLoops = trafficItem.closedLoops || []
-            const staff = (await this.modelsCore.HLY_Staff.findWithUid(participant.userOID))!
-            const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
-            allowance.daysCount = dayItems.length
-            allowance.amount = dayItems.reduce((result, cur) => result + cur.amount, 0)
-            allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
-            allowance.detailItemsStr = JSON.stringify(dayItems)
-            allowance.extrasInfo = JSON.stringify({
-              closedLoops: closedLoops,
-              itineraryItems: section.itineraryItems,
-            } as App_TravelAllowanceExtrasData)
-            allowance.isPretty = HLY_PrettyStatus.Pretty
-            allowance.isVerified = HLY_VerifiedStatus.Verified
-          } else {
-            allowance.daysCount = subsidyItems.length
-            allowance.amount = subsidyItems.reduce((result, cur) => result + cur.amount, 0)
-            allowance.subsidyItemsStr = JSON.stringify(subsidyItems)
-            allowance.detailItemsStr = JSON.stringify(
-              subsidyItems.map((item) => ({
-                date: item.date,
-                cityName: item.cityName,
-                amount: item.amount,
-                halfDay: false,
-              }))
-            )
-            allowance.extrasInfo = JSON.stringify({
-              closedLoops: [],
-              itineraryItems: section.itineraryItems,
-            } as App_TravelAllowanceExtrasData)
-            allowance.isPretty = HLY_PrettyStatus.NotPretty
-            allowance.isVerified = HLY_VerifiedStatus.NotVerified
-          }
+          allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
+          allowance.daysCount = subDayItems.length
+          allowance.amount = subDayItems.reduce((result, cur) => result + cur.amount, 0)
+          allowance.subsidyItemsStr = JSON.stringify([])
+          allowance.detailItemsStr = JSON.stringify(subDayItems)
+          allowance.extrasInfo = JSON.stringify({
+            closedLoops: closedLoops,
+            itineraryItems: itineraryItems,
+          } as App_TravelAllowanceExtrasData)
+          allowance.isPretty = HLY_PrettyStatus.Pretty
+          allowance.isVerified = HLY_VerifiedStatus.Verified
           await allowance.strongAddToDB()
         }
       }

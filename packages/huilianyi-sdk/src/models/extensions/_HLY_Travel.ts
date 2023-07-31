@@ -5,9 +5,7 @@ import {
   App_TravelExtrasData,
   App_TravelModel,
   HLY_TravelStatus,
-  TravelMonthSection,
 } from '../../core'
-import { HuilianyiFormatter } from '../../client/HuilianyiFormatter'
 
 export class _HLY_Travel extends __HLY_Travel {
   public status!: HLY_TravelStatus
@@ -72,10 +70,6 @@ export class _HLY_Travel extends __HLY_Travel {
       return JSON.parse(this.employeeTrafficItemsStr) || defaultData
     } catch (e) {}
     return defaultData
-  }
-
-  public monthSectionInfos(): TravelMonthSection[] {
-    return HuilianyiFormatter.transferMonthSectionInfos(this.itineraryItems())
   }
 
   public toJSON() {

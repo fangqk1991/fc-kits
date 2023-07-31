@@ -180,7 +180,7 @@ export class HuilianyiFormatter {
         appItinerary.subsidyList = items.map((item) => ({
           userName: item.userName,
           userOID: item.userOID,
-          date: TimeUtils.momentUTC8(item.subsidiesDate).format('YYYY-MM-DD'),
+          date: TimeUtils.momentUTC8(item.subsidiesDate, false).format('YYYY-MM-DD'),
           amount: item.amount,
           cityName: item.cityName,
         }))
@@ -189,9 +189,9 @@ export class HuilianyiFormatter {
     })
   }
 
-  public static extractMonthList(timeRange: { startDate: string; endDate: string }) {
-    const startMoment = TimeUtils.momentUTC8(timeRange.startDate)
-    const endMoment = TimeUtils.momentUTC8(timeRange.endDate)
+  public static extractMonthList(startDate: string, endDate: string) {
+    const startMoment = TimeUtils.momentUTC8(startDate)
+    const endMoment = TimeUtils.momentUTC8(endDate)
     const monthList: string[] = []
     while (startMoment.valueOf() <= endMoment.valueOf()) {
       monthList.push(moment(startMoment).format('YYYY-MM'))
@@ -205,7 +205,7 @@ export class HuilianyiFormatter {
   ): TravelMonthSection[] {
     const monthMapper: { [p: string]: { startDate: string; endDate: string }[] } = {}
     for (const itinerary of itineraryItems) {
-      const monthList = HuilianyiFormatter.extractMonthList(itinerary)
+      const monthList = HuilianyiFormatter.extractMonthList(itinerary.startDate, itinerary.endDate)
       for (const month of monthList) {
         if (!monthMapper[month]) {
           monthMapper[month] = []
