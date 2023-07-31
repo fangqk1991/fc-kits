@@ -107,5 +107,6 @@ describe('Test AllowanceCalculator.test.ts', () => {
   it(`moments`, async () => {
     console.info(moment().utcOffset('+01:00').format())
     console.info(moment().utcOffset('+01:00', true).format())
+    console.info(moment().utc().utcOffset('+01:00', true).format())
   })
 })

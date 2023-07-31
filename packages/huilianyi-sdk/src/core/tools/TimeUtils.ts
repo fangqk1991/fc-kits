@@ -11,7 +11,7 @@ export class TimeUtils {
   }
 
   public static timeStrUTC8(time: string) {
-    return this.momentUTC8(time).format('YYYY-MM-DD HH:mm:ss')
+    return moment(time).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')
   }
 
   public static diff(timeStr1: string, timeStr2: string) {
