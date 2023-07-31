@@ -37,6 +37,13 @@ export class _HLY_Travel extends __HLY_Travel {
       .filter((item) => !!item)
   }
 
+  public ticketIdList() {
+    return (this.ticketIdListStr || '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+  }
+
   public participantUserOids() {
     return this.participantUserOidsStr
       .split(',')

@@ -277,6 +277,14 @@ export class TravelService {
       travelItem.isPretty =
         travelItem.matchClosedLoop && travelItem.hasSubsidy ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
       travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
+      travelItem.ticketIdListStr = Object.keys(
+        employeeTrafficItems.reduce((result, cur) => {
+          for (const ticket of cur.tickets) {
+            result[ticket.ticketId] = true
+          }
+          return result
+        }, {})
+      ).join(',')
       await travelItem.updateToDB()
     }
   }

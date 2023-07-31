@@ -274,6 +274,7 @@ export class HuilianyiSyncHandler {
               'itinerary_items_str',
               'employee_traffic_items_str',
               'expense_form_codes_str',
+              'ticket_id_list_str',
               'ticket_data_str',
               'reload_time',
             ].includes(col)
