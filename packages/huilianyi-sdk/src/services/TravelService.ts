@@ -37,6 +37,7 @@ export class TravelService {
     {
       const searcher = new HLY_TrafficTicket().fc_searcher()
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
+      searcher.processor().addConditionKV('is_valid', 1)
       searcher.processor().addOrderRule('from_time', 'ASC')
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
