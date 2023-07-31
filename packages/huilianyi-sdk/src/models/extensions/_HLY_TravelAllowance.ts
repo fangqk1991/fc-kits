@@ -1,10 +1,10 @@
 import __HLY_TravelAllowance from '../auto-build/__HLY_TravelAllowance'
 import {
   App_TravelAllowanceExtrasData,
-  App_TravelAllowanceItem,
   App_TravelAllowanceModel,
   App_TravelSubsidyItem,
 } from '../../core/travel/App_TravelModels'
+import { AllowanceDayItem } from '../../core'
 
 export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   public constructor() {
@@ -22,7 +22,7 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     return defaultData
   }
 
-  public detailItems(): App_TravelAllowanceItem[] {
+  public detailItems(): AllowanceDayItem[] {
     const defaultData: any[] = []
     try {
       return JSON.parse(this.detailItemsStr) || defaultData

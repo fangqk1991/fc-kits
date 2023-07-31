@@ -76,20 +76,9 @@ export interface App_TravelAllowanceModel {
   amount: string
   extrasData: App_TravelAllowanceExtrasData
   subsidyItems: App_TravelSubsidyItem[]
-  detailItems: App_TravelAllowanceItem[]
+  detailItems: AllowanceDayItem[]
   isPretty: HLY_PrettyStatus
   isVerified: HLY_VerifiedStatus
-}
-
-/**
- * @deprecated
- */
-export interface App_TravelAllowanceItem {
-  startDate: string
-  endDate: string
-  city: string
-  daysCount: number
-  allowanceAmount: number
 }
 
 export interface App_TrafficTicket {
