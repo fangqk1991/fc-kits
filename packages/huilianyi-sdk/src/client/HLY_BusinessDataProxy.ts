@@ -184,7 +184,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   }
 
   public async getFlightOrders(companyOID: string, extras: {} = {}) {
-    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+    const items = await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.FlightOrdersGet))
       request.setQueryParams({
         ...params,
@@ -195,10 +195,17 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       })
       return await request.quickSend<HLY_OrderFlight[]>()
     })
+    items.forEach((item) => {
+      item.flightOrderDetails.forEach((subItem) => {
+        subItem.startDate = TimeUtils.correctUTC8Timestamp(subItem.startDate)
+        subItem.endDate = TimeUtils.correctUTC8Timestamp(subItem.endDate)
+      })
+    })
+    return items
   }
 
   public async getTrainOrders(companyOID: string, extras: {} = {}) {
-    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+    const items = await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.TrainOrdersGet))
       request.setQueryParams({
         ...params,
@@ -210,10 +217,17 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       const items = await request.quickSend<HLY_OrderTrain[]>()
       return items || []
     })
+    items.forEach((item) => {
+      item.trainOrderDetails.forEach((subItem) => {
+        subItem.startDate = TimeUtils.correctUTC8Timestamp(subItem.startDate)
+        subItem.endDate = TimeUtils.correctUTC8Timestamp(subItem.endDate)
+      })
+    })
+    return items
   }
 
   public async getHotelOrders(companyOID: string, extras: {} = {}) {
-    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+    const items =  await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.HotelOrdersGet))
       request.setQueryParams({
         ...params,
@@ -225,5 +239,12 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
       const items = await request.quickSend<HLY_OrderHotel[]>()
       return items || []
     })
+    items.forEach((item) => {
+      item.hotelOrderDetail.roomInfo.forEach((subItem) => {
+        subItem.ETA = TimeUtils.correctUTC8Timestamp(subItem.ETA)
+        subItem.ETD = TimeUtils.correctUTC8Timestamp(subItem.ETD)
+      })
+    })
+    return items
   }
 }

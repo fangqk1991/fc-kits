@@ -1,6 +1,11 @@
 import * as moment from 'moment/moment'
 
 export class TimeUtils {
+  // 2023-07-29 16:00:00 -> 2023-07-29T16:00:00+08:00
+  public static correctUTC8Timestamp(timeStr: string) {
+    return moment(timeStr).utcOffset('+08:00', true).format()
+  }
+
   public static momentUTC8(time: string) {
     return moment(time).utcOffset('+08:00', true)
   }
