@@ -117,6 +117,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
         ...params,
         withApplicationParticipant: true,
         ...extras,
+        size: 30,
       })
       return await request.quickSend<HLY_TravelModel[]>()
     })
