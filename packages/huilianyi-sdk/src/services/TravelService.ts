@@ -199,6 +199,9 @@ export class TravelService {
         order.hlyId = item.hlyId
         order.fc_edit()
         order.businessCode = item.businessCode
+        // const extrasData = order.extrasData()
+        // extrasData.commonTickets.forEach((ticket) => (ticket.businessCode = item.businessCode))
+        // order.extrasInfo = JSON.stringify(extrasData)
         await order.updateToDB()
       }
     }
@@ -210,16 +213,18 @@ export class TravelService {
       const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const extrasData = item.extrasData()
-        todoTickets.push(...extrasData.commonTickets)
+        const commonTickets = item.extrasData().commonTickets
+        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode))
+        todoTickets.push(...commonTickets)
       }
     }
     {
       const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const extrasData = item.extrasData()
-        todoTickets.push(...extrasData.commonTickets)
+        const commonTickets = item.extrasData().commonTickets
+        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode))
+        todoTickets.push(...commonTickets)
       }
     }
     const dbSpec = new this.modelsCore.HLY_TrafficTicket().dbSpec()
