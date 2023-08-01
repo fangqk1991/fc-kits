@@ -268,7 +268,7 @@ export class TravelService {
       const extrasData = travelItem.extrasData()
       const ticketData = mapper[travelItem.businessCode]
       const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)
-      const closedLoopTicketIdList = Object.keys(
+      const ticketIdList = Object.keys(
         employeeTrafficItems.reduce((result, cur) => {
           for (const ticket of cur.tickets) {
             result[ticket.ticketId] = true
@@ -282,19 +282,18 @@ export class TravelService {
         closedLoopCount > 0 && closedLoopCount === extrasData.participants.length
           ? HLY_ClosedLoopStatus.HasClosedLoop
           : HLY_ClosedLoopStatus.NoneClosedLoop
-      travelItem.isPretty =
-        travelItem.matchClosedLoop && travelItem.hasSubsidy ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
+      travelItem.isPretty = travelItem.matchClosedLoop ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
       travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
-      travelItem.ticketIdListStr = closedLoopTicketIdList.join(',')
+      travelItem.ticketIdListStr = ticketIdList.join(',')
 
       const runner = travelItem.dbSpec().database.createTransactionRunner()
       await runner.commit(async (transaction) => {
         await travelItem.updateToDB(transaction)
-        for (const ticketId of closedLoopTicketIdList) {
+        for (const ticketId of ticketIdList) {
           const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
           ticketFeed.ticketId = ticketId
           ticketFeed.fc_edit()
-          ticketFeed.useForAllowance = 1
+          ticketFeed.useForAllowance = travelItem.matchClosedLoop ? 1 : 0
           await ticketFeed.updateToDB(transaction)
         }
       })
