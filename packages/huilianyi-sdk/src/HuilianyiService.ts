@@ -56,6 +56,7 @@ export class HuilianyiService {
     await syncHandler.dumpTravelRecords(forceReload)
     await this.travelService().refreshTravelParticipants()
 
+    await syncHandler.dumpStaffGroupRecords()
     await syncHandler.dumpStaffRecords()
     await syncHandler.dumpOrderFlightRecords(forceReload)
     await syncHandler.dumpOrderTrainRecords(forceReload)

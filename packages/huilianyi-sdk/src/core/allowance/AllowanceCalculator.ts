@@ -51,6 +51,7 @@ export class AllowanceCalculator {
         const ticket = closedLoop.tickets[i]
         const lastCity = ticket.fromCity
         const ruleResult = this.calculateRules(roleCodeList, lastCity)
+
         while (curDate.valueOf() < TimeUtils.momentUTC8(ticket.toTime).startOf('day').valueOf()) {
           curDate.add(1, 'day')
           dayItems.push({
