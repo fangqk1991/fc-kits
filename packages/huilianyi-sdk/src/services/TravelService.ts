@@ -232,7 +232,7 @@ export class TravelService {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['use_for_allowance'].includes(item)))
     bulkAdder.declareTimestampKey('from_time')
     bulkAdder.declareTimestampKey('to_time')
     for (const ticketData of todoTickets) {
@@ -268,6 +268,14 @@ export class TravelService {
       const extrasData = travelItem.extrasData()
       const ticketData = mapper[travelItem.businessCode]
       const employeeTrafficItems = Object.values(ticketData.employeeTrafficData)
+      const closedLoopTicketIdList = Object.keys(
+        employeeTrafficItems.reduce((result, cur) => {
+          for (const ticket of cur.tickets) {
+            result[ticket.ticketId] = true
+          }
+          return result
+        }, {})
+      )
       const closedLoopCount = employeeTrafficItems.filter((item) => item.isClosedLoop).length
       travelItem.fc_edit()
       travelItem.matchClosedLoop =
@@ -277,15 +285,19 @@ export class TravelService {
       travelItem.isPretty =
         travelItem.matchClosedLoop && travelItem.hasSubsidy ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
       travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
-      travelItem.ticketIdListStr = Object.keys(
-        employeeTrafficItems.reduce((result, cur) => {
-          for (const ticket of cur.tickets) {
-            result[ticket.ticketId] = true
-          }
-          return result
-        }, {})
-      ).join(',')
-      await travelItem.updateToDB()
+      travelItem.ticketIdListStr = closedLoopTicketIdList.join(',')
+
+      const runner = travelItem.dbSpec().database.createTransactionRunner()
+      await runner.commit(async (transaction) => {
+        await travelItem.updateToDB(transaction)
+        for (const ticketId of closedLoopTicketIdList) {
+          const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
+          ticketFeed.ticketId = ticketId
+          ticketFeed.fc_edit()
+          ticketFeed.useForAllowance = 1
+          await ticketFeed.updateToDB(transaction)
+        }
+      })
     }
   }
 }

@@ -97,6 +97,7 @@ export interface App_TrafficTicket {
   journeyNo: string
   businessCode: string
   isValid: number
+  useForAllowance?: number
 }
 
 export interface App_ClosedLoop {
