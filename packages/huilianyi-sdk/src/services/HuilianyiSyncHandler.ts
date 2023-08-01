@@ -2,8 +2,6 @@ import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder, SQLSearcher } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
-import { HLY_TravelStatus } from '../core/travel/HLY_TravelStatus'
-import { TimeUtils } from '../core/tools/TimeUtils'
 import {
   App_TrafficTicket,
   App_TravelFlightTicketInfo,
@@ -12,8 +10,9 @@ import {
   App_TravelTrainTicketInfo,
   HLY_OrderType,
   HLY_StaffRole,
-  HLY_TravelModel,
+  HLY_TravelStatus
 } from '../core'
+import { TimeUtils } from '../core/tools/TimeUtils'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { md5 } from '@fangcha/tools'
 
