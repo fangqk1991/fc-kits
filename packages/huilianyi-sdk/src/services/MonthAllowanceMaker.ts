@@ -23,9 +23,10 @@ export class MonthAllowanceMaker {
     const HLY_Travel = this.modelsCore.HLY_Travel
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const searcher = new HLY_Travel().fc_searcher()
-    searcher.processor().addConditionKeyInArray('travel_status', [HLY_TravelStatus.Passed, HLY_TravelStatus.Changed])
+    searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
     searcher.processor().addConditionKV('match_closed_loop', 1)
     const items = await searcher.queryAllFeeds()
+
     for (const travelItem of items) {
       const extrasData = travelItem.extrasData()
       const participants = extrasData.participants
@@ -90,7 +91,10 @@ export class MonthAllowanceMaker {
         .insertableCols()
         .map((item) => `\`${item}\``)
         .join(', ')
-      const sql = `INSERT INTO ${snapshotTable} (${allowanceColumnsStr}) SELECT ${allowanceColumnsStr} FROM \`${allowanceDBSpec.table}\` WHERE target_month = ?`
+      const sql = `INSERT INTO ${snapshotTable} (${allowanceColumnsStr})
+                   SELECT ${allowanceColumnsStr}
+                   FROM \`${allowanceDBSpec.table}\`
+                   WHERE target_month = ?`
       await database.update(sql, [month], transaction)
 
       const searcher = new HLY_AllowanceSnapshot().fc_searcher()
@@ -105,5 +109,22 @@ export class MonthAllowanceMaker {
         await snapshotLog.addToDB(transaction)
       }
     })
+  }
+
+  public async removeExpiredAllowanceRecords() {
+    const searcher = new this.modelsCore.HLY_TravelAllowance().fc_searcher()
+    searcher
+      .processor()
+      .addSpecialCondition(
+        'EXISTS (SELECT hly_travel.business_code FROM hly_travel WHERE hly_travel.business_code = hly_travel_allowance.business_code AND (hly_travel.version != hly_travel_allowance.version OR hly_travel.travel_status != ?))',
+        HLY_TravelStatus.Passed
+      )
+    const items = await searcher.queryAllFeeds()
+    console.info(`[removeExpiredAllowanceRecords] ${items.length} items.`)
+
+    for (const item of items) {
+      console.info(`[removeExpiredAllowanceRecords] delete ${item.targetMonth} ${item.applicantName} ${item.businessCode} ${item.version}`)
+      await item.deleteFromDB()
+    }
   }
 }

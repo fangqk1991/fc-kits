@@ -65,5 +65,6 @@ export class HuilianyiService {
     await this.travelService().makeCommonTrafficTickets()
     await this.travelService().refreshTravelTicketItemsData()
     await this.monthAllowanceMaker().makeMonthAllowance()
+    await this.monthAllowanceMaker().removeExpiredAllowanceRecords()
   }
 }
