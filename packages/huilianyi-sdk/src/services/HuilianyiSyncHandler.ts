@@ -12,6 +12,7 @@ import {
   App_TravelTrainTicketInfo,
   HLY_OrderType,
   HLY_StaffRole,
+  HLY_TravelModel,
 } from '../core'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { md5 } from '@fangcha/tools'
@@ -262,31 +263,16 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(
-      dbSpec
-        .insertableCols()
-        .filter(
-          (col) =>
-            ![
-              'has_subsidy',
-              'match_closed_loop',
-              'is_pretty',
-              'itinerary_items_str',
-              'employee_traffic_items_str',
-              'expense_form_codes_str',
-              'ticket_id_list_str',
-              'ticket_data_str',
-              'reload_time',
-            ].includes(col)
-        )
-    )
-    bulkAdder.declareTimestampKey('start_time')
-    bulkAdder.declareTimestampKey('end_time')
-    bulkAdder.declareTimestampKey('created_date')
-    bulkAdder.declareTimestampKey('last_modified_date')
+    bulkAdder.setInsertKeys(['hly_id', 'business_code', 'created_date', 'last_modified_date', 'travel_status'])
+    bulkAdder.declareTimestampKey('created_date', 'last_modified_date')
 
     for (const item of items) {
-      const feed = HLY_Travel.makeFeed(HuilianyiFormatter.transferTravelModel(item))
+      const feed = new HLY_Travel()
+      feed.hlyId = Number(item.applicationId)
+      feed.businessCode = item.businessCode
+      feed.createdDate = item.createdDate
+      feed.lastModifiedDate = item.lastModifiedDate
+      feed.travelStatus = item.status
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
@@ -301,15 +287,12 @@ export class HuilianyiSyncHandler {
     console.info(`[dumpTravelRecords] ${todoItems.length} items need to reload.`)
     for (const item of todoItems) {
       const travelInfo = await syncCore.dataProxy.getTravelApplicationDetail(item.businessCode)
-      const itineraryItems = HuilianyiFormatter.transferItineraryHeadDTOs(
-        travelInfo.travelApplication?.itineraryHeadDTOs
-      )
-      item.fc_edit()
-      item.hasSubsidy = itineraryItems.find((item) => item.subsidyList.length > 0) ? 1 : 0
-      item.itineraryItemsStr = JSON.stringify(itineraryItems)
-      item.expenseFormCodesStr = (travelInfo.referenceExpenseReports || []).map((item) => item.businessCode).join(',')
-      item.reloadTime = item.lastModifiedDate
-      await item.updateToDB()
+      const props = HuilianyiFormatter.transferTravelModel(travelInfo)
+      delete (props as any).matchClosedLoop
+      delete (props as any).isPretty
+      delete (props as any).ticketIdListStr
+      delete (props as any).employeeTrafficItemsStr
+      await item.updateInfos(props)
     }
   }
 

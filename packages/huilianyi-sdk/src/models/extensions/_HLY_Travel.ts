@@ -21,13 +21,23 @@ export class _HLY_Travel extends __HLY_Travel {
     }))!
   }
 
-  public static makeFeed(data: App_TravelModel) {
-    const feed = new this()
-    feed.fc_generateWithModel(data)
-    feed.extrasInfo = JSON.stringify(data.extrasData)
-    feed.expenseFormCodesStr = data.expenseFormCodes.join(',')
-    feed.participantUserOidsStr = data.extrasData.participants.map((item) => item.userOID).join(',')
-    return feed
+  public async updateInfos(data: Partial<App_TravelModel>) {
+    this.fc_edit()
+    this.fc_generateWithModel(data)
+    if (data.extrasData) {
+      this.extrasInfo = JSON.stringify(data.extrasData)
+      this.participantUserOidsStr = data.extrasData.participants.map((item) => item.userOID).join(',')
+    }
+    if (data.itineraryItems) {
+      this.itineraryItemsStr = JSON.stringify(data.itineraryItems)
+    }
+    if (data.expenseFormCodes) {
+      this.expenseFormCodesStr = data.expenseFormCodes.join(',')
+    }
+    if (data.lastModifiedDate) {
+      this.reloadTime = data.lastModifiedDate
+    }
+    await this.updateToDB()
   }
 
   public expenseFormCodes() {
@@ -45,7 +55,7 @@ export class _HLY_Travel extends __HLY_Travel {
   }
 
   public participantUserOids() {
-    return this.participantUserOidsStr
+    return (this.participantUserOidsStr || '')
       .split(',')
       .map((item) => item.trim())
       .filter((item) => !!item)

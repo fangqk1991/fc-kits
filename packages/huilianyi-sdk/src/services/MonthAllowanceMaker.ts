@@ -64,6 +64,7 @@ export class MonthAllowanceMaker {
           } as App_TravelAllowanceExtrasData)
           allowance.isPretty = HLY_PrettyStatus.Pretty
           allowance.isVerified = HLY_VerifiedStatus.Verified
+          allowance.version = travelItem.version
           await allowance.strongAddToDB()
         }
       }

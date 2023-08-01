@@ -487,7 +487,7 @@ CREATE TABLE IF NOT EXISTS hly_department
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 
-DROP TABLE IF EXISTS hly_config;
+# DROP TABLE IF EXISTS hly_config;
 CREATE TABLE IF NOT EXISTS hly_config
 (
     _rid            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -500,7 +500,7 @@ CREATE TABLE IF NOT EXISTS hly_config
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 
-DROP TABLE IF EXISTS hly_allowance_rule;
+# DROP TABLE IF EXISTS hly_allowance_rule;
 CREATE TABLE IF NOT EXISTS hly_allowance_rule
 (
     _rid            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

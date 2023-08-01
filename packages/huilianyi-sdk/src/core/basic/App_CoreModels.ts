@@ -24,6 +24,7 @@ export interface App_FormBase<T = any> {
   createdDate: string | null
   lastModifiedDate: string | null
   extrasData: T
+  version: number
 }
 
 export interface App_StaffCore {

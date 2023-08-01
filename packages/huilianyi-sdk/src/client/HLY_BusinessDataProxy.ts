@@ -14,7 +14,7 @@ import {
   HLY_OrderTrain,
   HLY_PublicApplicationDTO,
   HLY_TravelModel,
-  HuilianyiResponse
+  HuilianyiResponse,
 } from '../core'
 import { PageDataFetcher } from './PageDataFetcher'
 import { TimeUtils } from '../core/tools/TimeUtils'
@@ -117,17 +117,27 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     return await request.quickSend<HLY_Expense>()
   }
 
-  public async getTravelApplicationList(extras: {} = {}) {
-    return await PageDataFetcher.fetchAllPageItems(async (params) => {
+  public async getTravelApplicationList(extras: {} = {}): Promise<HLY_TravelModel[]> {
+    const items = await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.TravelApplicationListGet))
       request.setQueryParams({
         ...params,
-        withApplicationParticipant: true,
+        withApplicationParticipant: false,
+        withItineraryMap: false,
+        withCustomFormShowValue: false,
         ...extras,
-        size: 30,
+        // size: 30,
       })
       return await request.quickSend<HLY_TravelModel[]>()
     })
+    const mapper: { [p: string]: HLY_TravelModel } = {}
+    for (const item of items) {
+      if (mapper[item.businessCode] && mapper[item.businessCode].version > item.version) {
+        continue
+      }
+      mapper[item.businessCode] = item
+    }
+    return Object.values(mapper)
   }
 
   public async getExpenseApplicationList(extras: {} = {}) {
@@ -235,7 +245,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
   }
 
   public async getHotelOrders(companyOID: string, extras: {} = {}) {
-    const items =  await PageDataFetcher.fetchAllPageItems(async (params) => {
+    const items = await PageDataFetcher.fetchAllPageItems(async (params) => {
       const request = await this.makeRequest(new CommonAPI(HLY_BusinessDataApis.HotelOrdersGet))
       request.setQueryParams({
         ...params,
