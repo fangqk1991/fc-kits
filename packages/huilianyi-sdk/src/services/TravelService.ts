@@ -247,9 +247,9 @@ export class TravelService {
     const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
     searcher.processor().markDistinct()
     searcher.processor().setColumns(['business_code'])
-    searcher.processor().addSpecialCondition('business_code IS NOT NULL AND business_code != ?', '')
+    searcher.processor().addSpecialCondition('business_code != ?', '')
     const feeds = await searcher.queryAllFeeds()
-    return feeds.map((feed) => feed.businessCode!)
+    return feeds.map((feed) => feed.businessCode)
   }
 
   public async refreshTravelTicketItemsData() {
