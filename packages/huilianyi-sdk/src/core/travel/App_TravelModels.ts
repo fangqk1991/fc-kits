@@ -1,4 +1,4 @@
-import { HLY_TravelParticipant, ItineraryMap } from './HLY_TravelModels'
+import { HLY_TravelParticipant } from './HLY_TravelModels'
 import { HLY_SubsidyStatus } from './HLY_SubsidyStatus'
 import { HLY_ClosedLoopStatus } from './HLY_ClosedLoopStatus'
 import { HLY_PrettyStatus } from './HLY_PrettyStatus'
@@ -10,7 +10,6 @@ import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
 import { HLY_OrderType } from './HLY_OrderType'
 
 export interface App_TravelExtrasData {
-  itineraryMap: ItineraryMap
   participants: HLY_TravelParticipant[]
   customProps: {
     [propKey: string]: {

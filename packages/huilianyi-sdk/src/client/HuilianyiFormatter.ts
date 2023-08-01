@@ -128,7 +128,6 @@ export class HuilianyiFormatter {
       }
       return result
     }, {})
-    const itineraryMap = item.travelApplication?.itineraryMap || {}
     const itineraryItems = HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs)
     return {
       hlyId: Number(item.applicationId),
@@ -159,7 +158,6 @@ export class HuilianyiFormatter {
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
         participants: customProps.field_participants ? JSON.parse(customProps.field_participants.value) : [],
-        itineraryMap: itineraryMap,
         customProps: customProps,
       },
     }
