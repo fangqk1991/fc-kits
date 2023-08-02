@@ -26,15 +26,19 @@ export class TravelService {
   public async getTravelTrafficItemsMapper(businessCodeList: string[]) {
     const HLY_TrafficTicket = this.modelsCore.HLY_TrafficTicket
 
-    const travelEmployeeDataMapper: {
-      [businessCode: string]: {
-        [employeeName: string]: App_EmployeeTrafficData
-      }
+    const businessTrafficItemsMapper: {
+      [businessCode: string]: App_EmployeeTrafficData[]
     } = {}
-    for (const businessCode of businessCodeList) {
-      travelEmployeeDataMapper[businessCode] = {}
-    }
+
     {
+      const travelEmployeeDataMapper: {
+        [businessCode: string]: {
+          [employeeName: string]: App_EmployeeTrafficData
+        }
+      } = {}
+      for (const businessCode of businessCodeList) {
+        travelEmployeeDataMapper[businessCode] = {}
+      }
       const searcher = new HLY_TrafficTicket().fc_searcher()
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
       searcher.processor().addConditionKV('is_valid', 1)
@@ -43,8 +47,9 @@ export class TravelService {
       for (const item of feeds) {
         const commonTicket = item.modelForClient()
         const employeeTrafficDataMapper = travelEmployeeDataMapper[commonTicket.businessCode]
-        if (!employeeTrafficDataMapper[commonTicket.userName]) {
-          employeeTrafficDataMapper[commonTicket.userName] = {
+        const userId = commonTicket.userOid || commonTicket.userName
+        if (!employeeTrafficDataMapper[userId]) {
+          employeeTrafficDataMapper[userId] = {
             userOid: commonTicket.userOid,
             employeeId: commonTicket.employeeId,
             employeeName: commonTicket.userName,
@@ -54,20 +59,17 @@ export class TravelService {
             allowanceDayItems: [],
           }
         }
-        employeeTrafficDataMapper[commonTicket.userName].tickets.push(commonTicket)
+        employeeTrafficDataMapper[userId].tickets.push(commonTicket)
+      }
+      for (const businessCode of businessCodeList) {
+        businessTrafficItemsMapper[businessCode] = Object.values(travelEmployeeDataMapper[businessCode])
       }
     }
 
     const calculator = await this.modelsCore.HLY_AllowanceRule.calculator()
 
-    const businessTrafficItemsMapper: {
-      [businessCode: string]: App_EmployeeTrafficData[]
-    } = {}
-
     for (const businessCode of businessCodeList) {
-      const trafficItems = Object.values(travelEmployeeDataMapper[businessCode]) as App_EmployeeTrafficData[]
-      businessTrafficItemsMapper[businessCode] = trafficItems
-
+      const trafficItems = businessTrafficItemsMapper[businessCode]
       for (const trafficData of trafficItems) {
         trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
         const closedLoops: App_ClosedLoop[] = [
