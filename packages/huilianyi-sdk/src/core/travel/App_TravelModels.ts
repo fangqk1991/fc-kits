@@ -55,10 +55,6 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   expenseFormCodes: string[]
 }
 
-export interface App_FullTravelModel extends App_TravelModel {
-  ticketsData: TravelTicketsDataInfo
-}
-
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
   closedLoops: App_ClosedLoop[]
