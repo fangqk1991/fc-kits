@@ -11,22 +11,22 @@ describe('Test HuilianyiService.test.ts', () => {
   const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
   const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
 
-  it(`getTravelTicketsData - Train`, async () => {
+  it(`getTravelTrafficItems - Train`, async () => {
     const searcher0 = new HLY_OrderTrain().fc_searcher()
     searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
     const travelItem = (await searcher0.queryOne())!
 
-    const ticketsData = await travelService.getTravelTicketsData(travelItem.businessCode)
-    console.info(ticketsData)
+    const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
+    console.info(trafficItems)
   })
 
-  it(`getTravelTicketsData - Flight`, async () => {
+  it(`getTravelTrafficItems - Flight`, async () => {
     const searcher0 = new HLY_OrderFlight().fc_searcher()
     searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
     const travelItem = (await searcher0.queryOne())!
 
-    const ticketsData = await travelService.getTravelTicketsData(travelItem.businessCode)
-    console.info(ticketsData)
+    const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
+    console.info(trafficItems)
   })
 
   it(`fillTravelOrdersBusinessCode`, async () => {
