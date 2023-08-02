@@ -30,7 +30,6 @@ export class TravelService {
     const ticketDataMapper: { [businessCode: string]: TravelTicketsDataInfo } = {}
     for (const businessCode of businessCodeList) {
       ticketDataMapper[businessCode] = {
-        trafficTickets: [],
         employeeTrafficData: {},
       }
     }
@@ -43,9 +42,9 @@ export class TravelService {
       for (const item of feeds) {
         const commonTicket = item.modelForClient()
         const ticketData = ticketDataMapper[commonTicket.businessCode]
-        ticketData.trafficTickets.push(commonTicket)
         if (!ticketData.employeeTrafficData[commonTicket.userName]) {
           ticketData.employeeTrafficData[commonTicket.userName] = {
+            userOid: commonTicket.userOid,
             employeeId: commonTicket.employeeId,
             employeeName: commonTicket.userName,
             isClosedLoop: false,
@@ -62,7 +61,6 @@ export class TravelService {
 
     for (const businessCode of businessCodeList) {
       const ticketData = ticketDataMapper[businessCode]
-      ticketData.trafficTickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
 
       for (const trafficData of Object.values(ticketData.employeeTrafficData) as App_EmployeeTrafficData[]) {
         trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())

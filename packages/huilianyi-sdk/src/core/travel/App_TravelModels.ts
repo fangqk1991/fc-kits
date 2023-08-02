@@ -104,6 +104,7 @@ export interface App_ClosedLoop {
 }
 
 export interface App_EmployeeTrafficData {
+  userOid: string
   employeeId: string
   employeeName: string
   isClosedLoop: boolean
@@ -185,6 +186,5 @@ export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrai
 export interface App_TravelOrderHotel extends App_TravelOrderBase<App_TravelHotelCoreInfo> {}
 
 export interface TravelTicketsDataInfo {
-  trafficTickets: App_TrafficTicket[]
   employeeTrafficData: { [employeeName: string]: App_EmployeeTrafficData }
 }
