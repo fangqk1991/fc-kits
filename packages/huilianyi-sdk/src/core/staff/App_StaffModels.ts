@@ -7,6 +7,7 @@ export interface App_StaffModel {
   staffRole: HLY_StaffRole
   companyCode: string
   fullName: string
+  baseCity: string
   email: string
   departmentOid: string
   departmentPath: string

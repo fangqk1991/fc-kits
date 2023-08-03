@@ -10,7 +10,7 @@ import {
   App_TravelTrainTicketInfo,
   HLY_OrderType,
   HLY_StaffRole,
-  HLY_TravelStatus
+  HLY_TravelStatus,
 } from '../core'
 import { TimeUtils } from '../core/tools/TimeUtils'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
@@ -122,7 +122,7 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['base_city'].includes(item)))
     bulkAdder.declareTimestampKey('entry_date')
     bulkAdder.declareTimestampKey('leaving_date')
     for (const item of items) {
