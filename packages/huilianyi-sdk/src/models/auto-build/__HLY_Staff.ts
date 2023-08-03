@@ -9,6 +9,7 @@ const _cols: string[] = [
   'company_code',
   'full_name',
   'email',
+  'base_city',
   'department_oid',
   'department_path',
   'staff_status',
@@ -29,6 +30,7 @@ const _insertableCols: string[] = [
   'company_code',
   'full_name',
   'email',
+  'base_city',
   'department_oid',
   'department_path',
   'staff_status',
@@ -45,6 +47,7 @@ const _modifiableCols: string[] = [
   'company_code',
   'full_name',
   'email',
+  'base_city',
   'department_oid',
   'department_path',
   'staff_status',
@@ -110,6 +113,10 @@ export default class __HLY_Staff extends FeedBase {
    * @description [varchar(128)]
    */
   public email!: string | null
+  /**
+   * @description [varchar(64)]
+   */
+  public baseCity!: string
   /**
    * @description [char(36)]
    */
@@ -190,6 +197,7 @@ export default class __HLY_Staff extends FeedBase {
     this.companyCode = null
     this.fullName = ''
     this.email = null
+    this.baseCity = ''
     this.departmentOid = null
     this.departmentPath = ''
     this.entryDate = null
@@ -208,6 +216,7 @@ export default class __HLY_Staff extends FeedBase {
       companyCode: 'company_code',
       fullName: 'full_name',
       email: 'email',
+      baseCity: 'base_city',
       departmentOid: 'department_oid',
       departmentPath: 'department_path',
       staffStatus: 'staff_status',
