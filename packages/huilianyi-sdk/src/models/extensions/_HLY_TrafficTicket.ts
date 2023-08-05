@@ -1,5 +1,6 @@
 import __HLY_TrafficTicket from '../auto-build/__HLY_TrafficTicket'
 import { App_OrderBizType, App_TrafficTicket, HLY_OrderType, UserTicketReport } from '../../core'
+import { FilterOptions } from 'fc-feed'
 
 export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
   orderType!: HLY_OrderType
@@ -8,7 +9,7 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
     super()
   }
 
-  public static async userTicketReporters() {
+  public static async userTicketReporters(filterOptions: FilterOptions = {}) {
     //   const sql = `SELECT
     //                    user_oid,
     //                    user_name,
@@ -22,7 +23,7 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
     //                    user_name ORDER BY CONVERT(user_name USING gbk)`
     //   return (await new this().dbSpec().database.query(sql)) as UserTicketReport[]
 
-    const searcher = new this().fc_searcher()
+    const searcher = new this().fc_searcher(filterOptions)
     searcher
       .processor()
       .setColumns([
