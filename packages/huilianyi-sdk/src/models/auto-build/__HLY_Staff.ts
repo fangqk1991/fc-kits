@@ -66,6 +66,9 @@ const _timestampTypeCols: string[] = [
   'create_time',
   'update_time',
 ]
+const _gbkCols: string[] = [
+  // prettier-ignore
+]
 const _exactSearchCols: string[] = [
   // prettier-ignore
   'user_oid',
@@ -84,6 +87,7 @@ const dbOptions = {
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
   timestampTypeCols: _timestampTypeCols,
+  gbkCols: _gbkCols,
   exactSearchCols: _exactSearchCols,
   fuzzySearchCols: _fuzzySearchCols,
 }

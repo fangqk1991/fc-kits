@@ -126,6 +126,7 @@ const dbSchemas: DBModelSchema[] = [
     extFile: `${__dirname}/../src/models/extensions/_HLY_TrafficTicket.ts`,
     primaryKey: ['ticket_id'],
     modifiableBlackList: ['create_time', 'update_time'],
+    gbkCols: ['user_name'],
     exactSearchCols: [
       'ticket_id',
       'order_id',

@@ -31,6 +31,7 @@ export interface DBModelSchema {
   modifiableWhiteList?: string[]
   modifiableBlackList?: string[]
   extendPropertyList?: { name: string; type: string }[]
+  gbkCols?: string[]
   exactSearchCols?: string[]
   fuzzySearchCols?: string[]
   // For AggregateSchema

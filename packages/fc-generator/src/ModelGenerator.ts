@@ -35,6 +35,7 @@ export interface ModelData {
   autoIncrementKey: string
   primaryKey: string | string[]
   sqlCols: ModelColumn[]
+  gbkCols: string[]
   exactSearchCols: string[]
   fuzzySearchCols: string[]
   reloadOnAdded?: boolean
@@ -214,6 +215,7 @@ export class ModelGenerator {
       autoIncrementKey: autoIncrementKey,
       primaryKey: primaryKey,
       sqlCols: sqlCols,
+      gbkCols: schema.gbkCols || [],
       exactSearchCols: schema.exactSearchCols || [],
       fuzzySearchCols: schema.fuzzySearchCols || [],
       reloadOnAdded: schema.reloadOnAdded,
@@ -242,6 +244,7 @@ export class ModelGenerator {
       primaryKey: schema.primaryKey,
       autoIncrementKey: '',
       sqlCols: [],
+      gbkCols: schema.gbkCols || [],
       exactSearchCols: schema.exactSearchCols || [],
       fuzzySearchCols: schema.fuzzySearchCols || [],
       reloadOnAdded: schema.reloadOnAdded,

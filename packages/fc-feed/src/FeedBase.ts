@@ -277,7 +277,11 @@ export class FeedBase extends FCModel {
     const mapper = this.fc_propertyMapper()
     const { sortKey, sortDirection } = _buildSortRule(params)
     if (sortKey && mapper[sortKey]) {
-      searcher.processor().addOrderRule(mapper[sortKey], sortDirection)
+      const dbSpec = this.dbSpec()
+      const gbkCols = dbSpec.gbkCols()
+      searcher
+        .processor()
+        .addOrderRule(gbkCols.includes(mapper[sortKey]) ? `CONVERT(\`${mapper[sortKey]}\` USING gbk)` : mapper[sortKey], sortDirection)
     }
     const paramsKeys = Object.keys(params)
     paramsKeys

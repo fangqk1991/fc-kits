@@ -26,6 +26,12 @@ const _timestampTypeCols: string[] = [
   '<%-item.columnName%>',
 <% }) -%>
 ]
+const _gbkCols: string[] = [
+  // prettier-ignore
+<% gbkCols.forEach((item) => { -%>
+  '<%-item%>',
+<% }) -%>
+]
 const _exactSearchCols: string[] = [
   // prettier-ignore
 <% exactSearchCols.forEach((item) => { -%>
@@ -46,6 +52,7 @@ const dbOptions = {
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
   timestampTypeCols: _timestampTypeCols,
+  gbkCols: _gbkCols,
   exactSearchCols: _exactSearchCols,
   fuzzySearchCols: _fuzzySearchCols,
 }
