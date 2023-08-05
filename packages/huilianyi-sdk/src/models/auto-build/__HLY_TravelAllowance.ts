@@ -8,7 +8,11 @@ const _cols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'company_oid',
+  'company_name',
   'title',
+  'start_time',
+  'end_time',
   'days_count',
   'amount',
   'subsidy_items_str',
@@ -27,7 +31,11 @@ const _insertableCols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'company_oid',
+  'company_name',
   'title',
+  'start_time',
+  'end_time',
   'days_count',
   'amount',
   'subsidy_items_str',
@@ -43,7 +51,11 @@ const _modifiableCols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'company_oid',
+  'company_name',
   'title',
+  'start_time',
+  'end_time',
   'days_count',
   'amount',
   'subsidy_items_str',
@@ -56,6 +68,8 @@ const _modifiableCols: string[] = [
 
 const _timestampTypeCols: string[] = [
   // prettier-ignore
+  'start_time',
+  'end_time',
   'create_time',
   'update_time',
 ]
@@ -105,9 +119,25 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public applicantName!: string
   /**
+   * @description [char(36)]
+   */
+  public companyOid!: string | null
+  /**
+   * @description [text]
+   */
+  public companyName!: string
+  /**
    * @description [text]
    */
   public title!: string
+  /**
+   * @description [timestamp] 开始时间
+   */
+  public startTime!: string | null
+  /**
+   * @description [timestamp] 结束时间
+   */
+  public endTime!: string | null
   /**
    * @description [double] 补贴天数
    */
@@ -182,7 +212,11 @@ export default class __HLY_TravelAllowance extends FeedBase {
     // This function is invoked by constructor of FCModel
     this.applicantOid = null
     this.applicantName = ''
+    this.companyOid = null
+    this.companyName = ''
     this.title = ''
+    this.startTime = null
+    this.endTime = null
     this.daysCount = 0
     this.amount = 0
     this.subsidyItemsStr = ''
@@ -200,7 +234,11 @@ export default class __HLY_TravelAllowance extends FeedBase {
       targetMonth: 'target_month',
       applicantOid: 'applicant_oid',
       applicantName: 'applicant_name',
+      companyOid: 'company_oid',
+      companyName: 'company_name',
       title: 'title',
+      startTime: 'start_time',
+      endTime: 'end_time',
       daysCount: 'days_count',
       amount: 'amount',
       subsidyItemsStr: 'subsidy_items_str',
