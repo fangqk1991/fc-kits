@@ -1,11 +1,40 @@
 import __HLY_TrafficTicket from '../auto-build/__HLY_TrafficTicket'
-import { App_OrderBizType, App_TrafficTicket, HLY_OrderType } from '../../core'
+import { App_OrderBizType, App_TrafficTicket, HLY_OrderType, UserTicketReport } from '../../core'
 
 export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
   orderType!: HLY_OrderType
 
   public constructor() {
     super()
+  }
+
+  public static async userTicketReporters() {
+    //   const sql = `SELECT
+    //                    user_oid,
+    //                    user_name,
+    //                    COUNT(*) AS count,
+    // COUNT( IF(is_valid = 1, 1, NULL)) AS validCount,
+    // COUNT( IF(is_valid = 0, 1, NULL)) AS invalidCount
+    //                FROM
+    //                    hly_traffic_ticket
+    //                GROUP BY
+    //                    user_oid,
+    //                    user_name ORDER BY CONVERT(user_name USING gbk)`
+    //   return (await new this().dbSpec().database.query(sql)) as UserTicketReport[]
+
+    const searcher = new this().fc_searcher()
+    searcher
+      .processor()
+      .setColumns([
+        'user_oid AS userOid',
+        'user_name AS userName',
+        'COUNT(*) AS count',
+        'COUNT(IF(is_valid = 1, 1, NULL)) AS validCount',
+        'COUNT(IF(is_valid = 0, 1, NULL)) AS invalidCount',
+      ])
+    searcher.processor().setGroupByKeys(['userOid', 'userName'])
+    searcher.processor().addOrderRule('CONVERT(user_name USING gbk)', 'ASC')
+    return (await searcher.processor().queryList()) as UserTicketReport[]
   }
 
   public fc_searcher(params = {}) {

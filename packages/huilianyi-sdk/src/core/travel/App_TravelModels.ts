@@ -180,3 +180,11 @@ export interface App_TravelOrderFlight extends App_TravelOrderBase<App_TravelFli
 export interface App_TravelOrderTrain extends App_TravelOrderBase<App_TravelTrainTicketInfo> {}
 
 export interface App_TravelOrderHotel extends App_TravelOrderBase<App_TravelHotelCoreInfo> {}
+
+export interface UserTicketReport {
+  userOid: string
+  userName: string
+  count: number
+  validCount: number
+  invalidCount: number
+}
