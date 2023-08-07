@@ -55,7 +55,7 @@ export class MonthAllowanceMaker {
           allowance.applicantName = participant.fullName
           allowance.title = travelItem.title
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
-          allowance.daysCount = subDayItems.length
+          allowance.daysCount = subDayItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
           allowance.amount = subDayItems.reduce((result, cur) => result + cur.amount, 0)
           allowance.subsidyItemsStr = JSON.stringify([])
           allowance.detailItemsStr = JSON.stringify(subDayItems)
@@ -123,7 +123,9 @@ export class MonthAllowanceMaker {
     console.info(`[removeExpiredAllowanceRecords] ${items.length} items.`)
 
     for (const item of items) {
-      console.info(`[removeExpiredAllowanceRecords] delete ${item.targetMonth} ${item.applicantName} ${item.businessCode} ${item.version}`)
+      console.info(
+        `[removeExpiredAllowanceRecords] delete ${item.targetMonth} ${item.applicantName} ${item.businessCode} ${item.version}`
+      )
       await item.deleteFromDB()
     }
   }
