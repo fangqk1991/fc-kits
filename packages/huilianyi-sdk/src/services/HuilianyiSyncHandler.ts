@@ -368,7 +368,6 @@ export class HuilianyiSyncHandler {
             const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
             const commonTickets = tickets.map((ticket) => {
               let userOid = employeeIdToUserOidMapper[ticket.employeeId] || ''
-              let baseCity = ''
               if (!userOid && item.applicant === ticket.employeeName) {
                 userOid = employeeIdToUserOidMapper[item.employeeId] || ''
               }
@@ -379,9 +378,7 @@ export class HuilianyiSyncHandler {
               ) {
                 userOid = nameToUserOidsMapper[ticket.employeeName][0]
               }
-              if (userOid) {
-                baseCity = staffMapper[userOid] ? staffMapper[userOid].baseCity : ''
-              }
+              const baseCity = userOid && staffMapper[userOid] ? staffMapper[userOid].baseCity : ''
               const data: App_TrafficTicket = {
                 ticketId: '',
                 orderType: HLY_OrderType.FLIGHT,
@@ -491,7 +488,6 @@ export class HuilianyiSyncHandler {
                 .filter((item) => !!item)
               for (const passengerName of nameList) {
                 let userOid = ''
-                let baseCity = ''
                 if (!userOid && item.applicant === passengerName) {
                   userOid = employeeIdToUserOidMapper[item.employeeId] || ''
                 }
@@ -501,8 +497,8 @@ export class HuilianyiSyncHandler {
                   nameToUserOidsMapper[passengerName].length === 1
                 ) {
                   userOid = nameToUserOidsMapper[passengerName][0]
-                  baseCity = staffMapper[userOid] ? staffMapper[userOid].baseCity : ''
                 }
+                const baseCity = userOid && staffMapper[userOid] ? staffMapper[userOid].baseCity : ''
                 const data: App_TrafficTicket = {
                   ticketId: '',
                   orderType: HLY_OrderType.TRAIN,
