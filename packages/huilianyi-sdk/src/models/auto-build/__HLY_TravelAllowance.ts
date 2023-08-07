@@ -75,6 +75,8 @@ const _timestampTypeCols: string[] = [
 ]
 const _gbkCols: string[] = [
   // prettier-ignore
+  'applicant_name',
+  'company_name',
 ]
 const _exactSearchCols: string[] = [
   // prettier-ignore
@@ -83,6 +85,7 @@ const _exactSearchCols: string[] = [
 const _fuzzySearchCols: string[] = [
   // prettier-ignore
   'applicant_name',
+  'company_name',
 ]
 
 const dbOptions = {

@@ -102,7 +102,8 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['uid'],
     modifiableBlackList: ['create_time', 'update_time'],
     exactSearchCols: ['business_code'],
-    fuzzySearchCols: ['applicant_name'],
+    fuzzySearchCols: ['applicant_name', 'company_name'],
+    gbkCols: ['applicant_name', 'company_name'],
   },
   {
     tableName: 'hly_snapshot_log',
