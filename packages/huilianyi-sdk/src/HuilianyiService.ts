@@ -30,7 +30,7 @@ export class HuilianyiService {
   }
 
   public monthAllowanceMaker() {
-    return new MonthAllowanceMaker(this.modelsCore)
+    return new MonthAllowanceMaker(this.syncCore)
   }
 
   public travelService() {
@@ -38,7 +38,7 @@ export class HuilianyiService {
   }
 
   public configHandler() {
-    return new SystemConfigHandler(this.modelsCore, this.syncCore)
+    return new SystemConfigHandler(this.syncCore)
   }
 
   public publicPaymentService() {

@@ -8,12 +8,15 @@ import {
   HLY_VerifiedStatus,
 } from '../core'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
+import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 
 export class MonthAllowanceMaker {
+  public readonly syncCore: HuilianyiSyncCore
   public readonly modelsCore: HuilianyiModelsCore
 
-  constructor(modelsCore: HuilianyiModelsCore) {
-    this.modelsCore = modelsCore
+  constructor(syncCore: HuilianyiSyncCore) {
+    this.syncCore = syncCore
+    this.modelsCore = syncCore.modelsCore
   }
 
   public async makeMonthAllowance() {

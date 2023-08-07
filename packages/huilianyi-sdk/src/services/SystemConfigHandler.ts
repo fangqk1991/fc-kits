@@ -6,8 +6,8 @@ export class SystemConfigHandler {
   public readonly syncCore: HuilianyiSyncCore
   public readonly modelsCore: HuilianyiModelsCore
 
-  constructor(modelsCore: HuilianyiModelsCore, syncCore: HuilianyiSyncCore) {
-    this.modelsCore = modelsCore
+  constructor(syncCore: HuilianyiSyncCore) {
+    this.modelsCore = syncCore.modelsCore
     this.syncCore = syncCore
   }
 

@@ -14,7 +14,7 @@ export class PublicPaymentService {
     const syncCore = this.syncCore
     const modelsCore = syncCore.modelsCore
 
-    const N = await new SystemConfigHandler(syncCore.modelsCore, syncCore).getConfig(
+    const N = await new SystemConfigHandler(syncCore).getConfig(
       RetainConfigKey.ExpenseAvgMonthN,
       async () => {
         return 3
