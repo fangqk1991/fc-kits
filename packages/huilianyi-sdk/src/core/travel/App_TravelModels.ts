@@ -67,6 +67,10 @@ export interface App_TravelAllowanceModel {
   applicantOid: string
   applicantName: string
   title: string
+  companyOid: string
+  companyName: string
+  startTime: string
+  endTime: string
   daysCount: number
   amount: string
   extrasData: App_TravelAllowanceExtrasData
