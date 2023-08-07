@@ -41,8 +41,8 @@ export class HuilianyiTokenKeeper extends BasicAuthProxy {
   }
 
   public async requireTenantAccessToken() {
-    // 到期时间不足 60s
-    if (this._expireTs - Date.now() < 60000) {
+    // 到期时间不足 120s
+    if (this._expireTs - Date.now() < 120000) {
       await this.refreshTenantAccessToken()
     }
     return this._tenantAccessToken
