@@ -71,6 +71,7 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
       userOid: this.userOid,
       employeeId: this.employeeId || '',
       userName: this.userName,
+      baseCity: this.baseCity,
       trafficCode: this.trafficCode,
       fromTime: this.fromTime || '',
       toTime: this.toTime || '',

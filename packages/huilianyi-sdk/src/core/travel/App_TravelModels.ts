@@ -88,6 +88,7 @@ export interface App_TrafficTicket {
   userOid: string
   employeeId: string
   userName: string
+  baseCity: string
   trafficCode: string
   fromTime: string
   toTime: string

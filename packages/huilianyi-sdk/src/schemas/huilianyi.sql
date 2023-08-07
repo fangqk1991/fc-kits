@@ -283,6 +283,7 @@ CREATE TABLE IF NOT EXISTS hly_traffic_ticket
     user_oid          CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
     employee_id       VARCHAR(64)     NULL COLLATE ascii_bin,
     user_name         VARCHAR(64)     NOT NULL DEFAULT '',
+    base_city         VARCHAR(16)     NOT NULL DEFAULT '',
     traffic_code      VARCHAR(16)     NOT NULL DEFAULT '' COLLATE ascii_bin,
     from_time         TIMESTAMP       NULL COMMENT '开始时间',
     to_time           TIMESTAMP       NULL COMMENT '结束时间',

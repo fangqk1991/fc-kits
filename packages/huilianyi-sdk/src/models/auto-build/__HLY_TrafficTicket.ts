@@ -10,6 +10,7 @@ const _cols: string[] = [
   'user_oid',
   'employee_id',
   'user_name',
+  'base_city',
   'traffic_code',
   'from_time',
   'to_time',
@@ -31,6 +32,7 @@ const _insertableCols: string[] = [
   'user_oid',
   'employee_id',
   'user_name',
+  'base_city',
   'traffic_code',
   'from_time',
   'to_time',
@@ -49,6 +51,7 @@ const _modifiableCols: string[] = [
   'user_oid',
   'employee_id',
   'user_name',
+  'base_city',
   'traffic_code',
   'from_time',
   'to_time',
@@ -131,6 +134,10 @@ export default class __HLY_TrafficTicket extends FeedBase {
   /**
    * @description [varchar(16)]
    */
+  public baseCity!: string
+  /**
+   * @description [varchar(16)]
+   */
   public trafficCode!: string
   /**
    * @description [timestamp] 开始时间
@@ -208,6 +215,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.userOid = ''
     this.employeeId = null
     this.userName = ''
+    this.baseCity = ''
     this.trafficCode = ''
     this.fromTime = null
     this.toTime = null
@@ -226,6 +234,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
       userOid: 'user_oid',
       employeeId: 'employee_id',
       userName: 'user_name',
+      baseCity: 'base_city',
       trafficCode: 'traffic_code',
       fromTime: 'from_time',
       toTime: 'to_time',

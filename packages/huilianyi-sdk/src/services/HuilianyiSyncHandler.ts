@@ -342,6 +342,7 @@ export class HuilianyiSyncHandler {
     const OrderClass = syncCore.modelsCore.HLY_OrderFlight
     const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
     const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
+    const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -367,6 +368,7 @@ export class HuilianyiSyncHandler {
             const tickets = item.flightOrderDetails.map((detail) => HuilianyiFormatter.transferFlightInfo(detail))
             const commonTickets = tickets.map((ticket) => {
               let userOid = employeeIdToUserOidMapper[ticket.employeeId] || ''
+              let baseCity = ''
               if (!userOid && item.applicant === ticket.employeeName) {
                 userOid = employeeIdToUserOidMapper[item.employeeId] || ''
               }
@@ -376,6 +378,9 @@ export class HuilianyiSyncHandler {
                 nameToUserOidsMapper[ticket.employeeName].length === 1
               ) {
                 userOid = nameToUserOidsMapper[ticket.employeeName][0]
+              }
+              if (userOid) {
+                baseCity = staffMapper[userOid] ? staffMapper[userOid].baseCity : ''
               }
               const data: App_TrafficTicket = {
                 ticketId: '',
@@ -390,6 +395,7 @@ export class HuilianyiSyncHandler {
                 userOid: userOid,
                 employeeId: ticket.employeeId,
                 userName: ticket.employeeName,
+                baseCity: baseCity,
                 journeyNo: orderItem.journeyNo,
                 businessCode: orderItem.businessCode || '',
                 isValid: orderItem.orderStatus === '已成交' ? 1 : 0,
@@ -438,6 +444,7 @@ export class HuilianyiSyncHandler {
     const OrderClass = syncCore.modelsCore.HLY_OrderTrain
     const employeeIdToUserOidMapper = await syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
     const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
+    const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
 
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
@@ -484,6 +491,7 @@ export class HuilianyiSyncHandler {
                 .filter((item) => !!item)
               for (const passengerName of nameList) {
                 let userOid = ''
+                let baseCity = ''
                 if (!userOid && item.applicant === passengerName) {
                   userOid = employeeIdToUserOidMapper[item.employeeId] || ''
                 }
@@ -493,6 +501,7 @@ export class HuilianyiSyncHandler {
                   nameToUserOidsMapper[passengerName].length === 1
                 ) {
                   userOid = nameToUserOidsMapper[passengerName][0]
+                  baseCity = staffMapper[userOid] ? staffMapper[userOid].baseCity : ''
                 }
                 const data: App_TrafficTicket = {
                   ticketId: '',
@@ -507,6 +516,7 @@ export class HuilianyiSyncHandler {
                   userOid: userOid,
                   employeeId: '',
                   userName: passengerName,
+                  baseCity: baseCity,
                   journeyNo: orderItem.journeyNo,
                   businessCode: orderItem.businessCode || '',
                   isValid: ['已购票', '待出票'].includes(orderItem.orderStatus) ? 1 : 0,
