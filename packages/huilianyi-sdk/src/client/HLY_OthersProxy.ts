@@ -8,16 +8,16 @@ import {
 } from '../core/basic/HuilianyiModels'
 import { HuilianyiProxyBase } from './HuilianyiProxyBase'
 import { HuilianyiApis } from './HuilianyiApis'
+import { PageDataFetcher } from './PageDataFetcher'
 
 export class HLY_OthersProxy extends HuilianyiProxyBase {
   public async getCompanyList() {
-    const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CompanyListGet))
-    request.setQueryParams({
-      page: 1,
-      size: 100,
+    return PageDataFetcher.fetchAllPageItems(async (params) => {
+      const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CompanyListGet))
+      request.setQueryParams(params)
+      const response = (await request.quickSend()) as HuilianyiResponse<HLY_Company[]>
+      return response.data
     })
-    const response = (await request.quickSend()) as HuilianyiResponse<HLY_Company[]>
-    return response.data
   }
 
   public async getCompanyInfo(companyCode: string) {
