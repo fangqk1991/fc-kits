@@ -9,6 +9,7 @@ import {
 } from '../core'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
+import assert from '@fangcha/assert'
 
 export class MonthAllowanceMaker {
   public readonly syncCore: HuilianyiSyncCore
@@ -30,6 +31,9 @@ export class MonthAllowanceMaker {
     searcher.processor().addConditionKV('match_closed_loop', 1)
     const items = await searcher.queryAllFeeds()
 
+    const staffMapper = (await this.modelsCore.HLY_Staff.staffMapper())!
+    const companyMapper = await this.syncCore.othersProxy.getCompanyMapper()
+
     for (const travelItem of items) {
       const extrasData = travelItem.extrasData()
       const participants = extrasData.participants
@@ -45,7 +49,11 @@ export class MonthAllowanceMaker {
           trafficItem.tickets[0].fromTime,
           trafficItem.tickets[trafficItem.tickets.length - 1].toTime
         )
-        const staff = (await this.modelsCore.HLY_Staff.findWithUid(participant.userOID))!
+
+        const staff = staffMapper[participant.userOID]
+        assert.ok(!!staff, `Staff[${participant.userOID}] missing.`, 500)
+        const company = companyMapper[staff.companyCode!]
+
         const closedLoops = trafficItem.closedLoops || []
         const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
 
@@ -56,7 +64,11 @@ export class MonthAllowanceMaker {
           allowance.targetMonth = month
           allowance.applicantOid = participant.userOID
           allowance.applicantName = participant.fullName
+          allowance.companyOid = company ? company.companyOID : null
+          allowance.companyName = company ? company.name : ''
           allowance.title = travelItem.title
+          allowance.startTime = travelItem.startTime
+          allowance.endTime = travelItem.endTime
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
           allowance.daysCount = subDayItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
           allowance.amount = subDayItems.reduce((result, cur) => result + cur.amount, 0)

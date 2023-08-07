@@ -20,6 +20,14 @@ export class HLY_OthersProxy extends HuilianyiProxyBase {
     })
   }
 
+  public async getCompanyMapper() {
+    const companyList = await this.getCompanyList()
+    return companyList.reduce((result, cur) => {
+      result[cur.code] = cur
+      return result
+    }, {} as { [p: string]: HLY_Company })
+  }
+
   public async getCompanyInfo(companyCode: string) {
     const request = await this.makeRequest(new CommonAPI(HuilianyiApis.CompanyInfoGet, companyCode))
     const response = (await request.quickSend()) as HuilianyiResponse<HLY_Company>

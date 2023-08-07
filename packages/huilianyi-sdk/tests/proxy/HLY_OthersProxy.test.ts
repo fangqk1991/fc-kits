@@ -10,6 +10,11 @@ describe('Test HLY_OthersProxy.test.ts', () => {
     console.info(items)
   })
 
+  it(`getCompanyMapper`, async () => {
+    const companyMapper = await huilianyiProxy.getCompanyMapper()
+    console.info(companyMapper)
+  })
+
   it(`getCompanyInfo`, async () => {
     const [companyInfo] = await huilianyiProxy.getCompanyList()
     console.info(companyInfo)

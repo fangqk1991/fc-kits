@@ -6,6 +6,15 @@ export class _HLY_Staff extends __HLY_Staff {
     super()
   }
 
+  public static async staffMapper() {
+    const searcher = new this().fc_searcher()
+    const feeds = await searcher.queryAllFeeds()
+    return feeds.reduce((result, cur) => {
+      result[cur.userOid] = cur
+      return result
+    }, {} as { [p: string]: _HLY_Staff })
+  }
+
   public static async employeeIdToUserOidMapper() {
     const searcher = new this().fc_searcher()
     searcher.processor().setColumns(['employee_id', 'user_oid'])
