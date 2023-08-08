@@ -9,6 +9,7 @@ const _cols: string[] = [
   'user_name',
   'order_status',
   'journey_no',
+  'created_date',
   'extras_info',
   'create_time',
   'update_time',
@@ -21,6 +22,7 @@ const _insertableCols: string[] = [
   'user_name',
   'order_status',
   'journey_no',
+  'created_date',
   'extras_info',
 ]
 const _modifiableCols: string[] = [
@@ -30,11 +32,13 @@ const _modifiableCols: string[] = [
   'user_name',
   'order_status',
   'journey_no',
+  'created_date',
   'extras_info',
 ]
 
 const _timestampTypeCols: string[] = [
   // prettier-ignore
+  'created_date',
   'create_time',
   'update_time',
 ]
@@ -90,6 +94,10 @@ export default class __CTrip_Order extends FeedBase {
    */
   public journeyNo!: string
   /**
+   * @description [timestamp]
+   */
+  public createdDate!: string | null
+  /**
    * @description [mediumtext] 附加信息，空 | JSON 字符串
    */
   public extrasInfo!: string
@@ -136,6 +144,7 @@ export default class __CTrip_Order extends FeedBase {
     this.employeeId = null
     this.userName = ''
     this.journeyNo = ''
+    this.createdDate = null
     this.extrasInfo = ''
   }
 
@@ -147,6 +156,7 @@ export default class __CTrip_Order extends FeedBase {
       userName: 'user_name',
       orderStatus: 'order_status',
       journeyNo: 'journey_no',
+      createdDate: 'created_date',
       extrasInfo: 'extras_info',
       createTime: 'create_time',
       updateTime: 'update_time',

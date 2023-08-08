@@ -7,10 +7,12 @@ import { MonthAllowanceMaker } from './services/MonthAllowanceMaker'
 import { TravelService } from './services/TravelService'
 import { SystemConfigHandler } from './services/SystemConfigHandler'
 import { PublicPaymentService } from './services/PublicPaymentService'
+import { CTripOptions } from '@fangcha/ctrip-sdk'
 
 interface Options {
   database: FCDatabase
   authConfig: BasicAuthConfig
+  ctripConfig?: CTripOptions
 }
 
 export class HuilianyiService {
@@ -22,6 +24,7 @@ export class HuilianyiService {
     this.syncCore = new HuilianyiSyncCore({
       authConfig: options.authConfig,
       modelsCore: this.modelsCore,
+      ctripConfig: options.ctripConfig,
     })
   }
 
