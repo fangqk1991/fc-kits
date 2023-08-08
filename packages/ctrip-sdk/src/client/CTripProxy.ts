@@ -81,6 +81,27 @@ export class CTripProxy extends ServiceProxy<CTripOptions> {
     return items
   }
 
+  public async stepSearchOrderItems(
+    orderIdList: number[],
+    stepCallback?: (records: CTripMixedOrder[], offset: number) => Promise<void>
+  ) {
+    const items: CTripMixedOrder[] = []
+    for (let i = 0; i < orderIdList.length; i += 30) {
+      const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderSearch))
+      request.setBodyData({
+        ...request.bodyData,
+        OrderID: orderIdList.slice(i, i + 30).join(','),
+      })
+      const data = await request.quickSend<CTripResponseDTO<{ ItineraryList: CTripMixedOrder[] }>>()
+      const records = data.ItineraryList
+      if (stepCallback) {
+        await stepCallback(records, i)
+      }
+      items.push(...records)
+    }
+    return items
+  }
+
   public async searchOrdersStatusData(orderIdList: number[]) {
     const items: any[] = []
     for (let i = 0; i < orderIdList.length; i += 30) {
