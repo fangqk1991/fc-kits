@@ -140,6 +140,16 @@ const dbSchemas: DBModelSchema[] = [
     ],
     fuzzySearchCols: ['user_name'],
   },
+  {
+    tableName: 'ctrip_order',
+    outputFile: `${__dirname}/../src/models/auto-build/__CTrip_Order.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_CTrip_Order.ts`,
+    primaryKey: ['order_id'],
+    modifiableBlackList: ['create_time', 'update_time'],
+    gbkCols: ['user_name'],
+    exactSearchCols: ['order_id', 'journey_no'],
+    fuzzySearchCols: ['user_name'],
+  },
 ]
 
 const main = async () => {

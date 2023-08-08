@@ -18,6 +18,7 @@ import { _HLY_StaffGroupMember } from '../models/extensions/_HLY_StaffGroupMembe
 import { _HLY_AllowanceRule } from '../models/extensions/_HLY_AllowanceRule'
 import { _HLY_TravelParticipant } from '../models/extensions/_HLY_TravelParticipant'
 import { _HLY_TrafficTicket } from '../models/extensions/_HLY_TrafficTicket'
+import { _CTrip_Order } from '../models/extensions/_CTrip_Order'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -42,6 +43,8 @@ export class HuilianyiModelsCore {
 
   public readonly HLY_ExpenseApplication!: { new (): _HLY_ExpenseApplication } & typeof _HLY_ExpenseApplication
   public readonly HLY_TrafficTicket!: { new (): _HLY_TrafficTicket } & typeof _HLY_TrafficTicket
+
+  public readonly CTrip_Order!: { new (): _CTrip_Order } & typeof _CTrip_Order
 
   constructor(database: FCDatabase) {
     this.database = database
@@ -159,5 +162,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_TrafficTicket = HLY_TrafficTicket
+
+    class CTrip_Order extends _CTrip_Order {}
+    CTrip_Order.addStaticOptions({
+      database: database,
+    })
+    this.CTrip_Order = CTrip_Order
   }
 }

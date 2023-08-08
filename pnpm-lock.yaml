@@ -1000,6 +1000,9 @@ importers:
       '@fangcha/backend-kit':
         specifier: workspace:^
         version: link:../backend-kit
+      '@fangcha/ctrip-sdk':
+        specifier: workspace:^
+        version: link:../ctrip-sdk
       '@fangcha/generator':
         specifier: workspace:^
         version: link:../fc-generator

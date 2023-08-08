@@ -27,6 +27,7 @@
     "@fangcha/logger": "workspace:^",
     "@fangcha/tools": "workspace:^",
     "@fangcha/generator": "workspace:^",
+    "@fangcha/ctrip-sdk": "workspace:^",
     "fc-feed": "workspace:^",
     "fc-model": "workspace:^",
     "fc-sql": "workspace:^"
