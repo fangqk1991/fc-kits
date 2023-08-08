@@ -9,6 +9,11 @@ export const CTripDataApis = {
     route: '/SwitchAPI/Order/SearchOrder',
     description: '订单查询 SearchOrder',
   },
+  OrderStatusDataSearch: {
+    method: 'POST',
+    route: '/dataapi/searchOrderStatusData',
+    description: '订单状态查询',
+  },
   OrderIdListQuery: {
     method: 'POST',
     route: '/order/queryOrderIdList',

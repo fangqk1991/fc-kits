@@ -3,7 +3,7 @@ import { RequestFollower, ServiceProxy } from '@fangcha/app-request-extensions'
 import { CTripTokenKeeper } from './CTripTokenKeeper'
 import AppError from '@fangcha/app-error'
 import { CTripOptions } from './CTripOptions'
-import { CTripDatetimeRange, CTripResponseDTO, CTripSimpleOrder } from '../core/CTrip_CoreModels'
+import { CTripDatetimeRange, CTripMixedOrder, CTripResponseDTO, CTripSimpleOrder } from '../core/CTrip_CoreModels'
 import { CTripDataApis } from './CTripDataApis'
 
 export class CTripProxy extends ServiceProxy<CTripOptions> {
@@ -65,5 +65,36 @@ export class CTripProxy extends ServiceProxy<CTripOptions> {
     })
     const data = await request.quickSend<CTripResponseDTO<{ Data: CTripSimpleOrder[] }>>()
     return data.Data.map((item) => item.OrderId)
+  }
+
+  public async searchOrderItems(orderIdList: number[]) {
+    const items: CTripMixedOrder[] = []
+    for (let i = 0; i < orderIdList.length; i += 30) {
+      const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderSearch))
+      request.setBodyData({
+        ...request.bodyData,
+        OrderID: orderIdList.slice(i, i + 30).join(','),
+      })
+      const data = await request.quickSend<CTripResponseDTO<{ ItineraryList: CTripMixedOrder[] }>>()
+      items.push(...data.ItineraryList)
+    }
+    return items
+  }
+
+  public async searchOrdersStatusData(orderIdList: number[]) {
+    const items: any[] = []
+    for (let i = 0; i < orderIdList.length; i += 30) {
+      const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderStatusDataSearch))
+      request.setQueryParams({
+        type: 'json',
+      })
+      request.setBodyData({
+        ...request.bodyData,
+        orderIdList: orderIdList.slice(i, i + 30).map((item) => `${item}`),
+      })
+      const data = await request.quickSend<CTripResponseDTO<{ orderDataList: any[] }>>()
+      items.push(...data.orderDataList)
+    }
+    return items
   }
 }
