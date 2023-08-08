@@ -21,4 +21,16 @@ describe('Test CTripProxy.test.ts', () => {
     console.info(`${items.length} items`)
     console.info(JSON.stringify(items, null, 2))
   })
+
+  it(`searchOrderItems`, async () => {
+    const items = await cTripProxy.searchOrderItems([])
+    console.info(`${items.length} items`)
+    console.info(JSON.stringify(items, null, 2))
+  })
+
+  it(`searchOrdersStatusData`, async () => {
+    const items = await cTripProxy.searchOrdersStatusData([])
+    console.info(`${items.length} items`)
+    console.info(JSON.stringify(items, null, 2))
+  })
 })

@@ -1,3 +1,5 @@
 export * from './client/CTripTokenKeeper'
 export * from './client/CTripProxy'
 export * from './client/CTripOptions'
+export * from './core/CTrip_CoreModels'
+export * from './core/CTrip_OrderType'
