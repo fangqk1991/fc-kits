@@ -29,16 +29,11 @@ export function useQueryParams<T = {}>() {
       )
     },
     updateQueryParams: (params: Partial<T>) => {
+      Object.assign(queryParams, params)
       setSearchParams(
-        qs.stringify(
-          {
-            ...queryParams,
-            ...params,
-          },
-          {
-            arrayFormat: 'repeat',
-          }
-        )
+        qs.stringify(queryParams, {
+          arrayFormat: 'repeat',
+        })
       )
     },
   }
