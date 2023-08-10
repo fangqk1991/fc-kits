@@ -143,8 +143,30 @@ export interface CTrip_TrainOrderInfoEntity {
   }
 }
 
+export interface CTrip_FlightOrderInfoEntity {
+  BasicInfo: {
+    OrderID: string
+    TripID: string
+    OrderStatus: string // '已成交'
+    OrderStatusCode: string // 'S'
+    UID: string
+    PreEmployName: string
+    EmployeeID: string
+    AccountID: number
+    SubAccountID: number
+    CorpPayType: string
+    CreateTime: string // '2023-07-13 15:07:23'
+    FinishDate: string // '2023-07-13 15:07:53'
+    PrintTicketTime: string // '2023-07-13 15:07:54'
+    FlightClass: string // 'N'
+    FlightWay: string // '单程'
+    JourneyID: string
+    AuditStatus: string // '授权通过'
+  }
+}
+
 export interface CTripMixedOrder {
-  FlightOrderInfoList: null | any[]
+  FlightOrderInfoList: null | CTrip_FlightOrderInfoEntity[]
   HotelOrderInfoList: null | any[]
   TrainOrderInfoList: null | CTrip_TrainOrderInfoEntity[]
 }
