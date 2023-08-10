@@ -678,7 +678,6 @@ export class HuilianyiSyncHandler {
       await cTripProxy.stepSearchOrderItems(
         feeds.map((item) => item.hlyId),
         async (records, offset) => {
-          console.info(`[dumpCtripOrders] ${offset + records.length} / ${feeds.length}`)
           const dbSpec = new CTrip_Order().dbSpec()
           const bulkAdder = new SQLBulkAdder(dbSpec.database)
           bulkAdder.setTable(dbSpec.table)
@@ -686,6 +685,8 @@ export class HuilianyiSyncHandler {
           bulkAdder.setInsertKeys(dbSpec.insertableCols())
           bulkAdder.declareTimestampKey('created_date')
           for (const record of records) {
+            offset += record.TrainOrderInfoList!.length
+            console.info(`[dumpCtripOrders trains] ${offset} / ${feeds.length}`)
             for (const orderItem of record.TrainOrderInfoList!) {
               const feed = new CTrip_Order()
               feed.orderId = Number(orderItem.BasicInfo.OrderID)
@@ -695,6 +696,41 @@ export class HuilianyiSyncHandler {
               feed.orderStatus = orderItem.BasicInfo.OrderStatusName
               feed.journeyNo = orderItem.CorpOrderInfo.JourneyID || ''
               feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.DataChange_CreateTime)
+              feed.extrasInfo = JSON.stringify(orderItem)
+              bulkAdder.putObject(feed.fc_encode())
+            }
+          }
+          await bulkAdder.execute()
+        }
+      )
+    }
+
+    {
+      const searcher = new syncCore.modelsCore.HLY_OrderFlight().fc_searcher()
+      searcher.processor().setColumns(['hly_id'])
+      const feeds = await searcher.queryFeeds()
+
+      await cTripProxy.stepSearchOrderItems(
+        feeds.map((item) => item.hlyId),
+        async (records, offset) => {
+          const dbSpec = new CTrip_Order().dbSpec()
+          const bulkAdder = new SQLBulkAdder(dbSpec.database)
+          bulkAdder.setTable(dbSpec.table)
+          bulkAdder.useUpdateWhenDuplicate()
+          bulkAdder.setInsertKeys(dbSpec.insertableCols())
+          bulkAdder.declareTimestampKey('created_date')
+          for (const record of records) {
+            offset += record.FlightOrderInfoList!.length
+            console.info(`[dumpCtripOrders flights] ${offset} / ${feeds.length}`)
+            for (const orderItem of record.FlightOrderInfoList!) {
+              const feed = new CTrip_Order()
+              feed.orderId = Number(orderItem.BasicInfo.OrderID)
+              feed.orderType = HLY_OrderType.FLIGHT
+              feed.employeeId = orderItem.BasicInfo.EmployeeID || null
+              feed.userName = orderItem.BasicInfo.PreEmployName || ''
+              feed.orderStatus = orderItem.BasicInfo.OrderStatus
+              feed.journeyNo = orderItem.BasicInfo.JourneyID || ''
+              feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.CreateTime)
               feed.extrasInfo = JSON.stringify(orderItem)
               bulkAdder.putObject(feed.fc_encode())
             }
