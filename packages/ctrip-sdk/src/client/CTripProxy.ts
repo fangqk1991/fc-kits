@@ -5,6 +5,7 @@ import AppError from '@fangcha/app-error'
 import { CTripOptions } from './CTripOptions'
 import { CTripDatetimeRange, CTripMixedOrder, CTripResponseDTO, CTripSimpleOrder } from '../core/CTrip_CoreModels'
 import { CTripDataApis } from './CTripDataApis'
+import { GuardPerformer } from '@fangcha/tools'
 
 export class CTripProxy extends ServiceProxy<CTripOptions> {
   protected _tokenKeeper: CTripTokenKeeper
@@ -87,13 +88,15 @@ export class CTripProxy extends ServiceProxy<CTripOptions> {
   ) {
     const items: CTripMixedOrder[] = []
     for (let i = 0; i < orderIdList.length; i += 30) {
-      const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderSearch))
-      request.setBodyData({
-        ...request.bodyData,
-        OrderID: orderIdList.slice(i, i + 30).join(','),
+      const records = await GuardPerformer.perform(async () => {
+        const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderSearch))
+        request.setBodyData({
+          ...request.bodyData,
+          OrderID: orderIdList.slice(i, i + 30).join(','),
+        })
+        const data = await request.quickSend<CTripResponseDTO<{ ItineraryList: CTripMixedOrder[] }>>()
+        return data.ItineraryList
       })
-      const data = await request.quickSend<CTripResponseDTO<{ ItineraryList: CTripMixedOrder[] }>>()
-      const records = data.ItineraryList
       if (stepCallback) {
         await stepCallback(records, i)
       }
