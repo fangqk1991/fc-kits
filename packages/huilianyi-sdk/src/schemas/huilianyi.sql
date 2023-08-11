@@ -201,6 +201,7 @@ CREATE TABLE IF NOT EXISTS dummy_travel
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 100000001
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 
@@ -316,6 +317,35 @@ CREATE TABLE IF NOT EXISTS hly_invoice
     INDEX (last_modified_date),
     INDEX (reload_time)
 ) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS dummy_ticket;
+CREATE TABLE IF NOT EXISTS dummy_ticket
+(
+    order_id      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ticket_id     CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'UUID',
+    order_type    VARCHAR(20)     NOT NULL COLLATE ascii_bin COMMENT 'HLY_OrderType',
+    user_oid      CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
+    employee_id   VARCHAR(64)     NULL COLLATE ascii_bin,
+    user_name     VARCHAR(64)     NOT NULL DEFAULT '',
+    base_city     VARCHAR(16)     NOT NULL DEFAULT '',
+    traffic_code  VARCHAR(16)     NOT NULL DEFAULT '' COLLATE ascii_bin,
+    from_time     TIMESTAMP       NULL COMMENT '开始时间',
+    to_time       TIMESTAMP       NULL COMMENT '结束时间',
+    from_city     VARCHAR(16)     NOT NULL,
+    to_city       VARCHAR(16)     NOT NULL,
+    business_code VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
+    is_valid      TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有效',
+    create_time   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (ticket_id),
+    INDEX (user_oid),
+    INDEX (business_code),
+    INDEX (from_time),
+    INDEX (is_valid)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 100000001
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 

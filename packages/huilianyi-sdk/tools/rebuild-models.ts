@@ -150,6 +150,16 @@ const dbSchemas: DBModelSchema[] = [
     exactSearchCols: ['order_id', 'journey_no'],
     fuzzySearchCols: ['user_name'],
   },
+  {
+    tableName: 'dummy_ticket',
+    outputFile: `${__dirname}/../src/models/auto-build/__DummyTicket.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_DummyTicket.ts`,
+    primaryKey: ['order_id'],
+    modifiableBlackList: ['create_time', 'update_time'],
+    gbkCols: ['user_name'],
+    exactSearchCols: ['order_id', 'business_code'],
+    fuzzySearchCols: ['user_name'],
+  },
 ]
 
 const main = async () => {

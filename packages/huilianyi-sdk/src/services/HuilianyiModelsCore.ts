@@ -20,6 +20,7 @@ import { _HLY_TravelParticipant } from '../models/extensions/_HLY_TravelParticip
 import { _HLY_TrafficTicket } from '../models/extensions/_HLY_TrafficTicket'
 import { _CTrip_Order } from '../models/extensions/_CTrip_Order'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
+import { _DummyTicket } from '../models/extensions/_DummyTicket'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -47,6 +48,7 @@ export class HuilianyiModelsCore {
 
   public readonly CTrip_Order!: { new (): _CTrip_Order } & typeof _CTrip_Order
   public readonly Dummy_Travel!: { new (): _Dummy_Travel } & typeof _Dummy_Travel
+  public readonly DummyTicket!: { new (): _DummyTicket } & typeof _DummyTicket
 
   constructor(database: FCDatabase) {
     this.database = database
@@ -176,5 +178,11 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.Dummy_Travel = Dummy_Travel
+
+    class DummyTicket extends _DummyTicket {}
+    DummyTicket.addStaticOptions({
+      database: database,
+    })
+    this.DummyTicket = DummyTicket
   }
 }
