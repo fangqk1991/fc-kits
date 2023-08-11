@@ -19,6 +19,7 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`syncAndRefreshData`, async () => {
+    await huilianyiService.syncHandler().dumpCtripOrders()
     await huilianyiService.syncAndRefreshData()
   })
 })

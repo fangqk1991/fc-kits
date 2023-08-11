@@ -234,7 +234,11 @@ export class TravelService {
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const commonTickets = item.extrasData().commonTickets
-        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode || ''))
+        commonTickets.forEach((ticket) => {
+          ticket.businessCode = ticket.businessCode || item.businessCode || ''
+          const orderStatus = item.ctripStatus || item.orderStatus
+          ticket.isValid = orderStatus === '已成交' ? 1 : 0
+        })
         todoTickets.push(...commonTickets)
       }
     }
@@ -243,7 +247,11 @@ export class TravelService {
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
         const commonTickets = item.extrasData().commonTickets
-        commonTickets.forEach((ticket) => (ticket.businessCode = ticket.businessCode || item.businessCode || ''))
+        commonTickets.forEach((ticket) => {
+          ticket.businessCode = ticket.businessCode || item.businessCode || ''
+          const orderStatus = item.ctripStatus || item.orderStatus
+          ticket.isValid = ['已购票', '待出票'].includes(orderStatus) ? 1 : 0
+        })
         todoTickets.push(...commonTickets)
       }
     }
