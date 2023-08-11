@@ -13,6 +13,7 @@ const _cols: string[] = [
   'order_type',
   'pay_type',
   'order_status',
+  'ctrip_status',
   'audit_status',
   'created_date',
   'last_modified_date',
@@ -38,6 +39,7 @@ const _insertableCols: string[] = [
   'order_type',
   'pay_type',
   'order_status',
+  'ctrip_status',
   'audit_status',
   'created_date',
   'last_modified_date',
@@ -60,6 +62,7 @@ const _modifiableCols: string[] = [
   'order_type',
   'pay_type',
   'order_status',
+  'ctrip_status',
   'audit_status',
   'created_date',
   'last_modified_date',
@@ -151,6 +154,10 @@ export default class __HLY_OrderBase extends FeedBase {
   /**
    * @description [varchar(20)]
    */
+  public ctripStatus!: string | null
+  /**
+   * @description [varchar(20)]
+   */
   public auditStatus!: string | null
   /**
    * @description [timestamp]
@@ -235,6 +242,7 @@ export default class __HLY_OrderBase extends FeedBase {
     this.businessCode = null
     this.companyOid = null
     this.payType = ''
+    this.ctripStatus = null
     this.auditStatus = null
     this.createdDate = null
     this.lastModifiedDate = null
@@ -259,6 +267,7 @@ export default class __HLY_OrderBase extends FeedBase {
       orderType: 'order_type',
       payType: 'pay_type',
       orderStatus: 'order_status',
+      ctripStatus: 'ctrip_status',
       auditStatus: 'audit_status',
       createdDate: 'created_date',
       lastModifiedDate: 'last_modified_date',

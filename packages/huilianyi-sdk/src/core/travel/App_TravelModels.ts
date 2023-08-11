@@ -168,6 +168,7 @@ export interface App_TravelOrderBase<T = any> {
   orderType: string
   payType: string
   orderStatus: string
+  ctripStatus?: string
   auditStatus: string
   createdDate: string | null
   lastModifiedDate: string | null
