@@ -370,6 +370,7 @@ CREATE TABLE IF NOT EXISTS hly_traffic_ticket
     business_code     VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
     is_valid          TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有效',
     use_for_allowance TINYINT         NOT NULL DEFAULT 0 COMMENT '是否参与补贴计算',
+    is_editable       TINYINT         NOT NULL DEFAULT 0 COMMENT '是否可被编辑',
     create_time       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (ticket_id),

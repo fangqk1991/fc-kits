@@ -265,6 +265,7 @@ export class TravelService {
     for (const ticketData of todoTickets) {
       const feed = new this.modelsCore.HLY_TrafficTicket()
       feed.fc_generateWithModel(ticketData)
+      feed.isEditable = !['紧急预订', '紧急预定'].includes(ticketData.journeyNo) && ticketData.businessCode ? 0 : 1
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()

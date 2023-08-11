@@ -20,6 +20,7 @@ const _cols: string[] = [
   'business_code',
   'is_valid',
   'use_for_allowance',
+  'is_editable',
   'create_time',
   'update_time',
 ]
@@ -42,6 +43,7 @@ const _insertableCols: string[] = [
   'business_code',
   'is_valid',
   'use_for_allowance',
+  'is_editable',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -61,6 +63,7 @@ const _modifiableCols: string[] = [
   'business_code',
   'is_valid',
   'use_for_allowance',
+  'is_editable',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -172,6 +175,10 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public useForAllowance!: number
   /**
+   * @description [tinyint]
+   */
+  public isEditable!: number
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -223,6 +230,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.businessCode = ''
     this.isValid = 0
     this.useForAllowance = 0
+    this.isEditable = 0
   }
 
   public fc_propertyMapper() {
@@ -244,6 +252,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
       businessCode: 'business_code',
       isValid: 'is_valid',
       useForAllowance: 'use_for_allowance',
+      isEditable: 'is_editable',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
