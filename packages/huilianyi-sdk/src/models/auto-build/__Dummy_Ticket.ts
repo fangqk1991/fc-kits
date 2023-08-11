@@ -86,7 +86,7 @@ const dbOptions = {
   fuzzySearchCols: _fuzzySearchCols,
 }
 
-export default class __DummyTicket extends FeedBase {
+export default class __Dummy_Ticket extends FeedBase {
   /**
    * @description [bigint unsigned]
    */

@@ -152,8 +152,8 @@ const dbSchemas: DBModelSchema[] = [
   },
   {
     tableName: 'dummy_ticket',
-    outputFile: `${__dirname}/../src/models/auto-build/__DummyTicket.ts`,
-    extFile: `${__dirname}/../src/models/extensions/_DummyTicket.ts`,
+    outputFile: `${__dirname}/../src/models/auto-build/__Dummy_Ticket.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_Dummy_Ticket.ts`,
     primaryKey: ['order_id'],
     modifiableBlackList: ['create_time', 'update_time'],
     gbkCols: ['user_name'],
