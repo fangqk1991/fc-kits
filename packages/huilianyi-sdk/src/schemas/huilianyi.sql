@@ -157,6 +157,53 @@ CREATE TABLE IF NOT EXISTS hly_travel
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
 
+DROP TABLE IF EXISTS dummy_travel;
+CREATE TABLE IF NOT EXISTS dummy_travel
+(
+    hly_id                     BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    business_code              VARCHAR(20)     NOT NULL COLLATE ascii_bin,
+    application_oid            CHAR(36)        NULL COLLATE ascii_bin,
+    applicant_oid              CHAR(36)        NULL COLLATE ascii_bin,
+    applicant_name             TEXT            NULL,
+    company_oid                CHAR(36)        NULL COLLATE ascii_bin,
+    department_oid             CHAR(36)        NULL COLLATE ascii_bin,
+    corporation_oid            CHAR(36)        NULL COLLATE ascii_bin,
+    form_code                  VARCHAR(32)     NULL COLLATE ascii_bin,
+    form_oid                   CHAR(36)        NULL COLLATE ascii_bin,
+    form_name                  TEXT            NULL,
+    submitted_by               CHAR(36)        NULL COLLATE ascii_bin,
+    title                      TEXT            NULL,
+    start_time                 TIMESTAMP       NULL COMMENT '开始时间',
+    end_time                   TIMESTAMP       NULL COMMENT '结束时间',
+    created_date               TIMESTAMP       NULL,
+    last_modified_date         TIMESTAMP       NULL,
+    extras_info                MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
+    version                    INT             NOT NULL DEFAULT 0 COMMENT '版本号',
+    has_subsidy                TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有补贴数据',
+    match_closed_loop          TINYINT         NOT NULL DEFAULT 0 COMMENT '是否满足闭环行程',
+    is_pretty                  TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为标准情况',
+    itinerary_items_str        MEDIUMTEXT COMMENT '行程单信息，空 | JSON 字符串',
+    employee_traffic_items_str MEDIUMTEXT COMMENT '员工行程票据信息，空 | JSON 字符串',
+    expense_form_codes_str     VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联报销单编号集',
+    participant_user_oids_str  TEXT COLLATE ascii_bin,
+    ticket_id_list_str         TEXT COLLATE ascii_bin,
+    travel_status              INT             NOT NULL COMMENT 'HLY_TravelStatus',
+    reload_time                TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
+    create_time                TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time                TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (business_code),
+    INDEX (form_code),
+    INDEX (start_time),
+    INDEX (end_time),
+    INDEX (has_subsidy),
+    INDEX (expense_form_codes_str),
+    INDEX (travel_status),
+    INDEX (last_modified_date),
+    INDEX (reload_time)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;
+
 DROP TABLE IF EXISTS hly_travel_participant;
 CREATE TABLE IF NOT EXISTS hly_travel_participant
 (
