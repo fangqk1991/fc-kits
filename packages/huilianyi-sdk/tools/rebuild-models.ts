@@ -25,6 +25,7 @@ const dbSchemas: DBModelSchema[] = [
     extFile: `${__dirname}/../src/models/extensions/_HLY_Travel.ts`,
     primaryKey: ['hly_id'],
     forceInsertableWhiteList: ['created_date', 'last_modified_date'],
+    forceModifiableWhiteList: ['business_code'],
     modifiableBlackList: ['create_time', 'update_time'],
     exactSearchCols: ['business_code'],
     fuzzySearchCols: ['applicant_name'],

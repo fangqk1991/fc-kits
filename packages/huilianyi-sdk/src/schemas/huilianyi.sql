@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS hly_travel
 DROP TABLE IF EXISTS dummy_travel;
 CREATE TABLE IF NOT EXISTS dummy_travel
 (
-    hly_id                     BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    hly_id                     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     business_code              VARCHAR(20)     NOT NULL COLLATE ascii_bin,
     application_oid            CHAR(36)        NULL COLLATE ascii_bin,
     applicant_oid              CHAR(36)        NULL COLLATE ascii_bin,
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS dummy_travel
     expense_form_codes_str     VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联报销单编号集',
     participant_user_oids_str  TEXT COLLATE ascii_bin,
     ticket_id_list_str         TEXT COLLATE ascii_bin,
-    travel_status              INT             NOT NULL COMMENT 'HLY_TravelStatus',
+    travel_status              INT             NULL COMMENT 'HLY_TravelStatus',
     reload_time                TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',
     create_time                TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time                TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

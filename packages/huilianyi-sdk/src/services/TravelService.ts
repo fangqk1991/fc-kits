@@ -1,15 +1,18 @@
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
-  App_ClosedLoop,
   App_EmployeeTrafficData,
   App_TrafficTicket,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
+  HLY_Staff,
   HLY_TravelParticipant,
   HLY_TravelStatus,
+  TravelTools,
 } from '../core'
 import * as moment from 'moment'
 import { SQLBulkAdder } from 'fc-sql'
+import assert from '@fangcha/assert'
+import { makeRandomStr } from '@fangcha/tools/lib'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -72,47 +75,12 @@ export class TravelService {
       const trafficItems = businessTrafficItemsMapper[businessCode]
       for (const trafficData of trafficItems) {
         trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
-        const closedLoops: App_ClosedLoop[] = [
-          {
-            tickets: [],
-          },
-        ]
-
-        let isClosedLoop = true
-        let startCity = ''
-        let curCity = ''
-        for (const ticket of trafficData.tickets) {
-          const lastLoop = closedLoops[closedLoops.length - 1]
-          lastLoop.tickets.push(ticket)
-
-          if (!startCity) {
-            startCity = ticket.fromCity
-            curCity = ticket.fromCity
-          }
-
-          if (ticket.fromCity !== curCity) {
-            isClosedLoop = false
-            break
-          }
-
-          if (startCity === ticket.toCity) {
-            closedLoops.push({
-              tickets: [],
-            })
-            startCity = ''
-            curCity = ''
-            continue
-          }
-          curCity = ticket.toCity
-        }
-        trafficData.isClosedLoop = isClosedLoop && curCity === startCity
-        if (!trafficData.isClosedLoop) {
+        const closedLoops = TravelTools.makeClosedLoops(trafficData.tickets)
+        if (closedLoops === null) {
+          trafficData.isClosedLoop = false
           continue
         }
-
-        if (closedLoops[closedLoops.length - 1].tickets.length === 0) {
-          closedLoops.pop()
-        }
+        trafficData.isClosedLoop = true
         trafficData.closedLoops = closedLoops
 
         const travelItem = (await this.modelsCore.HLY_Travel.findWithBusinessCode(businessCode))!
@@ -278,6 +246,49 @@ export class TravelService {
     searcher.processor().addSpecialCondition('business_code != ?', '')
     const feeds = await searcher.queryAllFeeds()
     return feeds.map((feed) => feed.businessCode)
+  }
+
+  public async makeDummyTravel(ticketIdList: string[]) {
+    assert.ok(ticketIdList.length > 0, `❌未选择票据`)
+    const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
+    searcher.processor().addConditionKeyInArray('ticket_id', ticketIdList)
+    searcher.processor().addOrderRule('from_time', 'ASC')
+    const tickets = await searcher.queryFeeds()
+    if (tickets.length !== ticketIdList.length) {
+      for (const ticketId of ticketIdList) {
+        assert.ok(!!tickets.find((ticket) => ticket.ticketId === ticketId), `Ticket[${ticketId}] missing.`)
+      }
+    }
+    const userOid = tickets[0].userOid
+    tickets.forEach((ticket) => {
+      assert.ok(!!ticket.isValid, `❌所选票据中存在无效票据`)
+      assert.ok(!ticket.businessCode, `❌所选票据中存在已关联出差申请单的票据`)
+      assert.ok(userOid === ticket.userOid, `❌所选票据并非来自同一人`)
+    })
+
+    const closedLoops = TravelTools.makeClosedLoops(tickets.map((item) => item.modelForClient()))
+    assert.ok(!!closedLoops, `❌所选票据未构成闭环行程`)
+
+    const staff = (await this.modelsCore.HLY_Staff.findWithUid(userOid))!
+    assert.ok(!!staff, `❌相关员工不存在`)
+
+    const staffRaw = JSON.parse(staff.extrasInfo) as HLY_Staff
+    const dummyTravel = new this.modelsCore.Dummy_Travel()
+    // dummyTravel.hlyId = null as any
+    dummyTravel.businessCode = makeRandomStr(20)
+    dummyTravel.applicantOid = staff.userOid
+    dummyTravel.applicantName = staff.fullName
+    dummyTravel.companyOid = staffRaw.companyOID
+    dummyTravel.departmentOid = staffRaw.departmentOID
+    dummyTravel.startTime = tickets[0].fromTime
+    dummyTravel.endTime = tickets[tickets.length - 1].fromTime
+    const runner = dummyTravel.dbSpec().database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      await dummyTravel.addToDB(transaction)
+      dummyTravel.fc_edit()
+      dummyTravel.businessCode = `V_${dummyTravel.hlyId}`
+      await dummyTravel.updateToDB(transaction)
+    })
   }
 
   public async refreshTravelTicketItemsData() {
