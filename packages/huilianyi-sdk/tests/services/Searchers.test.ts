@@ -1,11 +1,7 @@
-import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HuilianyiService } from '../../src/HuilianyiService'
+import { HuilianyiServiceDev } from './HuilianyiServiceDev'
 
 describe('Test Searchers.test.ts', () => {
-  const huilianyiService = new HuilianyiService({
-    authConfig: HuilianyiConfigTest,
-    database: HuilianyiDBTest,
-  })
+  const huilianyiService = HuilianyiServiceDev
 
   it(`HLY_ExpenseApplication.fc_searcher`, async () => {
     const searcher = new huilianyiService.modelsCore.HLY_ExpenseApplication().fc_searcher({

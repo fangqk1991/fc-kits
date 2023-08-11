@@ -1,11 +1,7 @@
-import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
-import { HuilianyiService } from '../../src/HuilianyiService'
+import { HuilianyiServiceDev } from './HuilianyiServiceDev'
 
 describe('Test HLY_Travel.test.ts', () => {
-  const huilianyiService = new HuilianyiService({
-    authConfig: HuilianyiConfigTest,
-    database: HuilianyiDBTest,
-  })
+  const huilianyiService = HuilianyiServiceDev
 
   it(`HLY_Travel`, async () => {
     const HLY_Travel = huilianyiService.modelsCore.HLY_Travel

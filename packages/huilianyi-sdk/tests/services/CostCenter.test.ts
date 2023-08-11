@@ -1,12 +1,8 @@
-import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
 import { App_CostCenterItem, App_CostCenterMetadata } from '../../src'
-import { HuilianyiService } from '../../src/HuilianyiService'
+import { HuilianyiServiceDev } from './HuilianyiServiceDev'
 
 describe('Test CostCenter.test.ts', () => {
-  const huilianyiService = new HuilianyiService({
-    authConfig: HuilianyiConfigTest,
-    database: HuilianyiDBTest,
-  })
+  const huilianyiService = HuilianyiServiceDev
   const basicDataProxy = huilianyiService.syncCore.basicDataProxy
 
   it(`calcMetadata`, async () => {
