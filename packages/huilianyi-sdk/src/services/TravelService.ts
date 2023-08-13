@@ -13,6 +13,7 @@ import * as moment from 'moment'
 import { SQLBulkAdder } from 'fc-sql'
 import assert from '@fangcha/assert'
 import { makeRandomStr } from '@fangcha/tools'
+import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -196,6 +197,18 @@ export class TravelService {
   }
 
   public async makeCommonTrafficTickets() {
+    const linkedTicketMap: { [ticketId: string]: string } = {}
+    {
+      const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
+      searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
+      const feeds = await searcher.queryAllFeeds()
+      for (const dummyTravel of feeds) {
+        for (const ticketId of dummyTravel.ticketIdList()) {
+          linkedTicketMap[ticketId] = dummyTravel.businessCode
+        }
+      }
+    }
+
     const todoTickets: App_TrafficTicket[] = []
     {
       const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
@@ -204,7 +217,7 @@ export class TravelService {
         const extrasData = item.extrasData() as App_TravelOrderExtras
         const commonTickets = extrasData.commonTickets
         commonTickets.forEach((ticket) => {
-          ticket.businessCode = ticket.businessCode || item.businessCode || ''
+          ticket.businessCode = linkedTicketMap[ticket.ticketId] || ticket.businessCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
           ticket.isValid = orderStatus === '已成交' ? 1 : 0
         })
@@ -218,7 +231,7 @@ export class TravelService {
         const extrasData = item.extrasData() as App_TravelOrderExtras
         const commonTickets = extrasData.commonTickets
         commonTickets.forEach((ticket) => {
-          ticket.businessCode = ticket.businessCode || item.businessCode || ''
+          ticket.businessCode = linkedTicketMap[ticket.ticketId] || ticket.businessCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
           ticket.isValid = ['已购票', '待出票'].includes(orderStatus) ? 1 : 0
         })
@@ -272,6 +285,33 @@ export class TravelService {
     })
   }
 
+  public async clearTicketsBusinessCode(ticketIdList: string[]) {
+    const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
+    searcher.processor().addConditionKeyInArray('ticket_id', ticketIdList)
+    const tickets = await searcher.queryAllFeeds()
+
+    const todoTravelList: _Dummy_Travel[] = []
+    for (const ticketId of ticketIdList) {
+      const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
+      searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
+      searcher.processor().addSpecialCondition('FIND_IN_SET(?, ticket_id_list_str)', ticketId)
+      const items = await searcher.queryAllFeeds()
+      todoTravelList.push(...items)
+    }
+
+    const runner = new this.modelsCore.HLY_TrafficTicket().dbSpec().database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      for (const ticket of tickets) {
+        await ticket.unlinkBusinessCode(transaction)
+      }
+      for (const dummyTravel of todoTravelList) {
+        dummyTravel.fc_edit()
+        dummyTravel.travelStatus = HLY_TravelStatus.Deleted
+        await dummyTravel.updateToDB(transaction)
+      }
+    })
+  }
+
   public async makeDummyTravel(ticketIdList: string[]) {
     assert.ok(Array.isArray(ticketIdList), `参数有误`)
     assert.ok(ticketIdList.length > 0, `未选择票据`)
@@ -290,6 +330,12 @@ export class TravelService {
       assert.ok(!ticket.businessCode, `所选票据中存在已关联出差申请单的票据`)
       assert.ok(userOid === ticket.userOid, `所选票据并非来自同一人`)
     })
+    for (const ticketId of ticketIdList) {
+      const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
+      searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
+      searcher.processor().addSpecialCondition('FIND_IN_SET(?, ticket_id_list_str)', ticketId)
+      assert.ok((await searcher.queryCount()) === 0, `票据[${ticketId}]已被其他虚拟行程单关联`, 500)
+    }
 
     const closedLoops = TravelTools.makeClosedLoops(tickets.map((item) => item.modelForClient()))
     assert.ok(!!closedLoops, `所选票据未构成闭环行程`)
@@ -304,6 +350,7 @@ export class TravelService {
     dummyTravel.startTime = tickets[0].fromTime
     dummyTravel.endTime = tickets[tickets.length - 1].toTime
     dummyTravel.travelStatus = HLY_TravelStatus.Passed
+    dummyTravel.ticketIdListStr = tickets.map((item) => item.ticketId).join(',')
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTravel.addToDB(transaction)
@@ -311,9 +358,7 @@ export class TravelService {
       dummyTravel.businessCode = `V_${dummyTravel.hlyId}`
       await dummyTravel.updateToDB(transaction)
       for (const ticket of tickets) {
-        ticket.fc_edit()
-        ticket.businessCode = dummyTravel.businessCode
-        await ticket.updateToDB(transaction)
+        await ticket.linkBusinessCode(dummyTravel.businessCode, transaction)
       }
     })
     return dummyTravel

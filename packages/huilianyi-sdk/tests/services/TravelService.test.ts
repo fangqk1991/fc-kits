@@ -35,8 +35,15 @@ describe('Test HuilianyiService.test.ts', () => {
     await travelService.makeCommonTrafficTickets()
   })
 
+  it(`makeDummyTravel - only`, async () => {
+    const ticketIdList = ['2bbb8db96a7f778b32de4146521dbbb6', 'f37376b1f0349f7733c6201a458314dd']
+    await travelService.clearTicketsBusinessCode(ticketIdList)
+    await travelService.makeDummyTravel(ticketIdList)
+  })
+
   it(`makeDummyTravel`, async () => {
     const ticketIdList = ['2bbb8db96a7f778b32de4146521dbbb6', 'f37376b1f0349f7733c6201a458314dd']
+    await travelService.clearTicketsBusinessCode(ticketIdList)
     const dummyTravel = await travelService.makeDummyTravel(ticketIdList)
     assert.strictEqual(dummyTravel.version, 0)
     {
@@ -86,6 +93,12 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`syncDummyTravelRecords`, async () => {
+    const ticketIdList = ['2bbb8db96a7f778b32de4146521dbbb6', 'f37376b1f0349f7733c6201a458314dd']
+    await travelService.clearTicketsBusinessCode(ticketIdList)
+    await travelService.makeDummyTravel(ticketIdList)
+
     await huilianyiService.syncHandler().syncDummyTravelRecords()
+    await travelService.makeCommonTrafficTickets()
+    await travelService.refreshTravelTicketItemsData()
   })
 })

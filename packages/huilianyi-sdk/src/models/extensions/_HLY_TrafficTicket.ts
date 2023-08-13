@@ -1,6 +1,7 @@
 import __HLY_TrafficTicket from '../auto-build/__HLY_TrafficTicket'
 import { App_OrderBizType, App_TrafficTicket, HLY_OrderType, UserTicketReport } from '../../core'
 import { FilterOptions } from 'fc-feed'
+import { Transaction } from 'fc-sql'
 
 export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
   orderType!: HLY_OrderType
@@ -82,5 +83,17 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
       isValid: this.isValid,
       useForAllowance: this.useForAllowance,
     }
+  }
+
+  public async linkBusinessCode(businessCode: string, transaction?: Transaction) {
+    this.fc_edit()
+    this.businessCode = businessCode
+    await this.updateToDB(transaction)
+  }
+
+  public async unlinkBusinessCode(transaction?: Transaction) {
+    this.fc_edit()
+    this.businessCode = ''
+    await this.updateToDB(transaction)
   }
 }
