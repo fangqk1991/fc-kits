@@ -12,7 +12,7 @@ import {
 import * as moment from 'moment'
 import { SQLBulkAdder } from 'fc-sql'
 import assert from '@fangcha/assert'
-import { makeRandomStr } from '@fangcha/tools/lib'
+import { makeRandomStr } from '@fangcha/tools'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -270,7 +270,6 @@ export class TravelService {
         await ticket.updateToDB(transaction)
       }
     })
-    return dummyTravel
   }
 
   public async makeDummyTravel(ticketIdList: string[]) {
