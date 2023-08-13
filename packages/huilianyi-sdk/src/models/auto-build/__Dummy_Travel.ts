@@ -13,6 +13,7 @@ const _cols: string[] = [
   'end_time',
   'version',
   'travel_status',
+  'ticket_id_list_str',
   'create_time',
   'update_time',
 ]
@@ -28,6 +29,7 @@ const _insertableCols: string[] = [
   'end_time',
   'version',
   'travel_status',
+  'ticket_id_list_str',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -40,6 +42,7 @@ const _modifiableCols: string[] = [
   'end_time',
   'version',
   'travel_status',
+  'ticket_id_list_str',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -117,6 +120,10 @@ export default class __Dummy_Travel extends FeedBase {
    */
   public travelStatus!: number | null
   /**
+   * @description [text]
+   */
+  public ticketIdListStr!: string
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -166,6 +173,7 @@ export default class __Dummy_Travel extends FeedBase {
     this.endTime = null
     this.version = 0
     this.travelStatus = null
+    this.ticketIdListStr = ''
   }
 
   public fc_propertyMapper() {
@@ -180,6 +188,7 @@ export default class __Dummy_Travel extends FeedBase {
       endTime: 'end_time',
       version: 'version',
       travelStatus: 'travel_status',
+      ticketIdListStr: 'ticket_id_list_str',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
