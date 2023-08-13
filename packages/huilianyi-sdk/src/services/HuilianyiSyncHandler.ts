@@ -326,7 +326,9 @@ export class HuilianyiSyncHandler {
 
     let lastModifyStartDate = '2020-01-01 00:00:00'
     if (!forceReload) {
-      const lastTime = await this.getLastTime(HLY_Travel)
+      const lastTime = await this.getLastTime(HLY_Travel, (searcher) => {
+        searcher.addConditionKV('is_dummy', 0)
+      })
       if (lastTime) {
         lastModifyStartDate = TimeUtils.timeStrUTC8(lastTime)
       }
