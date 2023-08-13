@@ -84,4 +84,8 @@ describe('Test HuilianyiService.test.ts', () => {
   it(`refreshTravelParticipants`, async () => {
     await travelService.refreshTravelParticipants()
   })
+
+  it(`syncDummyTravelRecords`, async () => {
+    await huilianyiService.syncHandler().syncDummyTravelRecords()
+  })
 })

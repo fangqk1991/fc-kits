@@ -241,6 +241,68 @@ export class HuilianyiSyncHandler {
     await bulkAdder.execute()
   }
 
+  public async syncDummyTravelRecords() {
+    const syncCore = this.syncCore
+    const HLY_Travel = syncCore.modelsCore.HLY_Travel
+    const Dummy_Travel = syncCore.modelsCore.Dummy_Travel
+    const dummyItems = await new Dummy_Travel().fc_searcher().queryAllFeeds()
+
+    const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
+    const companyMapper = await syncCore.othersProxy.getCompanyMapper()
+
+    const dbSpec = new HLY_Travel().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys([
+      'hly_id',
+      'business_code',
+      'applicant_oid',
+      'applicant_name',
+      'company_oid',
+      'department_oid',
+      'form_code',
+      'form_name',
+      'version',
+      'created_date',
+      'last_modified_date',
+      'start_time',
+      'end_time',
+      'travel_status',
+      'submitted_by',
+      'is_dummy',
+    ])
+    bulkAdder.declareTimestampKey('created_date', 'last_modified_date')
+
+    for (const item of dummyItems) {
+      const staff = staffMapper[item.applicantOid]
+      const feed = new HLY_Travel()
+      feed.hlyId = item.hlyId
+      feed.businessCode = item.businessCode
+      feed.applicantOid = item.applicantOid
+      feed.applicantName = item.applicantName
+      if (staff) {
+        const company = companyMapper[staff.companyCode!]
+        if (company) {
+          feed.companyOid = company.companyOID
+        }
+        feed.departmentOid = staff.departmentOid
+      }
+      feed.formCode = 'DUMMY_TRAVEL'
+      feed.formName = '虚拟申请单'
+      feed.version = item.version
+      feed.createdDate = item.createTime
+      feed.lastModifiedDate = item.updateTime
+      feed.travelStatus = item.travelStatus
+      feed.startTime = item.startTime
+      feed.endTime = item.endTime
+      feed.submittedBy = item.submittedBy
+      feed.isDummy = 1
+      bulkAdder.putObject(feed.fc_encode())
+    }
+    await bulkAdder.execute()
+  }
+
   public async dumpTravelRecords(forceReload = false) {
     const syncCore = this.syncCore
     const HLY_Travel = syncCore.modelsCore.HLY_Travel
@@ -280,6 +342,7 @@ export class HuilianyiSyncHandler {
     if (!forceReload) {
       searcher.processor().addSpecialCondition('last_modified_date != reload_time')
     }
+    searcher.processor().addSpecialCondition('is_dummy', 0)
     searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
     const todoItems = await searcher.queryAllFeeds()
 

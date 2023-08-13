@@ -3,6 +3,7 @@ import { DummyTravelModel, HLY_TravelStatus } from '../../core'
 import { Transaction } from 'fc-sql'
 
 export class _Dummy_Travel extends __Dummy_Travel {
+  applicantOid!: string
   travelStatus!: HLY_TravelStatus
 
   public constructor() {
