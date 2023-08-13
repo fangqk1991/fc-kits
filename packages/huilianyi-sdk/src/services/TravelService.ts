@@ -282,12 +282,19 @@ export class TravelService {
     dummyTravel.departmentOid = staffRaw.departmentOID
     dummyTravel.startTime = tickets[0].fromTime
     dummyTravel.endTime = tickets[tickets.length - 1].fromTime
+    dummyTravel.createdDate = moment().format()
+    dummyTravel.lastModifiedDate = dummyTravel.createdDate
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTravel.addToDB(transaction)
       dummyTravel.fc_edit()
       dummyTravel.businessCode = `V_${dummyTravel.hlyId}`
       await dummyTravel.updateToDB(transaction)
+      for (const ticket of tickets) {
+        ticket.fc_edit()
+        ticket.businessCode = dummyTravel.businessCode
+        await ticket.updateToDB(transaction)
+      }
     })
   }
 

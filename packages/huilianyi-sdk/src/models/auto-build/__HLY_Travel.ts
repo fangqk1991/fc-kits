@@ -25,6 +25,7 @@ const _cols: string[] = [
   'has_subsidy',
   'match_closed_loop',
   'is_pretty',
+  'is_dummy',
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
@@ -59,6 +60,7 @@ const _insertableCols: string[] = [
   'has_subsidy',
   'match_closed_loop',
   'is_pretty',
+  'is_dummy',
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
@@ -90,6 +92,7 @@ const _modifiableCols: string[] = [
   'has_subsidy',
   'match_closed_loop',
   'is_pretty',
+  'is_dummy',
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
@@ -223,6 +226,10 @@ export default class __HLY_Travel extends FeedBase {
    */
   public isPretty!: number
   /**
+   * @description [tinyint] 是否为虚拟申请单
+   */
+  public isDummy!: number
+  /**
    * @description [mediumtext] 行程单信息，空 | JSON 字符串
    */
   public itineraryItemsStr!: string
@@ -310,6 +317,7 @@ export default class __HLY_Travel extends FeedBase {
     this.hasSubsidy = 0
     this.matchClosedLoop = 0
     this.isPretty = 0
+    this.isDummy = 0
     this.itineraryItemsStr = ''
     this.employeeTrafficItemsStr = ''
     this.expenseFormCodesStr = ''
@@ -342,6 +350,7 @@ export default class __HLY_Travel extends FeedBase {
       hasSubsidy: 'has_subsidy',
       matchClosedLoop: 'match_closed_loop',
       isPretty: 'is_pretty',
+      isDummy: 'is_dummy',
       itineraryItemsStr: 'itinerary_items_str',
       employeeTrafficItemsStr: 'employee_traffic_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
