@@ -2,6 +2,7 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_EmployeeTrafficData,
   App_TrafficTicket,
+  App_TravelOrderExtras,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
   HLY_TravelParticipant,
@@ -47,7 +48,7 @@ export class TravelService {
       searcher.processor().addOrderRule('from_time', 'ASC')
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const commonTicket = item.modelForClient()
+        const commonTicket = item.modelForClient() as App_TrafficTicket
         const employeeTrafficDataMapper = travelEmployeeDataMapper[commonTicket.businessCode]
         const userId = commonTicket.userOid || commonTicket.userName
         if (!employeeTrafficDataMapper[userId]) {
@@ -200,7 +201,8 @@ export class TravelService {
       const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const commonTickets = item.extrasData().commonTickets
+        const extrasData = item.extrasData() as App_TravelOrderExtras
+        const commonTickets = extrasData.commonTickets
         commonTickets.forEach((ticket) => {
           ticket.businessCode = ticket.businessCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
@@ -213,7 +215,8 @@ export class TravelService {
       const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
       const feeds = await searcher.queryAllFeeds()
       for (const item of feeds) {
-        const commonTickets = item.extrasData().commonTickets
+        const extrasData = item.extrasData() as App_TravelOrderExtras
+        const commonTickets = extrasData.commonTickets
         commonTickets.forEach((ticket) => {
           ticket.businessCode = ticket.businessCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
@@ -277,7 +280,7 @@ export class TravelService {
     dummyTravel.applicantOid = staff.userOid
     dummyTravel.applicantName = staff.fullName
     dummyTravel.startTime = tickets[0].fromTime
-    dummyTravel.endTime = tickets[tickets.length - 1].fromTime
+    dummyTravel.endTime = tickets[tickets.length - 1].toTime
     dummyTravel.travelStatus = HLY_TravelStatus.Passed
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
