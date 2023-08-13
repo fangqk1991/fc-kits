@@ -11,6 +11,7 @@ const _cols: string[] = [
   'title',
   'start_time',
   'end_time',
+  'version',
   'travel_status',
   'create_time',
   'update_time',
@@ -25,6 +26,7 @@ const _insertableCols: string[] = [
   'title',
   'start_time',
   'end_time',
+  'version',
   'travel_status',
 ]
 const _modifiableCols: string[] = [
@@ -36,6 +38,7 @@ const _modifiableCols: string[] = [
   'title',
   'start_time',
   'end_time',
+  'version',
   'travel_status',
 ]
 
@@ -106,6 +109,10 @@ export default class __Dummy_Travel extends FeedBase {
    */
   public endTime!: string | null
   /**
+   * @description [int] 版本号
+   */
+  public version!: number
+  /**
    * @description [int] HLY_TravelStatus
    */
   public travelStatus!: number | null
@@ -157,6 +164,7 @@ export default class __Dummy_Travel extends FeedBase {
     this.title = ''
     this.startTime = null
     this.endTime = null
+    this.version = 0
     this.travelStatus = null
   }
 
@@ -170,6 +178,7 @@ export default class __Dummy_Travel extends FeedBase {
       title: 'title',
       startTime: 'start_time',
       endTime: 'end_time',
+      version: 'version',
       travelStatus: 'travel_status',
       createTime: 'create_time',
       updateTime: 'update_time',

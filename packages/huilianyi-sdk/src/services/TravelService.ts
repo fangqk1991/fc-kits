@@ -278,6 +278,7 @@ export class TravelService {
     dummyTravel.applicantName = staff.fullName
     dummyTravel.startTime = tickets[0].fromTime
     dummyTravel.endTime = tickets[tickets.length - 1].fromTime
+    dummyTravel.travelStatus = HLY_TravelStatus.Passed
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTravel.addToDB(transaction)

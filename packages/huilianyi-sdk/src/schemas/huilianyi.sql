@@ -283,6 +283,7 @@ CREATE TABLE IF NOT EXISTS dummy_travel
     title          TEXT            NULL,
     start_time     TIMESTAMP       NULL COMMENT '开始时间',
     end_time       TIMESTAMP       NULL COMMENT '结束时间',
+    version        INT             NOT NULL DEFAULT 0 COMMENT '版本号',
     travel_status  INT             NULL COMMENT 'HLY_TravelStatus',
     create_time    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

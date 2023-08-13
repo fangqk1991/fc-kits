@@ -34,7 +34,11 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`makeDummyTravel`, async () => {
-    await travelService.makeDummyTravel(['2bbb8db96a7f778b32de4146521dbbb6', 'f37376b1f0349f7733c6201a458314dd'])
+    const dummyTravel = await travelService.makeDummyTravel([
+      '2bbb8db96a7f778b32de4146521dbbb6',
+      'f37376b1f0349f7733c6201a458314dd',
+    ])
+    console.info(dummyTravel.toJSON())
   })
 
   it(`refreshTravelTicketItemsData`, async () => {
