@@ -274,16 +274,11 @@ export class TravelService {
 
     const staffRaw = JSON.parse(staff.extrasInfo) as HLY_Staff
     const dummyTravel = new this.modelsCore.Dummy_Travel()
-    // dummyTravel.hlyId = null as any
     dummyTravel.businessCode = makeRandomStr(20)
     dummyTravel.applicantOid = staff.userOid
     dummyTravel.applicantName = staff.fullName
-    dummyTravel.companyOid = staffRaw.companyOID
-    dummyTravel.departmentOid = staffRaw.departmentOID
     dummyTravel.startTime = tickets[0].fromTime
     dummyTravel.endTime = tickets[tickets.length - 1].fromTime
-    dummyTravel.createdDate = moment().format()
-    dummyTravel.lastModifiedDate = dummyTravel.createdDate
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTravel.addToDB(transaction)

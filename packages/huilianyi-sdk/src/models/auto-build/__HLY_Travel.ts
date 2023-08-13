@@ -69,7 +69,6 @@ const _insertableCols: string[] = [
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
-  'business_code',
   'application_oid',
   'applicant_oid',
   'applicant_name',

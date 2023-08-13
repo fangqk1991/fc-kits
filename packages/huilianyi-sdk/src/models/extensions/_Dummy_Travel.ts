@@ -1,11 +1,7 @@
-import { _HLY_Travel } from './_HLY_Travel'
+import __Dummy_Travel from '../auto-build/__Dummy_Travel'
 
-export class _Dummy_Travel extends _HLY_Travel {
+export class _Dummy_Travel extends __Dummy_Travel {
   public constructor() {
     super()
   }
 }
-
-_Dummy_Travel.addStaticOptions({
-  table: 'dummy_travel',
-})
