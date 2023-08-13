@@ -2,6 +2,7 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_EmployeeTrafficData,
   App_TrafficTicket,
+  App_TravelCoreItinerary,
   App_TravelOrderExtras,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
@@ -396,6 +397,17 @@ export class TravelService {
       travelItem.isPretty = travelItem.matchClosedLoop ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
       travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
       travelItem.ticketIdListStr = ticketIdList.join(',')
+      if (travelItem.isDummy) {
+        const keyTickets = employeeTrafficItems[0] ? employeeTrafficItems[0].tickets : []
+        const itineraryList: App_TravelCoreItinerary[] = keyTickets.map((ticket) => ({
+          startDate: ticket.fromTime,
+          endDate: ticket.toTime,
+          fromCityName: ticket.fromCity,
+          toCityName: ticket.toCity,
+          subsidyList: [],
+        }))
+        travelItem.itineraryItemsStr = JSON.stringify(itineraryList)
+      }
 
       const runner = travelItem.dbSpec().database.createTransactionRunner()
       await runner.commit(async (transaction) => {
