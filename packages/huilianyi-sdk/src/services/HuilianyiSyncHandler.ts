@@ -359,7 +359,7 @@ export class HuilianyiSyncHandler {
     if (!forceReload) {
       searcher.processor().addSpecialCondition('last_modified_date != reload_time')
     }
-    searcher.processor().addSpecialCondition('is_dummy', 0)
+    searcher.processor().addConditionKV('is_dummy', 0)
     searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
     const todoItems = await searcher.queryAllFeeds()
 
