@@ -250,9 +250,32 @@ export class TravelService {
     return feeds.map((feed) => feed.businessCode)
   }
 
+  public async deleteDummyTravel(businessCode: string) {
+    const dummyTravel = await this.modelsCore.Dummy_Travel.findWithBusinessCode(businessCode)
+    assert.ok(
+      !!dummyTravel && dummyTravel.travelStatus !== HLY_TravelStatus.Deleted,
+      `虚拟申请单[${businessCode}]不存在`
+    )
+
+    const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
+    searcher.processor().addConditionKV('business_code', businessCode)
+    const tickets = await searcher.queryAllFeeds()
+
+    const runner = dummyTravel.dbSpec().database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      await dummyTravel.deleteFromDB(transaction)
+      for (const ticket of tickets) {
+        ticket.fc_edit()
+        ticket.businessCode = ''
+        await ticket.updateToDB(transaction)
+      }
+    })
+    return dummyTravel
+  }
+
   public async makeDummyTravel(ticketIdList: string[]) {
-    assert.ok(Array.isArray(ticketIdList), `❌参数有误`)
-    assert.ok(ticketIdList.length > 0, `❌未选择票据`)
+    assert.ok(Array.isArray(ticketIdList), `参数有误`)
+    assert.ok(ticketIdList.length > 0, `未选择票据`)
     const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
     searcher.processor().addConditionKeyInArray('ticket_id', ticketIdList)
     searcher.processor().addOrderRule('from_time', 'ASC')
@@ -264,16 +287,16 @@ export class TravelService {
     }
     const userOid = tickets[0].userOid
     tickets.forEach((ticket) => {
-      assert.ok(!!ticket.isValid, `❌所选票据中存在无效票据`)
-      assert.ok(!ticket.businessCode, `❌所选票据中存在已关联出差申请单的票据`)
-      assert.ok(userOid === ticket.userOid, `❌所选票据并非来自同一人`)
+      assert.ok(!!ticket.isValid, `所选票据中存在无效票据`)
+      assert.ok(!ticket.businessCode, `所选票据中存在已关联出差申请单的票据`)
+      assert.ok(userOid === ticket.userOid, `所选票据并非来自同一人`)
     })
 
     const closedLoops = TravelTools.makeClosedLoops(tickets.map((item) => item.modelForClient()))
-    assert.ok(!!closedLoops, `❌所选票据未构成闭环行程`)
+    assert.ok(!!closedLoops, `所选票据未构成闭环行程`)
 
     const staff = (await this.modelsCore.HLY_Staff.findWithUid(userOid))!
-    assert.ok(!!staff, `❌相关员工不存在`)
+    assert.ok(!!staff, `相关员工不存在`)
 
     const dummyTravel = new this.modelsCore.Dummy_Travel()
     dummyTravel.businessCode = makeRandomStr(20)

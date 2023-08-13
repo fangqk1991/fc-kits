@@ -1,4 +1,6 @@
 import { HuilianyiServiceDev } from './HuilianyiServiceDev'
+import * as assert from 'assert'
+import { HLY_TravelStatus } from '../../src'
 
 describe('Test HuilianyiService.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
@@ -34,11 +36,31 @@ describe('Test HuilianyiService.test.ts', () => {
   })
 
   it(`makeDummyTravel`, async () => {
-    const dummyTravel = await travelService.makeDummyTravel([
-      '2bbb8db96a7f778b32de4146521dbbb6',
-      'f37376b1f0349f7733c6201a458314dd',
-    ])
-    console.info(dummyTravel.toJSON())
+    const ticketIdList = ['2bbb8db96a7f778b32de4146521dbbb6', 'f37376b1f0349f7733c6201a458314dd']
+    const dummyTravel = await travelService.makeDummyTravel(ticketIdList)
+    assert.strictEqual(dummyTravel.version, 0)
+    {
+      const searcher = new travelService.modelsCore.HLY_TrafficTicket().fc_searcher()
+      searcher.processor().addConditionKV('business_code', dummyTravel.businessCode)
+      const items = await searcher.queryAllFeeds()
+      assert.ok(items.length === ticketIdList.length)
+      for (const ticket of items) {
+        assert.ok(ticket.businessCode === dummyTravel.businessCode)
+        assert.ok(!!ticketIdList.includes(ticket.ticketId))
+      }
+    }
+    await travelService.deleteDummyTravel(dummyTravel.businessCode)
+    {
+      const dummyForm2 = await travelService.modelsCore.Dummy_Travel.findWithBusinessCode(dummyTravel.businessCode)
+      assert.strictEqual(dummyForm2.version, 1)
+      assert.strictEqual(dummyForm2.travelStatus, HLY_TravelStatus.Deleted)
+    }
+    {
+      const searcher = new travelService.modelsCore.HLY_TrafficTicket().fc_searcher()
+      searcher.processor().addConditionKV('business_code', dummyTravel.businessCode)
+      const items = await searcher.queryAllFeeds()
+      assert.ok(items.length === 0)
+    }
   })
 
   it(`refreshTravelTicketItemsData`, async () => {
