@@ -148,7 +148,6 @@ export class HuilianyiFormatter {
       matchClosedLoop: 0,
       isPretty: 0,
       employeeTrafficItems: [],
-      hasSubsidy: itineraryItems.find((item) => item.subsidyList.length > 0) ? 1 : 0,
       // UTC 时间无需纠正
       startTime: customProps.field_start_date ? customProps.field_start_date.value : '2000-01-01T00:00:00Z',
       // UTC 时间无需纠正
@@ -156,7 +155,7 @@ export class HuilianyiFormatter {
       travelStatus: item.status,
       createdDate: item.createdDate ? moment(item.createdDate).format() : null,
       lastModifiedDate: item.lastModifiedDate ? moment(item.lastModifiedDate).format() : null,
-      itineraryItems: HuilianyiFormatter.transferItineraryHeadDTOs(item.travelApplication?.itineraryHeadDTOs),
+      itineraryItems: itineraryItems,
       expenseFormCodes: (item.referenceExpenseReports || []).map((item) => item.businessCode),
       extrasData: {
         participants: customProps.field_participants ? JSON.parse(customProps.field_participants.value) : [],

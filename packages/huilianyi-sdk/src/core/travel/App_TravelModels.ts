@@ -1,5 +1,4 @@
 import { HLY_TravelParticipant } from './HLY_TravelModels'
-import { HLY_SubsidyStatus } from './HLY_SubsidyStatus'
 import { HLY_ClosedLoopStatus } from './HLY_ClosedLoopStatus'
 import { HLY_PrettyStatus } from './HLY_PrettyStatus'
 import { HLY_TravelStatus } from './HLY_TravelStatus'
@@ -46,7 +45,6 @@ export interface TravelMonthSection {
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   startTime: string
   endTime: string
-  hasSubsidy: HLY_SubsidyStatus
   matchClosedLoop: HLY_ClosedLoopStatus
   isPretty: HLY_PrettyStatus
   travelStatus: HLY_TravelStatus

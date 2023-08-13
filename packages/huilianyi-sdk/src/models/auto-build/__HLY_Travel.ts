@@ -22,7 +22,6 @@ const _cols: string[] = [
   'last_modified_date',
   'extras_info',
   'version',
-  'has_subsidy',
   'match_closed_loop',
   'is_pretty',
   'is_dummy',
@@ -57,7 +56,6 @@ const _insertableCols: string[] = [
   'last_modified_date',
   'extras_info',
   'version',
-  'has_subsidy',
   'match_closed_loop',
   'is_pretty',
   'is_dummy',
@@ -89,7 +87,6 @@ const _modifiableCols: string[] = [
   'last_modified_date',
   'extras_info',
   'version',
-  'has_subsidy',
   'match_closed_loop',
   'is_pretty',
   'is_dummy',
@@ -214,10 +211,6 @@ export default class __HLY_Travel extends FeedBase {
    */
   public version!: number
   /**
-   * @description [tinyint] 是否有补贴数据
-   */
-  public hasSubsidy!: number
-  /**
    * @description [tinyint] 是否满足闭环行程
    */
   public matchClosedLoop!: number
@@ -314,7 +307,6 @@ export default class __HLY_Travel extends FeedBase {
     this.lastModifiedDate = null
     this.extrasInfo = ''
     this.version = 0
-    this.hasSubsidy = 0
     this.matchClosedLoop = 0
     this.isPretty = 0
     this.isDummy = 0
@@ -347,7 +339,6 @@ export default class __HLY_Travel extends FeedBase {
       lastModifiedDate: 'last_modified_date',
       extrasInfo: 'extras_info',
       version: 'version',
-      hasSubsidy: 'has_subsidy',
       matchClosedLoop: 'match_closed_loop',
       isPretty: 'is_pretty',
       isDummy: 'is_dummy',
