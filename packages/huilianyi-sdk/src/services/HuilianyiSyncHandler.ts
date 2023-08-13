@@ -10,6 +10,7 @@ import {
   App_TravelTrainTicketInfo,
   HLY_OrderType,
   HLY_StaffRole,
+  HLY_TravelParticipant,
   HLY_TravelStatus,
 } from '../core'
 import { TimeUtils } from '../core/tools/TimeUtils'
@@ -271,11 +272,22 @@ export class HuilianyiSyncHandler {
       'travel_status',
       'submitted_by',
       'is_dummy',
+      'extras_info',
     ])
     bulkAdder.declareTimestampKey('created_date', 'last_modified_date')
 
     for (const item of dummyItems) {
+      const participants: HLY_TravelParticipant[] = [
+        {
+          userOID: item.applicantOid,
+          participantOID: item.applicantOid,
+          fullName: item.applicantName,
+          avatar: '',
+        },
+      ]
+
       const staff = staffMapper[item.applicantOid]
+
       const feed = new HLY_Travel()
       feed.hlyId = item.hlyId
       feed.businessCode = item.businessCode
@@ -298,6 +310,11 @@ export class HuilianyiSyncHandler {
       feed.endTime = item.endTime
       feed.submittedBy = item.submittedBy
       feed.isDummy = 1
+      feed.participantUserOidsStr = participants.map((item) => item.userOID).join(',')
+      feed.extrasInfo = JSON.stringify({
+        participants: participants,
+        customProps: {},
+      })
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
