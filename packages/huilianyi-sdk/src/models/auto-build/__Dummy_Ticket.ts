@@ -176,6 +176,8 @@ export default class __Dummy_Ticket extends FeedBase {
   public constructor() {
     super()
     this.setDBProtocolV2(this.constructor['_staticDBOptions'])
+    this._reloadOnAdded = true
+    this._reloadOnUpdated = true
     if (this.constructor['_staticDBObserver']) {
       this.dbObserver = this.constructor['_staticDBObserver']
     }

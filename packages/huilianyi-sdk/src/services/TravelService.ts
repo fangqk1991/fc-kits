@@ -248,6 +248,7 @@ export class TravelService {
   }
 
   public async makeDummyTravel(ticketIdList: string[]) {
+    assert.ok(Array.isArray(ticketIdList), `❌参数有误`)
     assert.ok(ticketIdList.length > 0, `❌未选择票据`)
     const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
     searcher.processor().addConditionKeyInArray('ticket_id', ticketIdList)
@@ -289,6 +290,7 @@ export class TravelService {
         await ticket.updateToDB(transaction)
       }
     })
+    return dummyTravel
   }
 
   public async refreshTravelTicketItemsData() {

@@ -160,6 +160,8 @@ const dbSchemas: DBModelSchema[] = [
     gbkCols: ['applicant_name'],
     exactSearchCols: ['hly_id', 'business_code'],
     fuzzySearchCols: ['applicant_name'],
+    reloadOnAdded: true,
+    reloadOnUpdated: true,
   },
   {
     tableName: 'dummy_ticket',
@@ -170,6 +172,8 @@ const dbSchemas: DBModelSchema[] = [
     gbkCols: ['user_name'],
     exactSearchCols: ['order_id', 'business_code'],
     fuzzySearchCols: ['user_name'],
+    reloadOnAdded: true,
+    reloadOnUpdated: true,
   },
 ]
 
