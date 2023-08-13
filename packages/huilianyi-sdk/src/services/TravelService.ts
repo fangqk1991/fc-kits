@@ -4,7 +4,6 @@ import {
   App_TrafficTicket,
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
-  HLY_Staff,
   HLY_TravelParticipant,
   HLY_TravelStatus,
   TravelTools,
@@ -272,7 +271,6 @@ export class TravelService {
     const staff = (await this.modelsCore.HLY_Staff.findWithUid(userOid))!
     assert.ok(!!staff, `❌相关员工不存在`)
 
-    const staffRaw = JSON.parse(staff.extrasInfo) as HLY_Staff
     const dummyTravel = new this.modelsCore.Dummy_Travel()
     dummyTravel.businessCode = makeRandomStr(20)
     dummyTravel.applicantOid = staff.userOid
