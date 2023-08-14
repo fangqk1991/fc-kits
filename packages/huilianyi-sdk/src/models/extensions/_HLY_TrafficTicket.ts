@@ -35,7 +35,7 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
         'COUNT(IF(is_valid = 0, 1, NULL)) AS invalidCount',
       ])
     searcher.processor().setGroupByKeys(['userOid', 'userName'])
-    searcher.processor().addSpecialCondition('user_oid != ?', '')
+    // searcher.processor().addSpecialCondition('user_oid != ?', '')
     searcher.processor().setOptionStr('HAVING count > 0')
     searcher.processor().addOrderRule('CONVERT(user_name USING gbk)', 'ASC')
     return (await searcher.processor().queryList()) as UserTicketReport[]
