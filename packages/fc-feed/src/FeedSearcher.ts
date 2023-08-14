@@ -118,6 +118,11 @@ export class FeedSearcher<T extends FeedBase> {
     return this.formatList(items, true) as T[]
   }
 
+  async queryJsonFeeds<M = any>() {
+    const feeds = await this.queryAllFeeds()
+    return feeds.map((item) => item.toJSON() as M)
+  }
+
   /**
    * @deprecated Use FeedBase.prepareOne instead.
    * @description Like findWithParams, but it will throw an error if object does not exist.

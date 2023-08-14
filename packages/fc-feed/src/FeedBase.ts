@@ -281,7 +281,10 @@ export class FeedBase extends FCModel {
       const gbkCols = dbSpec.gbkCols()
       searcher
         .processor()
-        .addOrderRule(gbkCols.includes(mapper[sortKey]) ? `CONVERT(\`${mapper[sortKey]}\` USING gbk)` : mapper[sortKey], sortDirection)
+        .addOrderRule(
+          gbkCols.includes(mapper[sortKey]) ? `CONVERT(\`${mapper[sortKey]}\` USING gbk)` : mapper[sortKey],
+          sortDirection
+        )
     }
     const paramsKeys = Object.keys(params)
     paramsKeys
@@ -492,7 +495,7 @@ export class FeedBase extends FCModel {
     return this.fc_pureModel()
   }
 
-  public static async limitParams(filterParams: FilterOptions = {}) {
+  public static limitParams(filterParams: FilterOptions = {}) {
     const clazz = this as any as typeof FeedBase
     filterParams._offset = filterParams._offset || 0
     filterParams._length = Math.min(filterParams._length || clazz.PAGE_LENGTH_DEFAULT, clazz.PAGE_LENGTH_CEIL)
@@ -504,20 +507,42 @@ export class FeedBase extends FCModel {
     filterParams: FilterOptions = {},
     ignoreLimit = false
   ): Promise<PageDataV3<Model>> {
+    const searcher = this.makeFeedSearcher(filterParams, ignoreLimit)
+    const items = await searcher.queryJsonFeeds<Model>()
+    return {
+      offset: Number(filterParams._offset),
+      length: items.length,
+      totalCount: await searcher.queryCount(),
+      items: items,
+    }
+  }
+
+  public static async getPageResultV2<Model = any>(
+    filterParams: FilterOptions = {},
+    customHandler?: (searcher: FeedSearcher<FeedBase>) => void
+  ): Promise<PageDataV3<Model>> {
+    const searcher = this.makeFeedSearcher(filterParams)
+    if (customHandler) {
+      customHandler(searcher)
+    }
+    const items = await searcher.queryJsonFeeds<Model>()
+    return {
+      offset: Number(filterParams._offset),
+      length: items.length,
+      totalCount: await searcher.queryCount(),
+      items: items,
+    }
+  }
+
+  public static makeFeedSearcher(filterParams: FilterOptions = {}, ignoreLimit = false) {
     const feed = new this() as FeedBase
     const clazz = this as any as typeof FeedBase
-    await clazz.limitParams(filterParams)
+    clazz.limitParams(filterParams)
     const searcher = feed.fc_searcher(filterParams)
     if (ignoreLimit) {
       searcher.processor().setLimitInfo(0, -1)
     }
-    const feeds = await searcher.queryFeeds()
-    return {
-      offset: Number(filterParams._offset),
-      length: feeds.length,
-      totalCount: await searcher.queryCount(),
-      items: feeds.map((feed) => feed.toJSON() as Model),
-    }
+    return searcher
   }
 
   public static async getAggregationData<T = any>(options: {
