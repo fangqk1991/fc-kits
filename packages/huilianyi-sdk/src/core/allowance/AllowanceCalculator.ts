@@ -49,6 +49,7 @@ export class AllowanceCalculator {
       ]
       for (let i = 1; i < closedLoop.tickets.length; ++i) {
         const ticket = closedLoop.tickets[i]
+        const baseCity = ticket.baseCity
         const lastCity = ticket.fromCity
         const ruleResult = this.calculateRules(roleCodeList, lastCity)
 
@@ -57,7 +58,7 @@ export class AllowanceCalculator {
           dayItems.push({
             date: curDate.format('YYYY-MM-DD'),
             cityName: lastCity,
-            amount: ruleResult.unitPrice,
+            amount: baseCity === lastCity ? 0 : ruleResult.unitPrice,
             halfDay: false,
           })
         }
