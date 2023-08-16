@@ -6,22 +6,58 @@ export class TravelTools {
     tickets = [...tickets]
     tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
     const fragments: App_TrafficTicket[][] = []
+    if (tickets.length === 0) {
+      return []
+    }
+    const baseCity = tickets[0].baseCity || tickets[0].fromCity
     let curTickets: App_TrafficTicket[] = []
     for (const ticket of tickets) {
-      if (curTickets.length === 0 && ticket.fromCity !== ticket.baseCity) {
+      if (curTickets.length === 0 && ticket.fromCity !== baseCity) {
         continue
       }
-      if (ticket.fromCity === ticket.baseCity) {
+      if (ticket.fromCity === baseCity) {
         curTickets = [ticket]
         continue
       }
       curTickets.push(ticket)
-      if (ticket.toCity === ticket.baseCity) {
+      if (ticket.toCity === baseCity) {
         fragments.push(curTickets)
         curTickets = []
       }
     }
     return fragments
+  }
+
+  public static makeClosedLoopsV2(tickets: App_TrafficTicket[]) {
+    const ticketFragments = this.splitTickets(tickets)
+    const closedLoops: App_ClosedLoop[] = []
+    const calcLoopTickets = (
+      curTickets: App_TrafficTicket[],
+      remainTickets: App_TrafficTicket[]
+    ): App_TrafficTicket[] | null => {
+      const lastTicket = curTickets[curTickets.length - 1]
+      if (remainTickets.length === 0) {
+        return lastTicket.toCity === curTickets[0].fromCity ? curTickets : null
+      }
+      const [ticket2, ...remainTickets2] = remainTickets
+      if (lastTicket.toCity !== ticket2.fromCity) {
+        return calcLoopTickets([...curTickets], [...remainTickets2])
+      }
+      return (
+        calcLoopTickets([...curTickets, ticket2], [...remainTickets2]) ||
+        calcLoopTickets([...curTickets], [...remainTickets2])
+      )
+    }
+    for (const tickets of ticketFragments) {
+      const [firstTicket, ...remainTickets] = tickets
+      const loopTickets = calcLoopTickets([firstTicket], remainTickets)
+      if (loopTickets) {
+        closedLoops.push({
+          tickets: loopTickets,
+        })
+      }
+    }
+    return closedLoops
   }
 
   public static makeClosedLoops(tickets: App_TrafficTicket[]): App_ClosedLoop[] | null {

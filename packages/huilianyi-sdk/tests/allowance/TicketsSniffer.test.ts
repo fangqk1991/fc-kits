@@ -56,6 +56,36 @@ describe('Test TicketsSniffer.test.ts', () => {
       }
     }
   })
+
+  it(`makeClosedLoopsV2`, async () => {
+    const tickets = [
+      {
+        fromCity: 'A',
+        toCity: 'B',
+      },
+      {
+        fromCity: 'B',
+        toCity: 'C',
+      },
+      {
+        fromCity: 'B',
+        toCity: 'A',
+      },
+      {
+        fromCity: 'A',
+        toCity: 'C',
+      },
+      {
+        fromCity: 'C',
+        toCity: 'A',
+      },
+    ] as App_TrafficTicket[]
+    const closedLoops = TravelTools.makeClosedLoopsV2(tickets)
+    console.info(
+      closedLoops.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`)),
+      tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`)
+    )
+  })
 })
 
 // Flight: 5 / 14
