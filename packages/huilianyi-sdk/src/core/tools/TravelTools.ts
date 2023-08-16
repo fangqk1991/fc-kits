@@ -60,6 +60,9 @@ export class TravelTools {
     return closedLoops
   }
 
+  /**
+   * @deprecated
+   */
   public static makeClosedLoops(tickets: App_TrafficTicket[]): App_ClosedLoop[] | null {
     tickets = [...tickets]
     tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())

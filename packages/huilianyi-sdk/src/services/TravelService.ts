@@ -77,8 +77,8 @@ export class TravelService {
       const trafficItems = businessTrafficItemsMapper[businessCode]
       for (const trafficData of trafficItems) {
         trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
-        const closedLoops = TravelTools.makeClosedLoops(trafficData.tickets)
-        if (closedLoops === null) {
+        const closedLoops = TravelTools.makeClosedLoopsV2(trafficData.tickets)
+        if (closedLoops.length === 0) {
           trafficData.isClosedLoop = false
           continue
         }
@@ -338,8 +338,8 @@ export class TravelService {
       assert.ok((await searcher.queryCount()) === 0, `票据[${ticketId}]已被其他虚拟行程单关联`, 500)
     }
 
-    const closedLoops = TravelTools.makeClosedLoops(tickets.map((item) => item.modelForClient()))
-    assert.ok(!!closedLoops, `所选票据未构成闭环行程`)
+    const closedLoops = TravelTools.makeClosedLoopsV2(tickets.map((item) => item.modelForClient()))
+    assert.ok(closedLoops.length > 0, `所选票据未构成闭环行程`)
 
     const staff = (await this.modelsCore.HLY_Staff.findWithUid(userOid))!
     assert.ok(!!staff, `相关员工不存在`)

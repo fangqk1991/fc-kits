@@ -42,17 +42,13 @@ describe('Test TicketsSniffer.test.ts', () => {
       //     })
       //   })
       // )
-      const fragments = TravelTools.splitTickets(tickets)
-      for (const tickets of fragments) {
-        // console.info(`${userOid} ${tickets.length} tickets.`)
-        const closedLoops = TravelTools.makeClosedLoops(tickets)
-        if (closedLoops) {
-          if (tickets[0].userOid) {
-            await huilianyiService.travelService().makeDummyTravel(tickets.map((item) => item.ticketId))
-          }
-          console.info(`${userOid} ${tickets.length} tickets.`)
-          // console.info(JSON.stringify(closedLoops, null, 2))
+      const closedLoops = TravelTools.makeClosedLoopsV2(tickets)
+      for (const loopItem of closedLoops) {
+        if (loopItem.tickets[0].userOid) {
+          await huilianyiService.travelService().makeDummyTravel(loopItem.tickets.map((item) => item.ticketId))
         }
+        console.info(`${userOid} ${loopItem.tickets.length} tickets.`, loopItem.tickets)
+        // console.info(JSON.stringify(closedLoops, null, 2))
       }
     }
   })
