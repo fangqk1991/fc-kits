@@ -68,6 +68,8 @@ const _timestampTypeCols: string[] = [
 ]
 const _gbkCols: string[] = [
   // prettier-ignore
+  'full_name',
+  'base_city',
 ]
 const _exactSearchCols: string[] = [
   // prettier-ignore

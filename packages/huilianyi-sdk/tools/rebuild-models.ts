@@ -49,6 +49,7 @@ const dbSchemas: DBModelSchema[] = [
     outputFile: `${__dirname}/../src/models/auto-build/__HLY_Staff.ts`,
     extFile: `${__dirname}/../src/models/extensions/_HLY_Staff.ts`,
     primaryKey: ['user_oid'],
+    gbkCols: ['full_name', 'base_city'],
     modifiableBlackList: ['create_time', 'update_time'],
     exactSearchCols: ['user_oid', 'employee_id'],
     fuzzySearchCols: ['full_name', 'email'],
