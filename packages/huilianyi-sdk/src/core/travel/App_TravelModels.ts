@@ -53,21 +53,6 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   expenseFormCodes: string[]
 }
 
-export interface DummyTravelModel {
-  hlyId: number
-  businessCode: string
-  applicantOid: string | null
-  applicantName: string
-  submittedBy: string | null
-  title: string
-  startTime: string
-  endTime: string
-  travelStatus: HLY_TravelStatus
-  version: number
-  createTime: string
-  updateTime: string
-}
-
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
   closedLoops: App_ClosedLoop[]
