@@ -775,7 +775,7 @@ export class HuilianyiSyncHandler {
               feed.orderType = HLY_OrderType.TRAIN
               feed.employeeId = orderItem.BasicInfo.EmployeeID || null
               feed.userName = orderItem.BasicInfo.UserName || ''
-              feed.orderStatus = orderItem.BasicInfo.OrderStatusName
+              feed.orderStatus = orderItem.BasicInfo.NewOrderStatusName || orderItem.BasicInfo.OrderStatusName
               feed.journeyNo = orderItem.CorpOrderInfo.JourneyID || ''
               feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.DataChange_CreateTime)
               feed.extrasInfo = JSON.stringify(orderItem)
