@@ -11,7 +11,7 @@ import {
   TravelTools,
 } from '../core'
 import * as moment from 'moment'
-import { SQLBulkAdder } from 'fc-sql'
+import { SQLBulkAdder, SQLModifier } from 'fc-sql'
 import assert from '@fangcha/assert'
 import { makeRandomStr } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
@@ -234,25 +234,44 @@ export class TravelService {
         commonTickets.forEach((ticket) => {
           ticket.businessCode = linkedTicketMap[ticket.ticketId] || ticket.businessCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
-          ticket.isValid = ['已购票', '待出票'].includes(orderStatus) ? 1 : 0
+          ticket.ctripStatus = orderStatus
+          ticket.ctripValid = ['已购票', '待出票'].includes(orderStatus) ? 1 : 0
         })
         todoTickets.push(...commonTickets)
       }
     }
+
     const dbSpec = new this.modelsCore.HLY_TrafficTicket().dbSpec()
-    const bulkAdder = new SQLBulkAdder(dbSpec.database)
-    bulkAdder.setTable(dbSpec.table)
-    bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['use_for_allowance'].includes(item)))
-    bulkAdder.declareTimestampKey('from_time')
-    bulkAdder.declareTimestampKey('to_time')
-    for (const ticketData of todoTickets) {
-      const feed = new this.modelsCore.HLY_TrafficTicket()
-      feed.fc_generateWithModel(ticketData)
-      feed.isEditable = !['紧急预订', '紧急预定'].includes(ticketData.journeyNo) && ticketData.businessCode ? 0 : 1
-      bulkAdder.putObject(feed.fc_encode())
-    }
-    await bulkAdder.execute()
+    const runner = dbSpec.database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      const bulkAdder = new SQLBulkAdder(dbSpec.database)
+      bulkAdder.transaction = transaction
+      bulkAdder.setTable(dbSpec.table)
+      bulkAdder.useUpdateWhenDuplicate()
+      bulkAdder.setInsertKeys(
+        dbSpec.insertableCols().filter((item) => !['is_valid', 'custom_valid', 'use_for_allowance'].includes(item))
+      )
+      bulkAdder.declareTimestampKey('from_time')
+      bulkAdder.declareTimestampKey('to_time')
+      for (const ticketData of todoTickets) {
+        const feed = new this.modelsCore.HLY_TrafficTicket()
+        feed.fc_generateWithModel(ticketData)
+        feed.isEditable = !['紧急预订', '紧急预定'].includes(ticketData.journeyNo) && ticketData.businessCode ? 0 : 1
+        bulkAdder.putObject(feed.fc_encode())
+      }
+      await bulkAdder.execute()
+
+      const modifier = new SQLModifier(dbSpec.database)
+      modifier.transaction = transaction
+      modifier.setTable(dbSpec.table)
+      modifier.updateExpression('is_valid = IFNULL(custom_valid, ctrip_valid)')
+      modifier.addSpecialCondition('1 = 1')
+      // modifier.addConditionKeyInArray(
+      //   'ticket_id',
+      //   todoTickets.map((item) => item.ticketId)
+      // )
+      await modifier.execute()
+    })
   }
 
   public async getTicketBusinessCodeList() {

@@ -110,6 +110,9 @@ export interface App_TrafficTicket {
   journeyNo: string
   businessCode: string
   isValid: number
+  customValid?: number | null
+  ctripValid?: number
+  ctripStatus?: string
   useForAllowance?: number
 }
 

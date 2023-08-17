@@ -19,6 +19,9 @@ const _cols: string[] = [
   'journey_no',
   'business_code',
   'is_valid',
+  'ctrip_valid',
+  'ctrip_status',
+  'custom_valid',
   'use_for_allowance',
   'is_editable',
   'create_time',
@@ -42,6 +45,9 @@ const _insertableCols: string[] = [
   'journey_no',
   'business_code',
   'is_valid',
+  'ctrip_valid',
+  'ctrip_status',
+  'custom_valid',
   'use_for_allowance',
   'is_editable',
 ]
@@ -62,6 +68,9 @@ const _modifiableCols: string[] = [
   'journey_no',
   'business_code',
   'is_valid',
+  'ctrip_valid',
+  'ctrip_status',
+  'custom_valid',
   'use_for_allowance',
   'is_editable',
 ]
@@ -171,6 +180,18 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public isValid!: number
   /**
+   * @description [tinyint] CTrip 订单是否有效
+   */
+  public ctripValid!: number
+  /**
+   * @description [varchar(20)]
+   */
+  public ctripStatus!: string | null
+  /**
+   * @description [tinyint] 自定义有效状态
+   */
+  public customValid!: number | null
+  /**
    * @description [tinyint] 是否参与补贴计算
    */
   public useForAllowance!: number
@@ -229,6 +250,9 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.journeyNo = ''
     this.businessCode = ''
     this.isValid = 0
+    this.ctripValid = 0
+    this.ctripStatus = null
+    this.customValid = null
     this.useForAllowance = 0
     this.isEditable = 0
   }
@@ -251,6 +275,9 @@ export default class __HLY_TrafficTicket extends FeedBase {
       journeyNo: 'journey_no',
       businessCode: 'business_code',
       isValid: 'is_valid',
+      ctripValid: 'ctrip_valid',
+      ctripStatus: 'ctrip_status',
+      customValid: 'custom_valid',
       useForAllowance: 'use_for_allowance',
       isEditable: 'is_editable',
       createTime: 'create_time',
