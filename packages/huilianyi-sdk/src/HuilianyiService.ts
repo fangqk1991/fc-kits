@@ -50,7 +50,7 @@ export class HuilianyiService {
   }
 
   public ticketHandler() {
-    return new TicketHandler(this.modelsCore)
+    return new TicketHandler(this.syncCore)
   }
 
   public async syncAndRefreshData(forceReload?: boolean) {

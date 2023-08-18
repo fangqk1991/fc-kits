@@ -1,6 +1,6 @@
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
-import { SQLBulkAdder, SQLSearcher } from 'fc-sql'
+import { SQLBulkAdder, SQLSearcher, Transaction } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import {
   App_TrafficTicket,
@@ -8,14 +8,17 @@ import {
   App_TravelHotelCoreInfo,
   App_TravelOrderHotel,
   App_TravelTrainTicketInfo,
+  HLY_Company,
   HLY_OrderType,
   HLY_StaffRole,
   HLY_TravelParticipant,
   HLY_TravelStatus,
+  TimeUtils,
 } from '../core'
-import { TimeUtils } from '../core/tools/TimeUtils'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { md5 } from '@fangcha/tools'
+import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
+import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -242,17 +245,20 @@ export class HuilianyiSyncHandler {
     await bulkAdder.execute()
   }
 
-  public async syncDummyTravelRecords() {
+  public async do_syncDummyTravelRecords(
+    dummyItems: _Dummy_Travel[],
+    staffMapper: { [p: string]: _HLY_Staff },
+    companyMapper: { [p: string]: HLY_Company },
+    transaction?: Transaction
+  ) {
     const syncCore = this.syncCore
     const HLY_Travel = syncCore.modelsCore.HLY_Travel
-    const Dummy_Travel = syncCore.modelsCore.Dummy_Travel
-    const dummyItems = await new Dummy_Travel().fc_searcher().queryAllFeeds()
-
-    const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
-    const companyMapper = await syncCore.othersProxy.getCompanyMapper()
 
     const dbSpec = new HLY_Travel().dbSpec()
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    if (transaction) {
+      bulkAdder.transaction = transaction
+    }
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
     bulkAdder.setInsertKeys([
@@ -318,6 +324,15 @@ export class HuilianyiSyncHandler {
       bulkAdder.putObject(feed.fc_encode())
     }
     await bulkAdder.execute()
+  }
+
+  public async syncDummyTravelRecords() {
+    const syncCore = this.syncCore
+    const Dummy_Travel = syncCore.modelsCore.Dummy_Travel
+    const dummyItems = await new Dummy_Travel().fc_searcher().queryAllFeeds()
+    const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
+    const companyMapper = await syncCore.othersProxy.getCompanyMapper()
+    await this.do_syncDummyTravelRecords(dummyItems, staffMapper, companyMapper)
   }
 
   public async dumpTravelRecords(forceReload = false) {
