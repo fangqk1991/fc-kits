@@ -403,7 +403,7 @@ export class TravelService {
 
     for (let i = 0; i < todoItems.length; ++i) {
       const travelItem = todoItems[i]
-      console.info(`[refreshTravelTicketItemsData] ${i} / ${todoItems.length}`)
+      console.info(`[refreshTravelTicketItemsData - ${travelItem.businessCode}] ${i} / ${todoItems.length}`)
       await this.updateTravelFormTrafficData(travelItem, mapper[travelItem.businessCode])
     }
   }
@@ -418,7 +418,6 @@ export class TravelService {
     employeeTrafficItems: App_EmployeeTrafficData[],
     transaction?: Transaction
   ) {
-    const extrasData = travelItem.extrasData()
     const ticketIdList = Object.keys(
       employeeTrafficItems.reduce((result, cur) => {
         for (const ticket of cur.tickets) {
@@ -430,7 +429,7 @@ export class TravelService {
     const closedLoopCount = employeeTrafficItems.filter((item) => item.isClosedLoop).length
     travelItem.fc_edit()
     travelItem.matchClosedLoop =
-      closedLoopCount > 0 && closedLoopCount === extrasData.participants.length
+      closedLoopCount > 0 && closedLoopCount === travelItem.participantUserOids().length
         ? HLY_ClosedLoopStatus.HasClosedLoop
         : HLY_ClosedLoopStatus.NoneClosedLoop
     travelItem.isPretty = travelItem.matchClosedLoop ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
