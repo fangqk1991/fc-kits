@@ -48,6 +48,8 @@ export class TravelTools {
         calcLoopTickets([...curTickets], [...remainTickets2])
       )
     }
+
+    tickets.forEach((ticket) => (ticket.useForAllowance = 0))
     for (const tickets of ticketFragments) {
       const [firstTicket, ...remainTickets] = tickets
       const loopTickets = calcLoopTickets([firstTicket], remainTickets)

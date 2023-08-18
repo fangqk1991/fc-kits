@@ -446,8 +446,8 @@ export class TravelService {
     }
     const handler = async (transaction: Transaction) => {
       await travelItem.updateToDB(transaction)
-      for (const trafficItems of employeeTrafficItems) {
-        for (const ticket of trafficItems.tickets) {
+      for (const trafficData of employeeTrafficItems) {
+        for (const ticket of trafficData.tickets) {
           const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
           ticketFeed.ticketId = ticket.ticketId
           ticketFeed.useForAllowance = null as any
