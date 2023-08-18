@@ -332,7 +332,7 @@ export class TravelService {
     })
   }
 
-  public async makeDummyTravel(ticketIdList: string[]) {
+  public async makeDummyTravel(ticketIdList: string[], remarks?: string) {
     assert.ok(Array.isArray(ticketIdList), `参数有误`)
     assert.ok(ticketIdList.length > 0, `未选择票据`)
     const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
@@ -371,6 +371,7 @@ export class TravelService {
     dummyTravel.endTime = tickets[tickets.length - 1].toTime
     dummyTravel.travelStatus = HLY_TravelStatus.Passed
     dummyTravel.ticketIdListStr = tickets.map((item) => item.ticketId).join(',')
+    dummyTravel.remarks = remarks || ''
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTravel.addToDB(transaction)

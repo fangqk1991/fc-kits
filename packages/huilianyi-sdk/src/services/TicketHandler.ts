@@ -35,6 +35,7 @@ export class TicketHandler {
     feed.fromCity = params.fromCity
     feed.toCity = params.toCity
     feed.businessCode = params.businessCode
+    feed.remarks = params.remarks || ''
 
     feed.ticketId = makeUUID()
     feed.employeeId = staff.employeeId

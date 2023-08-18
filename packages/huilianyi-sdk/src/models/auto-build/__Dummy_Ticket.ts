@@ -17,6 +17,7 @@ const _cols: string[] = [
   'to_city',
   'business_code',
   'is_valid',
+  'remarks',
   'create_time',
   'update_time',
 ]
@@ -36,6 +37,7 @@ const _insertableCols: string[] = [
   'to_city',
   'business_code',
   'is_valid',
+  'remarks',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -51,6 +53,7 @@ const _modifiableCols: string[] = [
   'to_city',
   'business_code',
   'is_valid',
+  'remarks',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -144,6 +147,10 @@ export default class __Dummy_Ticket extends FeedBase {
    */
   public isValid!: number
   /**
+   * @description [varchar(255)]
+   */
+  public remarks!: string
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -194,6 +201,7 @@ export default class __Dummy_Ticket extends FeedBase {
     this.toTime = null
     this.businessCode = ''
     this.isValid = 0
+    this.remarks = ''
   }
 
   public fc_propertyMapper() {
@@ -212,6 +220,7 @@ export default class __Dummy_Ticket extends FeedBase {
       toCity: 'to_city',
       businessCode: 'business_code',
       isValid: 'is_valid',
+      remarks: 'remarks',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

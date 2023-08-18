@@ -12,6 +12,7 @@ export interface DummyTravelModel {
   endTime: string
   travelStatus: HLY_TravelStatus
   version: number
+  remarks: string
   createTime: string
   updateTime: string
 }
@@ -25,6 +26,7 @@ export interface DummyTicketParams {
   fromCity: string
   toCity: string
   businessCode: string
+  remarks: string
 }
 
 export interface DummyTicketModel extends DummyTicketParams {
@@ -36,6 +38,7 @@ export interface DummyTicketModel extends DummyTicketParams {
   fromCity: string
   toCity: string
   businessCode: string
+  remarks: string
 
   orderId: number
   ticketId: string
@@ -43,6 +46,7 @@ export interface DummyTicketModel extends DummyTicketParams {
   userName: string
   baseCity: string
   isValid: number
+
   createTime: string
   updateTime: string
 }
