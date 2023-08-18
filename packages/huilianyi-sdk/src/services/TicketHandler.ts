@@ -2,12 +2,15 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import { App_TrafficTicket, DummyTicketParams } from '../core'
 import { makeUUID } from '@fangcha/tools'
 import assert from '@fangcha/assert'
+import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 
 export class TicketHandler {
+  public readonly syncCore: HuilianyiSyncCore
   public readonly modelsCore: HuilianyiModelsCore
 
-  constructor(modelsCore: HuilianyiModelsCore) {
-    this.modelsCore = modelsCore
+  constructor(syncCore: HuilianyiSyncCore) {
+    this.syncCore = syncCore
+    this.modelsCore = syncCore.modelsCore
   }
 
   public async createTicket(params: DummyTicketParams) {

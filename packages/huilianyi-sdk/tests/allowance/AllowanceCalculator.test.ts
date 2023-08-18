@@ -1,7 +1,7 @@
 import { loggerForDev } from '@fangcha/logger'
 import { HuilianyiConfigTest, HuilianyiDBTest } from '../HuilianyiConfigTest'
 import { HuilianyiService } from '../../src/HuilianyiService'
-import { AllowanceCalculator, HLY_OrderType } from '../../src'
+import { AllowanceCalculator, App_TrafficTicket, HLY_OrderType } from '../../src'
 import * as moment from 'moment'
 
 describe('Test AllowanceCalculator.test.ts', () => {
@@ -63,6 +63,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
               toTime: '2023-07-05 22:40:00',
               fromCity: '上海',
               toCity: '珠海',
+              isDummy: 0,
             },
             {
               ticketId: '',
@@ -81,6 +82,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
               toTime: '2023-07-07 19:05:00',
               fromCity: '珠海',
               toCity: '广州',
+              isDummy: 0,
             },
             {
               ticketId: '',
@@ -99,8 +101,9 @@ describe('Test AllowanceCalculator.test.ts', () => {
               toTime: '2023-07-11 19:05:00',
               fromCity: '广州',
               toCity: '上海',
+              isDummy: 0,
             },
-          ],
+          ] as App_TrafficTicket[],
         },
       ]
     )
