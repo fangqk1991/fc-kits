@@ -4,7 +4,7 @@ import { FilterOptions } from 'fc-feed'
 import { Transaction } from 'fc-sql'
 
 export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
-  orderType!: HLY_OrderType
+  public orderType!: HLY_OrderType
 
   public constructor() {
     super()

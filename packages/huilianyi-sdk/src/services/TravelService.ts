@@ -265,7 +265,7 @@ export class TravelService {
       modifier.transaction = transaction
       modifier.setTable(dbSpec.table)
       modifier.updateExpression('is_valid = IFNULL(custom_valid, ctrip_valid)')
-      modifier.addSpecialCondition('1 = 1')
+      modifier.addConditionKV('is_dummy', 0)
       // modifier.addConditionKeyInArray(
       //   'ticket_id',
       //   todoTickets.map((item) => item.ticketId)
