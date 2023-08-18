@@ -3,6 +3,7 @@ import { App_TrafficTicket, DummyTicketParams } from '../core'
 import { makeUUID } from '@fangcha/tools'
 import assert from '@fangcha/assert'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
+import { TravelService } from './TravelService'
 
 export class TicketHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -23,11 +24,8 @@ export class TicketHandler {
 
     const staff = (await this.modelsCore.HLY_Staff.findWithUid(params.userOid))!
     assert.ok(!!staff, `员工[${params.userOid}] 不存在`)
-    assert.ok(
-      !!(await this.modelsCore.HLY_Travel.findWithBusinessCode(params.businessCode)) ||
-        !!(await this.modelsCore.Dummy_Travel.findWithBusinessCode(params.businessCode)),
-      `出差申请单[${params.businessCode}] 不存在`
-    )
+    const travelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(params.businessCode)
+    assert.ok(!!travelItem, `出差申请单[${params.businessCode}] 不存在`)
 
     const dummyTicket = new this.modelsCore.Dummy_Ticket()
     dummyTicket.orderType = params.orderType
@@ -71,6 +69,7 @@ export class TicketHandler {
       }
       trafficTicket.fc_generateWithModel(params)
       await trafficTicket.addToDB(transaction)
+      await new TravelService(this.modelsCore).refreshTravelTicketsInfo(travelItem, transaction)
     })
     return dummyTicket
   }
