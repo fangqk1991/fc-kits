@@ -451,6 +451,7 @@ export class TravelService {
       for (const ticketId of ticketIdList) {
         const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
         ticketFeed.ticketId = ticketId
+        ticketFeed.useForAllowance = null as any
         ticketFeed.fc_edit()
         ticketFeed.useForAllowance = travelItem.matchClosedLoop ? 1 : 0
         await ticketFeed.updateToDB(transaction)
