@@ -429,7 +429,7 @@ export class TravelService {
     const closedLoopCount = employeeTrafficItems.filter((item) => item.isClosedLoop).length
     travelItem.fc_edit()
     travelItem.matchClosedLoop =
-      closedLoopCount > 0 && closedLoopCount === travelItem.participantUserOids().length
+      closedLoopCount > 0 && closedLoopCount === travelItem.extrasData().participants.length
         ? HLY_ClosedLoopStatus.HasClosedLoop
         : HLY_ClosedLoopStatus.NoneClosedLoop
     travelItem.isPretty = travelItem.matchClosedLoop ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
