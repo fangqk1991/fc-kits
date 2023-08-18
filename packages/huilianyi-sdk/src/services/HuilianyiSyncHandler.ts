@@ -478,6 +478,7 @@ export class HuilianyiSyncHandler {
                 journeyNo: orderItem.journeyNo,
                 businessCode: orderItem.businessCode || '',
                 isValid: orderItem.orderStatus === '已成交' ? 1 : 0,
+                isDummy: 0,
               }
               data.ticketId = md5(
                 [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')
@@ -598,6 +599,7 @@ export class HuilianyiSyncHandler {
                   journeyNo: orderItem.journeyNo,
                   businessCode: orderItem.businessCode || '',
                   isValid: ['已购票', '待出票'].includes(orderItem.orderStatus) ? 1 : 0,
+                  isDummy: 0,
                 }
                 data.ticketId = md5(
                   [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')

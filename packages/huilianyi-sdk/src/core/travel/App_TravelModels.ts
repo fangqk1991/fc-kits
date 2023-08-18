@@ -95,6 +95,7 @@ export interface App_TrafficTicket {
   journeyNo: string
   businessCode: string
   isValid: number
+  isDummy: number
   customValid?: number | null
   ctripValid?: number
   ctripStatus?: string

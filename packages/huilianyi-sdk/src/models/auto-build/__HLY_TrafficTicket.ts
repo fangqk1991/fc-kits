@@ -24,6 +24,7 @@ const _cols: string[] = [
   'custom_valid',
   'use_for_allowance',
   'is_editable',
+  'is_dummy',
   'create_time',
   'update_time',
 ]
@@ -50,6 +51,7 @@ const _insertableCols: string[] = [
   'custom_valid',
   'use_for_allowance',
   'is_editable',
+  'is_dummy',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -73,6 +75,7 @@ const _modifiableCols: string[] = [
   'custom_valid',
   'use_for_allowance',
   'is_editable',
+  'is_dummy',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -200,6 +203,10 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public isEditable!: number
   /**
+   * @description [tinyint] 是否为虚拟票据
+   */
+  public isDummy!: number
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -255,6 +262,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.customValid = null
     this.useForAllowance = 0
     this.isEditable = 0
+    this.isDummy = 0
   }
 
   public fc_propertyMapper() {
@@ -280,6 +288,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
       customValid: 'custom_valid',
       useForAllowance: 'use_for_allowance',
       isEditable: 'is_editable',
+      isDummy: 'is_dummy',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
