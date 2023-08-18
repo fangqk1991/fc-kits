@@ -1,13 +1,17 @@
 import __HLY_Staff from '../auto-build/__HLY_Staff'
 import { App_StaffModel } from '../../core'
+import { Transaction } from 'fc-sql'
 
 export class _HLY_Staff extends __HLY_Staff {
   public constructor() {
     super()
   }
 
-  public static async staffMapper() {
+  public static async staffMapper(transaction?: Transaction) {
     const searcher = new this().fc_searcher()
+    if (transaction) {
+      searcher.processor().transaction = transaction
+    }
     const feeds = await searcher.queryAllFeeds()
     return feeds.reduce((result, cur) => {
       result[cur.userOid] = cur

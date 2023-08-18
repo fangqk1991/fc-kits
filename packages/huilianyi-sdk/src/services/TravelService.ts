@@ -2,19 +2,18 @@ import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   App_EmployeeTrafficData,
   App_TrafficTicket,
-  App_TravelCoreItinerary,
   App_TravelOrderExtras,
-  HLY_ClosedLoopStatus,
-  HLY_PrettyStatus,
   HLY_TravelParticipant,
   HLY_TravelStatus,
   TravelTools,
 } from '../core'
 import * as moment from 'moment'
-import { SQLBulkAdder, SQLModifier } from 'fc-sql'
+import { SQLBulkAdder, SQLModifier, Transaction } from 'fc-sql'
 import assert from '@fangcha/assert'
 import { makeRandomStr } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
+import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
+import { TravelFormHandler } from './TravelFormHandler'
 
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
@@ -23,13 +22,20 @@ export class TravelService {
     this.modelsCore = modelsCore
   }
 
-  public async getTravelTrafficItems(businessCode: string) {
-    const mapper = await this.getTravelTrafficItemsMapper([businessCode])
-    return mapper[businessCode]
+  public async getTravelTrafficItems(travelItem: _HLY_Travel) {
+    const mapper = await this.getTravelTrafficItemsMapper([travelItem])
+    return mapper[travelItem.businessCode]
   }
 
-  public async getTravelTrafficItemsMapper(businessCodeList: string[]) {
+  public async getTravelTrafficItemsMapper(travelItems: _HLY_Travel[], transaction?: Transaction) {
     const HLY_TrafficTicket = this.modelsCore.HLY_TrafficTicket
+    const staffMapper = await this.modelsCore.HLY_Staff.staffMapper(transaction)
+
+    const travelItemsMap: { [businessCode: string]: _HLY_Travel } = travelItems.reduce((result, cur) => {
+      result[cur.businessCode] = cur
+      return result
+    }, {})
+    const businessCodeList = travelItems.map((item) => item.businessCode)
 
     const businessTrafficItemsMapper: {
       [businessCode: string]: App_EmployeeTrafficData[]
@@ -45,6 +51,9 @@ export class TravelService {
         travelEmployeeDataMapper[businessCode] = {}
       }
       const searcher = new HLY_TrafficTicket().fc_searcher()
+      if (transaction) {
+        searcher.processor().transaction = transaction
+      }
       searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
       searcher.processor().addConditionKV('is_valid', 1)
       searcher.processor().addOrderRule('from_time', 'ASC')
@@ -85,12 +94,7 @@ export class TravelService {
         trafficData.isClosedLoop = true
         trafficData.closedLoops = closedLoops
 
-        const travelItem = (await this.modelsCore.HLY_Travel.findWithBusinessCode(businessCode))!
-        if (!travelItem) {
-          console.error(`TravelItem[${businessCode}] missing.`)
-          continue
-        }
-
+        const travelItem = travelItemsMap[businessCode]
         const staffMap = travelItem.extrasData().participants.reduce((result, cur) => {
           result[cur.fullName] = cur
           return result
@@ -101,7 +105,7 @@ export class TravelService {
           console.error(`employeeName[${trafficData.employeeName}] missing.`)
           continue
         }
-        const staff = (await this.modelsCore.HLY_Staff.findWithUid(simpleStaff.userOID))!
+        const staff = staffMapper[simpleStaff.userOID]
         if (!staff) {
           console.error(`staff[${simpleStaff.userOID}] missing.`)
           continue
@@ -389,57 +393,17 @@ export class TravelService {
     const businessCodeList = await this.getTicketBusinessCodeList()
     console.info(`[refreshTravelTicketItemsData] ${businessCodeList.length} businessCode items`)
 
-    const mapper = await this.getTravelTrafficItemsMapper(businessCodeList)
-
     const searcher = new this.modelsCore.HLY_Travel().fc_searcher()
     searcher.processor().addConditionKeyInArray('business_code', businessCodeList)
     const todoItems = await searcher.queryAllFeeds()
 
+    const mapper = await this.getTravelTrafficItemsMapper(todoItems)
+
     for (let i = 0; i < todoItems.length; ++i) {
       const travelItem = todoItems[i]
       console.info(`[refreshTravelTicketItemsData] ${i} / ${todoItems.length}`)
-      const extrasData = travelItem.extrasData()
-      const employeeTrafficItems = mapper[travelItem.businessCode]
-      const ticketIdList = Object.keys(
-        employeeTrafficItems.reduce((result, cur) => {
-          for (const ticket of cur.tickets) {
-            result[ticket.ticketId] = true
-          }
-          return result
-        }, {})
-      )
-      const closedLoopCount = employeeTrafficItems.filter((item) => item.isClosedLoop).length
-      travelItem.fc_edit()
-      travelItem.matchClosedLoop =
-        closedLoopCount > 0 && closedLoopCount === extrasData.participants.length
-          ? HLY_ClosedLoopStatus.HasClosedLoop
-          : HLY_ClosedLoopStatus.NoneClosedLoop
-      travelItem.isPretty = travelItem.matchClosedLoop ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
-      travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
-      travelItem.ticketIdListStr = ticketIdList.join(',')
-      if (travelItem.isDummy) {
-        const keyTickets = employeeTrafficItems[0] ? employeeTrafficItems[0].tickets : []
-        const itineraryList: App_TravelCoreItinerary[] = keyTickets.map((ticket) => ({
-          startDate: ticket.fromTime,
-          endDate: ticket.toTime,
-          fromCityName: ticket.fromCity,
-          toCityName: ticket.toCity,
-          subsidyList: [],
-        }))
-        travelItem.itineraryItemsStr = JSON.stringify(itineraryList)
-      }
-
-      const runner = travelItem.dbSpec().database.createTransactionRunner()
-      await runner.commit(async (transaction) => {
-        await travelItem.updateToDB(transaction)
-        for (const ticketId of ticketIdList) {
-          const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
-          ticketFeed.ticketId = ticketId
-          ticketFeed.fc_edit()
-          ticketFeed.useForAllowance = travelItem.matchClosedLoop ? 1 : 0
-          await ticketFeed.updateToDB(transaction)
-        }
-      })
+      const formHandler = new TravelFormHandler(this.modelsCore, travelItem)
+      await formHandler.updateTrafficItems(mapper[travelItem.businessCode])
     }
   }
 }

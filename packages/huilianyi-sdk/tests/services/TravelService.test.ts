@@ -12,19 +12,19 @@ describe('Test HuilianyiService.test.ts', () => {
   it(`getTravelTrafficItems - Train`, async () => {
     const searcher0 = new HLY_OrderTrain().fc_searcher()
     searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
-    const travelItem = (await searcher0.queryOne())!
+    const order = (await searcher0.queryOne())!
 
-    const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
-    console.info(trafficItems)
+    // const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
+    console.info(order)
   })
 
   it(`getTravelTrafficItems - Flight`, async () => {
     const searcher0 = new HLY_OrderFlight().fc_searcher()
     searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
-    const travelItem = (await searcher0.queryOne())!
+    const order = (await searcher0.queryOne())!
 
-    const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
-    console.info(trafficItems)
+    // const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
+    console.info(order)
   })
 
   it(`fillTravelOrdersBusinessCode`, async () => {

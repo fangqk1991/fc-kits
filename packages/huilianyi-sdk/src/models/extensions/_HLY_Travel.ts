@@ -6,6 +6,7 @@ import {
   App_TravelModel,
   HLY_TravelStatus,
 } from '../../core'
+import { Transaction } from 'fc-sql'
 
 export class _HLY_Travel extends __HLY_Travel {
   public status!: HLY_TravelStatus
@@ -15,10 +16,13 @@ export class _HLY_Travel extends __HLY_Travel {
     super()
   }
 
-  public static async findWithBusinessCode(businessCode: string) {
-    return (await this.findOne({
-      business_code: businessCode,
-    }))!
+  public static async findWithBusinessCode(businessCode: string, transaction?: Transaction) {
+    return (await this.findOne(
+      {
+        business_code: businessCode,
+      },
+      transaction
+    ))!
   }
 
   public async updateInfos(data: Partial<App_TravelModel>) {
