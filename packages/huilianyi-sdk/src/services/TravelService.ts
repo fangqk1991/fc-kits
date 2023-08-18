@@ -429,9 +429,7 @@ export class TravelService {
     const closedLoopCount = employeeTrafficItems.filter((item) => item.isClosedLoop).length
     travelItem.fc_edit()
     travelItem.matchClosedLoop =
-      closedLoopCount > 0 && closedLoopCount === travelItem.extrasData().participants.length
-        ? HLY_ClosedLoopStatus.HasClosedLoop
-        : HLY_ClosedLoopStatus.NoneClosedLoop
+      closedLoopCount > 0 ? HLY_ClosedLoopStatus.HasClosedLoop : HLY_ClosedLoopStatus.NoneClosedLoop
     travelItem.isPretty = travelItem.matchClosedLoop ? HLY_PrettyStatus.Pretty : HLY_PrettyStatus.NotPretty
     travelItem.employeeTrafficItemsStr = JSON.stringify(employeeTrafficItems)
     travelItem.ticketIdListStr = ticketIdList.join(',')
@@ -448,13 +446,15 @@ export class TravelService {
     }
     const handler = async (transaction: Transaction) => {
       await travelItem.updateToDB(transaction)
-      for (const ticketId of ticketIdList) {
-        const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
-        ticketFeed.ticketId = ticketId
-        ticketFeed.useForAllowance = null as any
-        ticketFeed.fc_edit()
-        ticketFeed.useForAllowance = travelItem.matchClosedLoop ? 1 : 0
-        await ticketFeed.updateToDB(transaction)
+      for (const trafficItems of employeeTrafficItems) {
+        for (const ticket of trafficItems.tickets) {
+          const ticketFeed = new this.modelsCore.HLY_TrafficTicket()
+          ticketFeed.ticketId = ticket.ticketId
+          ticketFeed.useForAllowance = null as any
+          ticketFeed.fc_edit()
+          ticketFeed.useForAllowance = ticket.useForAllowance || 0
+          await ticketFeed.updateToDB(transaction)
+        }
       }
     }
     if (transaction) {

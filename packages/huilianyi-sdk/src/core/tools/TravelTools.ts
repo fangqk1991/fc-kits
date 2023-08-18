@@ -52,6 +52,7 @@ export class TravelTools {
       const [firstTicket, ...remainTickets] = tickets
       const loopTickets = calcLoopTickets([firstTicket], remainTickets)
       if (loopTickets) {
+        loopTickets.forEach((ticket) => (ticket.useForAllowance = 1))
         closedLoops.push({
           tickets: loopTickets,
         })
