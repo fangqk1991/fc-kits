@@ -86,6 +86,7 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
       customValid: this.customValid,
       ctripStatus: this.ctripStatus || '',
       useForAllowance: this.useForAllowance,
+      remarks: this.remarks,
     }
   }
 
