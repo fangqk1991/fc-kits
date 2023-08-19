@@ -99,6 +99,9 @@ export class TicketHandler {
       await new TravelService(this.modelsCore).refreshTravelTicketsInfo(travelItem, transaction)
     })
     await realTicket.reloadDataFromDB()
-    return realTicket
+    return {
+      dummyTicket: dummyTicket.modelForClient(),
+      commonTicket: realTicket.modelForClient(),
+    }
   }
 }
