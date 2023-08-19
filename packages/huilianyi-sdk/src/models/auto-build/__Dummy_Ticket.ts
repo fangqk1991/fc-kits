@@ -70,6 +70,7 @@ const _gbkCols: string[] = [
 const _exactSearchCols: string[] = [
   // prettier-ignore
   'order_id',
+  'ticket_id',
   'business_code',
 ]
 const _fuzzySearchCols: string[] = [
@@ -79,7 +80,7 @@ const _fuzzySearchCols: string[] = [
 
 const dbOptions = {
   table: 'dummy_ticket',
-  primaryKey: ['order_id'],
+  primaryKey: ['ticket_id'],
   cols: _cols,
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,
