@@ -65,6 +65,7 @@ export class TicketHandler {
         journeyNo: '',
         businessCode: dummyTicket.businessCode || '',
         isValid: dummyTicket.isValid,
+        remarks: dummyTicket.remarks,
         isDummy: 1,
       }
       trafficTicket.fc_generateWithModel(params)
@@ -75,6 +76,22 @@ export class TicketHandler {
   }
 
   public async updateTicket(ticketId: string, params: Partial<DummyTicketParams>) {
+    const options: Partial<DummyTicketParams> = {
+      orderType: params.orderType,
+      userOid: params.userOid,
+      trafficCode: params.trafficCode,
+      fromTime: params.fromTime,
+      toTime: params.toTime,
+      fromCity: params.fromCity,
+      toCity: params.toCity,
+      businessCode: params.businessCode,
+      remarks: params.remarks,
+      isValid: params.isValid,
+    }
+    Object.keys(options)
+      .filter((key) => options[key] === undefined)
+      .forEach((key) => delete options[key])
+
     const dummyTicket = (await this.modelsCore.Dummy_Ticket.findWithUid(ticketId))!
     assert.ok(!!dummyTicket, `虚拟票据[${dummyTicket.ticketId}] 不存在`)
 
@@ -87,10 +104,8 @@ export class TicketHandler {
     dummyTicket.fc_edit()
     realTicket.fc_edit()
 
-    if (params.isValid !== undefined) {
-      dummyTicket.isValid = params.isValid
-      realTicket.isValid = params.isValid
-    }
+    dummyTicket.fc_generateWithModel(options)
+    realTicket.fc_generateWithModel(options)
 
     const runner = dummyTicket.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
