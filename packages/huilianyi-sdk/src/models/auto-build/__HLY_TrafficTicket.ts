@@ -25,6 +25,7 @@ const _cols: string[] = [
   'use_for_allowance',
   'is_editable',
   'is_dummy',
+  'remarks',
   'create_time',
   'update_time',
 ]
@@ -52,6 +53,7 @@ const _insertableCols: string[] = [
   'use_for_allowance',
   'is_editable',
   'is_dummy',
+  'remarks',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -76,6 +78,7 @@ const _modifiableCols: string[] = [
   'use_for_allowance',
   'is_editable',
   'is_dummy',
+  'remarks',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -207,6 +210,10 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public isDummy!: number
   /**
+   * @description [varchar(255)] 备注
+   */
+  public remarks!: string
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -263,6 +270,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.useForAllowance = 0
     this.isEditable = 0
     this.isDummy = 0
+    this.remarks = ''
   }
 
   public fc_propertyMapper() {
@@ -289,6 +297,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
       useForAllowance: 'use_for_allowance',
       isEditable: 'is_editable',
       isDummy: 'is_dummy',
+      remarks: 'remarks',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

@@ -100,6 +100,7 @@ export interface App_TrafficTicket {
   ctripValid?: number
   ctripStatus?: string
   useForAllowance?: number
+  remarks?: string
 }
 
 export interface App_ClosedLoop {

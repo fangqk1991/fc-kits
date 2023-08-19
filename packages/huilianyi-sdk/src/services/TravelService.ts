@@ -256,7 +256,7 @@ export class TravelService {
       bulkAdder.setInsertKeys(
         dbSpec
           .insertableCols()
-          .filter((item) => !['is_dummy', 'is_valid', 'custom_valid', 'use_for_allowance'].includes(item))
+          .filter((item) => !['is_dummy', 'is_valid', 'custom_valid', 'use_for_allowance', 'remarks'].includes(item))
       )
       bulkAdder.declareTimestampKey('from_time')
       bulkAdder.declareTimestampKey('to_time')

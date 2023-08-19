@@ -354,6 +354,7 @@ CREATE TABLE IF NOT EXISTS hly_traffic_ticket
     use_for_allowance TINYINT         NOT NULL DEFAULT 0 COMMENT '是否参与补贴计算',
     is_editable       TINYINT         NOT NULL DEFAULT 0 COMMENT '是否可被编辑',
     is_dummy          TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为虚拟票据',
+    remarks           VARCHAR(255)    NOT NULL DEFAULT '' COMMENT '备注',
     create_time       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (ticket_id),
