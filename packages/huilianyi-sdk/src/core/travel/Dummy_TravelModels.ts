@@ -27,6 +27,7 @@ export interface DummyTicketParams {
   toCity: string
   businessCode: string
   remarks: string
+  isValid?: number
 }
 
 export interface DummyTicketModel extends DummyTicketParams {

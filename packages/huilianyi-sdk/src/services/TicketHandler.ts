@@ -14,7 +14,7 @@ export class TicketHandler {
     this.modelsCore = syncCore.modelsCore
   }
 
-  public async createTicket(params: DummyTicketParams) {
+  public async createDummyTicket(params: DummyTicketParams) {
     assert.ok(!!params.orderType, `票据类型不能为空`)
     assert.ok(!!params.trafficCode, `车次号/航班号不能为空`)
     assert.ok(!!params.fromCity, `出发城市不能为空`)
@@ -72,5 +72,33 @@ export class TicketHandler {
       await new TravelService(this.modelsCore).refreshTravelTicketsInfo(travelItem, transaction)
     })
     return dummyTicket
+  }
+
+  public async updateTicket(ticketId: string, params: Partial<DummyTicketParams>) {
+    const dummyTicket = (await this.modelsCore.Dummy_Ticket.findWithUid(ticketId))!
+    assert.ok(!!dummyTicket, `虚拟票据[${dummyTicket.ticketId}] 不存在`)
+
+    const realTicket = (await this.modelsCore.HLY_TrafficTicket.findWithUid(dummyTicket.ticketId))!
+    assert.ok(!!realTicket, `常规票据[${dummyTicket.ticketId}] 不存在`)
+
+    const travelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(dummyTicket.businessCode)
+    assert.ok(!!travelItem, `出差申请单[${dummyTicket.businessCode}] 不存在`)
+
+    dummyTicket.fc_edit()
+    realTicket.fc_edit()
+
+    if (params.isValid !== undefined) {
+      dummyTicket.isValid = params.isValid
+      realTicket.isValid = params.isValid
+    }
+
+    const runner = dummyTicket.dbSpec().database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      await dummyTicket.updateToDB(transaction)
+      await realTicket.updateToDB(transaction)
+      await new TravelService(this.modelsCore).refreshTravelTicketsInfo(travelItem, transaction)
+    })
+    await realTicket.reloadDataFromDB()
+    return realTicket
   }
 }
