@@ -269,16 +269,22 @@ export class TravelService {
       }
       await bulkAdder.execute()
 
-      const modifier = new SQLModifier(dbSpec.database)
-      modifier.transaction = transaction
-      modifier.setTable(dbSpec.table)
-      modifier.updateExpression('is_valid = IFNULL(custom_valid, ctrip_valid)')
-      modifier.addConditionKV('is_dummy', 0)
-      // modifier.addConditionKeyInArray(
-      //   'ticket_id',
-      //   todoTickets.map((item) => item.ticketId)
-      // )
-      await modifier.execute()
+      {
+        const modifier = new SQLModifier(dbSpec.database)
+        modifier.transaction = transaction
+        modifier.setTable(dbSpec.table)
+        modifier.updateExpression('is_valid = IFNULL(custom_valid, ctrip_valid)')
+        modifier.addConditionKV('is_dummy', 0)
+        await modifier.execute()
+      }
+      {
+        const modifier = new SQLModifier(dbSpec.database)
+        modifier.transaction = transaction
+        modifier.setTable(dbSpec.table)
+        modifier.updateKV('use_for_allowance', 0)
+        modifier.addConditionKV('is_valid', 0)
+        await modifier.execute()
+      }
     })
   }
 
