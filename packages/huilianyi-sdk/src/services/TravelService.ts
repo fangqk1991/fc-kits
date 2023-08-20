@@ -225,7 +225,8 @@ export class TravelService {
         commonTickets.forEach((ticket) => {
           ticket.businessCode = linkedTicketMap[ticket.ticketId] || ticket.businessCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
-          ticket.isValid = orderStatus === '已成交' ? 1 : 0
+          ticket.ctripStatus = orderStatus
+          ticket.ctripValid = orderStatus === '已成交' ? 1 : 0
         })
         todoTickets.push(...commonTickets)
       }
