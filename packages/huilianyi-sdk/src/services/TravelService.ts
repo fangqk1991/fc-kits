@@ -160,7 +160,7 @@ export class TravelService {
                  INNER JOIN hly_order_flight
                             ON FIND_IN_SET(hly_travel_participant.user_oid, hly_order_flight.ticket_user_oids_str)
                                 AND hly_order_flight.start_time BETWEEN hly_travel.start_time AND hly_travel.end_time
-        WHERE hly_order_flight.journey_no IN ('紧急预订', '紧急预定')
+        WHERE hly_order_flight.journey_no IN ('紧急预订', '紧急预定', '')
           AND hly_order_flight.business_code IS NULL
           AND order_status NOT IN ('出票失败', '已取消')
           AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
@@ -183,7 +183,7 @@ export class TravelService {
                  INNER JOIN hly_order_train
                             ON FIND_IN_SET(hly_travel_participant.user_oid, hly_order_train.ticket_user_oids_str)
                                 AND hly_order_train.start_time BETWEEN hly_travel.start_time AND hly_travel.end_time
-        WHERE hly_order_train.journey_no IN ('紧急预订', '紧急预定')
+        WHERE hly_order_train.journey_no IN ('紧急预订', '紧急预定', '')
           AND hly_order_train.business_code IS NULL
           AND order_status NOT IN ('出票失败', '已取消')
           AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
