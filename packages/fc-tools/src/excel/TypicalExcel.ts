@@ -1,5 +1,5 @@
 import { CellValue, Row, stream, Workbook, Worksheet } from 'exceljs'
-import * as assert from 'assert'
+import assert from '@fangcha/assert'
 import WorkbookWriter = stream.xlsx.WorkbookWriter
 
 interface StringDict {
@@ -186,9 +186,7 @@ export class TypicalExcel {
     return workbook.commit()
   }
 
-  public static async excelFromFile(filePath: string) {
-    const workbook = new Workbook()
-    await workbook.xlsx.readFile(filePath)
+  public static async parseWorkbook(workbook: Workbook) {
     const sheet = workbook.worksheets[0]
     assert.ok(sheet.rowCount > 0, 'No Data')
     const firstRow = sheet.getRow(1)
@@ -218,5 +216,17 @@ export class TypicalExcel {
       excel.addRow(record)
     })
     return excel
+  }
+
+  public static async excelFromFile(filePath: string) {
+    const workbook = new Workbook()
+    await workbook.xlsx.readFile(filePath)
+    return this.parseWorkbook(workbook)
+  }
+
+  public static async excelFromBuffer(buffer: Buffer) {
+    const workbook = new Workbook()
+    await workbook.xlsx.load(buffer)
+    return this.parseWorkbook(workbook)
   }
 }

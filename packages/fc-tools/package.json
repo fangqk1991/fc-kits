@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/tools",
-  "version": "1.25.2",
+  "version": "1.26.0",
   "description": "Some tools.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@fangcha/app-error": "workspace:^",
     "@fangcha/app-request": "workspace:^",
+    "@fangcha/assert": "workspace:^",
     "@fangcha/logger": "workspace:^",
     "fc-sql": "workspace:^",
     "fc-queue": "workspace:^",

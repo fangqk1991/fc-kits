@@ -696,6 +696,9 @@ importers:
       '@fangcha/app-request':
         specifier: workspace:^
         version: link:../http-request
+      '@fangcha/assert':
+        specifier: workspace:^
+        version: link:../assert
       '@fangcha/logger':
         specifier: workspace:^
         version: link:../fc-logger
