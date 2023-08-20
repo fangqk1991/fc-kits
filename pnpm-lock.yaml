@@ -175,9 +175,6 @@ importers:
       '@fangcha/bot-kit':
         specifier: workspace:^
         version: link:../bot-kit
-      '@fangcha/tools':
-        specifier: workspace:^
-        version: link:../fc-tools
       moment:
         specifier: ^2.29.4
         version: 2.29.4
@@ -206,6 +203,9 @@ importers:
       '@fangcha/swagger':
         specifier: workspace:^
         version: link:../fc-swagger
+      '@fangcha/tools':
+        specifier: workspace:^
+        version: link:../fc-tools
       '@types/ali-oss':
         specifier: ^6.16.6
         version: 6.16.8

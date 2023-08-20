@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/backend-kit",
-  "version": "0.62.0",
+  "version": "0.63.0",
   "description": "Backend Kit.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -28,7 +28,6 @@
     "@fangcha/app-request-extensions": "workspace:^",
     "@fangcha/assert": "workspace:^",
     "@fangcha/bot-kit": "workspace:^",
-    "@fangcha/tools": "workspace:^",
     "moment": "^2.29.4"
   },
   "devDependencies": {
@@ -40,6 +39,7 @@
     "@fangcha/router": "workspace:^",
     "@fangcha/session": "workspace:^",
     "@fangcha/swagger": "workspace:^",
+    "@fangcha/tools": "workspace:^",
     "fc-feed": "workspace:^",
     "fc-model": "workspace:^",
     "fc-sql": "workspace:^",
