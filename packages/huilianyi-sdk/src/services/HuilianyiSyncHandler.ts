@@ -317,6 +317,7 @@ export class HuilianyiSyncHandler {
       feed.submittedBy = item.submittedBy
       feed.isDummy = 1
       feed.participantUserOidsStr = participants.map((item) => item.userOID).join(',')
+      feed.participantUserNamesStr = participants.map((item) => item.fullName).join(',')
       feed.extrasInfo = JSON.stringify({
         participants: participants,
         customProps: {},

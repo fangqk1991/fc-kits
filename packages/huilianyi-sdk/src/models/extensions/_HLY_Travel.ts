@@ -31,6 +31,7 @@ export class _HLY_Travel extends __HLY_Travel {
     if (data.extrasData) {
       this.extrasInfo = JSON.stringify(data.extrasData)
       this.participantUserOidsStr = data.extrasData.participants.map((item) => item.userOID).join(',')
+      this.participantUserNamesStr = data.extrasData.participants.map((item) => item.fullName).join(',')
     }
     if (data.itineraryItems) {
       this.itineraryItemsStr = JSON.stringify(data.itineraryItems)
@@ -60,6 +61,13 @@ export class _HLY_Travel extends __HLY_Travel {
 
   public participantUserOids() {
     return (this.participantUserOidsStr || '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+  }
+
+  public participantUserNames() {
+    return (this.participantUserNamesStr || '')
       .split(',')
       .map((item) => item.trim())
       .filter((item) => !!item)
@@ -103,6 +111,7 @@ export class _HLY_Travel extends __HLY_Travel {
     data.itineraryItems = this.itineraryItems()
     data.employeeTrafficItems = this.employeeTrafficItems()
     delete data['participantUserOidsStr']
+    delete data['participantUserNamesStr']
     delete data['expenseFormCodesStr']
     delete data['itineraryItemsStr']
     delete data['employeeTrafficItemsStr']

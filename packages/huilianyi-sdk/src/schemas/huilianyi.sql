@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS hly_travel
     employee_traffic_items_str MEDIUMTEXT COMMENT '员工行程票据信息，空 | JSON 字符串',
     expense_form_codes_str     VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联报销单编号集',
     participant_user_oids_str  TEXT COLLATE ascii_bin,
+    participant_user_names_str TEXT,
     ticket_id_list_str         TEXT COLLATE ascii_bin,
     travel_status              INT             NOT NULL COMMENT 'HLY_TravelStatus',
     reload_time                TIMESTAMP       NOT NULL DEFAULT '2000-01-01 00:00:00',

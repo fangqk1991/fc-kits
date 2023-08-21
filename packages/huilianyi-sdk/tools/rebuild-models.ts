@@ -26,6 +26,7 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['hly_id'],
     forceInsertableWhiteList: ['created_date', 'last_modified_date'],
     modifiableBlackList: ['create_time', 'update_time'],
+    gbkCols: ['participant_user_names_str'],
     exactSearchCols: ['business_code'],
     fuzzySearchCols: ['applicant_name'],
   },
