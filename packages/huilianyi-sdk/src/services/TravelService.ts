@@ -371,8 +371,8 @@ export class TravelService {
       assert.ok((await searcher.queryCount()) === 0, `票据[${ticketId}]已被其他虚拟行程单关联`, 500)
     }
 
-    const closedLoops = TravelTools.makeClosedLoopsV2(tickets.map((item) => item.modelForClient()))
-    assert.ok(closedLoops.length > 0, `所选票据未构成闭环行程`)
+    // const closedLoops = TravelTools.makeClosedLoopsV2(tickets.map((item) => item.modelForClient()))
+    // assert.ok(closedLoops.length > 0, `所选票据未构成闭环行程`)
 
     const staff = (await this.modelsCore.HLY_Staff.findWithUid(userOid))!
     assert.ok(!!staff, `相关员工不存在`)
