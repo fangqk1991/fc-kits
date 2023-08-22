@@ -4,9 +4,17 @@ export enum HLY_OrderType {
   FLIGHT = 'FLIGHT',
   TRAIN = 'TRAIN',
   HOTEL = 'HOTEL',
+  DRIVE = 'DRIVE', // 自驾
+  OTHERS = 'OTHERS', // 其他
 }
 
-const values = [HLY_OrderType.FLIGHT, HLY_OrderType.TRAIN, HLY_OrderType.HOTEL]
+const values = [
+  HLY_OrderType.FLIGHT,
+  HLY_OrderType.TRAIN,
+  HLY_OrderType.HOTEL,
+  HLY_OrderType.DRIVE,
+  HLY_OrderType.OTHERS,
+]
 
 const describe = (code: HLY_OrderType) => {
   switch (code) {
@@ -16,6 +24,10 @@ const describe = (code: HLY_OrderType) => {
       return '火车票'
     case HLY_OrderType.HOTEL:
       return '酒店'
+    case HLY_OrderType.DRIVE:
+      return '自驾'
+    case HLY_OrderType.OTHERS:
+      return '其他'
   }
   return code
 }
