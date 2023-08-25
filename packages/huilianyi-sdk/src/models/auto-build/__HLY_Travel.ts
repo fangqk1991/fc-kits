@@ -28,6 +28,9 @@ const _cols: string[] = [
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
+  'has_repeated',
+  'overlapped_codes_str',
+  'is_ignored',
   'participant_user_oids_str',
   'participant_user_names_str',
   'ticket_id_list_str',
@@ -63,6 +66,9 @@ const _insertableCols: string[] = [
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
+  'has_repeated',
+  'overlapped_codes_str',
+  'is_ignored',
   'participant_user_oids_str',
   'participant_user_names_str',
   'ticket_id_list_str',
@@ -94,6 +100,9 @@ const _modifiableCols: string[] = [
   'itinerary_items_str',
   'employee_traffic_items_str',
   'expense_form_codes_str',
+  'has_repeated',
+  'overlapped_codes_str',
+  'is_ignored',
   'participant_user_oids_str',
   'participant_user_names_str',
   'ticket_id_list_str',
@@ -238,6 +247,18 @@ export default class __HLY_Travel extends FeedBase {
    */
   public expenseFormCodesStr!: string
   /**
+   * @description [tinyint] 拥有重复申请单
+   */
+  public hasRepeated!: number
+  /**
+   * @description [text] 时间重叠的出差申请单
+   */
+  public overlappedCodesStr!: string
+  /**
+   * @description [tinyint] 标记为忽略
+   */
+  public isIgnored!: number
+  /**
    * @description [text]
    */
   public participantUserOidsStr!: string
@@ -320,6 +341,9 @@ export default class __HLY_Travel extends FeedBase {
     this.itineraryItemsStr = ''
     this.employeeTrafficItemsStr = ''
     this.expenseFormCodesStr = ''
+    this.hasRepeated = 0
+    this.overlappedCodesStr = ''
+    this.isIgnored = 0
     this.participantUserOidsStr = ''
     this.participantUserNamesStr = ''
     this.ticketIdListStr = ''
@@ -353,6 +377,9 @@ export default class __HLY_Travel extends FeedBase {
       itineraryItemsStr: 'itinerary_items_str',
       employeeTrafficItemsStr: 'employee_traffic_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
+      hasRepeated: 'has_repeated',
+      overlappedCodesStr: 'overlapped_codes_str',
+      isIgnored: 'is_ignored',
       participantUserOidsStr: 'participant_user_oids_str',
       participantUserNamesStr: 'participant_user_names_str',
       ticketIdListStr: 'ticket_id_list_str',

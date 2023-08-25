@@ -14,9 +14,9 @@ import {
   HLY_OrderTrainTicketInfo,
   HLY_TravelModel,
   ItineraryHeadDTO,
+  TimeUtils,
 } from '../core'
 import * as moment from 'moment/moment'
-import { TimeUtils } from '../core/tools/TimeUtils'
 
 export class HuilianyiFormatter {
   public static transferExpenseModel(item: HLY_ExpenseV2): App_ExpenseModel {
@@ -162,6 +162,9 @@ export class HuilianyiFormatter {
         customProps: customProps,
       },
       version: item.version,
+      isIgnored: 0,
+      hasRepeated: 0,
+      overlappedCodes: [],
     }
   }
 

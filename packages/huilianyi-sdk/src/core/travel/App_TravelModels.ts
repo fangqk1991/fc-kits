@@ -51,6 +51,9 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   itineraryItems: App_TravelCoreItinerary[]
   employeeTrafficItems: App_EmployeeTrafficData[]
   expenseFormCodes: string[]
+  hasRepeated: number
+  overlappedCodes: string[]
+  isIgnored: number
 }
 
 export interface App_TravelAllowanceExtrasData {

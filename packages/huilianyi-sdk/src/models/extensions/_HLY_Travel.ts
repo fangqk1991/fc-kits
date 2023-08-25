@@ -39,6 +39,9 @@ export class _HLY_Travel extends __HLY_Travel {
     if (data.expenseFormCodes) {
       this.expenseFormCodesStr = data.expenseFormCodes.join(',')
     }
+    if (data.overlappedCodes) {
+      this.overlappedCodesStr = data.overlappedCodes.join(',')
+    }
     if (data.lastModifiedDate) {
       this.reloadTime = data.lastModifiedDate
     }
@@ -47,6 +50,13 @@ export class _HLY_Travel extends __HLY_Travel {
 
   public expenseFormCodes() {
     return this.expenseFormCodesStr
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => !!item)
+  }
+
+  public overlappedCodes() {
+    return this.overlappedCodesStr
       .split(',')
       .map((item) => item.trim())
       .filter((item) => !!item)
@@ -110,11 +120,13 @@ export class _HLY_Travel extends __HLY_Travel {
     data.extrasData = this.extrasData()
     data.itineraryItems = this.itineraryItems()
     data.employeeTrafficItems = this.employeeTrafficItems()
+    data.overlappedCodes = this.overlappedCodes()
     delete data['participantUserOidsStr']
     delete data['participantUserNamesStr']
     delete data['expenseFormCodesStr']
     delete data['itineraryItemsStr']
     delete data['employeeTrafficItemsStr']
+    delete data['overlappedCodesStr']
     delete data['extrasInfo']
     delete data['createTime']
     delete data['updateTime']
