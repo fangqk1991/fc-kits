@@ -17,6 +17,18 @@ import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
 
+interface SimpleTravel {
+  businessCode: string
+  createdDate: string
+  isNewest?: number
+}
+
+interface OverlappedTravel {
+  businessCode: string
+  isNewest: number
+  overlappedCodes: string[]
+}
+
 export class TravelService {
   public readonly modelsCore: HuilianyiModelsCore
 
@@ -135,6 +147,104 @@ export class TravelService {
         await feed.strongAddToDB()
       }
     }
+  }
+
+  public async refreshOverlappedFlags() {
+    const items = await this.findOverlappedTravelForms()
+    const itemsMap = items.reduce((result, cur) => {
+      result[cur.businessCode] = cur
+      return result
+    }, {} as { [p: string]: OverlappedTravel })
+
+    const HLY_Travel = this.modelsCore.HLY_Travel
+    const dbSpec = new HLY_Travel().dbSpec()
+
+    const searcher = new HLY_Travel().fc_searcher()
+    searcher.processor().addConditionKeyInArray(
+      'business_code',
+      items.map((item) => item.businessCode)
+    )
+    const todoItems = await searcher.queryAllFeeds()
+
+    const runner = dbSpec.database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      const modifier = new SQLModifier(dbSpec.database)
+      modifier.transaction = transaction
+      modifier.setTable(dbSpec.table)
+      modifier.updateKV('has_repeated', 0)
+      modifier.updateKV('is_newest', 0)
+      modifier.updateKV('overlapped_codes_str', '')
+      modifier.addSpecialCondition('1 = 1')
+      await modifier.execute()
+
+      for (const item of todoItems) {
+        const data = itemsMap[item.businessCode]
+        item.fc_edit()
+        item.hasRepeated = 1
+        item.isNewest = data.isNewest
+        item.overlappedCodesStr = data.overlappedCodes.join(',')
+        await item.updateToDB(transaction)
+      }
+    })
+  }
+
+  public async findOverlappedTravelForms() {
+    const items = (await this.modelsCore.database.query(`
+        SELECT travel_a.business_code AS codeA,
+               travel_a.created_date AS timeA, 
+               travel_b.business_code AS codeB, 
+               travel_b.created_date AS timeB
+        FROM hly_travel AS travel_a
+                 INNER JOIN hly_travel AS travel_b ON travel_a.participant_user_oids_str = travel_b.participant_user_oids_str
+            AND travel_a.hly_id != travel_b.hly_id
+            AND (travel_a.start_time BETWEEN travel_b.start_time
+                     AND travel_b.end_time
+                OR travel_a.end_time BETWEEN travel_b.start_time
+                     AND travel_b.end_time)
+        WHERE travel_a.is_dummy = 0
+          AND travel_a.travel_status = ${HLY_TravelStatus.Passed}
+          AND travel_b.is_dummy = 0
+          AND travel_b.travel_status = ${HLY_TravelStatus.Passed}
+    `)) as { codeA: string; timeA: string; codeB: string; timeB: string }[]
+    const overlappedMap: {
+      [businessCode: string]: {
+        self: SimpleTravel
+        others: SimpleTravel[]
+      }
+    } = {}
+    for (const item of items) {
+      if (!overlappedMap[item.codeA]) {
+        overlappedMap[item.codeA] = {
+          self: {
+            businessCode: item.codeA,
+            isNewest: 1,
+            createdDate: item.timeA,
+          },
+          others: [],
+        }
+      }
+      if (moment(item.timeB).valueOf() > moment(item.timeA).valueOf()) {
+        overlappedMap[item.codeA].self.isNewest = 0
+      }
+      overlappedMap[item.codeA].others.push({
+        businessCode: item.codeB,
+        createdDate: item.timeB,
+      })
+    }
+    const groups: OverlappedTravel[] = Object.keys(overlappedMap).map((key) => {
+      const item = overlappedMap[key]
+      for (const otherItem of item.others) {
+        if (moment(otherItem.createdDate).valueOf() > moment(item.self.createdDate).valueOf()) {
+          item.self.isNewest = 0
+        }
+      }
+      return {
+        businessCode: item.self.businessCode,
+        isNewest: item.self.isNewest || 0,
+        overlappedCodes: item.others.map((t) => t.businessCode),
+      }
+    })
+    return groups
   }
 
   public async fillTravelOrdersCTripStatus() {

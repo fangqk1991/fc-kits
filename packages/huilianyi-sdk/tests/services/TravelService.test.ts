@@ -92,6 +92,15 @@ describe('Test HuilianyiService.test.ts', () => {
     await travelService.refreshTravelParticipants()
   })
 
+  it(`findOverlappedTravelForms`, async () => {
+    const items = await travelService.findOverlappedTravelForms()
+    console.info(items)
+  })
+
+  it(`refreshOverlappedFlags`, async () => {
+    await travelService.refreshOverlappedFlags()
+  })
+
   it(`syncDummyTravelRecords`, async () => {
     const ticketIdList = ['2bbb8db96a7f778b32de4146521dbbb6', 'f37376b1f0349f7733c6201a458314dd']
     await travelService.clearTicketsBusinessCode(ticketIdList)

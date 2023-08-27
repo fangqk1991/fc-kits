@@ -65,6 +65,7 @@ export class HuilianyiService {
     await syncHandler.syncDummyTravelRecords()
 
     await this.travelService().refreshTravelParticipants()
+    await this.travelService().refreshOverlappedFlags()
 
     await syncHandler.dumpStaffGroupRecords()
     await syncHandler.dumpStaffRecords()
