@@ -49,14 +49,14 @@ export class _HLY_Travel extends __HLY_Travel {
   }
 
   public expenseFormCodes() {
-    return this.expenseFormCodesStr
+    return (this.expenseFormCodesStr || '')
       .split(',')
       .map((item) => item.trim())
       .filter((item) => !!item)
   }
 
   public overlappedCodes() {
-    return this.overlappedCodesStr
+    return (this.overlappedCodesStr || '')
       .split(',')
       .map((item) => item.trim())
       .filter((item) => !!item)
