@@ -386,6 +386,7 @@ export class HuilianyiSyncHandler {
       const travelInfo = await syncCore.dataProxy.getTravelApplicationDetail(item.businessCode)
       const props = HuilianyiFormatter.transferTravelModel(travelInfo)
       delete (props as any).hasRepeated
+      delete (props as any).isNewest
       delete (props as any).overlappedCodes
       delete (props as any).isIgnored
       delete (props as any).matchClosedLoop

@@ -164,6 +164,7 @@ export class HuilianyiFormatter {
       version: item.version,
       isIgnored: 0,
       hasRepeated: 0,
+      isNewest: 0,
       overlappedCodes: [],
     }
   }

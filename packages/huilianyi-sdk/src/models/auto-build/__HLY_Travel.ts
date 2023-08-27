@@ -29,6 +29,7 @@ const _cols: string[] = [
   'employee_traffic_items_str',
   'expense_form_codes_str',
   'has_repeated',
+  'is_newest',
   'overlapped_codes_str',
   'is_ignored',
   'participant_user_oids_str',
@@ -67,6 +68,7 @@ const _insertableCols: string[] = [
   'employee_traffic_items_str',
   'expense_form_codes_str',
   'has_repeated',
+  'is_newest',
   'overlapped_codes_str',
   'is_ignored',
   'participant_user_oids_str',
@@ -101,6 +103,7 @@ const _modifiableCols: string[] = [
   'employee_traffic_items_str',
   'expense_form_codes_str',
   'has_repeated',
+  'is_newest',
   'overlapped_codes_str',
   'is_ignored',
   'participant_user_oids_str',
@@ -251,6 +254,10 @@ export default class __HLY_Travel extends FeedBase {
    */
   public hasRepeated!: number
   /**
+   * @description [tinyint] 是否为最新
+   */
+  public isNewest!: number
+  /**
    * @description [text] 时间重叠的出差申请单
    */
   public overlappedCodesStr!: string
@@ -342,6 +349,7 @@ export default class __HLY_Travel extends FeedBase {
     this.employeeTrafficItemsStr = ''
     this.expenseFormCodesStr = ''
     this.hasRepeated = 0
+    this.isNewest = 0
     this.overlappedCodesStr = ''
     this.isIgnored = 0
     this.participantUserOidsStr = ''
@@ -378,6 +386,7 @@ export default class __HLY_Travel extends FeedBase {
       employeeTrafficItemsStr: 'employee_traffic_items_str',
       expenseFormCodesStr: 'expense_form_codes_str',
       hasRepeated: 'has_repeated',
+      isNewest: 'is_newest',
       overlappedCodesStr: 'overlapped_codes_str',
       isIgnored: 'is_ignored',
       participantUserOidsStr: 'participant_user_oids_str',

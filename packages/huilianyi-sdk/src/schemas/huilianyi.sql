@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS hly_travel
     employee_traffic_items_str MEDIUMTEXT COMMENT '员工行程票据信息，空 | JSON 字符串',
     expense_form_codes_str     VARCHAR(256)    NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '关联报销单编号集',
     has_repeated               TINYINT         NOT NULL DEFAULT 0 COMMENT '拥有重复申请单',
+    is_newest                  TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为最新',
     overlapped_codes_str       TEXT COLLATE ascii_bin COMMENT '时间重叠的出差申请单',
     is_ignored                 TINYINT         NOT NULL DEFAULT 0 COMMENT '标记为忽略',
     participant_user_oids_str  TEXT COLLATE ascii_bin,
