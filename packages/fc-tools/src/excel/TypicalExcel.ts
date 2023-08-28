@@ -35,12 +35,12 @@ export interface TypicalColumn<T> {
 
 export class TypicalExcel {
   public readonly columnKeys: string[] = []
-  private readonly _workbook: Workbook
-  private readonly _sheet: Worksheet
-  private readonly _extraHeaders: StringDict[] = []
-  private readonly _records: Dict[] = []
+  protected readonly _workbook: Workbook
+  protected readonly _sheet: Worksheet
+  protected readonly _extraHeaders: StringDict[] = []
+  protected readonly _records: Dict[] = []
+  protected readonly _options: TypicalExcelOptions
   public useBorder = false
-  private readonly _options: TypicalExcelOptions
 
   public constructor(columnKeys: string[], options: TypicalExcelOptions = {}) {
     this._options = options
@@ -186,11 +186,18 @@ export class TypicalExcel {
     return workbook.commit()
   }
 
-  public static async parseWorkbook(workbook: Workbook) {
+  public static async parseWorkbook(workbook: Workbook, name2keyMap: StringDict = {}) {
     const sheet = workbook.worksheets[0]
     assert.ok(sheet.rowCount > 0, 'No Data')
     const firstRow = sheet.getRow(1)
-    const columnKeys = (firstRow.values as []).slice(1) as string[]
+    const columnNames = (firstRow.values as []).slice(1) as string[]
+    const columnKeys: string[] = []
+    const headerNameMap: StringDict = {}
+    columnNames.forEach((name) => {
+      const key = name2keyMap[name] || name
+      columnKeys.push(key)
+      headerNameMap[key] = name
+    })
     const records: any[] = []
     for (let i = 2; i <= sheet.rowCount; ++i) {
       const data: any = {}
@@ -211,22 +218,24 @@ export class TypicalExcel {
         records.push(data)
       }
     }
-    const excel = new TypicalExcel(columnKeys)
+    const excel = new TypicalExcel(columnKeys, {
+      headerNameMap: headerNameMap,
+    })
     records.forEach((record) => {
       excel.addRow(record)
     })
     return excel
   }
 
-  public static async excelFromFile(filePath: string) {
+  public static async excelFromFile(filePath: string, name2keyMap?: StringDict) {
     const workbook = new Workbook()
     await workbook.xlsx.readFile(filePath)
-    return this.parseWorkbook(workbook)
+    return this.parseWorkbook(workbook, name2keyMap)
   }
 
-  public static async excelFromBuffer(buffer: Buffer) {
+  public static async excelFromBuffer(buffer: Buffer, name2keyMap?: StringDict) {
     const workbook = new Workbook()
     await workbook.xlsx.load(buffer)
-    return this.parseWorkbook(workbook)
+    return this.parseWorkbook(workbook, name2keyMap)
   }
 }
