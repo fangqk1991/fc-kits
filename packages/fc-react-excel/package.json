@@ -1,0 +1,28 @@
+{
+  "name": "@fangcha/react-excel",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "keywords": [
+    "react",
+    "tools"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@fangcha/react": "workspace:^",
+    "@fangcha/backend-kit": "workspace:^",
+    "@fangcha/tools": "workspace:^",
+    "@types/assert": "^1.5.6",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18.11.9",
+    "mocha": "^10.1.0",
+    "nyc": "^15.1.0",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.8.4"
+  },
+  "files": [
+    "src/*"
+  ]
+}

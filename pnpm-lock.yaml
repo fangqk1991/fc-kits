@@ -541,6 +541,42 @@ importers:
         specifier: ^4.8.4
         version: 4.9.5
 
+  packages/fc-react-excel:
+    devDependencies:
+      '@fangcha/backend-kit':
+        specifier: workspace:^
+        version: link:../backend-kit
+      '@fangcha/react':
+        specifier: workspace:^
+        version: link:../fc-react
+      '@fangcha/tools':
+        specifier: workspace:^
+        version: link:../fc-tools
+      '@types/assert':
+        specifier: ^1.5.6
+        version: 1.5.6
+      '@types/mocha':
+        specifier: ^10.0.0
+        version: 10.0.1
+      '@types/node':
+        specifier: ^18.11.9
+        version: 18.16.9
+      mocha:
+        specifier: ^10.1.0
+        version: 10.2.0
+      nyc:
+        specifier: ^15.1.0
+        version: 15.1.0
+      ts-node-dev:
+        specifier: ^2.0.0
+        version: 2.0.0(@types/node@18.16.9)(typescript@4.9.5)
+      tslib:
+        specifier: ^2.4.1
+        version: 2.5.0
+      typescript:
+        specifier: ^4.8.4
+        version: 4.9.5
+
   packages/fc-react-test:
     devDependencies:
       '@fangcha/app-error':
@@ -555,6 +591,9 @@ importers:
       '@fangcha/react':
         specifier: workspace:^
         version: link:../fc-react
+      '@fangcha/react-excel':
+        specifier: workspace:^
+        version: link:../fc-react-excel
       '@fangcha/tools':
         specifier: workspace:^
         version: link:../fc-tools
@@ -3221,7 +3260,7 @@ packages:
   /@types/accepts@1.3.5:
     resolution: {integrity: sha512-jOdnI/3qTpHABjM5cx1Hc0sKsPoYCp+DP/GJRGtDlPd7fiV9oXGGIcjW/ZOxLIvjGz8MA+uMZI9metHlgqbgwQ==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
 
   /@types/ali-oss@6.16.8:
     resolution: {integrity: sha512-OIevBEn5NONhV8pOoPjQ/zZlWgi08+zFaAS7t8wbWm2UIVGJD7nU2u+GnQpjkKcsgOBADMvmr380x/zSx2ythw==}
@@ -3274,7 +3313,7 @@ packages:
   /@types/connect@3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
 
   /@types/content-disposition@0.5.5:
     resolution: {integrity: sha512-v6LCdKfK6BwcqMo+wYW05rLS12S0ZO0Fl4w1h4aaZMD7bqT3gVUns6FvLJKGZHQmYn3SX55JWGpziwJRwVgutA==}
@@ -3282,7 +3321,7 @@ packages:
   /@types/continuation-local-storage@3.2.4:
     resolution: {integrity: sha512-OT32vCVMymU1JMPKDeY0lX3cduAr0Pm/VwIbxygMeDS4lRcv57qYXn9bMwBRcRnEpXKBb/r4xYaZCARTZllP0A==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: true
 
   /@types/cookies@0.7.7:
@@ -3296,7 +3335,7 @@ packages:
   /@types/cron@1.7.3:
     resolution: {integrity: sha512-iPmUXyIJG1Js+ldPYhOQcYU3kCAQ2FWrSkm1FJPoii2eYSn6wEW6onPukNTT0bfiflexNSRPl6KWmAIqS+36YA==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
       moment: 2.29.4
     dev: true
 
@@ -3347,14 +3386,14 @@ packages:
   /@types/formidable@2.0.6:
     resolution: {integrity: sha512-L4HcrA05IgQyNYJj6kItuIkXrInJvsXTPC5B1i64FggWKKqSL+4hgt7asiSNva75AoLQjq29oPxFfU4GAQ6Z2w==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: false
 
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: true
 
   /@types/hoist-non-react-statics@3.3.1:
@@ -3383,7 +3422,7 @@ packages:
   /@types/ioredis@4.28.10:
     resolution: {integrity: sha512-69LyhUgrXdgcNDv7ogs1qXZomnfOEnSmrmMFqKgt1XMJxmoOSG/u3wYy13yACIfKuMJ8IhKgHafDO3sx19zVQQ==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: true
 
   /@types/json-schema@7.0.11:
@@ -3403,7 +3442,7 @@ packages:
   /@types/jsonwebtoken@9.0.2:
     resolution: {integrity: sha512-drE6uz7QBKq1fYqqoFKTDRdFCPHd5TCub75BM+D+cMx7NU9hUz7SESLfC2fSCXVFMO5Yj8sOWHuGqPgjc+fz0Q==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: false
 
   /@types/keygrip@1.0.2:
@@ -3480,6 +3519,7 @@ packages:
 
   /@types/node@20.1.4:
     resolution: {integrity: sha512-At4pvmIOki8yuwLtd7BNHl3CiWNbtclUbNtScGx4OHfBd4/oWoJC8KRCIxXwkdndzhxOsPXihrsOoydxBjlE9Q==}
+    dev: true
 
   /@types/parse-json@4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -3535,7 +3575,7 @@ packages:
     resolution: {integrity: sha512-whjk1EDJPcAR2kYHRbFl/lKeeKYTi05A15K9bnLInCVroNDCtXce57xKdI0/rQaA3K+6q0eFyUBPmqfSndUZdQ==}
     dependencies:
       '@types/caseless': 0.12.2
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
       '@types/tough-cookie': 4.0.2
       form-data: 2.5.1
     dev: true
@@ -3611,7 +3651,7 @@ packages:
   /@types/tunnel@0.0.2:
     resolution: {integrity: sha512-2gYBYYPhn3/aozRdfS+DSxFnf3YZ9IM9q6Wjee1xVj/vtRm1MwT9EN9yFSiQW05eAVRLkWJj3qpMAhIA6EY9mw==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: true
 
   /@types/tunnel@0.0.3:
@@ -12735,13 +12775,13 @@ packages:
   /wkx@0.4.8:
     resolution: {integrity: sha512-ikPXMM9IR/gy/LwiOSqWlSL3X/J5uk9EO2hHNRXS41eTLXaUFEVw9fn/593jW/tE5tedNg8YjT5HkCa4FqQZyQ==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: true
 
   /wkx@0.5.0:
     resolution: {integrity: sha512-Xng/d4Ichh8uN4l0FToV/258EjMGU9MGcA0HV2d9B/ZpZB3lqQm7nkOdZdm5GhKtLLhAE7PiVQwN4eN+2YJJUg==}
     dependencies:
-      '@types/node': 20.1.4
+      '@types/node': 18.16.9
     dev: false
 
   /word-wrap@1.2.3:

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { TypicalColumn, TypicalExcel } from '@fangcha/tools/src/excel'
 import { FrontendFileReader } from '@fangcha/tools/src/frontend'
-import { Button, Divider, message, Space } from 'antd'
+import { Button, message, Space } from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
-import { FilePickerDialog, TableView, TableViewColumn } from '@fangcha/react'
-import { TestTableView_SomeData } from './table/TestTableView_Tools'
+import { FilePickerDialog } from '@fangcha/react'
+import { ExcelPreviewDialog } from '@fangcha/react-excel'
 
 const { saveAs } = require('file-saver')
 
@@ -59,8 +59,10 @@ export const TestExcelsView: React.FC = () => {
               )
                 .then(async (excel) => {
                   message.success(`文件解析完成`)
-                  setTodoItems(excel.records() as DataProps[])
-                  setVersion(version + 1)
+                  new ExcelPreviewDialog({
+                    columns: columns,
+                    records: excel.records() as DataProps[],
+                  }).show()
                 })
                 .catch((err) => {
                   message.error(`文件解析 / 上传失败`)
@@ -72,22 +74,6 @@ export const TestExcelsView: React.FC = () => {
           导入 Excel
         </Button>
       </Space>
-      <Divider />
-      <TableView
-        version={version}
-        rowKey={(item: TestTableView_SomeData) => {
-          return item.uid
-        }}
-        columns={TableViewColumn.makeColumns<DataProps>(
-          columns.map((column) => ({
-            title: column.columnName,
-            render: (item) => <span>{item[column.columnKey]}</span>,
-          }))
-        )}
-        loadOnePageItems={async () => {
-          return todoItems
-        }}
-      />
     </div>
   )
 }
