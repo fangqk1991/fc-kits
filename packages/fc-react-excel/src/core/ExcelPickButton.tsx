@@ -7,9 +7,10 @@ import { Button, ButtonProps, message } from 'antd'
 
 interface Props {
   columns?: TypicalColumn<any>[]
+  onPickRecords?: (records: any[]) => Promise<void> | void
 }
 
-export const ExcelPickButton: React.FC<ButtonProps & Props> = ({ columns, ...props }) => {
+export const ExcelPickButton: React.FC<ButtonProps & Props> = ({ columns, onPickRecords, ...props }) => {
   return (
     <Button
       onClick={async () => {
@@ -36,7 +37,11 @@ export const ExcelPickButton: React.FC<ButtonProps & Props> = ({ columns, ...pro
                     columnName: key,
                   })),
                 records: excel.records() as any[],
-              }).show()
+              }).show(async (records) => {
+                if (onPickRecords) {
+                  await onPickRecords(records)
+                }
+              })
             })
             .catch((err) => {
               message.error(`文件解析失败`)

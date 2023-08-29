@@ -9,6 +9,9 @@
   ],
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
+  "dependencies": {
+    "file-saver": "^2.0.5"
+  },
   "devDependencies": {
     "@fangcha/react": "workspace:^",
     "@fangcha/backend-kit": "workspace:^",

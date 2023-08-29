@@ -542,6 +542,10 @@ importers:
         version: 4.9.5
 
   packages/fc-react-excel:
+    dependencies:
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
     devDependencies:
       '@fangcha/backend-kit':
         specifier: workspace:^
@@ -609,9 +613,6 @@ importers:
       antd:
         specifier: ^5.2.3
         version: 5.4.7(react-dom@18.2.0)(react@18.2.0)
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
       mocha:
         specifier: ^10.1.0
         version: 10.2.0
@@ -6746,7 +6747,7 @@ packages:
 
   /file-saver@2.0.5:
     resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
-    dev: true
+    dev: false
 
   /file-type@12.4.0:
     resolution: {integrity: sha512-WTvyKq8yjtNmUtVAD8LGcTkvtCdJglM6ks2HTqEClm6+65XTqM6MoZYA1Vtra50DLRWLiM38fEs1y56f5VhnUA==}
