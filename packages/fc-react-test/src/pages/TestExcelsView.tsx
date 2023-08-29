@@ -4,7 +4,7 @@ import { FrontendFileReader } from '@fangcha/tools/src/frontend'
 import { Button, message, Space } from 'antd'
 import { DownloadOutlined } from '@ant-design/icons'
 import { FilePickerDialog } from '@fangcha/react'
-import { ExcelPreviewDialog } from '@fangcha/react-excel'
+import { ExcelPickButton, ExcelPreviewDialog } from '@fangcha/react-excel'
 
 const { saveAs } = require('file-saver')
 
@@ -73,6 +73,7 @@ export const TestExcelsView: React.FC = () => {
         >
           导入 Excel
         </Button>
+        <ExcelPickButton>Custom Excel</ExcelPickButton>
       </Space>
     </div>
   )
