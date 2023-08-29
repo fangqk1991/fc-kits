@@ -2,7 +2,7 @@
   "compilerOptions": {
     "importHelpers": true,
     "noEmitHelpers": true,
-    "module": "commonjs",
+    "module": "esnext",
     "declaration": true,
     "sourceMap": true,
     "moduleResolution": "node",
