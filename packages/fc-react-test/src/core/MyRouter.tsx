@@ -7,6 +7,7 @@ import { TestDialogsView } from '../pages/TestDialogsView'
 import { TestWidgetsView } from '../pages/TestWidgetsView'
 import { TestFormsView } from '../pages/TestFormsView'
 import { TestRoutersView } from '../pages/TestRoutersView'
+import { TestExcelsView } from '../pages/TestExcelsView'
 
 export const MyRouter = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const MyRouter = createBrowserRouter([
       {
         path: '/v1/routers',
         element: <TestRoutersView />,
+      },
+      {
+        path: '/v1/excels',
+        element: <TestExcelsView />,
       },
       {
         path: '*',

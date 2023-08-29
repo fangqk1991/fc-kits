@@ -32,6 +32,10 @@ export const MyMenu: Route = {
           path: '/v1/routers',
           name: 'Routers',
         },
+        {
+          path: '/v1/excels',
+          name: 'Excels',
+        },
       ],
     },
   ],
