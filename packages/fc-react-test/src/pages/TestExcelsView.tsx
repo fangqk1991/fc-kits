@@ -1,5 +1,5 @@
 import React from 'react'
-import { TypicalColumn } from '@fangcha/tools/src/excel'
+import { TypicalColumn } from '@fangcha/tools/lib/excel'
 import { Divider, message, Space } from 'antd'
 import { ExcelPickButton, HotExcelPanel } from '@fangcha/react-excel'
 
