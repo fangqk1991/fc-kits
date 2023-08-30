@@ -18,7 +18,7 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "devDependencies": {
-    "@fangcha/swagger": "workspace:*",
+    "@fangcha/swagger": "workspace:^",
     "typescript": "4.6.4"
   },
   "files": [

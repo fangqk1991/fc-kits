@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/generator",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "lib/index.js",
@@ -15,11 +15,13 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/tools": "workspace:*",
-    "@fangcha/swagger": "workspace:*",
-    "fc-sql": "workspace:*",
     "@types/ejs": "^3.1.1",
     "ejs": "^3.1.8"
+  },
+  "peerDependencies": {
+    "@fangcha/tools": "*",
+    "@fangcha/swagger": "*",
+    "fc-sql": "*"
   },
   "files": [
     "lib/*",
