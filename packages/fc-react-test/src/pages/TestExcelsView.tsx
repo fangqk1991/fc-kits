@@ -24,6 +24,9 @@ export const TestExcelsView: React.FC = () => {
     <div>
       <HotExcelPanel
         tmplFileName={'模板文件.xlsx'}
+        tmplDownloadBtnText={'模板下载'}
+        tmplDemoRecords={[{ aaa: 1, bbb: 2 }]}
+        importBtnText={'Excel 导入'}
         columns={columns}
         onPickRecords={(records) => {
           message.success(JSON.stringify(records))

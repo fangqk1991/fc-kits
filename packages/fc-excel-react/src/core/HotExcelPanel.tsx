@@ -5,18 +5,31 @@ import { ExcelPickButton } from './ExcelPickButton'
 import { DownloadOutlined } from '@ant-design/icons'
 const { saveAs } = require('file-saver')
 
-interface Props {
-  columns: TypicalColumn<any>[]
+interface Props<T = any> {
+  columns: TypicalColumn<T>[]
   tmplFileName?: string
-  onPickRecords?: (records: any[]) => Promise<void> | void
+  tmplDownloadBtnText?: string
+  tmplDemoRecords?: any[]
+  importBtnText?: string
+  onPickRecords?: (records: T[]) => Promise<void> | void
 }
 
-export const HotExcelPanel: React.FC<Props> = ({ columns, tmplFileName, onPickRecords }) => {
+export const HotExcelPanel = <T,>({
+  columns,
+  tmplFileName,
+  tmplDemoRecords,
+  tmplDownloadBtnText,
+  importBtnText,
+  onPickRecords,
+}: Props<T>) => {
   return (
     <Space>
       <Button
         onClick={async () => {
           const excel = TypicalExcel.excelWithTypicalColumns(columns)
+          if (tmplDemoRecords) {
+            excel.addTypicalRowList(tmplDemoRecords)
+          }
           const buffer = await excel.writeBuffer()
           const blob = new Blob([buffer], {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -24,10 +37,10 @@ export const HotExcelPanel: React.FC<Props> = ({ columns, tmplFileName, onPickRe
           saveAs(blob, tmplFileName || `templates.xlsx`)
         }}
       >
-        下载模板 <DownloadOutlined />
+        {tmplDownloadBtnText || '下载模板'} <DownloadOutlined />
       </Button>
       <ExcelPickButton type={'primary'} columns={columns} onPickRecords={onPickRecords}>
-        导入 Excel
+        {importBtnText || '导入 Excel'}
       </ExcelPickButton>
     </Space>
   )
