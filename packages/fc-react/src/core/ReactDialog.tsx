@@ -18,6 +18,7 @@ interface Props extends DialogProps {
   dom: HTMLElement
   callback?: DialogCallback<any>
   children: any
+  okText?: React.ReactNode
   hideButtons?: boolean
 }
 
@@ -54,6 +55,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
         }
         setOpen(false)
       }}
+      okText={props.okText}
       footer={props.hideButtons ? null : undefined}
       maskClosable={!!props.hideButtons}
     >
@@ -65,6 +67,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
 export abstract class ReactDialog<T extends DialogProps, P = any> {
   title: string = 'Title'
   width?: string | number
+  okText?: React.ReactNode
   hideButtons = false
 
   props!: Omit<T, 'context'>
@@ -101,6 +104,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
           dom={dom}
           context={context}
           hideButtons={this.hideButtons}
+          okText={this.okText}
           callback={callback}
         >
           <RawComponent {...(this.props as any)} context={context} />
