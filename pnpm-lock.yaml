@@ -440,10 +440,10 @@ importers:
   packages/fc-generator:
     dependencies:
       '@fangcha/swagger':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../fc-swagger
       '@fangcha/tools':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../fc-tools
       '@types/ejs':
         specifier: ^3.1.1
@@ -452,7 +452,7 @@ importers:
         specifier: ^3.1.8
         version: 3.1.9
       fc-sql:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../fc-sql
 
   packages/fc-logger:
