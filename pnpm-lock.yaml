@@ -93,7 +93,7 @@ importers:
         specifier: ^1.2.0
         version: link:../ali-oss
       '@fangcha/tools':
-        specifier: workspace:^
+        specifier: '*'
         version: link:../fc-tools
       shelljs:
         specifier: ^0.8.5

@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/generator",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "lib/index.js",
@@ -16,9 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/ejs": "^3.1.1",
-    "ejs": "^3.1.8"
-  },
-  "peerDependencies": {
+    "ejs": "^3.1.8",
     "@fangcha/tools": "*",
     "@fangcha/swagger": "*",
     "fc-sql": "*"
