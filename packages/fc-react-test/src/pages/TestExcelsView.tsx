@@ -36,6 +36,8 @@ export const TestExcelsView: React.FC = () => {
       <Divider />
       <Space>
         <ExcelPickButton
+          filePickBtnText={'解析 Excel & 预览'}
+          previewSubmitBtnText={'导入数据'}
           onPickExcel={async (excel) => {
             await sleep(1000)
             message.warning(JSON.stringify(excel.records()))
