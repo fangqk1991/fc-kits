@@ -44,45 +44,6 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
 
-  packages/admin-react:
-    devDependencies:
-      '@fangcha/app-request':
-        specifier: workspace:^
-        version: link:../http-request
-      '@fangcha/auth-basic':
-        specifier: ^0.8.0
-        version: 0.8.0(@fangcha/app-error@packages+app-error)(@fangcha/app-request@packages+http-request)
-      '@fangcha/auth-react':
-        specifier: ^0.9.0
-        version: 0.9.0(@popperjs/core@2.11.7)
-      '@fangcha/react':
-        specifier: workspace:^
-        version: link:../fc-react
-      '@types/assert':
-        specifier: ^1.5.6
-        version: 1.5.6
-      '@types/mocha':
-        specifier: ^10.0.0
-        version: 10.0.1
-      '@types/node':
-        specifier: ^18.11.9
-        version: 18.16.9
-      mocha:
-        specifier: ^10.1.0
-        version: 10.2.0
-      nyc:
-        specifier: ^15.1.0
-        version: 15.1.0
-      ts-node-dev:
-        specifier: ^2.0.0
-        version: 2.0.0(@types/node@18.16.9)(typescript@4.9.5)
-      tslib:
-        specifier: ^2.4.1
-        version: 2.5.0
-      typescript:
-        specifier: ^4.8.4
-        version: 4.9.5
-
   packages/admin-vue:
     dependencies:
       '@fangcha/tools':
@@ -2966,24 +2927,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: false
 
-  /@fangcha/auth-basic@0.8.0(@fangcha/app-error@packages+app-error)(@fangcha/app-request@packages+http-request):
-    resolution: {integrity: sha512-2OxkR+HvSrN15G1dmuGPYVZY9n6dS/BKCadl0GOD1mJ6aHVE6yBlI8tqnSnUpTolXu3BX6ax7DCu2HkachJKrw==}
-    peerDependencies:
-      '@fangcha/app-error': '*'
-      '@fangcha/app-request': '*'
-    dependencies:
-      '@fangcha/app-error': link:packages/app-error
-      '@fangcha/app-request': link:packages/http-request
-    dev: true
-
-  /@fangcha/auth-react@0.9.0(@popperjs/core@2.11.7):
-    resolution: {integrity: sha512-WBAsrp24LXzGyXXy3RrsOyr3gEArnyrbdqcayXlgXcGT2hlsuno8+6ISu90Jc9kF44vh9DkDWMxY7yGzyFNzYg==}
-    dependencies:
-      bootstrap: 5.2.3(@popperjs/core@2.11.7)
-    transitivePeerDependencies:
-      - '@popperjs/core'
-    dev: true
-
   /@fast-csv/format@4.3.5:
     resolution: {integrity: sha512-8iRn6QF3I8Ak78lNAa+Gdl5MJJBM5vRHivFtMRUWINdevNo00K7OXxS2PshawLKTejVwieIlPmK5YlLu6w4u8A==}
     dependencies:
@@ -3137,6 +3080,7 @@ packages:
 
   /@popperjs/core@2.11.7:
     resolution: {integrity: sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==}
+    dev: false
 
   /@rc-component/context@1.3.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-6QdaCJ7Wn5UZLJs15IEfqy4Ru3OaL5ctqpQYWd5rlfV9wwzrzdt6+kgAQZV/qdB0MUPN4nhyBfRembQCIvBf+w==}
@@ -4725,6 +4669,7 @@ packages:
       '@popperjs/core': ^2.11.6
     dependencies:
       '@popperjs/core': 2.11.7
+    dev: false
 
   /bowser@1.9.4:
     resolution: {integrity: sha512-9IdMmj2KjigRq6oWhmwv1W36pDuA4STQZ8q6YO9um+x07xgYNCD3Oou+WP/3L1HNz7iqythGet3/p4wvc8AAwQ==}
