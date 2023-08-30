@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/excel",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Excel tools.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -18,12 +18,14 @@
   ],
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
+  "dependencies": {
+    "exceljs": "^4.3.0"
+  },
   "devDependencies": {
     "@fangcha/app-error": "workspace:^",
     "@fangcha/app-request": "workspace:^",
     "@fangcha/assert": "workspace:^",
     "@fangcha/tools": "workspace:^",
-    "exceljs": "^4.3.0",
     "typescript": "4.6.4"
   },
   "files": [
