@@ -394,7 +394,7 @@ importers:
   packages/fc-excel-react:
     dependencies:
       '@fangcha/excel':
-        specifier: workspace:^
+        specifier: '*'
         version: link:../fc-excel
       file-saver:
         specifier: ^2.0.5
@@ -572,6 +572,9 @@ importers:
       '@fangcha/backend-kit':
         specifier: workspace:^
         version: link:../backend-kit
+      '@fangcha/excel':
+        specifier: workspace:^
+        version: link:../fc-excel
       '@fangcha/excel-react':
         specifier: workspace:^
         version: link:../fc-excel-react

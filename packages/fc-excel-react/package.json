@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/excel-react",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
@@ -10,8 +10,10 @@
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
   "dependencies": {
-    "@fangcha/excel": "workspace:^",
     "file-saver": "^2.0.5"
+  },
+  "peerDependencies": {
+    "@fangcha/excel": "*"
   },
   "devDependencies": {
     "@fangcha/react": "workspace:^",
