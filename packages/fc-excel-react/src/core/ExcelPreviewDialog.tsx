@@ -10,7 +10,7 @@ interface Props<T> extends DialogProps {
 
 export class ExcelPreviewDialog<T extends object> extends ReactDialog<Props<T>, T[]> {
   title = '预览 Excel 数据'
-  width = 1000
+  width = '90%'
 
   public rawComponent(): React.FC<Props<T>> {
     return (props) => {
@@ -20,10 +20,16 @@ export class ExcelPreviewDialog<T extends object> extends ReactDialog<Props<T>, 
       return (
         <Table
           size={'small'}
-          columns={props.columns.map((column) => ({
-            title: column.columnName,
-            render: (item) => item[column.columnKey],
-          }))}
+          columns={[
+            {
+              title: '#',
+              render: (_item, _, index) => index + 1,
+            },
+            ...props.columns.map((column) => ({
+              title: column.columnName,
+              render: (item: TypicalColumn<T>) => item[column.columnKey],
+            })),
+          ]}
           dataSource={props.records}
           pagination={false}
         />
