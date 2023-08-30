@@ -1,6 +1,5 @@
 import { CellValue, Row, stream, Workbook, Worksheet } from 'exceljs'
 import assert from '@fangcha/assert'
-import WorkbookWriter = stream.xlsx.WorkbookWriter
 
 interface StringDict {
   [p: string]: string
@@ -182,7 +181,7 @@ export class TypicalExcel {
 
   public async commit() {
     assert.ok(!!this._options.writeFilePath || !!this._options.stream, 'writeFilePath 必须定义')
-    const workbook = this.buildWorkbook() as WorkbookWriter
+    const workbook = this.buildWorkbook() as stream.xlsx.WorkbookWriter
     return workbook.commit()
   }
 
