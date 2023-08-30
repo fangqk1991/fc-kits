@@ -2,6 +2,7 @@ import React from 'react'
 import { Divider, message, Space } from 'antd'
 import { ExcelPickButton, HotExcelPanel } from '@fangcha/excel-react'
 import { TypicalColumn } from '@fangcha/excel'
+import { sleep } from '@fangcha/tools'
 
 interface DataProps {
   aaa: any
@@ -35,11 +36,21 @@ export const TestExcelsView: React.FC = () => {
       <Divider />
       <Space>
         <ExcelPickButton
-          onPickExcel={(excel) => {
+          onPickExcel={async (excel) => {
+            await sleep(1000)
             message.warning(JSON.stringify(excel.records()))
           }}
         >
-          Custom Excel
+          Pick Excel & Preview
+        </ExcelPickButton>
+        <ExcelPickButton
+          skipPreview={true}
+          onPickExcel={async (excel) => {
+            await sleep(1000)
+            message.warning(JSON.stringify(excel.records()))
+          }}
+        >
+          Pick Excel without Preview
         </ExcelPickButton>
       </Space>
     </div>
