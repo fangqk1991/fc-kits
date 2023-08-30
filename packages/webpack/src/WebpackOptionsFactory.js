@@ -170,7 +170,7 @@ class WebpackOptionsFactory {
           {
             test: /\.tsx?$/,
             loader: 'ts-loader',
-            include: /node_modules\/@fangcha\/(.*-)?react/,
+            include: /node_modules\/@fangcha\/(.*-)?react(-.*)?/,
             options: {
               happyPackMode: true,
             },
