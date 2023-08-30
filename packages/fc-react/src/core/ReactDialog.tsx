@@ -1,6 +1,7 @@
 import { ConfigProvider, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
+import zhCN from 'antd/locale/zh_CN'
 
 export type DialogCallback<T = any> = (params: T) => void | Promise<void>
 
@@ -88,6 +89,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
     const app = ReactDOM.createRoot(dom)
     app.render(
       <ConfigProvider
+        locale={ReactDialogTheme.locale}
         theme={{
           token: {
             ...(ReactDialogTheme.colorPrimary
@@ -116,4 +118,5 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
 
 export const ReactDialogTheme = {
   colorPrimary: '',
+  locale: zhCN,
 }
