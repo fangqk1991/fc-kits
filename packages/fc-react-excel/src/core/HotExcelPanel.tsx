@@ -1,4 +1,4 @@
-import { TypicalColumn, TypicalExcel } from '@fangcha/tools/lib/excel'
+import { TypicalColumn, TypicalExcel } from '@fangcha/tools/src/excel'
 import React from 'react'
 import { Button, Space } from 'antd'
 import { ExcelPickButton } from './ExcelPickButton'

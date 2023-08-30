@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/react-excel",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [

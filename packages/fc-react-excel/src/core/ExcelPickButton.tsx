@@ -1,9 +1,9 @@
 import { FilePickerDialog } from '@fangcha/react'
-import { TypicalColumn, TypicalExcel } from '@fangcha/tools/lib/excel'
+import { TypicalColumn, TypicalExcel } from '@fangcha/tools/src/excel'
 import { ExcelPreviewDialog } from './ExcelPreviewDialog'
 import React from 'react'
 import { Button, ButtonProps, message } from 'antd'
-import { FrontendFileReader } from './FrontendFileReader'
+import { FrontendFileReader } from '@fangcha/tools/src/frontend'
 
 interface Props {
   columns?: TypicalColumn<any>[]
