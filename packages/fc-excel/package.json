@@ -1,0 +1,33 @@
+{
+  "name": "@fangcha/excel",
+  "version": "0.1.0",
+  "description": "Excel tools.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts"
+  },
+  "repository": "https://github.com/fangqk1991/fc-kits.git",
+  "scripts": {
+    "test": "nyc mocha --exit",
+    "build": "rm -rf ./lib/ && tsc",
+    "prepublish": "pnpm build"
+  },
+  "keywords": [
+    "tools"
+  ],
+  "author": "fang <me@fangqk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@fangcha/app-error": "workspace:^",
+    "@fangcha/app-request": "workspace:^",
+    "@fangcha/assert": "workspace:^",
+    "@fangcha/tools": "workspace:^",
+    "exceljs": "^4.3.0",
+    "typescript": "4.6.4"
+  },
+  "files": [
+    "lib/*",
+    "src/*"
+  ]
+}
