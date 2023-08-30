@@ -1,7 +1,7 @@
 import React from 'react'
 import { TypicalColumn } from '@fangcha/tools/lib/excel'
 import { Divider, message, Space } from 'antd'
-import { ExcelPickButton, HotExcelPanel } from '@fangcha/react-excel'
+import { ExcelPickButton, HotExcelPanel } from '@fangcha/excel-react'
 
 interface DataProps {
   aaa: any

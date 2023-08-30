@@ -390,6 +390,43 @@ importers:
         specifier: 4.6.4
         version: 4.6.4
 
+  packages/fc-excel-react:
+    dependencies:
+      '@fangcha/excel':
+        specifier: workspace:^
+        version: link:../fc-excel
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
+    devDependencies:
+      '@fangcha/react':
+        specifier: workspace:^
+        version: link:../fc-react
+      '@types/assert':
+        specifier: ^1.5.6
+        version: 1.5.6
+      '@types/mocha':
+        specifier: ^10.0.0
+        version: 10.0.1
+      '@types/node':
+        specifier: ^18.11.9
+        version: 18.16.9
+      mocha:
+        specifier: ^10.1.0
+        version: 10.2.0
+      nyc:
+        specifier: ^15.1.0
+        version: 15.1.0
+      ts-node-dev:
+        specifier: ^2.0.0
+        version: 2.0.0(@types/node@18.16.9)(typescript@4.9.5)
+      tslib:
+        specifier: ^2.4.1
+        version: 2.5.0
+      typescript:
+        specifier: ^4.8.4
+        version: 4.9.5
+
   packages/fc-feed:
     dependencies:
       fc-model:
@@ -523,46 +560,6 @@ importers:
         specifier: ^4.8.4
         version: 4.9.5
 
-  packages/fc-react-excel:
-    dependencies:
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
-    devDependencies:
-      '@fangcha/backend-kit':
-        specifier: workspace:^
-        version: link:../backend-kit
-      '@fangcha/react':
-        specifier: workspace:^
-        version: link:../fc-react
-      '@fangcha/tools':
-        specifier: workspace:^
-        version: link:../fc-tools
-      '@types/assert':
-        specifier: ^1.5.6
-        version: 1.5.6
-      '@types/mocha':
-        specifier: ^10.0.0
-        version: 10.0.1
-      '@types/node':
-        specifier: ^18.11.9
-        version: 18.16.9
-      mocha:
-        specifier: ^10.1.0
-        version: 10.2.0
-      nyc:
-        specifier: ^15.1.0
-        version: 15.1.0
-      ts-node-dev:
-        specifier: ^2.0.0
-        version: 2.0.0(@types/node@18.16.9)(typescript@4.9.5)
-      tslib:
-        specifier: ^2.4.1
-        version: 2.5.0
-      typescript:
-        specifier: ^4.8.4
-        version: 4.9.5
-
   packages/fc-react-test:
     devDependencies:
       '@fangcha/app-error':
@@ -574,12 +571,12 @@ importers:
       '@fangcha/backend-kit':
         specifier: workspace:^
         version: link:../backend-kit
+      '@fangcha/excel-react':
+        specifier: workspace:^
+        version: link:../fc-excel-react
       '@fangcha/react':
         specifier: workspace:^
         version: link:../fc-react
-      '@fangcha/react-excel':
-        specifier: workspace:^
-        version: link:../fc-react-excel
       '@fangcha/tools':
         specifier: workspace:^
         version: link:../fc-tools

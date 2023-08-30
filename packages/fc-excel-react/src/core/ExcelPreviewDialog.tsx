@@ -1,6 +1,6 @@
 import React from 'react'
 import { DialogProps, ReactDialog } from '@fangcha/react'
-import { TypicalColumn } from '@fangcha/tools/lib/excel'
+import { TypicalColumn } from '@fangcha/excel'
 import { Table } from 'antd'
 
 interface Props<T> extends DialogProps {
