@@ -38,6 +38,8 @@ export const ExcelPickButton = <T extends object = {}>({
           )
             .then(async (excel) => {
               message.success(`文件解析成功`)
+              excel.fileName = file.name || ''
+
               if (skipPreview) {
                 if (onPickExcel) {
                   await onPickExcel(excel)

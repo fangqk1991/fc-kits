@@ -35,6 +35,7 @@ export class TypicalExcel<T extends object = {}> {
   protected readonly _extraHeaders: StringDict[] = []
   protected readonly _records: T[] = []
   protected readonly _options: TypicalExcelOptions
+  public fileName = ''
   public useBorder = false
 
   public constructor(columnKeys: string[], options: TypicalExcelOptions = {}) {
