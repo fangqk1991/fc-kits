@@ -28,15 +28,15 @@ export const TestExcelsView: React.FC = () => {
         tmplDemoRecords={[{ aaa: 1, bbb: 2 }]}
         importBtnText={'Excel 导入'}
         columns={columns}
-        onPickRecords={(records) => {
-          message.success(JSON.stringify(records))
+        onPickExcel={(excel) => {
+          message.success(JSON.stringify(excel.records()))
         }}
       />
       <Divider />
       <Space>
         <ExcelPickButton
-          onPickRecords={(records) => {
-            message.warning(JSON.stringify(records))
+          onPickExcel={(excel) => {
+            message.warning(JSON.stringify(excel.records()))
           }}
         >
           Custom Excel

@@ -5,22 +5,22 @@ import { ExcelPickButton } from './ExcelPickButton'
 import { DownloadOutlined } from '@ant-design/icons'
 const { saveAs } = require('file-saver')
 
-interface Props<T = any> {
+interface Props<T extends object = {}> {
   columns: TypicalColumn<T>[]
   tmplFileName?: string
   tmplDownloadBtnText?: string
   tmplDemoRecords?: any[]
   importBtnText?: string
-  onPickRecords?: (records: T[]) => Promise<void> | void
+  onPickExcel?: (excel: TypicalExcel<T>) => Promise<void> | void
 }
 
-export const HotExcelPanel = <T,>({
+export const HotExcelPanel = <T extends object = {}>({
   columns,
   tmplFileName,
   tmplDemoRecords,
   tmplDownloadBtnText,
   importBtnText,
-  onPickRecords,
+  onPickExcel,
 }: Props<T>) => {
   return (
     <Space>
@@ -39,7 +39,7 @@ export const HotExcelPanel = <T,>({
       >
         {tmplDownloadBtnText || '下载模板'} <DownloadOutlined />
       </Button>
-      <ExcelPickButton type={'primary'} columns={columns} onPickRecords={onPickRecords}>
+      <ExcelPickButton type={'primary'} columns={columns} onPickExcel={onPickExcel}>
         {importBtnText || '导入 Excel'}
       </ExcelPickButton>
     </Space>

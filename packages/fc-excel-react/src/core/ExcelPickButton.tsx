@@ -5,21 +5,28 @@ import React from 'react'
 import { Button, ButtonProps, message } from 'antd'
 import { FrontendFileReader } from './FrontendFileReader'
 
-interface Props {
-  columns?: TypicalColumn<any>[]
-  onPickRecords?: (records: any[]) => Promise<void> | void
+interface Props<T extends object = {}> {
+  columns?: TypicalColumn<T>[]
+  description?: React.ReactNode
+  onPickExcel?: (excel: TypicalExcel<T>) => Promise<void> | void
 }
 
-export const ExcelPickButton: React.FC<ButtonProps & Props> = ({ columns, onPickRecords, ...props }) => {
+export const ExcelPickButton = <T extends object = {}>({
+  columns,
+  description,
+  onPickExcel,
+  ...props
+}: ButtonProps & Props<T>) => {
   return (
     <Button
       onClick={async () => {
         const dialog = new FilePickerDialog({
           title: '导入 Excel',
+          description: description,
         })
         dialog.show(async (file) => {
           const buffer = await FrontendFileReader.loadFileBuffer(file)
-          await TypicalExcel.excelFromBuffer(
+          await TypicalExcel.excelFromBuffer<T>(
             buffer as any,
             columns &&
               columns.reduce((result, field) => {
@@ -36,10 +43,10 @@ export const ExcelPickButton: React.FC<ButtonProps & Props> = ({ columns, onPick
                     columnKey: key,
                     columnName: key,
                   })),
-                records: excel.records() as any[],
-              }).show(async (records) => {
-                if (onPickRecords) {
-                  await onPickRecords(records)
+                records: excel.records(),
+              }).show(async () => {
+                if (onPickExcel) {
+                  await onPickExcel(excel)
                 }
               })
             })

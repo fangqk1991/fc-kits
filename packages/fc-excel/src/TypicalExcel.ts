@@ -5,10 +5,6 @@ interface StringDict {
   [p: string]: string
 }
 
-interface Dict {
-  [p: string]: any
-}
-
 interface TypicalExcelOptions {
   defaultColumnWidth?: number
   headerNameMap?: StringDict
@@ -32,12 +28,12 @@ export interface TypicalColumn<T> {
   width?: number
 }
 
-export class TypicalExcel {
+export class TypicalExcel<T extends object = {}> {
   public readonly columnKeys: string[] = []
   protected readonly _workbook: Workbook
   protected readonly _sheet: Worksheet
   protected readonly _extraHeaders: StringDict[] = []
-  protected readonly _records: Dict[] = []
+  protected readonly _records: T[] = []
   protected readonly _options: TypicalExcelOptions
   public useBorder = false
 
@@ -70,8 +66,8 @@ export class TypicalExcel {
     this._sheet.columns = columns
   }
 
-  public typicalColumns?: TypicalColumn<any>[]
-  public static excelWithTypicalColumns(columns: TypicalColumn<any>[], options1: TypicalExcelOptions = {}) {
+  public typicalColumns?: TypicalColumn<T>[]
+  public static excelWithTypicalColumns<T extends object = {}>(columns: TypicalColumn<T>[], options1: TypicalExcelOptions = {}) {
     const columnKeys = columns.map((item) => item.columnKey)
     const options: TypicalExcelOptions = {
       headerNameMap: {},
@@ -85,7 +81,7 @@ export class TypicalExcel {
     if (options1.writeFilePath) {
       options.writeFilePath = options1.writeFilePath
     }
-    const obj = new TypicalExcel(columnKeys, options)
+    const obj = new TypicalExcel<T>(columnKeys, options)
     for (const item of columns) {
       if (item.width !== undefined) {
         obj.setColumnWidth(item.columnKey, item.width)
@@ -95,11 +91,11 @@ export class TypicalExcel {
     return obj
   }
 
-  public addTypicalRow(...rawDataList: Dict[]) {
+  public addTypicalRow(...rawDataList: T[]) {
     this.addTypicalRowList(rawDataList)
   }
 
-  public addTypicalRowList(rawDataList: Dict[]) {
+  public addTypicalRowList(rawDataList: T[]) {
     assert.ok(!!this.typicalColumns, '此操作依赖于 typicalColumns 定义')
     rawDataList.forEach((rawData) => {
       const data: any = {}
@@ -136,11 +132,11 @@ export class TypicalExcel {
    * @description dataList 长度过大时，请使用 addRowList
    * @param dataList
    */
-  public addRow(...dataList: Dict[]) {
+  public addRow(...dataList: any[]) {
     this.addRowList(dataList)
   }
 
-  public addRowList(dataList: Dict[]) {
+  public addRowList(dataList: any[]) {
     dataList.forEach((data) => {
       this._records.push(data)
       this._sheet.addRow(data)
@@ -185,7 +181,7 @@ export class TypicalExcel {
     return workbook.commit()
   }
 
-  public static async parseWorkbook(workbook: Workbook, name2keyMap: StringDict = {}) {
+  public static async parseWorkbook<T extends object = {}>(workbook: Workbook, name2keyMap: StringDict = {}) {
     const sheet = workbook.worksheets[0]
     assert.ok(sheet.rowCount > 0, 'No Data')
     const firstRow = sheet.getRow(1)
@@ -217,7 +213,7 @@ export class TypicalExcel {
         records.push(data)
       }
     }
-    const excel = new TypicalExcel(columnKeys, {
+    const excel = new this<T>(columnKeys, {
       headerNameMap: headerNameMap,
     })
     records.forEach((record) => {
@@ -226,15 +222,15 @@ export class TypicalExcel {
     return excel
   }
 
-  public static async excelFromFile(filePath: string, name2keyMap?: StringDict) {
+  public static async excelFromFile<T extends object = {}>(filePath: string, name2keyMap?: StringDict) {
     const workbook = new Workbook()
     await workbook.xlsx.readFile(filePath)
-    return this.parseWorkbook(workbook, name2keyMap)
+    return this.parseWorkbook<T>(workbook, name2keyMap)
   }
 
-  public static async excelFromBuffer(buffer: Buffer, name2keyMap?: StringDict) {
+  public static async excelFromBuffer<T extends object = {}>(buffer: Buffer, name2keyMap?: StringDict) {
     const workbook = new Workbook()
     await workbook.xlsx.load(buffer)
-    return this.parseWorkbook(workbook, name2keyMap)
+    return this.parseWorkbook<T>(workbook, name2keyMap)
   }
 }
