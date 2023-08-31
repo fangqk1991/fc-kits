@@ -16,6 +16,8 @@ const _cols: string[] = [
   'days_count',
   'amount',
   'detail_items_str',
+  'use_custom',
+  'custom_data_str',
   'extras_info',
   'is_pretty',
   'is_verified',
@@ -38,6 +40,8 @@ const _insertableCols: string[] = [
   'days_count',
   'amount',
   'detail_items_str',
+  'use_custom',
+  'custom_data_str',
   'extras_info',
   'is_pretty',
   'is_verified',
@@ -57,6 +61,8 @@ const _modifiableCols: string[] = [
   'days_count',
   'amount',
   'detail_items_str',
+  'use_custom',
+  'custom_data_str',
   'extras_info',
   'is_pretty',
   'is_verified',
@@ -151,6 +157,14 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public detailItemsStr!: string
   /**
+   * @description [tinyint] 是否使用自定义数据
+   */
+  public useCustom!: number
+  /**
+   * @description [mediumtext] 自定义补贴数据
+   */
+  public customDataStr!: string
+  /**
    * @description [mediumtext] 附加信息，空 | JSON 字符串
    */
   public extrasInfo!: string
@@ -216,6 +230,8 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.daysCount = 0
     this.amount = 0
     this.detailItemsStr = ''
+    this.useCustom = 0
+    this.customDataStr = ''
     this.extrasInfo = ''
     this.isPretty = 0
     this.isVerified = 0
@@ -237,6 +253,8 @@ export default class __HLY_TravelAllowance extends FeedBase {
       daysCount: 'days_count',
       amount: 'amount',
       detailItemsStr: 'detail_items_str',
+      useCustom: 'use_custom',
+      customDataStr: 'custom_data_str',
       extrasInfo: 'extras_info',
       isPretty: 'is_pretty',
       isVerified: 'is_verified',
