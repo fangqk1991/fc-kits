@@ -72,7 +72,6 @@ export class MonthAllowanceMaker {
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
           allowance.daysCount = subDayItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
           allowance.amount = subDayItems.reduce((result, cur) => result + cur.amount, 0)
-          allowance.subsidyItemsStr = JSON.stringify([])
           allowance.detailItemsStr = JSON.stringify(subDayItems)
           allowance.extrasInfo = JSON.stringify({
             closedLoops: closedLoops,

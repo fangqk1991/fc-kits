@@ -15,7 +15,6 @@ const _cols: string[] = [
   'end_time',
   'days_count',
   'amount',
-  'subsidy_items_str',
   'detail_items_str',
   'extras_info',
   'is_pretty',
@@ -38,7 +37,6 @@ const _insertableCols: string[] = [
   'end_time',
   'days_count',
   'amount',
-  'subsidy_items_str',
   'detail_items_str',
   'extras_info',
   'is_pretty',
@@ -58,7 +56,6 @@ const _modifiableCols: string[] = [
   'end_time',
   'days_count',
   'amount',
-  'subsidy_items_str',
   'detail_items_str',
   'extras_info',
   'is_pretty',
@@ -150,10 +147,6 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public amount!: number
   /**
-   * @description [mediumtext] 补贴明细，空 | JSON 字符串
-   */
-  public subsidyItemsStr!: string
-  /**
    * @description [mediumtext] 明细，空 | JSON 字符串
    */
   public detailItemsStr!: string
@@ -222,7 +215,6 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.endTime = null
     this.daysCount = 0
     this.amount = 0
-    this.subsidyItemsStr = ''
     this.detailItemsStr = ''
     this.extrasInfo = ''
     this.isPretty = 0
@@ -244,7 +236,6 @@ export default class __HLY_TravelAllowance extends FeedBase {
       endTime: 'end_time',
       daysCount: 'days_count',
       amount: 'amount',
-      subsidyItemsStr: 'subsidy_items_str',
       detailItemsStr: 'detail_items_str',
       extrasInfo: 'extras_info',
       isPretty: 'is_pretty',

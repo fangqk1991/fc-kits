@@ -35,13 +35,6 @@ export interface App_TravelCoreItinerary {
   subsidyList: App_TravelSubsidyItem[]
 }
 
-export interface TravelMonthSection {
-  month: string
-  startDate: string
-  endDate: string
-  itineraryItems: App_TravelCoreItinerary[]
-}
-
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   startTime: string
   endTime: string
@@ -76,7 +69,6 @@ export interface App_TravelAllowanceModel {
   daysCount: number
   amount: string
   extrasData: App_TravelAllowanceExtrasData
-  subsidyItems: App_TravelSubsidyItem[]
   detailItems: AllowanceDayItem[]
   isPretty: HLY_PrettyStatus
   isVerified: HLY_VerifiedStatus
