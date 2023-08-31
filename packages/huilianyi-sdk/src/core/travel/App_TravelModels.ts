@@ -55,6 +55,11 @@ export interface App_TravelAllowanceExtrasData {
   closedLoops: App_ClosedLoop[]
 }
 
+export interface App_AllowanceCoreInfo {
+  useCustom: number
+  customData: App_AllowanceCustomData
+}
+
 export interface App_AllowanceCustomData {
   daysCount: number
   amount: number
