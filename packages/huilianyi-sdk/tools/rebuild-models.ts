@@ -102,6 +102,7 @@ const dbSchemas: DBModelSchema[] = [
     outputFile: `${__dirname}/../src/models/auto-build/__HLY_TravelAllowance.ts`,
     extFile: `${__dirname}/../src/models/extensions/_HLY_TravelAllowance.ts`,
     primaryKey: ['uid'],
+    insertableBlackList: ['use_custom', 'custom_data_str'],
     modifiableBlackList: ['create_time', 'update_time'],
     exactSearchCols: ['business_code'],
     fuzzySearchCols: ['applicant_name', 'company_name'],

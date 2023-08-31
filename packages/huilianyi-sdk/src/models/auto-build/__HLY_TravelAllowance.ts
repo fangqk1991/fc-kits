@@ -40,8 +40,6 @@ const _insertableCols: string[] = [
   'days_count',
   'amount',
   'detail_items_str',
-  'use_custom',
-  'custom_data_str',
   'extras_info',
   'is_pretty',
   'is_verified',

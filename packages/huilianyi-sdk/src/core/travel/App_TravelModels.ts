@@ -55,6 +55,12 @@ export interface App_TravelAllowanceExtrasData {
   closedLoops: App_ClosedLoop[]
 }
 
+export interface App_AllowanceCustomData {
+  daysCount: number
+  amount: number
+  detailItems: AllowanceDayItem[]
+}
+
 export interface App_TravelAllowanceModel {
   uid: string
   businessCode: string
@@ -68,6 +74,8 @@ export interface App_TravelAllowanceModel {
   endTime: string
   daysCount: number
   amount: string
+  useCustom: number
+  customData: App_AllowanceCustomData
   extrasData: App_TravelAllowanceExtrasData
   detailItems: AllowanceDayItem[]
   isPretty: HLY_PrettyStatus
