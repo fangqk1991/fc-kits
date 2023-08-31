@@ -78,7 +78,7 @@ export interface App_TravelAllowanceModel {
   startTime: string
   endTime: string
   daysCount: number
-  amount: string
+  amount: number
   useCustom: number
   customData: App_AllowanceCustomData
   extrasData: App_TravelAllowanceExtrasData

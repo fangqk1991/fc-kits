@@ -1,10 +1,12 @@
 import __HLY_TravelAllowance from '../auto-build/__HLY_TravelAllowance'
 import {
   AllowanceDayItem,
+  App_AllowanceCoreInfo,
   App_AllowanceCustomData,
   App_TravelAllowanceExtrasData,
   App_TravelAllowanceModel,
 } from '../../core'
+import assert from '@fangcha/assert'
 
 export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   public constructor() {
@@ -44,6 +46,18 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
 
   public toJSON() {
     return this.modelForClient()
+  }
+
+  public async updateCoreInfo(params: App_AllowanceCoreInfo) {
+    assert.ok(params.useCustom !== undefined, 'params.useCustom invalid.')
+    assert.ok(params.customData !== undefined, 'params.customData invalid.')
+    assert.ok(!Number.isNaN(params.customData.daysCount), 'params.customData.daysCount invalid.')
+    assert.ok(!Number.isNaN(params.customData.amount), 'params.customData.daysCount invalid.')
+    assert.ok(Array.isArray(params.customData.detailItems), 'params.customData.detailItems invalid.')
+    this.fc_edit()
+    this.useCustom = params.useCustom ? 1 : 0
+    this.customDataStr = JSON.stringify(params.customData)
+    await this.updateToDB()
   }
 
   public modelForClient() {
