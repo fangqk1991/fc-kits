@@ -5,6 +5,7 @@ const _cols: string[] = [
   // prettier-ignore
   'target_month',
   'record_count',
+  'version',
   'create_time',
   'update_time',
 ]
@@ -12,10 +13,12 @@ const _insertableCols: string[] = [
   // prettier-ignore
   'target_month',
   'record_count',
+  'version',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
   'record_count',
+  'version',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -54,6 +57,10 @@ export default class __HLY_SnapshotLog extends FeedBase {
    * @description [int] 记录数量
    */
   public recordCount!: number
+  /**
+   * @description [int] 版本号
+   */
+  public version!: number
   /**
    * @description [timestamp] 创建时间
    */
@@ -94,12 +101,14 @@ export default class __HLY_SnapshotLog extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
+    this.version = 0
   }
 
   public fc_propertyMapper() {
     return {
       targetMonth: 'target_month',
       recordCount: 'record_count',
+      version: 'version',
       createTime: 'create_time',
       updateTime: 'update_time',
     }

@@ -19,3 +19,11 @@ export interface AllowanceDayItem {
   amount: number
   halfDay?: boolean
 }
+
+export interface AllowanceSnapshotLogModel {
+  targetMonth: string
+  recordCount: number
+  version: number
+  createTime: string
+  updateTime: string
+}
