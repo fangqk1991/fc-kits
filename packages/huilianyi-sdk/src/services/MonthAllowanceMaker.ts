@@ -136,7 +136,7 @@ export class MonthAllowanceMaker {
           snapshotLog.fc_edit()
           snapshotLog.recordCount = count
           snapshotLog.version = snapshotLog.version + 1
-          await snapshotLog.addToDB(transaction)
+          await snapshotLog.updateToDB(transaction)
         }
       }
     })
