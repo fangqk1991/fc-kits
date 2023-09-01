@@ -10,6 +10,7 @@ import {
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import assert from '@fangcha/assert'
+import { SQLRemover } from 'fc-sql'
 
 export class MonthAllowanceMaker {
   public readonly syncCore: HuilianyiSyncCore
@@ -101,12 +102,20 @@ export class MonthAllowanceMaker {
     const database = allowanceDBSpec.database
     const runner = await database.createTransactionRunner()
     await runner.commit(async (transaction) => {
-      const snapshotTable = new HLY_AllowanceSnapshot().dbSpec().table
+      const snapshotDbSpec = new HLY_AllowanceSnapshot().dbSpec()
+
+      const remover = new SQLRemover(database)
+      remover.transaction = transaction
+      remover.setTable(snapshotDbSpec.table)
+      remover.addConditionKV('target_month', month)
+      await remover.execute()
+
       const allowanceColumnsStr = allowanceDBSpec
-        .insertableCols()
+        .cols()
+        .filter((item) => !['create_time', 'update_time'].includes(item))
         .map((item) => `\`${item}\``)
         .join(', ')
-      const sql = `INSERT INTO ${snapshotTable} (${allowanceColumnsStr})
+      const sql = `INSERT INTO ${snapshotDbSpec.table} (${allowanceColumnsStr})
                    SELECT ${allowanceColumnsStr}
                    FROM \`${allowanceDBSpec.table}\`
                    WHERE target_month = ?`
