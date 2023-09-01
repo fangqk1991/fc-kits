@@ -86,12 +86,13 @@ export class MonthAllowanceMaker {
     }
   }
 
-  public async makeAllowanceSnapshot(month: string) {
+  public async makeAllowanceSnapshot(month: string, override = false) {
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const HLY_AllowanceSnapshot = this.modelsCore.HLY_AllowanceSnapshot
     const HLY_SnapshotLog = this.modelsCore.HLY_SnapshotLog
 
-    if (await HLY_SnapshotLog.findWithUid(month)) {
+    const snapshotLog = await HLY_SnapshotLog.findWithMonth(month)
+    if (!override && snapshotLog) {
       console.warn(`${month}'s AllowanceSnapshot has been created.`)
       return
     }
@@ -117,10 +118,17 @@ export class MonthAllowanceMaker {
       const count = await searcher.queryCount()
 
       if (count > 0) {
-        const snapshotLog = new HLY_SnapshotLog()
-        snapshotLog.targetMonth = month
-        snapshotLog.recordCount = count
-        await snapshotLog.addToDB(transaction)
+        if (!snapshotLog) {
+          const snapshotLog = new HLY_SnapshotLog()
+          snapshotLog.targetMonth = month
+          snapshotLog.recordCount = count
+          await snapshotLog.addToDB(transaction)
+        } else {
+          snapshotLog.fc_edit()
+          snapshotLog.recordCount = count
+          snapshotLog.version = snapshotLog.version + 1
+          await snapshotLog.addToDB(transaction)
+        }
       }
     })
   }
