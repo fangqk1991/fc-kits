@@ -143,6 +143,95 @@ export interface CTrip_TrainOrderInfoEntity {
   }
 }
 
+export interface CTrip_FlightChangeInfoEntity {
+  ChangeOrderId: number
+  FlightChangeType: number // 0:航班变化;1:航班取消;2:待定延误;5:取消恢复
+  FlightClass: string
+  Sequence: number
+  ChangeStatus: string // 'S'
+  AfterStatus: string // ''
+  OrderStatus: string // 'S'
+  Passengers: string
+  OriginFlight: string // 航班号
+  OriginDdate: string // '2023-07-05 20:10:00'
+  OriginAdate: string // '2023-07-05 22:40:00'
+  OriginDPort: string // 'SHA'
+  OriginAPort: string // 'ZUH'
+  OriginDBuilding: string // 'T2'
+  OriginABuilding: string // ''
+  OriginClass: string
+  OriginClassDesc: string
+  OriginSubClass: string
+  OriginCraftType: string
+  ProtectFlight: string // 航班号（变更后的）
+  ProtectDdate: string // '2023-07-05 22:55:00' （变更后的）
+  ProtectAdate: string // '2023-07-06 01:25:00'（变更后的）
+  ProtectDPort: string // 'SHA'（变更后的）
+  ProtectAPort: string // 'ZUH'（变更后的）
+  ProtectDBuilding: string // 'T2'（变更后的）
+  ProtectABuilding: string // ''（变更后的）
+  ProtectClass: string
+  ProtectClassDesc: string
+  ProtectSubClass: string
+  ProtectCraftType: string
+  SmsStatus: string
+  ChangeRange: string
+  RRStatus: string
+  SingleTalk: string
+  RebookSingleTalk: string
+  CanRefundAll: string
+  CanFreeRebook: string
+  RebookFlightDateFrom: string // '0001-01-01 00:00:00'
+  RebookFlightDateTo: string // '0001-01-01 00:00:00'
+  Flight: string // 航班号
+  Ddate: string // '2023-07-05 22:55:00'
+  Adate: string // '2023-07-06 01:25:00'
+  DPort: string // 'SHA'
+  APort: string // 'ZUH'
+  DBuilding: string // 'T2'
+  ABuilding: string // ''
+  Class: string
+  ClassDesc: string
+  SubClass: string
+  CraftType: string
+  PassengerItems: {
+    Passenger: string
+    Sequence: number
+    TicketNo: string
+    AfterStatus: string // ''
+    OrderStatus: string // 'S'
+    ChangeCount: number
+    RRStatus: string // 'A'
+    FormingFlight: {
+      Flight: string // 航班号
+      SubClass: string // 'G'
+      RecordNo: string // ''
+      TicketNo: string // ''
+      DPort: string // 'SHA'
+      DTime: string // '2023-07-05 22:55:00'
+      DBuilding: string // 'T2'
+      APort: string // 'ZUH'
+      ATime: string // '2023-07-06 01:25:00'
+      ABuilding: string // ''
+    }
+    RebookRuleCheckResult: {
+      CanFreeRebook: string // 'F'
+      IsSingleTalk: string // 'F'
+      RebookFlightDateFrom: string // '0001-01-01 08:00:00'
+      RebookFlightDateTo: string // '0001-01-01 08:00:00'
+    }
+    RefundRuleCheckResult: {
+      CanRefundAll: string // 'F'
+      IsSingleTalk: string // 'F'
+    }
+  }[]
+  CreateTime: string // '2023-07-05 14:27:18'
+  OriginDepartureDistrictCode: string // '310000'
+  OriginArrivalDistrictCode: string // '440400'
+  ProtectDepartureDistrictCode: string // '310000'
+  ProtectArrivalDistrictCode: string // '440400'
+}
+
 export interface CTrip_FlightOrderInfoEntity {
   BasicInfo: {
     OrderID: string
@@ -163,6 +252,7 @@ export interface CTrip_FlightOrderInfoEntity {
     JourneyID: string
     AuditStatus: string // '授权通过'
   }
+  FlightChangeInfo: CTrip_FlightChangeInfoEntity[] | null
 }
 
 export interface CTripMixedOrder {
