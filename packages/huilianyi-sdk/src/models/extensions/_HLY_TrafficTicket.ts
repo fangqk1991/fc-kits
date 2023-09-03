@@ -80,6 +80,8 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
       toCity: this.toCity,
       journeyNo: this.journeyNo,
       businessCode: this.businessCode,
+      hlyCode: this.hlyCode,
+      customCode: this.customCode,
       isValid: this.isValid,
       isDummy: this.isDummy,
       ctripValid: this.ctripValid,
@@ -93,12 +95,15 @@ export class _HLY_TrafficTicket extends __HLY_TrafficTicket {
   public async linkBusinessCode(businessCode: string, transaction?: Transaction) {
     this.fc_edit()
     this.businessCode = businessCode
+    this.customCode = businessCode
     await this.updateToDB(transaction)
   }
 
   public async unlinkBusinessCode(transaction?: Transaction) {
     this.fc_edit()
     this.businessCode = ''
+    this.customCode = ''
+    this.hlyCode = ''
     await this.updateToDB(transaction)
   }
 }

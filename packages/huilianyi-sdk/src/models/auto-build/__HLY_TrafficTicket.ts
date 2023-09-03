@@ -18,6 +18,8 @@ const _cols: string[] = [
   'to_city',
   'journey_no',
   'business_code',
+  'hly_code',
+  'custom_code',
   'is_valid',
   'ctrip_valid',
   'ctrip_status',
@@ -46,6 +48,8 @@ const _insertableCols: string[] = [
   'to_city',
   'journey_no',
   'business_code',
+  'hly_code',
+  'custom_code',
   'is_valid',
   'ctrip_valid',
   'ctrip_status',
@@ -71,6 +75,8 @@ const _modifiableCols: string[] = [
   'to_city',
   'journey_no',
   'business_code',
+  'hly_code',
+  'custom_code',
   'is_valid',
   'ctrip_valid',
   'ctrip_status',
@@ -182,6 +188,14 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public businessCode!: string
   /**
+   * @description [varchar(20)] 汇联易 Business Code
+   */
+  public hlyCode!: string
+  /**
+   * @description [varchar(20)] 手动绑定 Business Code
+   */
+  public customCode!: string
+  /**
    * @description [tinyint] 是否有效
    */
   public isValid!: number
@@ -263,6 +277,8 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.toTime = null
     this.journeyNo = ''
     this.businessCode = ''
+    this.hlyCode = ''
+    this.customCode = ''
     this.isValid = 0
     this.ctripValid = 0
     this.ctripStatus = null
@@ -290,6 +306,8 @@ export default class __HLY_TrafficTicket extends FeedBase {
       toCity: 'to_city',
       journeyNo: 'journey_no',
       businessCode: 'business_code',
+      hlyCode: 'hly_code',
+      customCode: 'custom_code',
       isValid: 'is_valid',
       ctripValid: 'ctrip_valid',
       ctripStatus: 'ctrip_status',

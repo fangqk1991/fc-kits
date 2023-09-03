@@ -103,6 +103,8 @@ export interface App_TrafficTicket {
   toCity: string
   journeyNo: string
   businessCode: string
+  hlyCode: string
+  customCode: string
   isValid: number
   isDummy: number
   customValid?: number | null

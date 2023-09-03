@@ -48,6 +48,7 @@ export class TicketHandler {
     await runner.commit(async (transaction) => {
       await dummyTicket.addToDB(transaction)
       const trafficTicket = new this.modelsCore.HLY_TrafficTicket()
+      const businessCode = dummyTicket.businessCode || ''
       const params: App_TrafficTicket = {
         ticketId: dummyTicket.ticketId,
         orderType: dummyTicket.orderType,
@@ -63,7 +64,9 @@ export class TicketHandler {
         userName: dummyTicket.userName,
         baseCity: dummyTicket.baseCity,
         journeyNo: '',
-        businessCode: dummyTicket.businessCode || '',
+        businessCode: businessCode,
+        hlyCode: businessCode,
+        customCode: businessCode,
         isValid: dummyTicket.isValid,
         remarks: dummyTicket.remarks,
         isDummy: 1,
