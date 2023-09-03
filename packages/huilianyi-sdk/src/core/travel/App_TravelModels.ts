@@ -87,6 +87,11 @@ export interface App_TravelAllowanceModel {
   isVerified: HLY_VerifiedStatus
 }
 
+export interface App_TicketParams {
+  customCode?: string
+  customValid?: number | null
+}
+
 export interface App_TrafficTicket {
   ticketId: string
   orderType: HLY_OrderType

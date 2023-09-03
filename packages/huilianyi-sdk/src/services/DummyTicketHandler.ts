@@ -96,7 +96,7 @@ export class DummyTicketHandler {
       .forEach((key) => delete options[key])
 
     const dummyTicket = (await this.modelsCore.Dummy_Ticket.findWithUid(ticketId))!
-    assert.ok(!!dummyTicket, `虚拟票据[${dummyTicket.ticketId}] 不存在`)
+    assert.ok(!!dummyTicket, `虚拟票据[${ticketId}] 不存在`)
 
     const realTicket = (await this.modelsCore.HLY_TrafficTicket.findWithUid(dummyTicket.ticketId))!
     assert.ok(!!realTicket, `常规票据[${dummyTicket.ticketId}] 不存在`)
