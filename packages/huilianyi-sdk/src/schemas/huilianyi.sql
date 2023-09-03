@@ -355,6 +355,8 @@ CREATE TABLE IF NOT EXISTS hly_traffic_ticket
     to_city           VARCHAR(16)     NOT NULL,
     journey_no        VARCHAR(20)     NOT NULL DEFAULT '',
     business_code     VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
+    hly_code          VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '汇联易 Business Code',
+    custom_code       VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT '手动绑定 Business Code',
     is_valid          TINYINT         NOT NULL DEFAULT 0 COMMENT '是否有效',
     ctrip_valid       TINYINT         NOT NULL DEFAULT 0 COMMENT 'CTrip 订单是否有效',
     ctrip_status      VARCHAR(20)     NULL,
