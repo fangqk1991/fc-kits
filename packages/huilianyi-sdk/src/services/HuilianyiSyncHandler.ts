@@ -19,6 +19,7 @@ import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { md5 } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
+import { CTrip_FlightChangeType } from '@fangcha/ctrip-sdk'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -827,12 +828,22 @@ export class HuilianyiSyncHandler {
             offset += record.FlightOrderInfoList!.length
             console.info(`[dumpCtripOrders flights] ${offset} / ${feeds.length}`)
             for (const orderItem of record.FlightOrderInfoList!) {
+              const coreChangeInfo =
+                Array.isArray(orderItem.FlightChangeInfo) &&
+                orderItem.FlightChangeInfo[orderItem.FlightChangeInfo.length - 1]
+                  ? orderItem.FlightChangeInfo[orderItem.FlightChangeInfo.length - 1]
+                  : null
               const feed = new CTrip_Order()
               feed.orderId = Number(orderItem.BasicInfo.OrderID)
               feed.orderType = HLY_OrderType.FLIGHT
               feed.employeeId = orderItem.BasicInfo.EmployeeID || null
               feed.userName = orderItem.BasicInfo.PreEmployName || ''
               feed.orderStatus = orderItem.BasicInfo.OrderStatus
+              if (coreChangeInfo) {
+                if (coreChangeInfo.FlightChangeType === CTrip_FlightChangeType.Canceled) {
+                  feed.orderStatus = '航班取消'
+                }
+              }
               feed.journeyNo = orderItem.BasicInfo.JourneyID || ''
               feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.CreateTime)
               feed.extrasInfo = JSON.stringify(orderItem)
