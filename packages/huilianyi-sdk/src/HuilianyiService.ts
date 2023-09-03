@@ -8,7 +8,7 @@ import { TravelService } from './services/TravelService'
 import { SystemConfigHandler } from './services/SystemConfigHandler'
 import { PublicPaymentService } from './services/PublicPaymentService'
 import { CTripOptions } from '@fangcha/ctrip-sdk'
-import { TicketHandler } from './services/TicketHandler'
+import { DummyTicketHandler } from './services/DummyTicketHandler'
 
 interface Options {
   database: FCDatabase
@@ -50,7 +50,11 @@ export class HuilianyiService {
   }
 
   public ticketHandler() {
-    return new TicketHandler(this.syncCore)
+    return new DummyTicketHandler(this.syncCore)
+  }
+
+  public dummyTicketHandler() {
+    return new DummyTicketHandler(this.syncCore)
   }
 
   public async syncAndRefreshData(forceReload?: boolean) {

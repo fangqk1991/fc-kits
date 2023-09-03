@@ -5,7 +5,7 @@ import assert from '@fangcha/assert'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { TravelService } from './TravelService'
 
-export class TicketHandler {
+export class DummyTicketHandler {
   public readonly syncCore: HuilianyiSyncCore
   public readonly modelsCore: HuilianyiModelsCore
 
@@ -78,7 +78,7 @@ export class TicketHandler {
     return dummyTicket
   }
 
-  public async updateTicket(ticketId: string, params: Partial<DummyTicketParams>) {
+  public async updateDummyTicket(ticketId: string, params: Partial<DummyTicketParams>) {
     const options: Partial<DummyTicketParams> = {
       orderType: params.orderType,
       userOid: params.userOid,
