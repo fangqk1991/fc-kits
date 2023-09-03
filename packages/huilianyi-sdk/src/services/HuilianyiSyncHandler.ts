@@ -498,6 +498,8 @@ export class HuilianyiSyncHandler {
                 baseCity: baseCity,
                 journeyNo: orderItem.journeyNo,
                 businessCode: orderItem.businessCode || '',
+                hlyCode: orderItem.businessCode || '',
+                customCode: '',
                 isValid: orderItem.orderStatus === '已成交' ? 1 : 0,
                 isDummy: 0,
               }
@@ -522,21 +524,36 @@ export class HuilianyiSyncHandler {
         )
       )
       console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
-      const dbSpec = new OrderClass().dbSpec()
-      const bulkAdder = new SQLBulkAdder(dbSpec.database)
-      bulkAdder.setTable(dbSpec.table)
-      bulkAdder.useUpdateWhenDuplicate()
-      bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['business_code'].includes(item)))
-      bulkAdder.declareTimestampKey('created_date')
-      bulkAdder.declareTimestampKey('last_modified_date')
-      bulkAdder.declareTimestampKey('reload_time')
-      bulkAdder.declareTimestampKey('start_time')
-      bulkAdder.declareTimestampKey('end_time')
-      for (const orderItem of orderItems) {
-        const feed = OrderClass.makeFeed(orderItem)
-        bulkAdder.putObject(feed.fc_encode())
+      {
+        const dbSpec = new OrderClass().dbSpec()
+        const bulkAdder = new SQLBulkAdder(dbSpec.database)
+        bulkAdder.setTable(dbSpec.table)
+        bulkAdder.useUpdateWhenDuplicate()
+        bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['business_code'].includes(item)))
+        bulkAdder.declareTimestampKey('created_date')
+        bulkAdder.declareTimestampKey('last_modified_date')
+        bulkAdder.declareTimestampKey('reload_time')
+        bulkAdder.declareTimestampKey('start_time')
+        bulkAdder.declareTimestampKey('end_time')
+        for (const orderItem of orderItems) {
+          const feed = OrderClass.makeFeed(orderItem)
+          bulkAdder.putObject(feed.fc_encode())
+        }
+        await bulkAdder.execute()
       }
-      await bulkAdder.execute()
+      {
+        const runner = new OrderClass().dbSpec().database.createTransactionRunner()
+        await runner.commit(async (transaction) => {
+          for (const orderItem of orderItems.filter((item) => item.businessCode)) {
+            const orderFeed = new OrderClass()
+            orderFeed.hlyId = orderItem.hlyId
+            orderFeed.businessCode = null as any
+            orderFeed.fc_edit()
+            orderFeed.businessCode = orderItem.businessCode || ''
+            await orderFeed.updateToDB(transaction)
+          }
+        })
+      }
     }
   }
 
@@ -619,6 +636,8 @@ export class HuilianyiSyncHandler {
                   baseCity: baseCity,
                   journeyNo: orderItem.journeyNo,
                   businessCode: orderItem.businessCode || '',
+                  hlyCode: orderItem.businessCode || '',
+                  customCode: '',
                   isValid: ['已购票', '待出票'].includes(orderItem.orderStatus) ? 1 : 0,
                   isDummy: 0,
                 }
@@ -645,21 +664,36 @@ export class HuilianyiSyncHandler {
       })
 
       console.info(`[Order - ${OrderClass.name}] (${company.name}) fetch ${orderItems.length} items.`)
-      const dbSpec = new OrderClass().dbSpec()
-      const bulkAdder = new SQLBulkAdder(dbSpec.database)
-      bulkAdder.setTable(dbSpec.table)
-      bulkAdder.useUpdateWhenDuplicate()
-      bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['business_code'].includes(item)))
-      bulkAdder.declareTimestampKey('created_date')
-      bulkAdder.declareTimestampKey('last_modified_date')
-      bulkAdder.declareTimestampKey('reload_time')
-      bulkAdder.declareTimestampKey('start_time')
-      bulkAdder.declareTimestampKey('end_time')
-      for (const orderItem of orderItems) {
-        const feed = OrderClass.makeFeed(orderItem)
-        bulkAdder.putObject(feed.fc_encode())
+      {
+        const dbSpec = new OrderClass().dbSpec()
+        const bulkAdder = new SQLBulkAdder(dbSpec.database)
+        bulkAdder.setTable(dbSpec.table)
+        bulkAdder.useUpdateWhenDuplicate()
+        bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['business_code'].includes(item)))
+        bulkAdder.declareTimestampKey('created_date')
+        bulkAdder.declareTimestampKey('last_modified_date')
+        bulkAdder.declareTimestampKey('reload_time')
+        bulkAdder.declareTimestampKey('start_time')
+        bulkAdder.declareTimestampKey('end_time')
+        for (const orderItem of orderItems) {
+          const feed = OrderClass.makeFeed(orderItem)
+          bulkAdder.putObject(feed.fc_encode())
+        }
+        await bulkAdder.execute()
       }
-      await bulkAdder.execute()
+      {
+        const runner = new OrderClass().dbSpec().database.createTransactionRunner()
+        await runner.commit(async (transaction) => {
+          for (const orderItem of orderItems.filter((item) => item.businessCode)) {
+            const orderFeed = new OrderClass()
+            orderFeed.hlyId = orderItem.hlyId
+            orderFeed.businessCode = null as any
+            orderFeed.fc_edit()
+            orderFeed.businessCode = orderItem.businessCode || ''
+            await orderFeed.updateToDB(transaction)
+          }
+        })
+      }
     }
   }
 

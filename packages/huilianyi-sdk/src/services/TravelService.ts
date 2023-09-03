@@ -333,7 +333,7 @@ export class TravelService {
         const extrasData = item.extrasData() as App_TravelOrderExtras
         const commonTickets = extrasData.commonTickets
         commonTickets.forEach((ticket) => {
-          ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.businessCode || item.businessCode || ''
+          ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.hlyCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
           ticket.ctripStatus = orderStatus
           ticket.ctripValid = orderStatus === '已成交' ? 1 : 0
@@ -348,7 +348,7 @@ export class TravelService {
         const extrasData = item.extrasData() as App_TravelOrderExtras
         const commonTickets = extrasData.commonTickets
         commonTickets.forEach((ticket) => {
-          ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.businessCode || item.businessCode || ''
+          ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.hlyCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
           ticket.ctripStatus = orderStatus
           ticket.ctripValid = ['已购票', '待出票'].includes(orderStatus) ? 1 : 0
