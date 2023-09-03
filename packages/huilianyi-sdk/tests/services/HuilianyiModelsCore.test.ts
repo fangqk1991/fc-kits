@@ -1,6 +1,7 @@
-import { App_OrderBizType } from '../../src'
+import { App_OrderBizType, TimeUtils } from '../../src'
 import * as assert from 'assert'
 import { HuilianyiServiceDev } from './HuilianyiServiceDev'
+import { CTrip_FlightChangeTypeDescriptor, CTrip_FlightOrderInfoEntity } from '@fangcha/ctrip-sdk'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
@@ -100,6 +101,31 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
     const statusList = await HLY_OrderFlight.getOrderStatusList()
     console.info(statusList)
+  })
+
+  it(`CTrip_Order flight`, async () => {
+    const feeds = await new huilianyiService.modelsCore.CTrip_Order()
+      .fc_searcher({
+        orderType: 'FLIGHT',
+      })
+      .queryAllFeeds()
+    const changedFeeds = feeds.filter((feed) => {
+      const extras = feed.extrasData() as CTrip_FlightOrderInfoEntity
+      return !!extras.FlightChangeInfo
+    })
+    for (const feed of changedFeeds) {
+      const extras = feed.extrasData() as CTrip_FlightOrderInfoEntity
+      const changedInfos = extras.FlightChangeInfo!
+      const coreChangeInfo = changedInfos[changedInfos.length - 1]
+      const statusText =
+        CTrip_FlightChangeTypeDescriptor.describe(coreChangeInfo.FlightChangeType) || coreChangeInfo.FlightChangeType
+      const flightOrder = await huilianyiService.modelsCore.HLY_OrderFlight.findWithUid(feed.orderId)
+      const prevTime = flightOrder ? `${flightOrder.startTime} ~ ${flightOrder.endTime}` : ''
+      const changedTime = `${coreChangeInfo.ProtectDdate} ~ ${TimeUtils.correctUTC8Timestamp(
+        coreChangeInfo.ProtectAdate
+      )}`
+      console.info(`${feed.orderId} ${feed.orderStatus} ${statusText}, ${prevTime} - ${changedTime}`)
+    }
   })
 
   it(`HLY_OrderHotel.getOrderStatusList`, async () => {
