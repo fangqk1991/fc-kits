@@ -876,6 +876,14 @@ export class HuilianyiSyncHandler {
               if (coreChangeInfo) {
                 if (coreChangeInfo.FlightChangeType === CTrip_FlightChangeType.Canceled) {
                   feed.orderStatus = '航班取消'
+                } else if (
+                  [
+                    CTrip_FlightChangeType.Changed,
+                    CTrip_FlightChangeType.Delayed,
+                    CTrip_FlightChangeType.Recovery,
+                  ].includes(coreChangeInfo.FlightChangeType)
+                ) {
+                  feed.orderStatus = '航班变更'
                 }
               }
               feed.journeyNo = orderItem.BasicInfo.JourneyID || ''
