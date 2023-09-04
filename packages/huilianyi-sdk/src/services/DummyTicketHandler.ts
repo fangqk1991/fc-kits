@@ -4,6 +4,7 @@ import { makeUUID } from '@fangcha/tools'
 import assert from '@fangcha/assert'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { TravelService } from './TravelService'
+import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
 
 export class DummyTicketHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -101,8 +102,8 @@ export class DummyTicketHandler {
     const realTicket = (await this.modelsCore.HLY_TrafficTicket.findWithUid(dummyTicket.ticketId))!
     assert.ok(!!realTicket, `常规票据[${dummyTicket.ticketId}] 不存在`)
 
-    const travelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(dummyTicket.businessCode)
-    assert.ok(!!travelItem, `出差申请单[${dummyTicket.businessCode}] 不存在`)
+    const curTravelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(dummyTicket.businessCode)
+    assert.ok(!!curTravelItem, `出差申请单[${dummyTicket.businessCode}] 不存在`)
 
     dummyTicket.fc_edit()
     realTicket.fc_edit()
@@ -110,11 +111,22 @@ export class DummyTicketHandler {
     dummyTicket.fc_generateWithModel(options)
     realTicket.fc_generateWithModel(options)
 
+    let nextTravelItem: _HLY_Travel | null = null
+    if (options.businessCode && options.businessCode !== curTravelItem.businessCode) {
+      nextTravelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(options.businessCode)
+      assert.ok(!!nextTravelItem, `出差申请单[${options.businessCode}] 不存在`)
+      realTicket.businessCode = options.businessCode
+      realTicket.customCode = options.businessCode
+    }
+
     const runner = dummyTicket.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTicket.updateToDB(transaction)
       await realTicket.updateToDB(transaction)
-      await new TravelService(this.modelsCore).refreshTravelTicketsInfo(travelItem, transaction)
+      await new TravelService(this.modelsCore).refreshTravelTicketsInfo(curTravelItem, transaction)
+      if (nextTravelItem) {
+        await new TravelService(this.modelsCore).refreshTravelTicketsInfo(nextTravelItem, transaction)
+      }
     })
     await realTicket.reloadDataFromDB()
     return {
