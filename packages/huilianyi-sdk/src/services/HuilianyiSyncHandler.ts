@@ -500,7 +500,7 @@ export class HuilianyiSyncHandler {
                 businessCode: orderItem.businessCode || '',
                 hlyCode: orderItem.businessCode || '',
                 customCode: '',
-                isValid: orderItem.orderStatus === '已成交' ? 1 : 0,
+                isValid: ['已成交', '航班变更'].includes(orderItem.orderStatus) ? 1 : 0,
                 isDummy: 0,
               }
               data.ticketId = md5(

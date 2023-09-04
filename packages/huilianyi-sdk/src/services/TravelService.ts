@@ -336,7 +336,7 @@ export class TravelService {
           ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.hlyCode || item.businessCode || ''
           const orderStatus = item.ctripStatus || item.orderStatus
           ticket.ctripStatus = orderStatus
-          ticket.ctripValid = orderStatus === '已成交' ? 1 : 0
+          ticket.ctripValid = ['已成交', '航班变更'].includes(orderStatus) ? 1 : 0
         })
         todoTickets.push(...commonTickets)
       }
@@ -369,7 +369,15 @@ export class TravelService {
           .insertableCols()
           .filter(
             (item) =>
-              !['is_dummy', 'is_valid', 'business_code', 'custom_code', 'custom_valid', 'use_for_allowance', 'remarks'].includes(item)
+              ![
+                'is_dummy',
+                'is_valid',
+                'business_code',
+                'custom_code',
+                'custom_valid',
+                'use_for_allowance',
+                'remarks',
+              ].includes(item)
           )
       )
       bulkAdder.declareTimestampKey('from_time')
