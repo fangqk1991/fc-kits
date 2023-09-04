@@ -4,6 +4,7 @@ import assert from '@fangcha/assert'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { TravelService } from './TravelService'
 import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
+import { NumBoolDescriptor } from '@fangcha/tools'
 
 export class CommonTicketHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -17,12 +18,17 @@ export class CommonTicketHandler {
   public async updateTicket(ticketId: string, params: Partial<App_TicketParams>) {
     const commonTicket = (await this.modelsCore.HLY_TrafficTicket.findWithUid(ticketId))!
     assert.ok(!!commonTicket, `票据[${ticketId}] 不存在`)
+    assert.ok(!commonTicket.isDummy, `本操作不支持虚拟票据`)
 
     let prevTravelItem: _HLY_Travel | null = null
     let nextTravelItem: _HLY_Travel | null = null
 
     commonTicket.fc_edit()
     if (params.customValid !== undefined) {
+      assert.ok(
+        params.customValid === null || NumBoolDescriptor.checkValueValid(params.customValid),
+        `customValid invalid.`
+      )
       commonTicket.customValid = params.customValid
       commonTicket.isValid = params.customValid !== null ? params.customValid : commonTicket.ctripValid
     }
