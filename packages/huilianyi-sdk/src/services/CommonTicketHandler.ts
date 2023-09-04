@@ -51,6 +51,6 @@ export class CommonTicketHandler {
         await new TravelService(this.modelsCore).refreshTravelTicketsInfo(nextTravelItem, transaction)
       }
     })
-    return commonTicket.modelForClient()
+    return commonTicket
   }
 }
