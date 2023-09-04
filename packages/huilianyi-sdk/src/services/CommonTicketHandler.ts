@@ -20,8 +20,8 @@ export class CommonTicketHandler {
     assert.ok(!!commonTicket, `票据[${ticketId}] 不存在`)
     assert.ok(!commonTicket.isDummy, `本操作不支持虚拟票据`)
 
-    const curTravelItem = commonTicket.customCode
-      ? await this.modelsCore.HLY_Travel.findWithBusinessCode(commonTicket.customCode)
+    const curTravelItem = commonTicket.businessCode
+      ? await this.modelsCore.HLY_Travel.findWithBusinessCode(commonTicket.businessCode)
       : null
     let nextTravelItem: _HLY_Travel | null = null
 
