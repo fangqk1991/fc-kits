@@ -27,6 +27,10 @@ describe('Test HuilianyiService.test.ts', () => {
     console.info(order)
   })
 
+  it(`fillTravelOrdersCTripStatus`, async () => {
+    await travelService.fillTravelOrdersCTripStatus()
+  })
+
   it(`fillTravelOrdersBusinessCode`, async () => {
     await travelService.fillTravelOrdersBusinessCode()
   })

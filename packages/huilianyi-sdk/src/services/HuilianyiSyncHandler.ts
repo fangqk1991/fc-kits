@@ -19,7 +19,7 @@ import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { md5 } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
-import { CTrip_FlightChangeType } from '@fangcha/ctrip-sdk'
+import { CTrip_FlightChangeInfoEntity, CTrip_FlightChangeType } from '@fangcha/ctrip-sdk'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -440,6 +440,21 @@ export class HuilianyiSyncHandler {
     await bulkAdder.execute()
   }
 
+  public async getFlightChangeInfoMapper() {
+    const searcher = new this.syncCore.modelsCore.CTrip_Order().fc_searcher()
+    searcher.processor().addConditionKV('order_type', 'FLIGHT')
+    searcher.processor().addConditionKV('order_status', '航班变更')
+    const items = await searcher.queryAllFeeds()
+    const mapper: { [orderId: string]: CTrip_FlightChangeInfoEntity } = {}
+    for (const item of items) {
+      const info = item.flightChangeInfo()
+      if (info) {
+        mapper[item.orderId] = info
+      }
+    }
+    return mapper
+  }
+
   public async dumpOrderFlightRecords(forceReload = false) {
     const syncCore = this.syncCore
     const OrderClass = syncCore.modelsCore.HLY_OrderFlight
@@ -447,6 +462,7 @@ export class HuilianyiSyncHandler {
     const nameToUserOidsMapper = await syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
     const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
 
+    const changeInfoMapper = await this.getFlightChangeInfoMapper()
     const companyList = await syncCore.othersProxy.getCompanyList()
     for (const company of companyList) {
       let lastModifyStartDate = '2020-01-01 00:00:00'
@@ -506,6 +522,11 @@ export class HuilianyiSyncHandler {
               data.ticketId = md5(
                 [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')
               )
+              const changeInfo = changeInfoMapper[data.orderId]
+              if (changeInfo) {
+                data.fromTime = TimeUtils.correctUTC8Timestamp(changeInfo.ProtectDdate)
+                data.toTime = TimeUtils.correctUTC8Timestamp(changeInfo.ProtectAdate)
+              }
               return data
             })
             let [startTime, endTime] = ['', '']

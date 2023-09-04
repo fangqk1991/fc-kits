@@ -1,5 +1,5 @@
 import { HuilianyiServiceDev } from './HuilianyiServiceDev'
-import { CTrip_FlightChangeTypeDescriptor } from '@fangcha/ctrip-sdk/lib'
+import { CTrip_FlightChangeTypeDescriptor } from '@fangcha/ctrip-sdk'
 
 describe('Test CTrip_Order.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev

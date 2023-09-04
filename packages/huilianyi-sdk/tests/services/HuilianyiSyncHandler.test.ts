@@ -32,6 +32,11 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     await huilianyiService.syncHandler().dumpInvoiceRecords(true)
   })
 
+  it(`getFlightChangeInfoMapper`, async () => {
+    const mapper = await huilianyiService.syncHandler().getFlightChangeInfoMapper()
+    console.info(JSON.stringify(mapper, null, 2))
+  })
+
   it(`dumpOrderFlightRecords`, async () => {
     await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
   })
