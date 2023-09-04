@@ -20,7 +20,9 @@ export class CommonTicketHandler {
     assert.ok(!!commonTicket, `票据[${ticketId}] 不存在`)
     assert.ok(!commonTicket.isDummy, `本操作不支持虚拟票据`)
 
-    let prevTravelItem: _HLY_Travel | null = null
+    const curTravelItem = commonTicket.customCode
+      ? await this.modelsCore.HLY_Travel.findWithBusinessCode(commonTicket.customCode)
+      : null
     let nextTravelItem: _HLY_Travel | null = null
 
     commonTicket.fc_edit()
@@ -33,9 +35,6 @@ export class CommonTicketHandler {
       commonTicket.isValid = params.customValid !== null ? params.customValid : commonTicket.ctripValid
     }
     if (params.customCode !== undefined) {
-      if (commonTicket.customCode) {
-        prevTravelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(commonTicket.customCode)
-      }
       nextTravelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(params.customCode)
       assert.ok(!!nextTravelItem, `出差申请单[${params.customCode}] 不存在`)
       commonTicket.customCode = params.customCode
@@ -44,8 +43,8 @@ export class CommonTicketHandler {
     const runner = commonTicket.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await commonTicket.updateToDB(transaction)
-      if (prevTravelItem) {
-        await new TravelService(this.modelsCore).refreshTravelTicketsInfo(prevTravelItem, transaction)
+      if (curTravelItem) {
+        await new TravelService(this.modelsCore).refreshTravelTicketsInfo(curTravelItem, transaction)
       }
       if (nextTravelItem) {
         await new TravelService(this.modelsCore).refreshTravelTicketsInfo(nextTravelItem, transaction)
