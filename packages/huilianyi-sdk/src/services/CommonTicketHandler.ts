@@ -38,6 +38,7 @@ export class CommonTicketHandler {
       nextTravelItem = await this.modelsCore.HLY_Travel.findWithBusinessCode(params.customCode)
       assert.ok(!!nextTravelItem, `出差申请单[${params.customCode}] 不存在`)
       commonTicket.customCode = params.customCode
+      commonTicket.businessCode = params.customCode
     }
 
     const runner = commonTicket.dbSpec().database.createTransactionRunner()
