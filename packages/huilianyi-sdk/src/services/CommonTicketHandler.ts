@@ -24,6 +24,7 @@ export class CommonTicketHandler {
     commonTicket.fc_edit()
     if (params.customValid !== undefined) {
       commonTicket.customValid = params.customValid
+      commonTicket.isValid = params.customValid !== null ? params.customValid : commonTicket.ctripValid
     }
     if (params.customCode !== undefined) {
       if (commonTicket.customCode) {
