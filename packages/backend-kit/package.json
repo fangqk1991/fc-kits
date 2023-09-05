@@ -9,8 +9,6 @@
   },
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "scripts": {
-    "web-auth-demo": "ts-node-dev --no-notify --ignore-watch node_modules demo/apps/web-auth-demo.ts",
-    "sso-demo": "ts-node-dev --no-notify --ignore-watch node_modules demo/apps/sso-demo.ts",
     "test": "nyc mocha --exit",
     "build": "rm -rf ./lib/ && tsc",
     "prepublish": "pnpm build"
