@@ -4,6 +4,7 @@ import React from 'react'
 import { ConfigProvider } from 'antd'
 import { MyMenu } from './MyMenu'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { RouterLink } from '@fangcha/react'
 
 export const MainLayout: React.FC = () => {
   const location = useLocation()
@@ -43,15 +44,7 @@ export const MainLayout: React.FC = () => {
         actionsRender={() => {
           return []
         }}
-        menuItemRender={(item, dom) => (
-          <a
-            onClick={() => {
-              navigate(item.path || '/')
-            }}
-          >
-            {dom}
-          </a>
-        )}
+        menuItemRender={(item, dom) => <RouterLink route={item.path || '/'}>{dom}</RouterLink>}
       >
         <PageContainer
           header={{
