@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import * as qs from 'qs'
 
 export function useQueryParams<T = {}>() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const queryParams = useMemo(() => {
+  const [queryParams, setQueryParams] = useState({})
+
+  useEffect(() => {
     const params: any = {}
     for (const [key, value] of searchParams.entries()) {
       if (key in params) {
@@ -16,7 +18,7 @@ export function useQueryParams<T = {}>() {
       }
       params[key] = value
     }
-    return params
+    setQueryParams(params)
   }, [searchParams])
 
   return {

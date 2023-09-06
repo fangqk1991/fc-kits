@@ -1,9 +1,9 @@
 import React from 'react'
 import { Button, Divider, Space } from 'antd'
-import { JsonPre, useQueryParamsCtx } from '@fangcha/react'
+import { JsonPre, useQueryParams } from '@fangcha/react'
 
 export const TestRoutersView: React.FC = () => {
-  const { queryParams, updateQueryParams } = useQueryParamsCtx()
+  const { queryParams, updateQueryParams } = useQueryParams()
   return (
     <div>
       <JsonPre value={queryParams} />
