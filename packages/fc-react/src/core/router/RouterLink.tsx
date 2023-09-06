@@ -3,7 +3,7 @@ import { Link, LinkProps } from 'react-router-dom'
 import * as qs from 'qs'
 import * as assert from 'assert'
 
-interface Props extends LinkProps {
+interface Props extends Partial<LinkProps> {
   route: string
   params?: { [p: string]: string | number } | (string | number)[]
   queryParams?: { [p: string]: any }
