@@ -5,18 +5,7 @@ import * as qs from 'qs'
 export function useQueryParams<T = {}>() {
   const [searchParams, setSearchParams] = useSearchParams()
   const queryParams = useMemo(() => {
-    const params: any = {}
-    for (const [key, value] of searchParams.entries()) {
-      if (key in params) {
-        if (!Array.isArray(params[key])) {
-          params[key] = [params[key]]
-        }
-        params[key].push(value)
-        continue
-      }
-      params[key] = value
-    }
-    return params
+    return qs.parse(window.location.search.replace(/^\?/, ''))
   }, [searchParams])
 
   return {
@@ -29,11 +18,16 @@ export function useQueryParams<T = {}>() {
       )
     },
     updateQueryParams: (params: Partial<T>) => {
-      Object.assign(queryParams, params)
       setSearchParams(
-        qs.stringify(queryParams, {
-          arrayFormat: 'repeat',
-        })
+        qs.stringify(
+          {
+            ...qs.parse(window.location.search.replace(/^\?/, '')),
+            ...params,
+          },
+          {
+            arrayFormat: 'repeat',
+          }
+        )
       )
     },
   }
