@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button, Divider, Space } from 'antd'
-import { JsonPre, useQueryParamsCtx } from '@fangcha/react'
+import { JsonPre, useQueryParams } from '@fangcha/react'
 import * as qs from 'qs'
 
 export const TestRoutersView: React.FC = () => {
-  const { queryParams, updateQueryParams } = useQueryParamsCtx()
+  const { queryParams, updateQueryParams } = useQueryParams()
   const queryParams2 = qs.parse(window.location.search.replace(/^\?/, ''))
 
   return (

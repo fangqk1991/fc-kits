@@ -1,4 +1,3 @@
-export * from './contexts/QueryParamsContext'
 export * from './core/ReactApp'
 export * from './core/ConfirmDialog'
 export * from './core/JsonEditorDialog'
