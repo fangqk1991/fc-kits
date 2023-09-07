@@ -36,5 +36,6 @@ describe('Test MonthAllowanceMaker.test.ts', () => {
     await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-05')
     await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-06')
     await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-07')
+    await huilianyiService.monthAllowanceMaker().makeAllowanceSnapshot('2023-08', true)
   })
 })

@@ -99,8 +99,11 @@ export class MonthAllowanceMaker {
       return
     }
 
-    const allowanceDBSpec = new HLY_TravelAllowance().dbSpec()
-    const database = allowanceDBSpec.database
+    const searcher = new HLY_TravelAllowance().fc_searcher()
+    searcher.processor().addConditionKV('target_month', month)
+    const allowanceList = await searcher.queryAllFeeds()
+
+    const database = new HLY_TravelAllowance().dbSpec().database
     const runner = await database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       const snapshotDbSpec = new HLY_AllowanceSnapshot().dbSpec()
@@ -112,22 +115,17 @@ export class MonthAllowanceMaker {
       remover.addConditionKV('is_locked', 0)
       await remover.execute()
 
-      const allowanceColumnsStr = allowanceDBSpec
-        .cols()
-        .filter((item) => !['create_time', 'update_time'].includes(item))
-        .map((item) => `\`${item}\``)
-        .join(', ')
-      const sql = `INSERT INTO ${snapshotDbSpec.table} (${allowanceColumnsStr})
-                   SELECT ${allowanceColumnsStr}
-                   FROM \`${allowanceDBSpec.table}\`
-                   WHERE target_month = ?`
-      await database.update(sql, [month], transaction)
+      for (const allowanceItem of allowanceList) {
+        allowanceItem.fc_edit()
+        allowanceItem.snapHash = md5([allowanceItem.uid, allowanceItem.daysCount, allowanceItem.amount].join(','))
+        await allowanceItem.updateToDB(transaction)
 
-      const searcher = new HLY_AllowanceSnapshot().fc_searcher()
-      searcher.processor().transaction = transaction
-      searcher.processor().addConditionKV('target_month', month)
-      const count = await searcher.queryCount()
+        const snapshot = new HLY_AllowanceSnapshot()
+        snapshot.fc_generateWithModel(allowanceItem.fc_pureModel())
+        await snapshot.addToDB(transaction)
+      }
 
+      const count = allowanceList.length
       if (count > 0) {
         if (!snapshotLog) {
           const snapshotLog = new HLY_SnapshotLog()
