@@ -109,6 +109,7 @@ export class MonthAllowanceMaker {
       remover.transaction = transaction
       remover.setTable(snapshotDbSpec.table)
       remover.addConditionKV('target_month', month)
+      remover.addConditionKV('is_locked', 0)
       await remover.execute()
 
       const allowanceColumnsStr = allowanceDBSpec
