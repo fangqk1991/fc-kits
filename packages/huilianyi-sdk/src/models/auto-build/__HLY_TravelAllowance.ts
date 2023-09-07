@@ -22,6 +22,7 @@ const _cols: string[] = [
   'is_pretty',
   'is_verified',
   'version',
+  'snap_hash',
   'create_time',
   'update_time',
 ]
@@ -44,6 +45,7 @@ const _insertableCols: string[] = [
   'is_pretty',
   'is_verified',
   'version',
+  'snap_hash',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -65,6 +67,7 @@ const _modifiableCols: string[] = [
   'is_pretty',
   'is_verified',
   'version',
+  'snap_hash',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -179,6 +182,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public version!: number
   /**
+   * @description [char(32)] uid + days_count + amount MD5
+   */
+  public snapHash!: string
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -234,6 +241,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.isPretty = 0
     this.isVerified = 0
     this.version = 0
+    this.snapHash = ''
   }
 
   public fc_propertyMapper() {
@@ -257,6 +265,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       isPretty: 'is_pretty',
       isVerified: 'is_verified',
       version: 'version',
+      snapHash: 'snap_hash',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
