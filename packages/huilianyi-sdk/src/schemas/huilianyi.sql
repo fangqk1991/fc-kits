@@ -231,6 +231,7 @@ CREATE TABLE IF NOT EXISTS hly_allowance_snapshot
     is_pretty        TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为标准情况',
     is_verified      TINYINT         NOT NULL DEFAULT 0 COMMENT '是否已核验',
     version          INT             NOT NULL DEFAULT 0 COMMENT '版本号',
+    is_locked        TINYINT         NOT NULL DEFAULT 0 COMMENT '是否锁定',
     create_time      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (uid),

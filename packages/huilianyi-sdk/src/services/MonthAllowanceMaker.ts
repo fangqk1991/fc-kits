@@ -10,7 +10,8 @@ import {
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import assert from '@fangcha/assert'
-import { SQLRemover } from 'fc-sql'
+import { SQLModifier, SQLRemover } from 'fc-sql'
+import * as moment from 'moment'
 
 export class MonthAllowanceMaker {
   public readonly syncCore: HuilianyiSyncCore
@@ -159,5 +160,14 @@ export class MonthAllowanceMaker {
       )
       await item.deleteFromDB()
     }
+  }
+
+  public async lockAllowanceSnapshots() {
+    const dbSpec = new this.modelsCore.HLY_AllowanceSnapshot().dbSpec()
+    const modifier = new SQLModifier(dbSpec.database)
+    modifier.setTable(dbSpec.table)
+    modifier.updateKV('is_locked', 1)
+    modifier.addSpecialCondition('STRCMP(target_month, ?) = -1', moment().format('YYYY-MM'))
+    await modifier.execute()
   }
 }

@@ -23,6 +23,10 @@ describe('Test MonthAllowanceMaker.test.ts', () => {
     // )
   })
 
+  it(`lockAllowanceSnapshots`, async () => {
+    await huilianyiService.monthAllowanceMaker().lockAllowanceSnapshots()
+  })
+
   it(`removeExpiredAllowanceRecords`, async () => {
     await huilianyiService.monthAllowanceMaker().removeExpiredAllowanceRecords()
   })
