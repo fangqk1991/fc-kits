@@ -82,6 +82,7 @@ export class MonthAllowanceMaker {
           allowance.isPretty = HLY_PrettyStatus.Pretty
           allowance.isVerified = HLY_VerifiedStatus.Verified
           allowance.version = travelItem.version
+          allowance.payAmount = allowance.amount
           allowance.snapHash = md5([allowance.uid, allowance.daysCount, allowance.amount].join(','))
           await allowance.strongAddToDB()
         }
