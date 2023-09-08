@@ -111,7 +111,7 @@ export class MonthAllowanceMaker {
       const remover = new SQLRemover(database)
       remover.transaction = transaction
       remover.setTable(snapshotDbSpec.table)
-      remover.addConditionKV('target_month', month)
+      remover.addConditionKV('snap_month', month)
       remover.addConditionKV('is_locked', 0)
       await remover.execute()
 
@@ -123,6 +123,7 @@ export class MonthAllowanceMaker {
         const snapshot = new HLY_AllowanceSnapshot()
         snapshot.fc_generateWithModel(allowanceItem.fc_pureModel())
         snapshot.snapMonth = month
+        snapshot.isPrimary = 1
         await snapshot.addToDB(transaction)
       }
 
