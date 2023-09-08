@@ -234,10 +234,13 @@ CREATE TABLE IF NOT EXISTS hly_allowance_snapshot
     version          INT             NOT NULL DEFAULT 0 COMMENT '版本号',
     snap_hash        CHAR(32)        NOT NULL DEFAULT '' COLLATE ascii_bin COMMENT 'uid + days_count + amount MD5',
     is_locked        TINYINT         NOT NULL DEFAULT 0 COMMENT '是否锁定',
+    snap_month       CHAR(7)         NOT NULL COLLATE ascii_bin COMMENT '归档月份 yyyy-MM',
+    is_primary       TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为最新主版本',
     create_time      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    UNIQUE (uid),
-    UNIQUE (business_code, target_month, applicant_oid),
+    UNIQUE (uid, snap_month),
+#     UNIQUE (uid),
+#     UNIQUE (business_code, target_month, applicant_oid),
     INDEX (target_month),
     INDEX (applicant_oid)
 ) ENGINE = InnoDB

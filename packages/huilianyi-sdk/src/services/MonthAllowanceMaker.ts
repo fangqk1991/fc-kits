@@ -122,6 +122,7 @@ export class MonthAllowanceMaker {
 
         const snapshot = new HLY_AllowanceSnapshot()
         snapshot.fc_generateWithModel(allowanceItem.fc_pureModel())
+        snapshot.snapMonth = month
         await snapshot.addToDB(transaction)
       }
 
