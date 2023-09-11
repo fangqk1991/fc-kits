@@ -10,6 +10,7 @@ const _cols: string[] = [
   'full_name',
   'email',
   'base_city',
+  'without_allowance',
   'department_oid',
   'department_path',
   'staff_status',
@@ -31,6 +32,7 @@ const _insertableCols: string[] = [
   'full_name',
   'email',
   'base_city',
+  'without_allowance',
   'department_oid',
   'department_path',
   'staff_status',
@@ -48,6 +50,7 @@ const _modifiableCols: string[] = [
   'full_name',
   'email',
   'base_city',
+  'without_allowance',
   'department_oid',
   'department_path',
   'staff_status',
@@ -123,6 +126,10 @@ export default class __HLY_Staff extends FeedBase {
    * @description [varchar(64)]
    */
   public baseCity!: string
+  /**
+   * @description [tinyint] 不发放出差补贴
+   */
+  public withoutAllowance!: number
   /**
    * @description [char(36)]
    */
@@ -204,6 +211,7 @@ export default class __HLY_Staff extends FeedBase {
     this.fullName = ''
     this.email = null
     this.baseCity = ''
+    this.withoutAllowance = 0
     this.departmentOid = null
     this.departmentPath = ''
     this.entryDate = null
@@ -223,6 +231,7 @@ export default class __HLY_Staff extends FeedBase {
       fullName: 'full_name',
       email: 'email',
       baseCity: 'base_city',
+      withoutAllowance: 'without_allowance',
       departmentOid: 'department_oid',
       departmentPath: 'department_path',
       staffStatus: 'staff_status',

@@ -127,7 +127,7 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['base_city'].includes(item)))
+    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['base_city', 'without_allowance'].includes(item)))
     bulkAdder.declareTimestampKey('entry_date')
     bulkAdder.declareTimestampKey('leaving_date')
     for (const item of items) {
