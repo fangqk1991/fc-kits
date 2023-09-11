@@ -73,8 +73,12 @@ export class MonthAllowanceMaker {
           allowance.startTime = travelItem.startTime
           allowance.endTime = travelItem.endTime
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
-          allowance.daysCount = subDayItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
-          allowance.amount = subDayItems.reduce((result, cur) => result + cur.amount, 0)
+
+          const prevAllowance = await HLY_TravelAllowance.findWithUid(allowance.uid)
+          const detailItems =
+            prevAllowance && prevAllowance.useCustom ? prevAllowance.customData().detailItems : subDayItems
+          allowance.daysCount = detailItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
+          allowance.amount = detailItems.reduce((result, cur) => result + cur.amount, 0)
           allowance.detailItemsStr = JSON.stringify(subDayItems)
           allowance.extrasInfo = JSON.stringify({
             closedLoops: closedLoops,

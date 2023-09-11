@@ -7,6 +7,7 @@ import {
   App_TravelAllowanceModel,
 } from '../../core'
 import assert from '@fangcha/assert'
+import { md5 } from '@fangcha/tools'
 
 export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   public constructor() {
@@ -54,9 +55,16 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     assert.ok(!Number.isNaN(params.customData.daysCount), 'params.customData.daysCount invalid.')
     assert.ok(!Number.isNaN(params.customData.amount), 'params.customData.daysCount invalid.')
     assert.ok(Array.isArray(params.customData.detailItems), 'params.customData.detailItems invalid.')
+
     this.fc_edit()
     this.useCustom = params.useCustom ? 1 : 0
     this.customDataStr = JSON.stringify(params.customData)
+
+    const detailItems = this.useCustom ? params.customData.detailItems : this.detailItems()
+    this.daysCount = detailItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
+    this.amount = detailItems.reduce((result, cur) => result + cur.amount, 0)
+    this.snapHash = md5([this.uid, this.daysCount, this.amount].join(','))
+
     await this.updateToDB()
   }
 
