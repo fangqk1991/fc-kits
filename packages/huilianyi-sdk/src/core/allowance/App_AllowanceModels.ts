@@ -21,8 +21,7 @@ export interface AllowanceDayItem {
 }
 
 export interface AllowanceSnapshotLogModel {
-  targetMonth: string
-  recordCount: number
+  snapMonth: string
   version: number
   createTime: string
   updateTime: string
