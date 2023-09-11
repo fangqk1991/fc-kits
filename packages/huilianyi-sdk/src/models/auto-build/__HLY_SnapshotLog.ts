@@ -38,7 +38,7 @@ const _fuzzySearchCols: string[] = [
 
 const dbOptions = {
   table: 'hly_snapshot_log',
-  primaryKey: ['target_month'],
+  primaryKey: ['snap_month'],
   cols: _cols,
   insertableCols: _insertableCols,
   modifiableCols: _modifiableCols,

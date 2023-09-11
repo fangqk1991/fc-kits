@@ -112,7 +112,7 @@ const dbSchemas: DBModelSchema[] = [
     tableName: 'hly_snapshot_log',
     outputFile: `${__dirname}/../src/models/auto-build/__HLY_SnapshotLog.ts`,
     extFile: `${__dirname}/../src/models/extensions/_HLY_SnapshotLog.ts`,
-    primaryKey: ['target_month'],
+    primaryKey: ['snap_month'],
     modifiableBlackList: ['create_time', 'update_time'],
   },
   {
