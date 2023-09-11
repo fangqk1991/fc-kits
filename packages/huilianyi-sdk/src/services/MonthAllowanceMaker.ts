@@ -12,6 +12,7 @@ import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import assert from '@fangcha/assert'
 import { SQLModifier, SQLRemover } from 'fc-sql'
 import * as moment from 'moment'
+import { _HLY_TravelAllowance } from '../models/extensions/_HLY_TravelAllowance'
 
 export class MonthAllowanceMaker {
   public readonly syncCore: HuilianyiSyncCore
@@ -90,16 +91,58 @@ export class MonthAllowanceMaker {
     }
   }
 
-  public async makeAllowanceSnapshot(month: string, override = false) {
+  public async findToFixAllowanceData(month: string) {
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const HLY_AllowanceSnapshot = this.modelsCore.HLY_AllowanceSnapshot
-    const HLY_SnapshotLog = this.modelsCore.HLY_SnapshotLog
-
-    const snapshotLog = await HLY_SnapshotLog.findWithMonth(month)
-    if (!override && snapshotLog) {
-      console.warn(`${month}'s AllowanceSnapshot has been created.`)
-      return
+    const snapshotTable = new HLY_AllowanceSnapshot().dbSpec().table
+    const curTable = new HLY_TravelAllowance().dbSpec().table
+    const todoData: {
+      toInsertItems: _HLY_TravelAllowance[]
+      toUpdateItems: _HLY_TravelAllowance[]
+    } = {
+      toInsertItems: [],
+      toUpdateItems: [],
     }
+    {
+      const searcher = new HLY_TravelAllowance().fc_searcher()
+      searcher
+        .processor()
+        .addSpecialCondition(
+          `NOT EXISTS (SELECT ${snapshotTable}.uid FROM ${snapshotTable} WHERE ${snapshotTable}.uid = ${curTable}.uid)`
+        )
+      searcher.processor().addSpecialCondition(`target_month <= ?`, month)
+      todoData.toInsertItems = await searcher.queryAllFeeds()
+    }
+    {
+      const searcher = new HLY_TravelAllowance().fc_searcher()
+      searcher
+        .processor()
+        .addSpecialCondition(
+          `EXISTS (SELECT ${snapshotTable}.uid FROM ${snapshotTable} WHERE ${snapshotTable}.uid = ${curTable}.uid)`
+        )
+      searcher
+        .processor()
+        .addSpecialCondition(
+          `NOT EXISTS (SELECT ${snapshotTable}.uid FROM ${snapshotTable} WHERE ${snapshotTable}.snap_hash = ${curTable}.snap_hash)`
+        )
+      searcher.processor().addSpecialCondition(`target_month <= ?`, month)
+      todoData.toUpdateItems = await searcher.queryAllFeeds()
+    }
+    return todoData
+  }
+
+  public async checkSnapshotMonthLocked(month: string) {
+    const searcher = new this.modelsCore.HLY_AllowanceSnapshot().fc_searcher()
+    searcher.processor().addConditionKV('snap_month', month)
+    searcher.processor().addConditionKV('is_locked', 1)
+    return (await searcher.queryCount()) > 0
+  }
+
+  public async makeAllowanceSnapshot(month: string) {
+    assert.ok(!(await this.checkSnapshotMonthLocked(month)), `${month} 快照已锁定，不可重新生成`)
+
+    const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
+    const HLY_AllowanceSnapshot = this.modelsCore.HLY_AllowanceSnapshot
 
     const searcher = new HLY_TravelAllowance().fc_searcher()
     searcher.processor().addConditionKV('target_month', month)
@@ -118,30 +161,11 @@ export class MonthAllowanceMaker {
       await remover.execute()
 
       for (const allowanceItem of allowanceList) {
-        allowanceItem.fc_edit()
-        allowanceItem.snapHash = md5([allowanceItem.uid, allowanceItem.daysCount, allowanceItem.amount].join(','))
-        await allowanceItem.updateToDB(transaction)
-
         const snapshot = new HLY_AllowanceSnapshot()
         snapshot.fc_generateWithModel(allowanceItem.fc_pureModel())
         snapshot.snapMonth = month
         snapshot.isPrimary = 1
         await snapshot.addToDB(transaction)
-      }
-
-      const count = allowanceList.length
-      if (count > 0) {
-        if (!snapshotLog) {
-          const snapshotLog = new HLY_SnapshotLog()
-          snapshotLog.targetMonth = month
-          snapshotLog.recordCount = count
-          await snapshotLog.addToDB(transaction)
-        } else {
-          snapshotLog.fc_edit()
-          snapshotLog.recordCount = count
-          snapshotLog.version = snapshotLog.version + 1
-          await snapshotLog.updateToDB(transaction)
-        }
       }
     })
   }
