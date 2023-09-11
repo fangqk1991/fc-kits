@@ -143,6 +143,9 @@ export class MonthAllowanceMaker {
 
     const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const HLY_AllowanceSnapshot = this.modelsCore.HLY_AllowanceSnapshot
+    const HLY_SnapshotLog = this.modelsCore.HLY_SnapshotLog
+
+    const snapshotLog = await HLY_SnapshotLog.findWithMonth(month)
 
     const searcher = new HLY_TravelAllowance().fc_searcher()
     searcher.processor().addConditionKV('target_month', month)
@@ -166,6 +169,15 @@ export class MonthAllowanceMaker {
         snapshot.snapMonth = month
         snapshot.isPrimary = 1
         await snapshot.addToDB(transaction)
+      }
+      if (!snapshotLog) {
+        const snapshotLog = new HLY_SnapshotLog()
+        snapshotLog.snapMonth = month
+        await snapshotLog.addToDB(transaction)
+      } else {
+        snapshotLog.fc_edit()
+        snapshotLog.version = snapshotLog.version + 1
+        await snapshotLog.updateToDB(transaction)
       }
     })
   }

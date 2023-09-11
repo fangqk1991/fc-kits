@@ -3,22 +3,22 @@ import { DBProtocolV2, FCDatabase } from 'fc-sql'
 
 const _cols: string[] = [
   // prettier-ignore
-  'target_month',
-  'record_count',
+  'snap_month',
   'version',
+  'remarks',
   'create_time',
   'update_time',
 ]
 const _insertableCols: string[] = [
   // prettier-ignore
-  'target_month',
-  'record_count',
+  'snap_month',
   'version',
+  'remarks',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
-  'record_count',
   'version',
+  'remarks',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -52,15 +52,15 @@ export default class __HLY_SnapshotLog extends FeedBase {
   /**
    * @description [char(7)] 快照月份 yyyy-MM
    */
-  public targetMonth!: string
-  /**
-   * @description [int] 记录数量
-   */
-  public recordCount!: number
+  public snapMonth!: string
   /**
    * @description [int] 版本号
    */
   public version!: number
+  /**
+   * @description [varchar(255)] 备注
+   */
+  public remarks!: string
   /**
    * @description [timestamp] 创建时间
    */
@@ -102,13 +102,14 @@ export default class __HLY_SnapshotLog extends FeedBase {
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
     this.version = 0
+    this.remarks = ''
   }
 
   public fc_propertyMapper() {
     return {
-      targetMonth: 'target_month',
-      recordCount: 'record_count',
+      snapMonth: 'snap_month',
       version: 'version',
+      remarks: 'remarks',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
