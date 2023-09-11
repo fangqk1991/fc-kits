@@ -1,5 +1,6 @@
 import * as moment from 'moment/moment'
-import { App_ClosedLoop, App_TrafficTicket } from '../travel/App_TravelModels'
+import { App_AllowanceCoreData, App_ClosedLoop, App_TrafficTicket } from '../travel/App_TravelModels'
+import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
 
 export class TravelTools {
   public static splitTickets(tickets: App_TrafficTicket[]) {
@@ -110,5 +111,13 @@ export class TravelTools {
       closedLoops.pop()
     }
     return closedLoops
+  }
+
+  public static makeAllowanceCoreData(detailItems: AllowanceDayItem[]): App_AllowanceCoreData {
+    return {
+      daysCount: detailItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0),
+      amount: detailItems.reduce((result, cur) => result + cur.amount, 0),
+      detailItems: detailItems,
+    }
   }
 }

@@ -1,10 +1,11 @@
 import __HLY_TravelAllowance from '../auto-build/__HLY_TravelAllowance'
 import {
   AllowanceDayItem,
-  App_AllowanceCoreInfo,
-  App_AllowanceCustomData,
+  App_AllowanceCoreData,
+  App_AllowanceCustomInfo,
   App_TravelAllowanceExtrasData,
   App_TravelAllowanceModel,
+  TravelTools,
 } from '../../core'
 import assert from '@fangcha/assert'
 import { md5 } from '@fangcha/tools'
@@ -25,8 +26,8 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     return defaultData
   }
 
-  public customData(): App_AllowanceCustomData {
-    const defaultData: App_AllowanceCustomData = {
+  public customData(): App_AllowanceCoreData {
+    const defaultData: App_AllowanceCoreData = {
       daysCount: 0,
       amount: 0,
       detailItems: [],
@@ -49,7 +50,7 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     return this.modelForClient()
   }
 
-  public async updateCoreInfo(params: App_AllowanceCoreInfo) {
+  public async updateCoreInfo(params: App_AllowanceCustomInfo) {
     assert.ok(params.useCustom !== undefined, 'params.useCustom invalid.')
     assert.ok(params.customData !== undefined, 'params.customData invalid.')
     assert.ok(!Number.isNaN(params.customData.daysCount), 'params.customData.daysCount invalid.')
@@ -60,9 +61,11 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
     this.useCustom = params.useCustom ? 1 : 0
     this.customDataStr = JSON.stringify(params.customData)
 
-    const detailItems = this.useCustom ? params.customData.detailItems : this.detailItems()
-    this.daysCount = detailItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
-    this.amount = detailItems.reduce((result, cur) => result + cur.amount, 0)
+    const coreData = TravelTools.makeAllowanceCoreData(
+      this.useCustom ? params.customData.detailItems : this.detailItems()
+    )
+    this.daysCount = coreData.daysCount
+    this.amount = coreData.amount
     this.snapHash = md5([this.uid, this.daysCount, this.amount].join(','))
 
     await this.updateToDB()

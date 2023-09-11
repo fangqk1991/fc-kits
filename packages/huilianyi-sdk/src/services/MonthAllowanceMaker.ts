@@ -6,6 +6,7 @@ import {
   HLY_PrettyStatus,
   HLY_TravelStatus,
   HLY_VerifiedStatus,
+  TravelTools,
 } from '../core'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
@@ -75,10 +76,11 @@ export class MonthAllowanceMaker {
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
 
           const prevAllowance = await HLY_TravelAllowance.findWithUid(allowance.uid)
-          const detailItems =
+          const coreData = TravelTools.makeAllowanceCoreData(
             prevAllowance && prevAllowance.useCustom ? prevAllowance.customData().detailItems : subDayItems
-          allowance.daysCount = detailItems.reduce((result, cur) => result + (cur.halfDay ? 0.5 : 1), 0)
-          allowance.amount = detailItems.reduce((result, cur) => result + cur.amount, 0)
+          )
+          allowance.daysCount = coreData.daysCount
+          allowance.amount = coreData.amount
           allowance.detailItemsStr = JSON.stringify(subDayItems)
           allowance.extrasInfo = JSON.stringify({
             closedLoops: closedLoops,
