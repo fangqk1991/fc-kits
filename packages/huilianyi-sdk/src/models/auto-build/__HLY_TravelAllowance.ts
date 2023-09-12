@@ -22,6 +22,7 @@ const _cols: string[] = [
   'is_pretty',
   'is_verified',
   'version',
+  'without_allowance',
   'pay_amount',
   'snap_hash',
   'create_time',
@@ -46,6 +47,7 @@ const _insertableCols: string[] = [
   'is_pretty',
   'is_verified',
   'version',
+  'without_allowance',
   'pay_amount',
   'snap_hash',
 ]
@@ -69,6 +71,7 @@ const _modifiableCols: string[] = [
   'is_pretty',
   'is_verified',
   'version',
+  'without_allowance',
   'pay_amount',
   'snap_hash',
 ]
@@ -185,6 +188,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public version!: number
   /**
+   * @description [tinyint] 不发放出差补贴
+   */
+  public withoutAllowance!: number
+  /**
    * @description [double] 支付金额
    */
   public payAmount!: number
@@ -248,6 +255,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.isPretty = 0
     this.isVerified = 0
     this.version = 0
+    this.withoutAllowance = 0
     this.payAmount = 0
     this.snapHash = ''
   }
@@ -273,6 +281,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       isPretty: 'is_pretty',
       isVerified: 'is_verified',
       version: 'version',
+      withoutAllowance: 'without_allowance',
       payAmount: 'pay_amount',
       snapHash: 'snap_hash',
       createTime: 'create_time',

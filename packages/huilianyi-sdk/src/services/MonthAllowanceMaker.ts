@@ -73,6 +73,7 @@ export class MonthAllowanceMaker {
           allowance.title = travelItem.title
           allowance.startTime = travelItem.startTime
           allowance.endTime = travelItem.endTime
+          allowance.withoutAllowance = staff.withoutAllowance
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
 
           const prevAllowance = await HLY_TravelAllowance.findWithUid(allowance.uid)

@@ -80,6 +80,7 @@ export interface App_TravelAllowanceModel {
   daysCount: number
   amount: number
   useCustom: number
+  withoutAllowance: number
   customData: App_AllowanceCoreData
   extrasData: App_TravelAllowanceExtrasData
   detailItems: AllowanceDayItem[]
