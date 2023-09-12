@@ -1,8 +1,10 @@
 import __HLY_Staff from '../auto-build/__HLY_Staff'
-import { App_StaffModel } from '../../core'
+import { App_StaffModel, HLY_StaffAllowanceStatus } from '../../core'
 import { Transaction } from 'fc-sql'
 
 export class _HLY_Staff extends __HLY_Staff {
+  withoutAllowance!: HLY_StaffAllowanceStatus
+
   public constructor() {
     super()
   }

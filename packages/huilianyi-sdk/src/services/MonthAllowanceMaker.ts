@@ -59,7 +59,13 @@ export class MonthAllowanceMaker {
         const company = companyMapper[staff.companyCode!]
 
         const closedLoops = trafficItem.closedLoops || []
-        const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
+        const dayItems = calculator.calculateAllowanceDayItems(
+          {
+            roleCodeList: staff.groupCodes(),
+            withoutAllowance: staff.withoutAllowance,
+          },
+          closedLoops
+        )
 
         for (const month of monthList) {
           const subDayItems = dayItems.filter((dayItem) => dayItem.date.startsWith(month))

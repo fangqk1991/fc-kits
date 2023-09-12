@@ -26,7 +26,13 @@ describe('Test AllowanceCalculator.test.ts', () => {
     const calculator = new AllowanceCalculator(rules)
     for (const feed of feeds) {
       const staff = (await huilianyiService.modelsCore.HLY_Staff.findWithUid(feed.applicantOid!))!
-      const dayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), feed.extrasData().closedLoops)
+      const dayItems = calculator.calculateAllowanceDayItems(
+        {
+          roleCodeList: staff.groupCodes(),
+          withoutAllowance: staff.withoutAllowance,
+        },
+        feed.extrasData().closedLoops
+      )
       // console.info(JSON.stringify(dayItems, null, 2))
 
       console.info('--- START ---')
@@ -42,7 +48,9 @@ describe('Test AllowanceCalculator.test.ts', () => {
     const rules = await huilianyiService.modelsCore.HLY_AllowanceRule.allRules()
     const calculator = new AllowanceCalculator(rules)
     const dayItems = calculator.calculateAllowanceDayItems(
-      [],
+      {
+        roleCodeList: [],
+      },
       [
         {
           tickets: [

@@ -123,7 +123,13 @@ export class TravelService {
           console.error(`staff[${trafficData.userOid}] missing.`)
           continue
         }
-        trafficData.allowanceDayItems = calculator.calculateAllowanceDayItems(staff.groupCodes(), closedLoops)
+        trafficData.allowanceDayItems = calculator.calculateAllowanceDayItems(
+          {
+            roleCodeList: staff.groupCodes(),
+            withoutAllowance: staff.withoutAllowance,
+          },
+          closedLoops
+        )
       }
     }
     return businessTrafficItemsMapper

@@ -2,6 +2,7 @@ import { AllowanceDayItem, AllowanceUnitPriceInfo, App_AllowanceRuleModel } from
 import { App_MatchType } from './App_MatchType'
 import { App_ClosedLoop } from '../travel/App_TravelModels'
 import { TimeUtils } from '../tools/TimeUtils'
+import { HLY_StaffAllowanceStatus } from '../travel/HLY_StaffAllowanceStatus'
 
 export class AllowanceCalculator {
   public rules: App_AllowanceRuleModel[]
@@ -30,15 +31,20 @@ export class AllowanceCalculator {
     return result
   }
 
-  public calculateAllowanceDayItems(roleCodeList: string[], loopItems: App_ClosedLoop[]): AllowanceDayItem[] {
+  public calculateAllowanceDayItems(
+    staffProps: {
+      roleCodeList: string[]
+      withoutAllowance?: HLY_StaffAllowanceStatus
+    },
+    loopItems: App_ClosedLoop[]
+  ): AllowanceDayItem[] {
     const allDayItems: AllowanceDayItem[] = []
     for (const closedLoop of loopItems) {
       // 最后一段行程按出发地，其他均按目的地
       const firstTicket = closedLoop.tickets[0]
       const lastTicket = closedLoop.tickets[closedLoop.tickets.length - 1]
       let curDate = TimeUtils.momentUTC8(firstTicket.fromTime).startOf('day')
-      const ruleResult = this.calculateRules(roleCodeList, firstTicket.toCity)
-
+      const ruleResult = this.calculateRules(staffProps.roleCodeList, firstTicket.toCity)
       const dayItems: AllowanceDayItem[] = [
         {
           date: curDate.format('YYYY-MM-DD'),
@@ -50,7 +56,7 @@ export class AllowanceCalculator {
       for (let i = 1; i < closedLoop.tickets.length; ++i) {
         const ticket = closedLoop.tickets[i]
         const lastCity = ticket.fromCity
-        const ruleResult = this.calculateRules(roleCodeList, lastCity)
+        const ruleResult = this.calculateRules(staffProps.roleCodeList, lastCity)
 
         while (curDate.valueOf() < TimeUtils.momentUTC8(ticket.toTime).startOf('day').valueOf()) {
           curDate.add(1, 'day')
@@ -80,6 +86,10 @@ export class AllowanceCalculator {
       // for (const ticket of closedLoop.tickets) {
       //   console.info(TimeUtils.momentUTC8(ticket.fromTime), ticket.fromTime, ticket.toTime)
       // }
+    }
+
+    if (staffProps.withoutAllowance === HLY_StaffAllowanceStatus.WithoutAllowance) {
+      allDayItems.forEach((item) => (item.amount = 0))
     }
     return allDayItems
   }
