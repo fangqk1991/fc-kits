@@ -56,6 +56,10 @@ export class MonthAllowanceMaker {
 
         const staff = staffMapper[participant.userOID]
         assert.ok(!!staff, `Staff[${participant.userOID}] missing.`, 500)
+        if (staff.withoutAllowance) {
+          continue
+        }
+
         const company = companyMapper[staff.companyCode!]
 
         const closedLoops = trafficItem.closedLoops || []
