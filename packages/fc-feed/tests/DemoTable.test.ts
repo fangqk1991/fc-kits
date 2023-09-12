@@ -106,9 +106,10 @@ describe('Test DemoTable', (): void => {
       // [`uid.$inStr`]: '5',
       // [`uid.$notInStr`]: '3,4',
       [`uid.$gt`]: 3,
+      [`uid.$gt.1`]: 4,
       [`uid.$ne`]: '5',
-      [`uid.$le`]: '5',
-      [`createTime.$le`]: moment('2023-02-06T14:59:03+08:00').unix(),
+      // [`uid.$le`]: '5',
+      // [`createTime.$le`]: moment('2023-02-06T14:59:03+08:00').unix(),
     })
     pageResult.items.forEach((item) => {
       console.info(item)

@@ -295,7 +295,7 @@ export class FeedBase extends FCModel {
         searcher.processor().addConditionKV(mapper[key], params[key])
       })
     for (const key of paramsKeys) {
-      const matches = key.match(/^([a-zA-Z]\w+)\.(\$\w+)$/)
+      const matches = key.match(/^([a-zA-Z]\w+)\.(\$\w+)(\.\w+)?$/)
       if (!matches || !(matches[1] in mapper)) {
         continue
       }
