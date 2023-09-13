@@ -14,6 +14,7 @@ import assert from '@fangcha/assert'
 import { SQLModifier, SQLRemover } from 'fc-sql'
 import * as moment from 'moment'
 import { _HLY_TravelAllowance } from '../models/extensions/_HLY_TravelAllowance'
+import { SystemConfigHandler } from './SystemConfigHandler'
 
 export class MonthAllowanceMaker {
   public readonly syncCore: HuilianyiSyncCore
@@ -36,8 +37,7 @@ export class MonthAllowanceMaker {
     const items = await searcher.queryAllFeeds()
 
     const staffMapper = (await this.modelsCore.HLY_Staff.staffMapper())!
-    const companyMapper = await this.syncCore.othersProxy.getCompanyMapper()
-
+    const companyMapper = await new SystemConfigHandler(this.syncCore).getCompanyMetadata()
     for (const travelItem of items) {
       const extrasData = travelItem.extrasData()
       const participants = extrasData.participants

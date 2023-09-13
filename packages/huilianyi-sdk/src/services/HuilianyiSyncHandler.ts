@@ -20,6 +20,7 @@ import { md5 } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
 import { CTrip_FlightChangeInfoEntity, CTrip_FlightChangeType } from '@fangcha/ctrip-sdk'
+import { SystemConfigHandler } from './SystemConfigHandler'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -333,7 +334,7 @@ export class HuilianyiSyncHandler {
     const Dummy_Travel = syncCore.modelsCore.Dummy_Travel
     const dummyItems = await new Dummy_Travel().fc_searcher().queryAllFeeds()
     const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
-    const companyMapper = await syncCore.othersProxy.getCompanyMapper()
+    const companyMapper = await new SystemConfigHandler(syncCore).getCompanyMetadata()
     await this.do_syncDummyTravelRecords(dummyItems, staffMapper, companyMapper)
   }
 
