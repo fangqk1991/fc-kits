@@ -50,8 +50,9 @@ describe('Test HLY_BasicDataProxy.test.ts', () => {
     for (const center of costCenters) {
       const centerDetail = await basicDataProxy.getCostCenterDetail(center.code)
       console.info(
+        center.costCenterOID,
         center.name,
-        centerDetail.costCenterItems.map((item) => item.name)
+        centerDetail.costCenterItems.map((item) => `${item.name} ${item.costCenterItemOID}`)
       )
     }
   })

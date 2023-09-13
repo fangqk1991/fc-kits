@@ -1,6 +1,6 @@
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { App_CostCenterItem, App_CostCenterMetadata, App_StaffCore, RetainConfigKey } from '../core/basic/App_CoreModels'
+import { App_CostCenterItem, App_CostCenterMetadata, App_StaffCore, RetainConfigKey } from '../core'
 
 export class SystemConfigHandler {
   public readonly syncCore: HuilianyiSyncCore
@@ -106,6 +106,18 @@ export class SystemConfigHandler {
   public async getCostCenterMetadata() {
     return await this.getConfig(RetainConfigKey.CostCenterMetadata, async () => {
       return this.reloadCostCenterMetadata()
+    })
+  }
+
+  public async reloadCompanyMetadata() {
+    const metadata = await this.syncCore.othersProxy.getCompanyMapper()
+    await this.setConfig(RetainConfigKey.CompanyMetadata, metadata)
+    return metadata
+  }
+
+  public async getCompanyMetadata() {
+    return await this.getConfig(RetainConfigKey.CompanyMetadata, async () => {
+      return this.reloadCompanyMetadata()
     })
   }
 }

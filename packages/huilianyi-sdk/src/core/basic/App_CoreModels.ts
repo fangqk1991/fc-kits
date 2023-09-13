@@ -2,6 +2,7 @@ export enum RetainConfigKey {
   ExpenseTypeMetadata = 'ExpenseTypeMetadata',
   ManagerMetadata = 'ManagerMetadata',
   CostCenterMetadata = 'CostCenterMetadata',
+  CompanyMetadata = 'CompanyMetadata',
   ExpenseAvgMonthN = 'ExpenseAvgMonthN',
 }
 
