@@ -10,6 +10,8 @@ const _cols: string[] = [
   'applicant_name',
   'company_oid',
   'company_name',
+  'cost_owner_oid',
+  'cost_owner_name',
   'title',
   'start_time',
   'end_time',
@@ -37,6 +39,8 @@ const _insertableCols: string[] = [
   'applicant_name',
   'company_oid',
   'company_name',
+  'cost_owner_oid',
+  'cost_owner_name',
   'title',
   'start_time',
   'end_time',
@@ -59,6 +63,8 @@ const _modifiableCols: string[] = [
   'applicant_name',
   'company_oid',
   'company_name',
+  'cost_owner_oid',
+  'cost_owner_name',
   'title',
   'start_time',
   'end_time',
@@ -139,6 +145,14 @@ export default class __HLY_TravelAllowance extends FeedBase {
    * @description [text]
    */
   public companyName!: string
+  /**
+   * @description [char(36)]
+   */
+  public costOwnerOid!: string | null
+  /**
+   * @description [text]
+   */
+  public costOwnerName!: string
   /**
    * @description [text]
    */
@@ -243,6 +257,8 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.applicantName = ''
     this.companyOid = null
     this.companyName = ''
+    this.costOwnerOid = null
+    this.costOwnerName = ''
     this.title = ''
     this.startTime = null
     this.endTime = null
@@ -269,6 +285,8 @@ export default class __HLY_TravelAllowance extends FeedBase {
       applicantName: 'applicant_name',
       companyOid: 'company_oid',
       companyName: 'company_name',
+      costOwnerOid: 'cost_owner_oid',
+      costOwnerName: 'cost_owner_name',
       title: 'title',
       startTime: 'start_time',
       endTime: 'end_time',

@@ -11,6 +11,8 @@ const _cols: string[] = [
   'company_oid',
   'department_oid',
   'corporation_oid',
+  'cost_owner_oid',
+  'cost_owner_name',
   'form_code',
   'form_oid',
   'form_name',
@@ -50,6 +52,8 @@ const _insertableCols: string[] = [
   'company_oid',
   'department_oid',
   'corporation_oid',
+  'cost_owner_oid',
+  'cost_owner_name',
   'form_code',
   'form_oid',
   'form_name',
@@ -85,6 +89,8 @@ const _modifiableCols: string[] = [
   'company_oid',
   'department_oid',
   'corporation_oid',
+  'cost_owner_oid',
+  'cost_owner_name',
   'form_code',
   'form_oid',
   'form_name',
@@ -181,6 +187,14 @@ export default class __HLY_Travel extends FeedBase {
    * @description [char(36)]
    */
   public corporationOid!: string | null
+  /**
+   * @description [char(36)]
+   */
+  public costOwnerOid!: string | null
+  /**
+   * @description [text]
+   */
+  public costOwnerName!: string
   /**
    * @description [varchar(32)]
    */
@@ -331,6 +345,8 @@ export default class __HLY_Travel extends FeedBase {
     this.companyOid = null
     this.departmentOid = null
     this.corporationOid = null
+    this.costOwnerOid = null
+    this.costOwnerName = ''
     this.formCode = null
     this.formOid = null
     this.formName = ''
@@ -368,6 +384,8 @@ export default class __HLY_Travel extends FeedBase {
       companyOid: 'company_oid',
       departmentOid: 'department_oid',
       corporationOid: 'corporation_oid',
+      costOwnerOid: 'cost_owner_oid',
+      costOwnerName: 'cost_owner_name',
       formCode: 'form_code',
       formOid: 'form_oid',
       formName: 'form_name',
