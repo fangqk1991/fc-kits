@@ -108,6 +108,17 @@ export class MonthAllowanceMaker {
         }
       }
     }
+
+    {
+      const allowanceDbSpec = new HLY_TravelAllowance().dbSpec()
+      const remover = new SQLRemover(allowanceDbSpec.database)
+      remover.setTable(allowanceDbSpec.table)
+      remover.addConditionKeyNotInArray(
+        'business_code',
+        items.map((item) => item.businessCode)
+      )
+      await remover.execute()
+    }
   }
 
   public async findToFixAllowanceData(month: string) {
