@@ -77,6 +77,9 @@ export interface App_TravelAllowanceModel {
   title: string
   companyOid: string
   companyName: string
+  baseCity: string
+  costOwnerOid: string
+  costOwnerName: string
   startTime: string
   endTime: string
   daysCount: number
