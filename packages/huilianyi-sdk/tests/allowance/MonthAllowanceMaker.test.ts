@@ -8,19 +8,11 @@ describe('Test MonthAllowanceMaker.test.ts', () => {
   })
 
   it(`makeMonthAllowance`, async () => {
-    // await huilianyiService.syncHandler().dumpTravelRecords(true)
     await huilianyiService.monthAllowanceMaker().makeMonthAllowance()
+  })
 
-    // const searcher = new huilianyiService.modelsCore.HLY_TravelAllowance().fc_searcher()
-    // searcher.processor().addConditionKV('is_pretty', 1)
-    // const feeds = await searcher.queryAllFeeds()
-    // console.info(
-    //   JSON.stringify(
-    //     feeds.map((item) => item.extrasData().closedLoops),
-    //     null,
-    //     2
-    //   )
-    // )
+  it(`makeMonthAllowance - HLY_AllowanceDraft`, async () => {
+    await huilianyiService.monthAllowanceMaker().makeMonthAllowance(huilianyiService.modelsCore.HLY_AllowanceDraft)
   })
 
   it(`lockAllowanceSnapshots`, async () => {
@@ -28,7 +20,9 @@ describe('Test MonthAllowanceMaker.test.ts', () => {
   })
 
   it(`removeExpiredAllowanceRecords`, async () => {
-    await huilianyiService.monthAllowanceMaker().removeExpiredAllowanceRecords()
+    await huilianyiService
+      .monthAllowanceMaker()
+      .removeExpiredAllowanceRecords(huilianyiService.modelsCore.HLY_TravelAllowance)
   })
 
   it(`findToFixAllowanceData`, async () => {

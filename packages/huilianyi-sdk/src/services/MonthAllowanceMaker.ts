@@ -25,17 +25,17 @@ export class MonthAllowanceMaker {
     this.modelsCore = syncCore.modelsCore
   }
 
-  public async makeMonthAllowance() {
+  public async makeMonthAllowance(AllowanceClass?: { new (): _HLY_TravelAllowance } & typeof _HLY_TravelAllowance) {
     const rules = await this.modelsCore.HLY_AllowanceRule.allRules()
     const calculator = new AllowanceCalculator(rules)
 
     const HLY_Travel = this.modelsCore.HLY_Travel
-    const HLY_TravelAllowance = this.modelsCore.HLY_TravelAllowance
     const searcher = new HLY_Travel().fc_searcher()
     searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
     searcher.processor().addConditionKV('match_closed_loop', 1)
     const items = await searcher.queryAllFeeds()
 
+    AllowanceClass = AllowanceClass || this.modelsCore.HLY_TravelAllowance
     const staffMapper = (await this.modelsCore.HLY_Staff.staffMapper())!
     const companyMapper = await new SystemConfigHandler(this.syncCore).getCompanyMetadata()
     for (const travelItem of items) {
@@ -73,7 +73,7 @@ export class MonthAllowanceMaker {
 
         for (const month of monthList) {
           const subDayItems = dayItems.filter((dayItem) => dayItem.date.startsWith(month))
-          const allowance = new HLY_TravelAllowance()
+          const allowance = new AllowanceClass()
           allowance.businessCode = travelItem.businessCode
           allowance.targetMonth = month
           allowance.applicantOid = participant.userOID
@@ -89,7 +89,7 @@ export class MonthAllowanceMaker {
           allowance.withoutAllowance = staff.withoutAllowance
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
 
-          const prevAllowance = await HLY_TravelAllowance.findWithUid(allowance.uid)
+          const prevAllowance = await AllowanceClass.findWithUid(allowance.uid)
           const coreData = TravelTools.makeAllowanceCoreData(
             prevAllowance && prevAllowance.useCustom ? prevAllowance.customData().detailItems : subDayItems
           )
@@ -111,7 +111,7 @@ export class MonthAllowanceMaker {
     }
 
     {
-      const allowanceDbSpec = new HLY_TravelAllowance().dbSpec()
+      const allowanceDbSpec = new AllowanceClass().dbSpec()
       const remover = new SQLRemover(allowanceDbSpec.database)
       remover.setTable(allowanceDbSpec.table)
       remover.addConditionKeyNotInArray(
@@ -120,6 +120,8 @@ export class MonthAllowanceMaker {
       )
       await remover.execute()
     }
+
+    await this.removeExpiredAllowanceRecords(AllowanceClass)
   }
 
   public async findToFixAllowanceData(month: string) {
@@ -213,12 +215,15 @@ export class MonthAllowanceMaker {
     })
   }
 
-  public async removeExpiredAllowanceRecords() {
-    const searcher = new this.modelsCore.HLY_TravelAllowance().fc_searcher()
+  public async removeExpiredAllowanceRecords(
+    AllowanceClass: { new (): _HLY_TravelAllowance } & typeof _HLY_TravelAllowance
+  ) {
+    const table = new AllowanceClass().dbSpec().table
+    const searcher = new AllowanceClass().fc_searcher()
     searcher
       .processor()
       .addSpecialCondition(
-        'EXISTS (SELECT hly_travel.business_code FROM hly_travel WHERE hly_travel.business_code = hly_travel_allowance.business_code AND (hly_travel.version != hly_travel_allowance.version OR hly_travel.travel_status != ?))',
+        `EXISTS (SELECT hly_travel.business_code FROM hly_travel WHERE hly_travel.business_code = ${table}.business_code AND (hly_travel.version != ${table}.version OR hly_travel.travel_status != ?))`,
         HLY_TravelStatus.Passed
       )
     const items = await searcher.queryAllFeeds()
