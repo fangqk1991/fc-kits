@@ -1,13 +1,6 @@
 import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import {
-  AllowanceCalculator,
-  App_TravelAllowanceExtrasData,
-  HLY_PrettyStatus,
-  HLY_TravelStatus,
-  HLY_VerifiedStatus,
-  TravelTools,
-} from '../core'
+import { AllowanceCalculator, App_TravelAllowanceExtrasData, HLY_TravelStatus, TravelTools, } from '../core'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import assert from '@fangcha/assert'
@@ -28,14 +21,16 @@ export class MonthAllowanceMaker {
   public async makeMonthAllowance(AllowanceClass?: { new (): _HLY_TravelAllowance } & typeof _HLY_TravelAllowance) {
     const rules = await this.modelsCore.HLY_AllowanceRule.allRules()
     const calculator = new AllowanceCalculator(rules)
+    AllowanceClass = AllowanceClass || this.modelsCore.HLY_TravelAllowance
 
     const HLY_Travel = this.modelsCore.HLY_Travel
     const searcher = new HLY_Travel().fc_searcher()
     searcher.processor().addConditionKV('travel_status', HLY_TravelStatus.Passed)
-    searcher.processor().addConditionKV('match_closed_loop', 1)
+    if (AllowanceClass === this.modelsCore.HLY_TravelAllowance) {
+      searcher.processor().addConditionKV('match_closed_loop', 1)
+    }
     const items = await searcher.queryAllFeeds()
 
-    AllowanceClass = AllowanceClass || this.modelsCore.HLY_TravelAllowance
     const staffMapper = (await this.modelsCore.HLY_Staff.staffMapper())!
     const companyMapper = await new SystemConfigHandler(this.syncCore).getCompanyMetadata()
     for (const travelItem of items) {
@@ -97,11 +92,12 @@ export class MonthAllowanceMaker {
           allowance.amount = coreData.amount
           allowance.detailItemsStr = JSON.stringify(subDayItems)
           allowance.extrasInfo = JSON.stringify({
+            tickets: trafficItem.tickets,
             closedLoops: closedLoops,
             itineraryItems: itineraryItems,
           } as App_TravelAllowanceExtrasData)
-          allowance.isPretty = HLY_PrettyStatus.Pretty
-          allowance.isVerified = HLY_VerifiedStatus.Verified
+          allowance.isPretty = closedLoops.length > 0 ? 1 : 0
+          allowance.isVerified = allowance.isPretty
           allowance.version = travelItem.version
           allowance.payAmount = allowance.amount
           allowance.snapHash = md5([allowance.uid, allowance.daysCount, allowance.amount].join(','))

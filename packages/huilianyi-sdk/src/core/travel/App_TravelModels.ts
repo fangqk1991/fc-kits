@@ -55,6 +55,7 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
   closedLoops: App_ClosedLoop[]
+  tickets: App_TrafficTicket[]
 }
 
 export interface App_AllowanceCustomInfo {

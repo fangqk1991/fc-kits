@@ -16,14 +16,16 @@ export class _HLY_TravelAllowance extends __HLY_TravelAllowance {
   }
 
   public extrasData(): App_TravelAllowanceExtrasData {
-    const defaultData: App_TravelAllowanceExtrasData = {
+    let retData: App_TravelAllowanceExtrasData = {
+      tickets: [],
       itineraryItems: [],
       closedLoops: [],
     }
     try {
-      return JSON.parse(this.extrasInfo) || defaultData
+      retData = JSON.parse(this.extrasInfo) || retData
     } catch (e) {}
-    return defaultData
+    retData.tickets = retData.tickets || []
+    return retData
   }
 
   public customData(): App_AllowanceCoreData {
