@@ -80,6 +80,8 @@ export class MonthAllowanceMaker {
           allowance.applicantName = participant.fullName
           allowance.companyOid = company ? company.companyOID : null
           allowance.companyName = company ? company.name : ''
+          allowance.costOwnerOid = travelItem.costOwnerOid
+          allowance.costOwnerName = travelItem.costOwnerName || ''
           allowance.title = travelItem.title
           allowance.startTime = travelItem.startTime
           allowance.endTime = travelItem.endTime
