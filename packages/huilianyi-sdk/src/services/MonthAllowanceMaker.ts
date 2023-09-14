@@ -78,6 +78,7 @@ export class MonthAllowanceMaker {
           allowance.targetMonth = month
           allowance.applicantOid = participant.userOID
           allowance.applicantName = participant.fullName
+          allowance.baseCity = staff.baseCity || ''
           allowance.companyOid = company ? company.companyOID : null
           allowance.companyName = company ? company.name : ''
           allowance.costOwnerOid = travelItem.costOwnerOid

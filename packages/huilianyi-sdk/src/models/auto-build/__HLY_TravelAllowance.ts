@@ -8,6 +8,7 @@ const _cols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'base_city',
   'company_oid',
   'company_name',
   'cost_owner_oid',
@@ -37,6 +38,7 @@ const _insertableCols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'base_city',
   'company_oid',
   'company_name',
   'cost_owner_oid',
@@ -61,6 +63,7 @@ const _modifiableCols: string[] = [
   'target_month',
   'applicant_oid',
   'applicant_name',
+  'base_city',
   'company_oid',
   'company_name',
   'cost_owner_oid',
@@ -137,6 +140,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    * @description [text]
    */
   public applicantName!: string
+  /**
+   * @description [varchar(64)]
+   */
+  public baseCity!: string
   /**
    * @description [char(36)]
    */
@@ -255,6 +262,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     // This function is invoked by constructor of FCModel
     this.applicantOid = null
     this.applicantName = ''
+    this.baseCity = ''
     this.companyOid = null
     this.companyName = ''
     this.costOwnerOid = null
@@ -283,6 +291,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       targetMonth: 'target_month',
       applicantOid: 'applicant_oid',
       applicantName: 'applicant_name',
+      baseCity: 'base_city',
       companyOid: 'company_oid',
       companyName: 'company_name',
       costOwnerOid: 'cost_owner_oid',
