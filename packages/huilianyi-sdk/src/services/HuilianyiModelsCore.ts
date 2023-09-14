@@ -21,6 +21,7 @@ import { _HLY_TrafficTicket } from '../models/extensions/_HLY_TrafficTicket'
 import { _CTrip_Order } from '../models/extensions/_CTrip_Order'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _Dummy_Ticket } from '../models/extensions/_Dummy_Ticket'
+import { _HLY_AllowanceDraft } from '../models/extensions/_HLY_AllowanceDraft'
 
 export class HuilianyiModelsCore {
   public readonly database: FCDatabase
@@ -36,6 +37,7 @@ export class HuilianyiModelsCore {
   public readonly HLY_Config!: { new (): _HLY_Config } & typeof _HLY_Config
   public readonly HLY_TravelAllowance!: { new (): _HLY_TravelAllowance } & typeof _HLY_TravelAllowance
   public readonly HLY_AllowanceSnapshot!: { new (): _HLY_AllowanceSnapshot } & typeof _HLY_AllowanceSnapshot
+  public readonly HLY_AllowanceDraft!: { new (): _HLY_AllowanceDraft } & typeof _HLY_AllowanceDraft
   public readonly HLY_SnapshotLog!: { new (): _HLY_SnapshotLog } & typeof _HLY_SnapshotLog
   public readonly HLY_OrderFlight!: { new (): _HLY_OrderFlight } & typeof _HLY_OrderFlight
   public readonly HLY_OrderTrain!: { new (): _HLY_OrderTrain } & typeof _HLY_OrderTrain
@@ -118,6 +120,12 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_AllowanceSnapshot = HLY_AllowanceSnapshot
+
+    class HLY_AllowanceDraft extends _HLY_AllowanceDraft {}
+    HLY_AllowanceDraft.addStaticOptions({
+      database: database,
+    })
+    this.HLY_AllowanceDraft = HLY_AllowanceDraft
 
     class HLY_SnapshotLog extends _HLY_SnapshotLog {}
     HLY_SnapshotLog.addStaticOptions({
