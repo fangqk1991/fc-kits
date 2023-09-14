@@ -128,7 +128,9 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => !['base_city', 'without_allowance'].includes(item)))
+    bulkAdder.setInsertKeys(
+      dbSpec.insertableCols().filter((item) => !['base_city', 'without_allowance'].includes(item))
+    )
     bulkAdder.declareTimestampKey('entry_date')
     bulkAdder.declareTimestampKey('leaving_date')
     for (const item of items) {
@@ -383,10 +385,15 @@ export class HuilianyiSyncHandler {
     searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
     const todoItems = await searcher.queryAllFeeds()
 
+    const costCenterMetadata = await new SystemConfigHandler(this.syncCore).getCostCenterMetadata()
+    const costOwnerItemsMap = costCenterMetadata['YSGK']?.itemMap || {}
     console.info(`[dumpTravelRecords] ${todoItems.length} items need to reload.`)
     for (const item of todoItems) {
       const travelInfo = await syncCore.dataProxy.getTravelApplicationDetail(item.businessCode)
       const props = HuilianyiFormatter.transferTravelModel(travelInfo)
+      if (costOwnerItemsMap[props.costOwnerOid]) {
+        props.costOwnerName = costOwnerItemsMap[props.costOwnerOid].name
+      }
       delete (props as any).hasRepeated
       delete (props as any).isNewest
       delete (props as any).overlappedCodes

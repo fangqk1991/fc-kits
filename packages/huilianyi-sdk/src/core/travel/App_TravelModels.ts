@@ -38,6 +38,8 @@ export interface App_TravelCoreItinerary {
 export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
   startTime: string
   endTime: string
+  costOwnerOid: string
+  costOwnerName: string
   matchClosedLoop: HLY_ClosedLoopStatus
   isPretty: HLY_PrettyStatus
   travelStatus: HLY_TravelStatus

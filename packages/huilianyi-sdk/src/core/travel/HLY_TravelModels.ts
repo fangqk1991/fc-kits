@@ -290,6 +290,8 @@ export interface HLY_TravelModel {
   departmentOID: string
   corporationOID: string
 
+  costCenterItemOID: string
+
   formCode: string
   formType: number // 2001
   formOID: string

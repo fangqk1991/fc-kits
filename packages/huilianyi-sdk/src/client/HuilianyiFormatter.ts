@@ -146,6 +146,8 @@ export class HuilianyiFormatter {
       submittedBy: item.submittedBy,
       title: item.title,
       matchClosedLoop: 0,
+      costOwnerOid: item.costCenterItemOID,
+      costOwnerName: '',
       isPretty: 0,
       employeeTrafficItems: [],
       // UTC 时间无需纠正
