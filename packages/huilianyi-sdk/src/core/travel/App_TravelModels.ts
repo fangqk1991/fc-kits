@@ -7,6 +7,7 @@ import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
 import { App_FormBase } from '../basic/App_CoreModels'
 import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
 import { HLY_OrderType } from './HLY_OrderType'
+import { HLY_AllowanceCase } from './HLY_AllowanceCase'
 
 export interface App_TravelExtrasData {
   participants: HLY_TravelParticipant[]
@@ -87,6 +88,7 @@ export interface App_TravelAllowanceModel {
   amount: number
   useCustom: number
   withoutAllowance: number
+  allowanceCase: HLY_AllowanceCase
   customData: App_AllowanceCoreData
   extrasData: App_TravelAllowanceExtrasData
   detailItems: AllowanceDayItem[]
