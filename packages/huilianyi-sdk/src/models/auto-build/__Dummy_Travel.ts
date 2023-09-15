@@ -5,6 +5,7 @@ const _cols: string[] = [
   // prettier-ignore
   'hly_id',
   'business_code',
+  'special_key',
   'applicant_oid',
   'applicant_name',
   'submitted_by',
@@ -22,6 +23,7 @@ const _insertableCols: string[] = [
   // prettier-ignore
   'hly_id',
   'business_code',
+  'special_key',
   'applicant_oid',
   'applicant_name',
   'submitted_by',
@@ -90,6 +92,10 @@ export default class __Dummy_Travel extends FeedBase {
    * @description [varchar(20)]
    */
   public businessCode!: string
+  /**
+   * @description [char(32)] Special Hash
+   */
+  public specialKey!: string | null
   /**
    * @description [char(36)]
    */
@@ -172,6 +178,7 @@ export default class __Dummy_Travel extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
+    this.specialKey = null
     this.applicantOid = null
     this.applicantName = ''
     this.submittedBy = null
@@ -188,6 +195,7 @@ export default class __Dummy_Travel extends FeedBase {
     return {
       hlyId: 'hly_id',
       businessCode: 'business_code',
+      specialKey: 'special_key',
       applicantOid: 'applicant_oid',
       applicantName: 'applicant_name',
       submittedBy: 'submitted_by',

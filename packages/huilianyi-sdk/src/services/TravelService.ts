@@ -13,7 +13,7 @@ import {
 import * as moment from 'moment'
 import { SQLBulkAdder, SQLModifier, Transaction } from 'fc-sql'
 import assert from '@fangcha/assert'
-import { makeRandomStr } from '@fangcha/tools'
+import { makeRandomStr, md5 } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
@@ -476,7 +476,7 @@ export class TravelService {
     })
   }
 
-  public async makeDummyTravel(ticketIdList: string[], remarks?: string) {
+  public async makeDummyTravel(ticketIdList: string[], options: { remarks?: string; specialKey?: string } = {}) {
     assert.ok(Array.isArray(ticketIdList), `参数有误`)
     assert.ok(ticketIdList.length > 0, `未选择票据`)
     const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
@@ -515,7 +515,10 @@ export class TravelService {
     dummyTravel.endTime = tickets[tickets.length - 1].toTime
     dummyTravel.travelStatus = HLY_TravelStatus.Passed
     dummyTravel.ticketIdListStr = tickets.map((item) => item.ticketId).join(',')
-    dummyTravel.remarks = remarks || ''
+    dummyTravel.remarks = options.remarks || ''
+    if (options.specialKey) {
+      dummyTravel.specialKey = options.specialKey
+    }
     const runner = dummyTravel.dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       await dummyTravel.addToDB(transaction)
@@ -612,7 +615,10 @@ export class TravelService {
         const tickets = ticketsData[month][userOid]
         await this.makeDummyTravel(
           tickets.map((ticket) => ticket.ticketId),
-          `${tickets[0].userName} ${month} 虚拟申请单`
+          {
+            specialKey: md5([month, userOid].join(',')),
+            remarks: `${tickets[0].userName} ${month} 虚拟申请单`,
+          }
         )
       }
     }
@@ -622,6 +628,7 @@ export class TravelService {
     const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
     searcher.processor().addConditionKV('is_valid', 1)
     searcher.processor().addConditionKV('business_code', '')
+    searcher.processor().addConditionKV('hly_code', '')
     searcher.processor().addSpecialCondition('user_oid != ?', '')
     searcher.processor().addOrderRule('from_time', 'ASC')
     const tickets = await searcher.queryFeeds()

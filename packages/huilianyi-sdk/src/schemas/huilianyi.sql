@@ -345,6 +345,7 @@ CREATE TABLE IF NOT EXISTS dummy_travel
 (
     hly_id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     business_code      VARCHAR(20)     NOT NULL COLLATE ascii_bin,
+    special_key        CHAR(32)        NULL COLLATE ascii_bin COMMENT 'Special Hash',
     applicant_oid      CHAR(36)        NULL COLLATE ascii_bin,
     applicant_name     TEXT            NULL,
     submitted_by       CHAR(36)        NULL COLLATE ascii_bin,
@@ -358,6 +359,7 @@ CREATE TABLE IF NOT EXISTS dummy_travel
     create_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time        TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (business_code),
+    UNIQUE (special_key),
     INDEX (start_time),
     INDEX (end_time),
     INDEX (travel_status)
