@@ -1,6 +1,12 @@
 import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
-import { AllowanceCalculator, App_TravelAllowanceExtrasData, HLY_TravelStatus, TravelTools, } from '../core'
+import {
+  AllowanceCalculator,
+  App_TravelAllowanceExtrasData,
+  HLY_AllowanceCase,
+  HLY_TravelStatus,
+  TravelTools,
+} from '../core'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
 import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import assert from '@fangcha/assert'
@@ -66,6 +72,14 @@ export class MonthAllowanceMaker {
           closedLoops
         )
 
+        let allowanceCase = HLY_AllowanceCase.Case_5
+        if (trafficItem.closedLoops.length > 0) {
+          allowanceCase = HLY_AllowanceCase.Case_1
+        } else if (trafficItem.tickets.length > 0) {
+          allowanceCase = HLY_AllowanceCase.Case_2
+        } else if (trafficItem.tickets.length === 0) {
+          allowanceCase = HLY_AllowanceCase.Case_3
+        }
         for (const month of monthList) {
           const subDayItems = dayItems.filter((dayItem) => dayItem.date.startsWith(month))
           const allowance = new AllowanceClass()
@@ -101,6 +115,7 @@ export class MonthAllowanceMaker {
           allowance.version = travelItem.version
           allowance.payAmount = allowance.amount
           allowance.snapHash = md5([allowance.uid, allowance.daysCount, allowance.amount].join(','))
+          allowance.allowanceCase = allowanceCase
           await allowance.strongAddToDB()
         }
       }
