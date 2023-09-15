@@ -81,7 +81,9 @@ export class MonthAllowanceMaker {
         )
 
         let allowanceCase = HLY_AllowanceCase.Case_5
-        if (closedLoops.length > 0) {
+        if (travelItem.isDummy) {
+          allowanceCase = HLY_AllowanceCase.Case_4
+        } else if (closedLoops.length > 0) {
           allowanceCase = HLY_AllowanceCase.Case_1
         } else if (tickets.length > 0) {
           allowanceCase = HLY_AllowanceCase.Case_2
