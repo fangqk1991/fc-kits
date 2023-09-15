@@ -2,6 +2,8 @@ import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   AllowanceCalculator,
+  App_ClosedLoop,
+  App_TrafficTicket,
   App_TravelAllowanceExtrasData,
   HLY_AllowanceCase,
   HLY_TravelStatus,
@@ -47,23 +49,29 @@ export class MonthAllowanceMaker {
         const trafficItem = travelItem
           .employeeTrafficItems()
           .find((trafficItem) => trafficItem.employeeName === participant.fullName)
-        if (!trafficItem || trafficItem.tickets.length === 0) {
-          continue
+        let closedLoops: App_ClosedLoop[] = []
+        let tickets: App_TrafficTicket[] = []
+        if (trafficItem) {
+          closedLoops = trafficItem.closedLoops || []
+          tickets = trafficItem.tickets || []
         }
-        const monthList = HuilianyiFormatter.extractMonthList(
-          trafficItem.tickets[0].fromTime,
-          trafficItem.tickets[trafficItem.tickets.length - 1].toTime
-        )
+
+        const monthList =
+          tickets.length === 0
+            ? HuilianyiFormatter.extractMonthList(travelItem.startTime!, travelItem.endTime!)
+            : HuilianyiFormatter.extractMonthList(tickets[0].fromTime, tickets[tickets.length - 1].toTime)
 
         const staff = staffMapper[participant.userOID]
-        assert.ok(!!staff, `Staff[${participant.userOID}] missing.`, 500)
+        if (!staff) {
+          console.error(`Staff[${participant.userOID}] ${participant.fullName} missing.`)
+          continue
+        }
         if (staff.withoutAllowance) {
           continue
         }
 
         const company = companyMapper[staff.companyCode!]
 
-        const closedLoops = trafficItem.closedLoops || []
         const dayItems = calculator.calculateAllowanceDayItems(
           {
             roleCodeList: staff.groupCodes(),
@@ -73,11 +81,11 @@ export class MonthAllowanceMaker {
         )
 
         let allowanceCase = HLY_AllowanceCase.Case_5
-        if (trafficItem.closedLoops.length > 0) {
+        if (closedLoops.length > 0) {
           allowanceCase = HLY_AllowanceCase.Case_1
-        } else if (trafficItem.tickets.length > 0) {
+        } else if (tickets.length > 0) {
           allowanceCase = HLY_AllowanceCase.Case_2
-        } else if (trafficItem.tickets.length === 0) {
+        } else if (tickets.length === 0) {
           allowanceCase = HLY_AllowanceCase.Case_3
         }
         for (const month of monthList) {
@@ -106,7 +114,7 @@ export class MonthAllowanceMaker {
           allowance.amount = coreData.amount
           allowance.detailItemsStr = JSON.stringify(subDayItems)
           allowance.extrasInfo = JSON.stringify({
-            tickets: trafficItem.tickets,
+            tickets: tickets,
             closedLoops: closedLoops,
             itineraryItems: itineraryItems,
           } as App_TravelAllowanceExtrasData)
