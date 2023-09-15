@@ -86,12 +86,12 @@ export class HuilianyiService {
 
     await this.travelService().makeCommonTrafficTickets()
 
-    // {
-    //   await this.travelService().createDummyTravelsByLonelyTickets()
-    //   await syncHandler.syncDummyTravelRecords()
-    //   await this.travelService().refreshTravelParticipants()
-    //   await this.travelService().makeCommonTrafficTickets()
-    // }
+    {
+      await this.travelService().createDummyTravelsByLonelyTickets()
+      await syncHandler.syncDummyTravelRecords()
+      await this.travelService().refreshTravelParticipants()
+      await this.travelService().makeCommonTrafficTickets()
+    }
 
     await this.travelService().refreshTravelTicketItemsData()
     await this.monthAllowanceMaker().makeMonthAllowance(this.modelsCore.HLY_AllowanceDraft)

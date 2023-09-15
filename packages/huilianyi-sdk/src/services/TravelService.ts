@@ -613,10 +613,21 @@ export class TravelService {
     for (const month of Object.keys(ticketsData)) {
       for (const userOid of Object.keys(ticketsData[month])) {
         const tickets = ticketsData[month][userOid]
+        const specialKey = md5([month, userOid].join(','))
+
+        const dummyTravel = await this.modelsCore.Dummy_Travel.findOne({
+          special_key: specialKey,
+        })
+        if (dummyTravel) {
+          console.error(
+            `${dummyTravel.businessCode} - ${dummyTravel.applicantOid} - ${month} - ${dummyTravel.applicantName} exists`
+          )
+          continue
+        }
         await this.makeDummyTravel(
           tickets.map((ticket) => ticket.ticketId),
           {
-            specialKey: md5([month, userOid].join(',')),
+            specialKey: specialKey,
             remarks: `${tickets[0].userName} ${month} 虚拟申请单`,
           }
         )
