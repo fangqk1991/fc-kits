@@ -7,6 +7,7 @@ import {
   HLY_ClosedLoopStatus,
   HLY_PrettyStatus,
   HLY_TravelStatus,
+  TimeUtils,
   TravelTools,
 } from '../core'
 import * as moment from 'moment'
@@ -16,6 +17,7 @@ import { makeRandomStr } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
+import { _HLY_TrafficTicket } from '../models/extensions/_HLY_TrafficTicket'
 
 interface SimpleTravel {
   businessCode: string
@@ -524,6 +526,7 @@ export class TravelService {
         await ticket.linkBusinessCode(dummyTravel.businessCode, transaction)
       }
     })
+    console.info(`DummyTravel[${dummyTravel.businessCode}] created.`)
     return dummyTravel
   }
 
@@ -600,5 +603,50 @@ export class TravelService {
       const runner = travelItem.dbSpec().database.createTransactionRunner()
       await runner.commit(handler)
     }
+  }
+
+  public async createDummyTravelsByLonelyTickets() {
+    const ticketsData = await this.findLonelyTicketsData()
+    for (const month of Object.keys(ticketsData)) {
+      for (const userOid of Object.keys(ticketsData[month])) {
+        const tickets = ticketsData[month][userOid]
+        await this.makeDummyTravel(
+          tickets.map((ticket) => ticket.ticketId),
+          `${tickets[0].userName} ${month} 虚拟申请单`
+        )
+      }
+    }
+  }
+
+  public async findLonelyTicketsData() {
+    const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
+    searcher.processor().addConditionKV('is_valid', 1)
+    searcher.processor().addConditionKV('business_code', '')
+    searcher.processor().addSpecialCondition('user_oid != ?', '')
+    searcher.processor().addOrderRule('from_time', 'ASC')
+    const tickets = await searcher.queryFeeds()
+
+    console.info(`${tickets.length} lonely tickets.`)
+
+    const ticketsData: {
+      [month: string]: {
+        [userOid: string]: _HLY_TrafficTicket[]
+      }
+    } = {}
+
+    for (const ticket of tickets) {
+      if (!ticket.userOid) {
+        continue
+      }
+      const month = TimeUtils.momentUTC8(ticket.fromTime!).format('YYYY-MM')
+      if (!ticketsData[month]) {
+        ticketsData[month] = {}
+      }
+      if (!ticketsData[month][ticket.userOid]) {
+        ticketsData[month][ticket.userOid] = []
+      }
+      ticketsData[month][ticket.userOid].push(ticket)
+    }
+    return ticketsData
   }
 }
