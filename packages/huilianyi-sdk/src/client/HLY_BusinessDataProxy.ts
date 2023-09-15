@@ -14,6 +14,7 @@ import {
   HLY_OrderTrain,
   HLY_PublicApplicationDTO,
   HLY_TravelModel,
+  HLY_TravelStatus,
   HuilianyiResponse,
 } from '../core'
 import { PageDataFetcher } from './PageDataFetcher'
@@ -132,6 +133,9 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
     const mapper: { [p: string]: HLY_TravelModel } = {}
     for (const item of items) {
+      if (item.status === HLY_TravelStatus.Deleted) {
+        continue
+      }
       if (mapper[item.businessCode] && mapper[item.businessCode].version > item.version) {
         continue
       }
