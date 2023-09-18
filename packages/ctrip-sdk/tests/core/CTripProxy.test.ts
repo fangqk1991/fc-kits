@@ -23,9 +23,14 @@ describe('Test CTripProxy.test.ts', () => {
   })
 
   it(`searchOrderItems`, async () => {
-    const items = await cTripProxy.searchOrderItems([])
-    console.info(`${items.length} items`)
-    console.info(JSON.stringify(items, null, 2))
+    const idList = Array.from(new Set([123, 456]))
+    const items = await cTripProxy.searchOrderItems(idList)
+    const totalCount = items.reduce(
+      (result, cur) => result + (cur.FlightOrderInfoList?.length || 0) + (cur.TrainOrderInfoList?.length || 0),
+      0
+    )
+    console.info(`${idList.length} ids -> ${totalCount} items`)
+    // console.info(JSON.stringify(items, null, 2))
   })
 
   it(`searchOrdersStatusData`, async () => {
