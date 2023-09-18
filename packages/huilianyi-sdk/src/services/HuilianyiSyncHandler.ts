@@ -528,7 +528,7 @@ export class HuilianyiSyncHandler {
                 isDummy: 0,
               }
               data.ticketId = md5(
-                [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')
+                [data.orderType, data.orderId, data.orderOid, data.userOid || data.userName, data.trafficCode].join(',')
               )
               const changeInfo = changeInfoMapper[data.orderId]
               if (changeInfo) {
@@ -671,7 +671,7 @@ export class HuilianyiSyncHandler {
                   isDummy: 0,
                 }
                 data.ticketId = md5(
-                  [data.orderType, data.orderId, data.userOid || data.userName, data.trafficCode].join(',')
+                  [data.orderType, data.orderId, data.orderOid, data.userOid || data.userName, data.trafficCode].join(',')
                 )
                 commonTickets.push(data)
               }
