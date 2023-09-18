@@ -14,10 +14,15 @@ describe('Test CTripProxy.test.ts', () => {
   })
 
   it(`queryOrderIdList`, async () => {
-    const items = await cTripProxy.queryOrderIdList({
-      from: '2023-06-25 00:00:00',
-      to: '2023-06-26 00:00:00',
-    })
+    const items = await cTripProxy.queryOrderIdList(
+      {
+        from: '2023-06-25 00:00:00',
+        to: '2023-06-26 00:00:00',
+      },
+      {
+        SearchTypes: [1, 3],
+      }
+    )
     console.info(`${items.length} items`)
     console.info(JSON.stringify(items, null, 2))
   })

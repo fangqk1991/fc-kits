@@ -56,11 +56,12 @@ export class CTripProxy extends ServiceProxy<CTripOptions> {
     return items
   }
 
-  public async queryOrderIdList(dateRange: CTripDatetimeRange) {
+  public async queryOrderIdList(dateRange: CTripDatetimeRange, extras: {} = {}) {
     const request = await this.makeRequest(new CommonAPI(CTripDataApis.OrderIdListQuery))
     request.setBaseURL('https://corpsz.ctrip.com')
     request.setBodyData({
       ...request.bodyData,
+      ...extras,
       BeginDate: dateRange.from,
       EndDate: dateRange.to,
     })

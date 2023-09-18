@@ -133,7 +133,7 @@ export default class __Dummy_Travel extends FeedBase {
    */
   public ticketIdListStr!: string
   /**
-   * @description [varchar(255)]
+   * @description [varchar(255)] 备注
    */
   public remarks!: string
   /**

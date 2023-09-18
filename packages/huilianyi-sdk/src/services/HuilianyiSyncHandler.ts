@@ -21,6 +21,7 @@ import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
 import { CTrip_FlightChangeInfoEntity, CTrip_FlightChangeType } from '@fangcha/ctrip-sdk'
 import { SystemConfigHandler } from './SystemConfigHandler'
+import * as moment from 'moment'
 
 export class HuilianyiSyncHandler {
   syncCore: HuilianyiSyncCore
@@ -671,7 +672,9 @@ export class HuilianyiSyncHandler {
                   isDummy: 0,
                 }
                 data.ticketId = md5(
-                  [data.orderType, data.orderId, data.orderOid, data.userOid || data.userName, data.trafficCode].join(',')
+                  [data.orderType, data.orderId, data.orderOid, data.userOid || data.userName, data.trafficCode].join(
+                    ','
+                  )
                 )
                 commonTickets.push(data)
               }
@@ -830,6 +833,32 @@ export class HuilianyiSyncHandler {
     await bulkAdder.execute()
   }
 
+  public async fetchCtripOrderIds(startTime?: string) {
+    const cTripProxy = this.syncCore.cTripProxy
+    if (!cTripProxy) {
+      return []
+    }
+
+    startTime = startTime || '2023-06-01 00:00:00'
+    const curMoment = TimeUtils.momentUTC8(startTime).startOf('month')
+    let orderIdList: number[] = []
+    while (curMoment.valueOf() < moment().valueOf()) {
+      const toMoment = moment(Math.min(moment(curMoment).add(1, 'month').valueOf(), moment().valueOf()))
+      const idList = await cTripProxy.queryOrderIdList(
+        {
+          from: TimeUtils.timeStrUTC8(curMoment.format()),
+          to: TimeUtils.timeStrUTC8(toMoment.format()),
+        },
+        {
+          SearchTypes: [1, 3],
+        }
+      )
+      curMoment.add(1, 'month')
+      orderIdList = orderIdList.concat(idList)
+    }
+    return orderIdList
+  }
+
   public async dumpCtripOrders() {
     const cTripProxy = this.syncCore.cTripProxy
     if (!cTripProxy) {
@@ -838,48 +867,29 @@ export class HuilianyiSyncHandler {
     const syncCore = this.syncCore
     const CTrip_Order = syncCore.modelsCore.CTrip_Order
 
-    {
-      const searcher = new syncCore.modelsCore.HLY_OrderTrain().fc_searcher()
-      searcher.processor().setColumns(['hly_id'])
-      const feeds = await searcher.queryFeeds()
+    const orderIdList = await this.fetchCtripOrderIds()
 
-      await cTripProxy.stepSearchOrderItems(
-        feeds.map((item) => item.hlyId),
-        async (records, offset) => {
-          const dbSpec = new CTrip_Order().dbSpec()
-          const bulkAdder = new SQLBulkAdder(dbSpec.database)
-          bulkAdder.setTable(dbSpec.table)
-          bulkAdder.useUpdateWhenDuplicate()
-          bulkAdder.setInsertKeys(dbSpec.insertableCols())
-          bulkAdder.declareTimestampKey('created_date')
-          for (const record of records) {
-            offset += record.TrainOrderInfoList!.length
-            console.info(`[dumpCtripOrders trains] ${offset} / ${feeds.length}`)
-            for (const orderItem of record.TrainOrderInfoList!) {
-              const feed = new CTrip_Order()
-              feed.orderId = Number(orderItem.BasicInfo.OrderID)
-              feed.orderType = HLY_OrderType.TRAIN
-              feed.employeeId = orderItem.BasicInfo.EmployeeID || null
-              feed.userName = orderItem.BasicInfo.UserName || ''
-              feed.orderStatus = orderItem.BasicInfo.NewOrderStatusName || orderItem.BasicInfo.OrderStatusName
-              feed.journeyNo = orderItem.CorpOrderInfo.JourneyID || ''
-              feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.DataChange_CreateTime)
-              feed.extrasInfo = JSON.stringify(orderItem)
-              bulkAdder.putObject(feed.fc_encode())
-            }
-          }
-          await bulkAdder.execute()
-        }
-      )
+    const dbSpec = new CTrip_Order().dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(['order_id'])
+    for (const orderId of orderIdList) {
+      bulkAdder.putObject({
+        order_id: orderId,
+      })
     }
+    await bulkAdder.execute()
 
     {
-      const searcher = new syncCore.modelsCore.HLY_OrderFlight().fc_searcher()
-      searcher.processor().setColumns(['hly_id'])
+      const searcher = new syncCore.modelsCore.CTrip_Order().fc_searcher()
+      searcher.processor().setColumns(['order_id'])
+      searcher.processor().addConditionKV('is_locked', 0)
       const feeds = await searcher.queryFeeds()
+      console.info(`CTrip_Order: ${feeds.length} items to refresh.`)
 
       await cTripProxy.stepSearchOrderItems(
-        feeds.map((item) => item.hlyId),
+        feeds.map((item) => item.orderId),
         async (records, offset) => {
           const dbSpec = new CTrip_Order().dbSpec()
           const bulkAdder = new SQLBulkAdder(dbSpec.database)
@@ -888,37 +898,55 @@ export class HuilianyiSyncHandler {
           bulkAdder.setInsertKeys(dbSpec.insertableCols())
           bulkAdder.declareTimestampKey('created_date')
           for (const record of records) {
-            offset += record.FlightOrderInfoList!.length
-            console.info(`[dumpCtripOrders flights] ${offset} / ${feeds.length}`)
-            for (const orderItem of record.FlightOrderInfoList!) {
-              const coreChangeInfo =
-                Array.isArray(orderItem.FlightChangeInfo) &&
-                orderItem.FlightChangeInfo[orderItem.FlightChangeInfo.length - 1]
-                  ? orderItem.FlightChangeInfo[orderItem.FlightChangeInfo.length - 1]
-                  : null
-              const feed = new CTrip_Order()
-              feed.orderId = Number(orderItem.BasicInfo.OrderID)
-              feed.orderType = HLY_OrderType.FLIGHT
-              feed.employeeId = orderItem.BasicInfo.EmployeeID || null
-              feed.userName = orderItem.BasicInfo.PreEmployName || ''
-              feed.orderStatus = orderItem.BasicInfo.OrderStatus
-              if (coreChangeInfo) {
-                if (coreChangeInfo.FlightChangeType === CTrip_FlightChangeType.Canceled) {
-                  feed.orderStatus = '航班取消'
-                } else if (
-                  [
-                    CTrip_FlightChangeType.Changed,
-                    CTrip_FlightChangeType.Delayed,
-                    CTrip_FlightChangeType.Recovery,
-                  ].includes(coreChangeInfo.FlightChangeType)
-                ) {
-                  feed.orderStatus = '航班变更'
-                }
+            if (record.TrainOrderInfoList) {
+              offset += record.TrainOrderInfoList.length
+              console.info(`[dumpCtripOrders] ${offset} / ${feeds.length}`)
+              for (const orderItem of record.TrainOrderInfoList) {
+                const feed = new CTrip_Order()
+                feed.orderId = Number(orderItem.BasicInfo.OrderID)
+                feed.orderType = HLY_OrderType.TRAIN
+                feed.employeeId = orderItem.BasicInfo.EmployeeID || null
+                feed.userName = orderItem.BasicInfo.UserName || ''
+                feed.orderStatus = orderItem.BasicInfo.NewOrderStatusName || orderItem.BasicInfo.OrderStatusName
+                feed.journeyNo = orderItem.CorpOrderInfo.JourneyID || ''
+                feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.DataChange_CreateTime)
+                feed.extrasInfo = JSON.stringify(orderItem)
+                bulkAdder.putObject(feed.fc_encode())
               }
-              feed.journeyNo = orderItem.BasicInfo.JourneyID || ''
-              feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.CreateTime)
-              feed.extrasInfo = JSON.stringify(orderItem)
-              bulkAdder.putObject(feed.fc_encode())
+            }
+            if (record.FlightOrderInfoList) {
+              offset += record.FlightOrderInfoList.length
+              console.info(`[dumpCtripOrders] ${offset} / ${feeds.length}`)
+              for (const orderItem of record.FlightOrderInfoList) {
+                const coreChangeInfo =
+                  Array.isArray(orderItem.FlightChangeInfo) &&
+                  orderItem.FlightChangeInfo[orderItem.FlightChangeInfo.length - 1]
+                    ? orderItem.FlightChangeInfo[orderItem.FlightChangeInfo.length - 1]
+                    : null
+                const feed = new CTrip_Order()
+                feed.orderId = Number(orderItem.BasicInfo.OrderID)
+                feed.orderType = HLY_OrderType.FLIGHT
+                feed.employeeId = orderItem.BasicInfo.EmployeeID || null
+                feed.userName = orderItem.BasicInfo.PreEmployName || ''
+                feed.orderStatus = orderItem.BasicInfo.OrderStatus
+                if (coreChangeInfo) {
+                  if (coreChangeInfo.FlightChangeType === CTrip_FlightChangeType.Canceled) {
+                    feed.orderStatus = '航班取消'
+                  } else if (
+                    [
+                      CTrip_FlightChangeType.Changed,
+                      CTrip_FlightChangeType.Delayed,
+                      CTrip_FlightChangeType.Recovery,
+                    ].includes(coreChangeInfo.FlightChangeType)
+                  ) {
+                    feed.orderStatus = '航班变更'
+                  }
+                }
+                feed.journeyNo = orderItem.BasicInfo.JourneyID || ''
+                feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.CreateTime)
+                feed.extrasInfo = JSON.stringify(orderItem)
+                bulkAdder.putObject(feed.fc_encode())
+              }
             }
           }
           await bulkAdder.execute()

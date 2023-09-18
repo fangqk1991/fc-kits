@@ -128,7 +128,7 @@ const dbOptions = {
 
 export default class __HLY_TrafficTicket extends FeedBase {
   /**
-   * @description [char(32)] order_type + order_id + user_oid(user_name) + traffic_code MD5
+   * @description [char(32)] order_type + order_id + order_oid + user_oid(user_name) + traffic_code MD5
    */
   public ticketId!: string
   /**

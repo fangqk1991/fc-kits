@@ -11,6 +11,7 @@ const _cols: string[] = [
   'journey_no',
   'created_date',
   'extras_info',
+  'is_locked',
   'create_time',
   'update_time',
 ]
@@ -24,6 +25,7 @@ const _insertableCols: string[] = [
   'journey_no',
   'created_date',
   'extras_info',
+  'is_locked',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -34,6 +36,7 @@ const _modifiableCols: string[] = [
   'journey_no',
   'created_date',
   'extras_info',
+  'is_locked',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -76,7 +79,7 @@ export default class __CTrip_Order extends FeedBase {
   /**
    * @description [varchar(20)] CTrip_OrderType
    */
-  public orderType!: string
+  public orderType!: string | null
   /**
    * @description [varchar(64)]
    */
@@ -88,7 +91,7 @@ export default class __CTrip_Order extends FeedBase {
   /**
    * @description [varchar(20)]
    */
-  public orderStatus!: string
+  public orderStatus!: string | null
   /**
    * @description [varchar(20)]
    */
@@ -101,6 +104,10 @@ export default class __CTrip_Order extends FeedBase {
    * @description [mediumtext] 附加信息，空 | JSON 字符串
    */
   public extrasInfo!: string
+  /**
+   * @description [tinyint] 是否锁定
+   */
+  public isLocked!: number
   /**
    * @description [timestamp] 创建时间
    */
@@ -141,11 +148,14 @@ export default class __CTrip_Order extends FeedBase {
 
   public fc_defaultInit() {
     // This function is invoked by constructor of FCModel
+    this.orderType = null
     this.employeeId = null
     this.userName = ''
+    this.orderStatus = null
     this.journeyNo = ''
     this.createdDate = null
     this.extrasInfo = ''
+    this.isLocked = 0
   }
 
   public fc_propertyMapper() {
@@ -158,6 +168,7 @@ export default class __CTrip_Order extends FeedBase {
       journeyNo: 'journey_no',
       createdDate: 'created_date',
       extrasInfo: 'extras_info',
+      isLocked: 'is_locked',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
