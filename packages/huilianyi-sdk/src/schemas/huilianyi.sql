@@ -402,7 +402,7 @@ DROP TABLE IF EXISTS hly_traffic_ticket;
 CREATE TABLE IF NOT EXISTS hly_traffic_ticket
 (
     _rid              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    ticket_id         CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'order_type + order_id + user_oid(user_name) + traffic_code MD5',
+    ticket_id         CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'order_type + order_id + order_oid + user_oid(user_name) + traffic_code MD5',
     order_type        VARCHAR(20)     NOT NULL COLLATE ascii_bin COMMENT 'HLY_OrderType',
     order_id          BIGINT UNSIGNED NOT NULL,
     order_oid         CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
