@@ -56,6 +56,7 @@ export class HLY_BasicDataProxy extends HuilianyiProxyBase {
       const request = await this.makeRequest(new CommonAPI(HLY_BasicDataApis.StaffListGet))
       request.setQueryParams({
         ...params,
+        containLeavedUser: true,
       })
       return await request.quickSend<HLY_Staff[]>()
     })
