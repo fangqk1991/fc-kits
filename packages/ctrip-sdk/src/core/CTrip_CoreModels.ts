@@ -54,89 +54,101 @@ export interface CTrip_TrainOrderInfoEntity {
     PayWay: string
     UserNamePinYin: string
   }
-  PassengerInfoList: [
-    {
-      PassengerID: number
-      PassengerIDLong: number
-      PassengerName: string
-      TicketPassengerName: string
-      EmployeeID: string
-      CorpUserID: string
-    }
-  ]
-  TicketInfoList: [
-    {
+  PassengerInfoList: {
+    PassengerID: number
+    PassengerIDLong: number
+    PassengerName: string
+    TicketPassengerName: string
+    EmployeeID: string
+    CorpUserID: string
+
+    OrderTicket: {
       TicketInfoID: number
-      TrainID: number
-      TrainName: string
-      TicketID: number
-      DepartureCityID: number
-      DepartureCityName: string
-      DepartureDateTime: string // '2023-07-16 09:15:00'
-      DepartureStationName: string
-      DepartureStationEn: string
-      ArrivalCityID: number
-      ArrivalCityName: string
-      ArrivalStationName: string
-      ArrivalStationEn: string
-      ArrivalDateTime: string
-      ArriveStopType: number
-      FirstSeatTypeID: number
-      FirstSeatTypeName: string
-      TicketPrice: number
-      TrainTypeID: number
-      ElectronicOrderNo: string
-      ServiceFee: number
-      CustomType: number
-      CustomDetail: string
-      DeliverFee: number
-      PaperTicketFee: number
-      TrainTicketType: string // 车次类型: D 原车次, C 改签车次
-      ChangeServiceFee: number
-      GrabServiceFee: number
-      ChangeStatus: null
-      AccpetTrainName: string // 'G123,G234'
-      AcceptSeatName: string // '无座'
-      AcceptDepartureDate: string // '2023-07-16'
-      GrabCutOffTime: string // '2023-07-16 11:20:00'
-      LowestTicketPrice: 226
-      GrabServiceFeeType: string // 'HIGH'
-      RcCodeID: null
-      RcCodeName: null
-      TicketEntrance: null
-      DealID: string
-      ChangeCode: null
-      PurchaseFee: number
-      TicketSupplierType: number
-      TrainSeatPriceData: {
-        TrainList: {
-          TrainName: string
-          UseTime: number
-          SeatList: {
-            ID: number
-            Name: string // '无座'
-            Price: number
-          }[]
-        }[]
-      }
-      PaymentTypeList: string[]
+      OrderTicketID: number
+      EnableRefundTicket: boolean
+      DealTicketServiceFee: 0
+      TicketType: string // 'C'
+      ChangeStatus: string // 'S'
+      EnableChangeTicket: boolean
+      LongTicketNo: string
+      RefundChangeTime: string // '2023-08-11 21:37:56'
+      AfterTakeTicketId: number
       AfterTakeTicketFee: number
-      DepartureProvinceId: number
-      DepartureProvinceName: string
-      DepartureLocationId: number
-      DepartureLocationName: string
-      DepartureLocationCategoryId: number
-      ArrivalProvinceId: number
-      ArrivalProvinceName: string
-      ArrivalLocationId: number
-      ArrivalLocationName: string
-      ArrivalLocationCategoryId: number
+      ChangePreApprovalId: string
       Sequence: number
-      DepartureDistrictCode: string
-      ArrivalDistrictCode: string
-      DealTicketPrice: null
+    }[]
+  }[]
+  TicketInfoList: {
+    TicketInfoID: number
+    TrainID: number
+    TrainName: string
+    TicketID: number
+    DepartureCityID: number
+    DepartureCityName: string
+    DepartureDateTime: string // '2023-07-16 09:15:00'
+    DepartureStationName: string
+    DepartureStationEn: string
+    ArrivalCityID: number
+    ArrivalCityName: string
+    ArrivalStationName: string
+    ArrivalStationEn: string
+    ArrivalDateTime: string
+    ArriveStopType: number
+    FirstSeatTypeID: number
+    FirstSeatTypeName: string
+    TicketPrice: number
+    TrainTypeID: number
+    ElectronicOrderNo: string
+    ServiceFee: number
+    CustomType: number
+    CustomDetail: string
+    DeliverFee: number
+    PaperTicketFee: number
+    TrainTicketType: string // 车次类型: D 原车次, C 改签车次
+    ChangeServiceFee: number
+    GrabServiceFee: number
+    ChangeStatus: null
+    AccpetTrainName: string // 'G123,G234'
+    AcceptSeatName: string // '无座'
+    AcceptDepartureDate: string // '2023-07-16'
+    GrabCutOffTime: string // '2023-07-16 11:20:00'
+    LowestTicketPrice: 226
+    GrabServiceFeeType: string // 'HIGH'
+    RcCodeID: null
+    RcCodeName: null
+    TicketEntrance: null
+    DealID: string
+    ChangeCode: null
+    PurchaseFee: number
+    TicketSupplierType: number
+    TrainSeatPriceData: {
+      TrainList: {
+        TrainName: string
+        UseTime: number
+        SeatList: {
+          ID: number
+          Name: string // '无座'
+          Price: number
+        }[]
+      }[]
     }
-  ]
+    PaymentTypeList: string[]
+    AfterTakeTicketFee: number
+    DepartureProvinceId: number
+    DepartureProvinceName: string
+    DepartureLocationId: number
+    DepartureLocationName: string
+    DepartureLocationCategoryId: number
+    ArrivalProvinceId: number
+    ArrivalProvinceName: string
+    ArrivalLocationId: number
+    ArrivalLocationName: string
+    ArrivalLocationCategoryId: number
+    Sequence: number
+    DepartureDistrictCode: string
+    ArrivalDistrictCode: string
+    DealTicketPrice: null
+  }[]
   CorpOrderInfo: {
     JourneyID: string
   }
@@ -254,6 +266,77 @@ export interface CTrip_FlightOrderInfoEntity {
     JourneyID: string
     AuditStatus: string // '授权通过'
   }
+  PassengerInfo: {
+    PassengerBasic: {
+      CorpEid: string // 工号
+      PassengerName: string
+      PassengerNamePY: string
+      NonEmployee: false
+    }
+    // SequenceInfo.length === FlightInfo.length
+    SequenceInfo: {
+      Sequence: 1
+      TicketInfo: {
+        AirLineCode: string
+        TicketNo: string // xxx
+        Status: string // '2'
+        StatusDesc: string // '已使用'
+      }[]
+      ChangeInfo: {
+        Sequence: number
+        RebookId: number
+        PassengerName: string
+        CStatus: string // '改签成功'
+        RebookingTime: string // '2023-07-18 18:52:49'
+        RebookedTime: string // '2023-07-18 18:57:41'
+        OriTicketNO: string
+        PreTicketNO: string
+        CTicketNO: string
+        CAirline: string // 'CZ'
+        CFlight: string // 'CZ3721'
+        CTakeOffTime: string // '2023-07-19 07:40:00'
+        CArrivalTime: string // '2023-07-19 09:35:00'
+        CDCityName: string // '长沙'
+        CDPortName: string // '黄花国际机场'
+        CDTerminal: string // 'T2'
+        CACityName: string // '西安'
+        CAPortName: string // '咸阳国际机场'
+        CATerminal: string // 'T3'
+        RebookStatus: string // 'S'
+        JounaryNo: ''
+        CDPortCode: string // 'CSX'
+        CAPortCode: string // 'XIY'
+        CACityCode: string // 'SIA'
+        CDCityCode: string // 'CSX'
+        TaxDifferential: 0
+        TakeOffTimeUTC: string // '2023-07-18T23:40:00Z'
+        ArrivalTimeUTC: string // '2023-07-19T01:35:00Z'
+        DepartureCountryCode: string // 'CN'
+        ArrivalCountryCode: string // 'CN'
+      }[]
+    }[]
+  }[]
+  FlightInfo: {
+    Flight: string // 'CZ3947'
+    TakeoffTime: string // '2023-07-18 18:55:00'
+    ArrivalTime: string // '2023-07-18 20:45:00'
+    DCityName: string // '长沙'
+    DCityName_EN: string // 'Changsha'
+    DCityCode: string // 'CSX'
+    DPortName: string // '黄花国际机场'
+    DPortCode: string // 'CSX'
+    ACityName: string // '西安'
+    ACityName_EN: string // "Xi'an"
+    ACityCode: string // 'SIA'
+    APortName: string // '咸阳国际机场'
+    APortCode: string // 'XIY'
+    FlightTime: number // 110
+    AirlineRecordNo: string // 'NVGG6R'
+    DepartureCountryCode: string // 'CN'
+    ArrivalCountryCode: string //'CN'
+    TakeOffTimeUTC: string // '2023-07-18T10:55:00Z'
+    ArrivalTimeUTC: string // '2023-07-18T12:45:00Z'
+  }[]
   FlightChangeInfo: CTrip_FlightChangeInfoEntity[] | null
 }
 
