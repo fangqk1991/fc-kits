@@ -19,7 +19,12 @@ import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { md5 } from '@fangcha/tools'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
-import { CTrip_FlightChangeInfoEntity, CTrip_FlightChangeType } from '@fangcha/ctrip-sdk'
+import {
+  CTrip_FlightChangeInfoEntity,
+  CTrip_FlightChangeType,
+  CTrip_FlightOrderInfoEntity,
+  CTrip_OrderType,
+} from '@fangcha/ctrip-sdk'
 import { SystemConfigHandler } from './SystemConfigHandler'
 import * as moment from 'moment'
 
@@ -955,5 +960,91 @@ export class HuilianyiSyncHandler {
         }
       )
     }
+  }
+
+  public async extractFlightTicketsFromOrders() {
+    const CTrip_Order = this.syncCore.modelsCore.CTrip_Order
+    const CTrip_Ticket = this.syncCore.modelsCore.CTrip_Ticket
+
+    const searcher = new CTrip_Order().fc_searcher()
+    searcher.processor().addConditionKV('order_type', CTrip_OrderType.FLIGHT)
+    const feeds = await searcher.queryFeeds()
+
+    const dbSpec = new CTrip_Ticket().dbSpec()
+
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.useUpdateWhenDuplicate()
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey('from_time')
+    bulkAdder.declareTimestampKey('to_time')
+
+    for (const item of feeds) {
+      const extrasData = item.extrasData() as CTrip_FlightOrderInfoEntity
+      // console.info(`------------------- ${item.orderId} -------------------`)
+      const flightInfoList = extrasData.FlightInfo
+      // console.info(
+      //   'Flights: ',
+      //   flightInfoList.map((item) => `${item.Flight} ${item.TakeoffTime} ~ ${item.ArrivalTime}`).join(' | ')
+      // )
+      for (const passenger of extrasData.PassengerInfo) {
+        // console.info(passenger.PassengerBasic.CorpEid, passenger.PassengerBasic.PassengerName)
+        for (let i = 0; i < flightInfoList.length; ++i) {
+          const flightInfo = flightInfoList[i]
+          const sequence = passenger.SequenceInfo[i]
+          const ticket = new CTrip_Ticket()
+          ticket.orderType = item.orderType!
+          ticket.orderId = item.orderId
+          ticket.infoId = ''
+          ticket.employeeId = passenger.PassengerBasic.CorpEid
+          ticket.userName = passenger.PassengerBasic.PassengerName
+          ticket.journeyNo = item.journeyNo
+          ticket.businessCode =
+            item.journeyNo && /^[\w]{10}-[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : ''
+          ticket.ctripStatus = item.orderStatus
+          ticket.trafficCode = flightInfo.Flight
+          ticket.fromTime = TimeUtils.correctUTC8Timestamp(flightInfo.TakeoffTime)
+          ticket.toTime = TimeUtils.correctUTC8Timestamp(flightInfo.ArrivalTime)
+          ticket.fromCity = flightInfo.DCityName
+          ticket.toCity = flightInfo.ACityName
+          ticket.ticketId = md5(
+            [
+              ticket.orderType,
+              ticket.orderId,
+              ticket.infoId,
+              ticket.employeeId || ticket.userName,
+              ticket.trafficCode,
+            ].join(',')
+          )
+          if (item.orderStatus === '已成交' && sequence.ChangeInfo) {
+            ticket.ctripStatus = '已改签'
+            bulkAdder.putObject(ticket.fc_encode())
+
+            for (const changeInfo of sequence.ChangeInfo) {
+              ticket.ctripStatus = item.orderStatus
+              ticket.trafficCode = changeInfo.CFlight
+              ticket.fromTime = TimeUtils.correctUTC8Timestamp(changeInfo.CTakeOffTime)
+              ticket.toTime = TimeUtils.correctUTC8Timestamp(changeInfo.CArrivalTime)
+              ticket.fromCity = changeInfo.CDCityName
+              ticket.toCity = changeInfo.CACityName
+              ticket.ticketId = md5(
+                [
+                  ticket.orderType,
+                  ticket.orderId,
+                  ticket.infoId,
+                  ticket.employeeId || ticket.userName,
+                  ticket.trafficCode,
+                ].join(',')
+              )
+              bulkAdder.putObject(ticket.fc_encode())
+            }
+          } else {
+            bulkAdder.putObject(ticket.fc_encode())
+          }
+        }
+      }
+    }
+
+    await bulkAdder.execute()
   }
 }

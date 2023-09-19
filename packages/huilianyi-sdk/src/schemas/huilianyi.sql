@@ -684,3 +684,30 @@ CREATE TABLE IF NOT EXISTS ctrip_order
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS ctrip_ticket;
+CREATE TABLE IF NOT EXISTS ctrip_ticket
+(
+    _rid          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ticket_id     CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'order_type + order_id + info_id + employee_id(user_name) + traffic_code MD5',
+    order_type    VARCHAR(20)     NOT NULL COLLATE ascii_bin COMMENT 'HLY_OrderType',
+    order_id      BIGINT UNSIGNED NOT NULL,
+    info_id       VARCHAR(36)     NOT NULL DEFAULT '' COLLATE ascii_bin,
+    employee_id   VARCHAR(64)     NULL COLLATE ascii_bin,
+    user_name     VARCHAR(64)     NOT NULL DEFAULT '',
+    traffic_code  VARCHAR(16)     NOT NULL DEFAULT '',
+    from_time     TIMESTAMP       NULL COMMENT '开始时间',
+    to_time       TIMESTAMP       NULL COMMENT '结束时间',
+    from_city     VARCHAR(16)     NOT NULL,
+    to_city       VARCHAR(16)     NOT NULL,
+    journey_no    VARCHAR(20)     NOT NULL DEFAULT '',
+    business_code VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
+    ctrip_status  VARCHAR(20)     NULL,
+    create_time   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE (ticket_id),
+    INDEX (business_code),
+    INDEX (from_time)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE utf8mb4_general_ci;

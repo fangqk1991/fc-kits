@@ -57,6 +57,10 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     await huilianyiService.syncHandler().dumpCtripOrders()
   })
 
+  it(`extractFlightTicketsFromOrders`, async () => {
+    await huilianyiService.syncHandler().extractFlightTicketsFromOrders()
+  })
+
   it(`fetchCtripOrderIds`, async () => {
     const orderIdList = await huilianyiService.syncHandler().fetchCtripOrderIds()
     console.info(orderIdList)

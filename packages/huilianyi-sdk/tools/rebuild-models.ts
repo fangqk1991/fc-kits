@@ -154,6 +154,16 @@ const dbSchemas: DBModelSchema[] = [
     fuzzySearchCols: ['user_name'],
   },
   {
+    tableName: 'ctrip_ticket',
+    outputFile: `${__dirname}/../src/models/auto-build/__CTrip_Ticket.ts`,
+    extFile: `${__dirname}/../src/models/extensions/_CTrip_Ticket.ts`,
+    primaryKey: ['ticket_id'],
+    modifiableBlackList: ['create_time', 'update_time'],
+    gbkCols: ['user_name'],
+    exactSearchCols: ['ticket_id', 'order_id', 'journey_no'],
+    fuzzySearchCols: ['user_name'],
+  },
+  {
     tableName: 'dummy_travel',
     outputFile: `${__dirname}/../src/models/auto-build/__Dummy_Travel.ts`,
     extFile: `${__dirname}/../src/models/extensions/_Dummy_Travel.ts`,
