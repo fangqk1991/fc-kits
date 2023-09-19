@@ -419,12 +419,23 @@ export class TravelService {
   }
 
   public async getTicketBusinessCodeList() {
-    const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
-    searcher.processor().markDistinct()
-    searcher.processor().setColumns(['business_code'])
-    searcher.processor().addSpecialCondition('business_code != ?', '')
-    const feeds = await searcher.queryAllFeeds()
-    return feeds.map((feed) => feed.businessCode)
+    const codeList: string[] = []
+    {
+      const searcher = new this.modelsCore.HLY_TrafficTicket().fc_searcher()
+      searcher.processor().markDistinct()
+      searcher.processor().setColumns(['business_code'])
+      searcher.processor().addSpecialCondition('business_code != ?', '')
+      const feeds = await searcher.queryAllFeeds()
+      codeList.push(...feeds.map((feed) => feed.businessCode))
+    }
+    {
+      const searcher = new this.modelsCore.HLY_Travel().fc_searcher()
+      searcher.processor().setColumns(['business_code'])
+      searcher.processor().addSpecialCondition('ticket_id_list_str != ?', '')
+      const feeds = await searcher.queryAllFeeds()
+      codeList.push(...feeds.map((feed) => feed.businessCode))
+    }
+    return [...new Set(codeList)]
   }
 
   public async deleteDummyTravel(businessCode: string) {
