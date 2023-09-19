@@ -1,8 +1,5 @@
 import { HuilianyiServiceDev } from './HuilianyiServiceDev'
-import { CTrip_FlightChangeTypeDescriptor, CTrip_OrderType, CTrip_TrainOrderInfoEntity } from '@fangcha/ctrip-sdk'
-import { md5 } from '@fangcha/tools'
-import { TimeUtils } from '../../src'
-import { SQLBulkAdder } from 'fc-sql'
+import { CTrip_FlightChangeTypeDescriptor, CTrip_TrainOrderInfoEntity } from '@fangcha/ctrip-sdk'
 
 describe('Test CTrip_Order.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
@@ -49,72 +46,5 @@ describe('Test CTrip_Order.test.ts', () => {
         }
       }
     }
-  })
-
-  it(`CTrip_Order - 3`, async () => {
-    const CTrip_Order = huilianyiService.modelsCore.CTrip_Order
-    const CTrip_Ticket = huilianyiService.modelsCore.CTrip_Ticket
-
-    const searcher = new CTrip_Order().fc_searcher()
-    searcher.processor().addConditionKV('order_type', CTrip_OrderType.TRAIN)
-    const feeds = await searcher.queryFeeds()
-
-    const dbSpec = new CTrip_Ticket().dbSpec()
-
-    const bulkAdder = new SQLBulkAdder(dbSpec.database)
-    bulkAdder.setTable(dbSpec.table)
-    bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols())
-    bulkAdder.declareTimestampKey('from_time')
-    bulkAdder.declareTimestampKey('to_time')
-
-    for (const item of feeds) {
-      const extrasData = item.extrasData() as CTrip_TrainOrderInfoEntity
-
-      console.info(`------------------- ${item.orderId} -------------------`)
-      const ticketInfoList = extrasData.TicketInfoList
-      console.info(
-        'Trains: ',
-        ticketInfoList
-          .map((item) => `${item.TrainName} ${item.DepartureDateTime} ~ ${item.ArrivalDateTime}`)
-          .join(' | ')
-      )
-      const hasChanged = !!ticketInfoList.find((item) => item.TrainTicketType === 'C')
-      for (const passenger of extrasData.PassengerInfoList) {
-        console.info(passenger.EmployeeID, passenger.PassengerName)
-        for (let i = 0; i < ticketInfoList.length; ++i) {
-          const ticketInfo = ticketInfoList[i]
-          const ticket = new CTrip_Ticket()
-          ticket.orderType = item.orderType!
-          ticket.orderId = item.orderId
-          ticket.infoId = `${ticketInfo.ElectronicOrderNo}`
-          ticket.employeeId = passenger.EmployeeID
-          ticket.userName = passenger.PassengerName
-          ticket.journeyNo = item.journeyNo
-          ticket.businessCode =
-            item.journeyNo && /^[\w]{10}-[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : ''
-          ticket.ctripStatus = item.orderStatus
-          ticket.trafficCode = ticketInfo.TrainName
-          ticket.fromTime = TimeUtils.correctUTC8Timestamp(ticketInfo.DepartureDateTime)
-          ticket.toTime = TimeUtils.correctUTC8Timestamp(ticketInfo.ArrivalDateTime)
-          ticket.fromCity = ticketInfo.DepartureCityName
-          ticket.toCity = ticketInfo.ArrivalCityName
-          ticket.ticketId = md5(
-            [
-              ticket.orderType,
-              ticket.orderId,
-              ticket.infoId,
-              ticket.employeeId || ticket.userName,
-              ticket.trafficCode,
-            ].join(',')
-          )
-          if (hasChanged && ticketInfo.TrainTicketType === 'D') {
-            ticket.ctripStatus = '已改签'
-          }
-          bulkAdder.putObject(ticket.fc_encode())
-        }
-      }
-    }
-    await bulkAdder.execute()
   })
 })

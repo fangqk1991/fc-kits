@@ -57,6 +57,10 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     await huilianyiService.syncHandler().dumpCtripOrders()
   })
 
+  it(`extractTrainTicketsFromOrders`, async () => {
+    await huilianyiService.syncHandler().extractTrainTicketsFromOrders()
+  })
+
   it(`extractFlightTicketsFromOrders`, async () => {
     await huilianyiService.syncHandler().extractFlightTicketsFromOrders()
   })
