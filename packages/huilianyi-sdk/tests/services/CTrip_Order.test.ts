@@ -70,12 +70,6 @@ describe('Test CTrip_Order.test.ts', () => {
 
     for (const item of feeds) {
       const extrasData = item.extrasData() as CTrip_TrainOrderInfoEntity
-      // if (extrasData.PassengerInfo.length <= 1) {
-      //   continue
-      // }
-      // if (extrasData.FlightInfo.length <= 1) {
-      //   continue
-      // }
 
       console.info(`------------------- ${item.orderId} -------------------`)
       const ticketInfoList = extrasData.TicketInfoList
@@ -85,6 +79,7 @@ describe('Test CTrip_Order.test.ts', () => {
           .map((item) => `${item.TrainName} ${item.DepartureDateTime} ~ ${item.ArrivalDateTime}`)
           .join(' | ')
       )
+      const hasChanged = !!ticketInfoList.find((item) => item.TrainTicketType === 'C')
       for (const passenger of extrasData.PassengerInfoList) {
         console.info(passenger.EmployeeID, passenger.PassengerName)
         for (let i = 0; i < ticketInfoList.length; ++i) {
@@ -113,44 +108,13 @@ describe('Test CTrip_Order.test.ts', () => {
               ticket.trafficCode,
             ].join(',')
           )
-          // if (item.orderStatus === '已成交' && sequence.ChangeInfo) {
-          //   ticket.ctripStatus = '已改签'
-          //   bulkAdder.putObject(ticket.fc_encode())
-          //
-          //   for (const changeInfo of sequence.ChangeInfo) {
-          //     ticket.ctripStatus = item.orderStatus
-          //     ticket.trafficCode = changeInfo.CFlight
-          //     ticket.fromTime = TimeUtils.correctUTC8Timestamp(changeInfo.CTakeOffTime)
-          //     ticket.toTime = TimeUtils.correctUTC8Timestamp(changeInfo.CArrivalTime)
-          //     ticket.fromCity = changeInfo.CDCityName
-          //     ticket.toCity = changeInfo.CACityName
-          //     ticket.ticketId = md5(
-          //       [
-          //         ticket.orderType,
-          //         ticket.orderId,
-          //         ticket.infoId,
-          //         ticket.employeeId || ticket.userName,
-          //         ticket.trafficCode,
-          //       ].join(',')
-          //     )
-          //     bulkAdder.putObject(ticket.fc_encode())
-          //   }
-          // } else {
-          //   bulkAdder.putObject(ticket.fc_encode())
-          // }
+          if (hasChanged && ticketInfo.TrainTicketType === 'D') {
+            ticket.ctripStatus = '已改签'
+          }
           bulkAdder.putObject(ticket.fc_encode())
         }
       }
-      // for (const ticketInfo of extrasData.FlightInfo) {
-      //   if (ticketInfo.TrainTicketType === 'C') {
-      //     console.info(`改签后: ${ticketInfo.TrainName} ${ticketInfo.DepartureDateTime}`)
-      //   }
-      //   if (ticketInfo.TrainTicketType === 'D') {
-      //     console.info(`改签前: ${ticketInfo.TrainName} ${ticketInfo.DepartureDateTime}`)
-      //   }
-      // }
     }
-
     await bulkAdder.execute()
   })
 })
