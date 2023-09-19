@@ -49,6 +49,8 @@ export interface CTrip_TrainOrderInfoEntity {
     TripType: ''
     NewOrderStatus: string // 'C'
     NewOrderStatusName: string // '已取消'
+    ChangeTicketStatus?: string
+    ChangeTicketStatusName?: string
     PayWay: string
     UserNamePinYin: string
   }
@@ -89,7 +91,7 @@ export interface CTrip_TrainOrderInfoEntity {
       CustomDetail: string
       DeliverFee: number
       PaperTicketFee: number
-      TrainTicketType: string
+      TrainTicketType: string // 车次类型: D 原车次, C 改签车次
       ChangeServiceFee: number
       GrabServiceFee: number
       ChangeStatus: null

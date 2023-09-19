@@ -8,6 +8,7 @@ const _cols: string[] = [
   'employee_id',
   'user_name',
   'order_status',
+  'change_status',
   'journey_no',
   'created_date',
   'extras_info',
@@ -22,6 +23,7 @@ const _insertableCols: string[] = [
   'employee_id',
   'user_name',
   'order_status',
+  'change_status',
   'journey_no',
   'created_date',
   'extras_info',
@@ -33,6 +35,7 @@ const _modifiableCols: string[] = [
   'employee_id',
   'user_name',
   'order_status',
+  'change_status',
   'journey_no',
   'created_date',
   'extras_info',
@@ -95,6 +98,10 @@ export default class __CTrip_Order extends FeedBase {
   /**
    * @description [varchar(20)]
    */
+  public changeStatus!: string | null
+  /**
+   * @description [varchar(20)]
+   */
   public journeyNo!: string
   /**
    * @description [timestamp]
@@ -152,6 +159,7 @@ export default class __CTrip_Order extends FeedBase {
     this.employeeId = null
     this.userName = ''
     this.orderStatus = null
+    this.changeStatus = null
     this.journeyNo = ''
     this.createdDate = null
     this.extrasInfo = ''
@@ -165,6 +173,7 @@ export default class __CTrip_Order extends FeedBase {
       employeeId: 'employee_id',
       userName: 'user_name',
       orderStatus: 'order_status',
+      changeStatus: 'change_status',
       journeyNo: 'journey_no',
       createdDate: 'created_date',
       extrasInfo: 'extras_info',

@@ -17,12 +17,27 @@ describe('Test CTrip_Order.test.ts', () => {
           changeInfo.OriginDPort
         } - ${changeInfo.OriginAPort}] ${changeInfo.OriginDdate} ~ ${changeInfo.OriginAdate} | [${
           changeInfo.ProtectFlight
-        } ${changeInfo.ProtectDPort} - ${changeInfo.ProtectAPort}] ${changeInfo.ProtectDdate} ~ ${changeInfo.ProtectAdate}`
+        } ${changeInfo.ProtectDPort} - ${changeInfo.ProtectAPort}] ${changeInfo.ProtectDdate} ~ ${
+          changeInfo.ProtectAdate
+        }`
       )
       if (changeInfo.OriginFlight !== changeInfo.ProtectFlight) {
         console.info('===================')
       }
       // console.info(JSON.stringify(changeInfo, null, 2))
+    }
+  })
+
+  it(`CTrip_Order - 2`, async () => {
+    const CTrip_Order = huilianyiService.modelsCore.CTrip_Order
+
+    const searcher = new CTrip_Order().fc_searcher()
+    const feeds = await searcher.queryFeeds()
+    for (const item of feeds) {
+      const extrasData = item.extrasData()
+      if (extrasData.BasicInfo.ChangeTicketStatusName === '已改签') {
+        console.info(`${item.orderId}`)
+      }
     }
   })
 })

@@ -133,7 +133,7 @@ export class HLY_BusinessDataProxy extends HuilianyiProxyBase {
     })
     const mapper: { [p: string]: HLY_TravelModel } = {}
     for (const item of items) {
-      if (item.status === HLY_TravelStatus.Deleted || item.status === HLY_TravelStatus.Init) {
+      if (item.status === HLY_TravelStatus.Deleted) {
         continue
       }
       if (mapper[item.businessCode] && mapper[item.businessCode].version > item.version) {
