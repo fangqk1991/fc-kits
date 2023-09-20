@@ -5,27 +5,7 @@ import { HLY_TravelStatus } from '../../src'
 describe('Test HuilianyiService.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
   const travelService = huilianyiService.travelService()
-  const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
-  const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
   const HLY_Travel = huilianyiService.modelsCore.HLY_Travel
-
-  it(`getTravelTrafficItems - Train`, async () => {
-    const searcher0 = new HLY_OrderTrain().fc_searcher()
-    searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
-    const order = (await searcher0.queryOne())!
-
-    // const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
-    console.info(order)
-  })
-
-  it(`getTravelTrafficItems - Flight`, async () => {
-    const searcher0 = new HLY_OrderFlight().fc_searcher()
-    searcher0.processor().addSpecialCondition('LENGTH(business_code) = 10')
-    const order = (await searcher0.queryOne())!
-
-    // const trafficItems = await travelService.getTravelTrafficItems(travelItem.businessCode)
-    console.info(order)
-  })
 
   it(`fillCTripTicketsBusinessCode`, async () => {
     await travelService.fillCTripTicketsBusinessCode()
@@ -72,8 +52,6 @@ describe('Test HuilianyiService.test.ts', () => {
 
   it(`refreshTravelTicketItemsData`, async () => {
     // await huilianyiService.syncHandler().dumpTravelRecords(true)
-    // await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
-    // await huilianyiService.syncHandler().dumpOrderTrainRecords(true)
     await travelService.refreshTravelTicketItemsData()
 
     const searcher = new HLY_Travel().fc_searcher()

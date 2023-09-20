@@ -1,7 +1,4 @@
-import { App_OrderBizType, TimeUtils } from '../../src'
-import * as assert from 'assert'
 import { HuilianyiServiceDev } from './HuilianyiServiceDev'
-import { CTrip_FlightChangeTypeDescriptor, CTrip_FlightOrderInfoEntity } from '@fangcha/ctrip-sdk'
 
 describe('Test HuilianyiModelsCore.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
@@ -64,23 +61,6 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     )
   })
 
-  it(`HLY_OrderTrain`, async () => {
-    const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
-    // await huilianyiService.syncHandler().dumpTravelRecords(true)
-
-    let feeds = await new HLY_OrderTrain().fc_searcher().queryFeeds()
-    console.info(
-      JSON.stringify(
-        feeds.map((item) => ({
-          orderId: item.hlyId,
-          count: item.modelForClient().extrasData.userNamesStr,
-        })),
-        null,
-        2
-      )
-    )
-  })
-
   it(`HLY_ExpenseApplication.getFormNameList`, async () => {
     const formNameList = await huilianyiService.modelsCore.HLY_ExpenseApplication.getFormNameList()
     console.info(formNameList)
@@ -91,85 +71,16 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     console.info(formNameList)
   })
 
-  it(`HLY_OrderTrain.getOrderStatusList`, async () => {
-    const HLY_OrderTrain = huilianyiService.modelsCore.HLY_OrderTrain
-    const statusList = await HLY_OrderTrain.getOrderStatusList()
-    console.info(statusList)
-  })
-
   it(`HLY_OrderFlight.getOrderStatusList`, async () => {
     const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
     const statusList = await HLY_OrderFlight.getOrderStatusList()
     console.info(statusList)
   })
 
-  it(`CTrip_Order flight`, async () => {
-    const feeds = await new huilianyiService.modelsCore.CTrip_Order()
-      .fc_searcher({
-        orderType: 'FLIGHT',
-      })
-      .queryAllFeeds()
-    const changedFeeds = feeds.filter((feed) => {
-      const extras = feed.extrasData() as CTrip_FlightOrderInfoEntity
-      return !!extras.FlightChangeInfo
-    })
-    for (const feed of changedFeeds) {
-      const extras = feed.extrasData() as CTrip_FlightOrderInfoEntity
-      const changedInfos = extras.FlightChangeInfo!
-      const coreChangeInfo = changedInfos[changedInfos.length - 1]
-      const statusText =
-        CTrip_FlightChangeTypeDescriptor.describe(coreChangeInfo.FlightChangeType) || coreChangeInfo.FlightChangeType
-      const flightOrder = await huilianyiService.modelsCore.HLY_OrderFlight.findWithUid(feed.orderId)
-      const prevTime = flightOrder ? `${flightOrder.startTime} ~ ${flightOrder.endTime}` : ''
-      const changedTime = `${coreChangeInfo.ProtectDdate} ~ ${TimeUtils.correctUTC8Timestamp(
-        coreChangeInfo.ProtectAdate
-      )}`
-      console.info(`${feed.orderId} ${feed.orderStatus} ${statusText}, ${prevTime} - ${changedTime}`)
-    }
-  })
-
   it(`HLY_OrderHotel.getOrderStatusList`, async () => {
     const HLY_OrderHotel = huilianyiService.modelsCore.HLY_OrderHotel
     const statusList = await HLY_OrderHotel.getOrderStatusList()
     console.info(statusList)
-  })
-
-  it(`Orders.fc_searcher`, async () => {
-    const OrderModels = [
-      huilianyiService.modelsCore.HLY_OrderFlight,
-      huilianyiService.modelsCore.HLY_OrderTrain,
-      huilianyiService.modelsCore.HLY_OrderHotel,
-    ]
-    for (const OrderModel of OrderModels) {
-      {
-        const searcher = new OrderModel().fc_searcher({
-          bizType: App_OrderBizType.HasBusinessCode,
-        })
-        const feeds = await searcher.queryAllFeeds()
-        for (const item of feeds) {
-          assert.ok(!!item.businessCode)
-        }
-      }
-      {
-        const searcher = new OrderModel().fc_searcher({
-          bizType: App_OrderBizType.SpecialOrder,
-        })
-        const feeds = await searcher.queryAllFeeds()
-        for (const item of feeds) {
-          assert.ok(['紧急预订', '紧急预定'].includes(item.journeyNo))
-        }
-      }
-      {
-        const searcher = new OrderModel().fc_searcher({
-          bizType: App_OrderBizType.Others,
-        })
-        const feeds = await searcher.queryAllFeeds()
-        for (const item of feeds) {
-          assert.ok(!['紧急预订', '紧急预定'].includes(item.journeyNo))
-          assert.ok(!item.businessCode)
-        }
-      }
-    }
   })
 
   it(`$keywords`, async () => {

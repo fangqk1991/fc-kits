@@ -74,9 +74,6 @@ export class HuilianyiService {
 
     await syncHandler.dumpStaffGroupRecords()
     await syncHandler.dumpStaffRecords()
-    await syncHandler.dumpOrderFlightRecords(forceReload)
-    await syncHandler.dumpOrderTrainRecords(forceReload)
-    await syncHandler.dumpOrderHotelRecords(forceReload)
 
     if (forceReload) {
       await syncHandler.dumpCtripOrders()

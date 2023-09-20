@@ -37,18 +37,6 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     console.info(JSON.stringify(mapper, null, 2))
   })
 
-  it(`dumpOrderFlightRecords`, async () => {
-    await huilianyiService.syncHandler().dumpOrderFlightRecords(true)
-  })
-
-  it(`dumpOrderTrainRecords`, async () => {
-    await huilianyiService.syncHandler().dumpOrderTrainRecords(true)
-  })
-
-  it(`dumpOrderHotelRecords`, async () => {
-    await huilianyiService.syncHandler().dumpOrderHotelRecords(true)
-  })
-
   it(`dumpExpenseApplicationRecords`, async () => {
     await huilianyiService.syncHandler().dumpExpenseApplicationRecords(true)
   })

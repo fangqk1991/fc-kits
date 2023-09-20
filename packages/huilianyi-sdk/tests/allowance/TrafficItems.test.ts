@@ -20,15 +20,4 @@ describe('Test TrafficItems.test.ts', () => {
       }
     }
   })
-
-  it(`HLY_OrderTrain users`, async () => {
-    const searcher = new huilianyiService.modelsCore.HLY_OrderTrain().fc_searcher()
-    const items = await searcher.queryAllFeeds()
-    for (const item of items) {
-      const extrasData = item.extrasData()
-      if (extrasData.userNamesStr.split(',').length > 1) {
-        console.info(JSON.stringify(item.modelForClient(), null, 2))
-      }
-    }
-  })
 })
