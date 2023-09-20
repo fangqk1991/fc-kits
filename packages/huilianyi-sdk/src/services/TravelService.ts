@@ -199,12 +199,13 @@ export class TravelService {
   public async findOverlappedTravelForms() {
     const items = (await this.modelsCore.database.query(`
         SELECT travel_a.business_code AS codeA,
-               travel_a.created_date AS timeA, 
-               travel_b.business_code AS codeB, 
-               travel_b.created_date AS timeB
+               travel_a.created_date  AS timeA,
+               travel_b.business_code AS codeB,
+               travel_b.created_date  AS timeB
         FROM hly_travel AS travel_a
-                 INNER JOIN hly_travel AS travel_b ON travel_a.participant_user_oids_str = travel_b.participant_user_oids_str
-            AND travel_a.hly_id != travel_b.hly_id
+                 INNER JOIN hly_travel AS travel_b
+                            ON travel_a.participant_user_oids_str = travel_b.participant_user_oids_str
+                                AND travel_a.hly_id != travel_b.hly_id
             AND (travel_a.start_time BETWEEN travel_b.start_time
                      AND travel_b.end_time
                 OR travel_a.end_time BETWEEN travel_b.start_time
@@ -255,9 +256,19 @@ export class TravelService {
     return groups
   }
 
-  public async fillTravelOrdersCTripStatus() {}
-
   public async fillTravelOrdersBusinessCode() {
+    {
+      await this.modelsCore.database.update(`
+          UPDATE ctrip_ticket, hly_travel
+          SET ctrip_ticket.business_code = hly_travel.business_code
+          WHERE ctrip_ticket.journey_no IN ('紧急预订', '紧急预定', '')
+            AND ctrip_ticket.business_code = ''
+            AND ctrip_ticket.ctrip_status IN ('已购票', '待出票', '已成交', '航班变更')
+            AND FIND_IN_SET(ctrip_ticket.user_oid, hly_travel.participant_user_oids_str)
+            AND DATE (ctrip_ticket.from_time) BETWEEN DATE (hly_travel.start_time) AND DATE (hly_travel.end_time)
+            AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
+      `)
+    }
     {
       const items = (await this.modelsCore.database.query(`
           SELECT hly_order_flight.hly_id  AS hlyId,

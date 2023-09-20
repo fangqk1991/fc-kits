@@ -84,7 +84,6 @@ export class HuilianyiService {
     await syncHandler.extractTrainTicketsFromOrders()
     await syncHandler.extractFlightTicketsFromOrders()
 
-    await this.travelService().fillTravelOrdersCTripStatus()
     await this.travelService().fillTravelOrdersBusinessCode()
 
     await this.travelService().makeCommonTrafficTickets()
