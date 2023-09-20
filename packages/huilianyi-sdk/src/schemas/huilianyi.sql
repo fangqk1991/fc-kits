@@ -706,6 +706,7 @@ CREATE TABLE IF NOT EXISTS ctrip_ticket
     journey_no    VARCHAR(20)     NOT NULL DEFAULT '',
     business_code VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
     ctrip_status  VARCHAR(20)     NULL,
+    deprecated_id CHAR(32)        NULL COLLATE ascii_bin,
     create_time   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE (ticket_id),

@@ -37,7 +37,7 @@ export class HuilianyiSyncHandler {
   }
 
   private async getLastTime(
-    tableClass: { new(): FeedBase } & typeof FeedBase,
+    tableClass: { new (): FeedBase } & typeof FeedBase,
     customHandler?: (searcher: SQLSearcher) => void
   ) {
     const progressDBSpec = new tableClass().dbSpec()
@@ -981,7 +981,9 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => item !== 'business_code'))
+    bulkAdder.setInsertKeys(
+      dbSpec.insertableCols().filter((item) => !['business_code', 'deprecated_id'].includes(item))
+    )
     bulkAdder.declareTimestampKey('from_time')
     bulkAdder.declareTimestampKey('to_time')
 
@@ -1061,7 +1063,9 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => item !== 'business_code'))
+    bulkAdder.setInsertKeys(
+      dbSpec.insertableCols().filter((item) => !['business_code', 'deprecated_id'].includes(item))
+    )
     bulkAdder.declareTimestampKey('from_time')
     bulkAdder.declareTimestampKey('to_time')
 

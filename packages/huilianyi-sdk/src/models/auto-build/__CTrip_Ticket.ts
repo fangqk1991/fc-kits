@@ -19,6 +19,7 @@ const _cols: string[] = [
   'journey_no',
   'business_code',
   'ctrip_status',
+  'deprecated_id',
   'create_time',
   'update_time',
 ]
@@ -40,6 +41,7 @@ const _insertableCols: string[] = [
   'journey_no',
   'business_code',
   'ctrip_status',
+  'deprecated_id',
 ]
 const _modifiableCols: string[] = [
   // prettier-ignore
@@ -58,6 +60,7 @@ const _modifiableCols: string[] = [
   'journey_no',
   'business_code',
   'ctrip_status',
+  'deprecated_id',
 ]
 
 const _timestampTypeCols: string[] = [
@@ -162,6 +165,10 @@ export default class __CTrip_Ticket extends FeedBase {
    */
   public ctripStatus!: string | null
   /**
+   * @description [char(32)]
+   */
+  public deprecatedId!: string | null
+  /**
    * @description [timestamp] 创建时间
    */
   public createTime!: string
@@ -212,6 +219,7 @@ export default class __CTrip_Ticket extends FeedBase {
     this.journeyNo = ''
     this.businessCode = ''
     this.ctripStatus = null
+    this.deprecatedId = null
   }
 
   public fc_propertyMapper() {
@@ -232,6 +240,7 @@ export default class __CTrip_Ticket extends FeedBase {
       journeyNo: 'journey_no',
       businessCode: 'business_code',
       ctripStatus: 'ctrip_status',
+      deprecatedId: 'deprecated_id',
       createTime: 'create_time',
       updateTime: 'update_time',
     }
