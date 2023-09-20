@@ -689,12 +689,14 @@ DROP TABLE IF EXISTS ctrip_ticket;
 CREATE TABLE IF NOT EXISTS ctrip_ticket
 (
     _rid          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    ticket_id     CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'order_type + order_id + info_id + employee_id(user_name) + traffic_code MD5',
+    ticket_id     CHAR(32)        NOT NULL COLLATE ascii_bin COMMENT 'order_type + order_id + info_id + user_oid(user_name) + traffic_code MD5',
     order_type    VARCHAR(20)     NOT NULL COLLATE ascii_bin COMMENT 'HLY_OrderType',
     order_id      BIGINT UNSIGNED NOT NULL,
     info_id       VARCHAR(36)     NOT NULL DEFAULT '' COLLATE ascii_bin,
     employee_id   VARCHAR(64)     NULL COLLATE ascii_bin,
     user_name     VARCHAR(64)     NOT NULL DEFAULT '',
+    user_oid      CHAR(36)        NOT NULL DEFAULT '' COLLATE ascii_bin,
+    base_city     VARCHAR(16)     NOT NULL DEFAULT '',
     traffic_code  VARCHAR(16)     NOT NULL DEFAULT '',
     from_time     TIMESTAMP       NULL COMMENT '开始时间',
     to_time       TIMESTAMP       NULL COMMENT '结束时间',

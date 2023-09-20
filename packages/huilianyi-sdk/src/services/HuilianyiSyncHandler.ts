@@ -966,6 +966,9 @@ export class HuilianyiSyncHandler {
   public async extractTrainTicketsFromOrders() {
     const CTrip_Order = this.syncCore.modelsCore.CTrip_Order
     const CTrip_Ticket = this.syncCore.modelsCore.CTrip_Ticket
+    const employeeIdToUserOidMapper = await this.syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
+    const nameToUserOidsMapper = await this.syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
+    const staffMapper = await this.syncCore.modelsCore.HLY_Staff.staffMapper()
 
     const searcher = new CTrip_Order().fc_searcher()
     searcher.processor().addConditionKV('order_type', CTrip_OrderType.TRAIN)
@@ -1002,6 +1005,17 @@ export class HuilianyiSyncHandler {
           ticket.infoId = `${ticketInfo.ElectronicOrderNo}`
           ticket.employeeId = passenger.EmployeeID
           ticket.userName = passenger.PassengerName
+          {
+            ticket.userOid = employeeIdToUserOidMapper[ticket.employeeId] || ''
+            if (
+              !ticket.userOid &&
+              nameToUserOidsMapper[ticket.userName] &&
+              nameToUserOidsMapper[ticket.userName].length === 1
+            ) {
+              ticket.userOid = nameToUserOidsMapper[ticket.userName][0]
+            }
+            ticket.baseCity = ticket.userOid && staffMapper[ticket.userOid] ? staffMapper[ticket.userOid].baseCity : ''
+          }
           ticket.journeyNo = item.journeyNo
           ticket.businessCode =
             item.journeyNo && /^[\w]{10}-[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : ''
@@ -1016,7 +1030,7 @@ export class HuilianyiSyncHandler {
               ticket.orderType,
               ticket.orderId,
               ticket.infoId,
-              ticket.employeeId || ticket.userName,
+              ticket.userOid || ticket.userName,
               ticket.trafficCode,
             ].join(',')
           )
@@ -1033,6 +1047,9 @@ export class HuilianyiSyncHandler {
   public async extractFlightTicketsFromOrders() {
     const CTrip_Order = this.syncCore.modelsCore.CTrip_Order
     const CTrip_Ticket = this.syncCore.modelsCore.CTrip_Ticket
+    const employeeIdToUserOidMapper = await this.syncCore.modelsCore.HLY_Staff.employeeIdToUserOidMapper()
+    const nameToUserOidsMapper = await this.syncCore.modelsCore.HLY_Staff.nameToUserOidsMapper()
+    const staffMapper = await this.syncCore.modelsCore.HLY_Staff.staffMapper()
 
     const searcher = new CTrip_Order().fc_searcher()
     searcher.processor().addConditionKV('order_type', CTrip_OrderType.FLIGHT)
@@ -1066,6 +1083,17 @@ export class HuilianyiSyncHandler {
           ticket.infoId = ''
           ticket.employeeId = passenger.PassengerBasic.CorpEid
           ticket.userName = passenger.PassengerBasic.PassengerName
+          {
+            ticket.userOid = employeeIdToUserOidMapper[ticket.employeeId] || ''
+            if (
+              !ticket.userOid &&
+              nameToUserOidsMapper[ticket.userName] &&
+              nameToUserOidsMapper[ticket.userName].length === 1
+            ) {
+              ticket.userOid = nameToUserOidsMapper[ticket.userName][0]
+            }
+            ticket.baseCity = ticket.userOid && staffMapper[ticket.userOid] ? staffMapper[ticket.userOid].baseCity : ''
+          }
           ticket.journeyNo = item.journeyNo
           ticket.businessCode =
             item.journeyNo && /^[\w]{10}-[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : ''
@@ -1080,7 +1108,7 @@ export class HuilianyiSyncHandler {
               ticket.orderType,
               ticket.orderId,
               ticket.infoId,
-              ticket.employeeId || ticket.userName,
+              ticket.userOid || ticket.userName,
               ticket.trafficCode,
             ].join(',')
           )
@@ -1100,7 +1128,7 @@ export class HuilianyiSyncHandler {
                   ticket.orderType,
                   ticket.orderId,
                   ticket.infoId,
-                  ticket.employeeId || ticket.userName,
+                  ticket.userOid || ticket.userName,
                   ticket.trafficCode,
                 ].join(',')
               )

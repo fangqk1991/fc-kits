@@ -9,6 +9,8 @@ const _cols: string[] = [
   'info_id',
   'employee_id',
   'user_name',
+  'user_oid',
+  'base_city',
   'traffic_code',
   'from_time',
   'to_time',
@@ -28,6 +30,8 @@ const _insertableCols: string[] = [
   'info_id',
   'employee_id',
   'user_name',
+  'user_oid',
+  'base_city',
   'traffic_code',
   'from_time',
   'to_time',
@@ -44,6 +48,8 @@ const _modifiableCols: string[] = [
   'info_id',
   'employee_id',
   'user_name',
+  'user_oid',
+  'base_city',
   'traffic_code',
   'from_time',
   'to_time',
@@ -92,7 +98,7 @@ const dbOptions = {
 
 export default class __CTrip_Ticket extends FeedBase {
   /**
-   * @description [char(32)] order_type + order_id + info_id + employee_id(user_name) + traffic_code MD5
+   * @description [char(32)] order_type + order_id + info_id + user_oid(user_name) + traffic_code MD5
    */
   public ticketId!: string
   /**
@@ -115,6 +121,14 @@ export default class __CTrip_Ticket extends FeedBase {
    * @description [varchar(64)]
    */
   public userName!: string
+  /**
+   * @description [char(36)]
+   */
+  public userOid!: string
+  /**
+   * @description [varchar(16)]
+   */
+  public baseCity!: string
   /**
    * @description [varchar(16)]
    */
@@ -190,6 +204,8 @@ export default class __CTrip_Ticket extends FeedBase {
     this.infoId = ''
     this.employeeId = null
     this.userName = ''
+    this.userOid = ''
+    this.baseCity = ''
     this.trafficCode = ''
     this.fromTime = null
     this.toTime = null
@@ -206,6 +222,8 @@ export default class __CTrip_Ticket extends FeedBase {
       infoId: 'info_id',
       employeeId: 'employee_id',
       userName: 'user_name',
+      userOid: 'user_oid',
+      baseCity: 'base_city',
       trafficCode: 'traffic_code',
       fromTime: 'from_time',
       toTime: 'to_time',
