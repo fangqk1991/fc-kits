@@ -30,7 +30,7 @@ export class _CTrip_Ticket extends __CTrip_Ticket {
   public makeCommonTicket(): App_TrafficTicket {
     const ctripValid = ['已购票', '待出票', '已成交', '航班变更'].includes(this.ctripStatus!) ? 1 : 0
     return {
-      ticketId: this.deprecatedId || this.ticketId,
+      ticketId: this.ticketId,
       orderType: this.orderType,
       orderId: this.orderId,
       orderOid: '',
