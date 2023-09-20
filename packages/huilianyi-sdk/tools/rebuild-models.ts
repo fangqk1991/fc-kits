@@ -160,7 +160,7 @@ const dbSchemas: DBModelSchema[] = [
     primaryKey: ['ticket_id'],
     modifiableBlackList: ['create_time', 'update_time'],
     gbkCols: ['user_name'],
-    exactSearchCols: ['ticket_id', 'order_id', 'journey_no'],
+    exactSearchCols: ['ticket_id', 'order_id', 'journey_no', 'business_code', 'traffic_code'],
     fuzzySearchCols: ['user_name'],
   },
   {

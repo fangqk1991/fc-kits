@@ -70,6 +70,8 @@ const _exactSearchCols: string[] = [
   'ticket_id',
   'order_id',
   'journey_no',
+  'business_code',
+  'traffic_code',
 ]
 const _fuzzySearchCols: string[] = [
   // prettier-ignore
