@@ -81,6 +81,9 @@ export class HuilianyiService {
     if (forceReload) {
       await syncHandler.dumpCtripOrders()
     }
+    await syncHandler.extractTrainTicketsFromOrders()
+    await syncHandler.extractFlightTicketsFromOrders()
+
     await this.travelService().fillTravelOrdersCTripStatus()
     await this.travelService().fillTravelOrdersBusinessCode()
 
