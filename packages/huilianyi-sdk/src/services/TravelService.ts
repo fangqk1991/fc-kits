@@ -256,68 +256,22 @@ export class TravelService {
     return groups
   }
 
-  public async fillTravelOrdersBusinessCode() {
-    {
-      await this.modelsCore.database.update(`
-          UPDATE ctrip_ticket, hly_travel
-          SET ctrip_ticket.business_code = hly_travel.business_code
-          WHERE ctrip_ticket.journey_no IN ('紧急预订', '紧急预定', '')
-            AND ctrip_ticket.business_code = ''
-            AND ctrip_ticket.ctrip_status IN ('已购票', '待出票', '已成交', '航班变更')
-            AND FIND_IN_SET(ctrip_ticket.user_oid, hly_travel.participant_user_oids_str)
-            AND DATE (ctrip_ticket.from_time) BETWEEN DATE (hly_travel.start_time) AND DATE (hly_travel.end_time)
-            AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
+  public async fillCTripTicketsBusinessCode() {
+    await this.modelsCore.database.update(`
+        UPDATE ctrip_order, ctrip_ticket
+        SET ctrip_ticket.business_code = ctrip_order.business_code
+        WHERE ctrip_ticket.order_id = ctrip_order.order_id AND ctrip_order.business_code != ''
+    `)
+    await this.modelsCore.database.update(`
+      UPDATE ctrip_ticket, hly_travel
+      SET ctrip_ticket.business_code = hly_travel.business_code
+      WHERE ctrip_ticket.journey_no IN ('紧急预订', '紧急预定', '')
+        AND ctrip_ticket.business_code = ''
+        AND ctrip_ticket.ctrip_status IN ('已购票', '待出票', '已成交', '航班变更')
+        AND FIND_IN_SET(ctrip_ticket.user_oid, hly_travel.participant_user_oids_str)
+        AND DATE (ctrip_ticket.from_time) BETWEEN DATE (hly_travel.start_time) AND DATE (hly_travel.end_time)
+        AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Init}, ${HLY_TravelStatus.Deleted})
       `)
-    }
-    {
-      const items = (await this.modelsCore.database.query(`
-          SELECT hly_order_flight.hly_id  AS hlyId,
-                 hly_travel.business_code AS businessCode
-          FROM hly_travel_participant
-                   INNER JOIN hly_travel ON hly_travel_participant.business_code = hly_travel.business_code
-                   INNER JOIN hly_order_flight
-                              ON FIND_IN_SET(hly_travel_participant.user_oid, hly_order_flight.ticket_user_oids_str)
-                                  AND DATE (hly_order_flight.start_time) BETWEEN DATE (hly_travel.start_time) AND DATE (hly_travel.end_time)
-          WHERE hly_order_flight.journey_no IN ('紧急预订', '紧急预定', '')
-            AND hly_order_flight.business_code IS NULL
-            AND order_status NOT IN ('出票失败', '已取消')
-            AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
-      `)) as { hlyId: number; businessCode: string }[]
-      console.info(`TODO FlightOrder: ${items.length} items`)
-      for (const item of items) {
-        const order = new this.modelsCore.HLY_OrderFlight()
-        order.hlyId = item.hlyId
-        order.fc_edit()
-        order.businessCode = item.businessCode
-        await order.updateToDB()
-      }
-    }
-    {
-      const items = (await this.modelsCore.database.query(`
-          SELECT hly_order_train.hly_id   AS hlyId,
-                 hly_travel.business_code AS businessCode
-          FROM hly_travel_participant
-                   INNER JOIN hly_travel ON hly_travel_participant.business_code = hly_travel.business_code
-                   INNER JOIN hly_order_train
-                              ON FIND_IN_SET(hly_travel_participant.user_oid, hly_order_train.ticket_user_oids_str)
-                                  AND DATE (hly_order_train.start_time) BETWEEN DATE (hly_travel.start_time) AND DATE (hly_travel.end_time)
-          WHERE hly_order_train.journey_no IN ('紧急预订', '紧急预定', '')
-            AND hly_order_train.business_code IS NULL
-            AND order_status NOT IN ('出票失败', '已取消')
-            AND hly_travel.travel_status NOT IN (${HLY_TravelStatus.Deleted})
-      `)) as { hlyId: number; businessCode: string }[]
-      console.info(`TODO TrainOrder: ${items.length} items`)
-      for (const item of items) {
-        const order = new this.modelsCore.HLY_OrderTrain()
-        order.hlyId = item.hlyId
-        order.fc_edit()
-        order.businessCode = item.businessCode
-        // const extrasData = order.extrasData()
-        // extrasData.commonTickets.forEach((ticket) => (ticket.businessCode = item.businessCode))
-        // order.extrasInfo = JSON.stringify(extrasData)
-        await order.updateToDB()
-      }
-    }
   }
 
   public async makeCommonTrafficTickets() {

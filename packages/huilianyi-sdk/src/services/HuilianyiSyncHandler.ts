@@ -1043,12 +1043,6 @@ export class HuilianyiSyncHandler {
       }
     }
     await bulkAdder.execute()
-
-    await this.syncCore.modelsCore.database.update(`
-        UPDATE ctrip_order, ctrip_ticket
-        SET ctrip_ticket.business_code = ctrip_order.business_code
-        WHERE ctrip_ticket.order_id = ctrip_order.order_id AND ctrip_order.business_code != ''
-    `)
   }
 
   public async extractFlightTicketsFromOrders() {
@@ -1148,11 +1142,5 @@ export class HuilianyiSyncHandler {
     }
 
     await bulkAdder.execute()
-
-    await this.syncCore.modelsCore.database.update(`
-        UPDATE ctrip_order, ctrip_ticket
-        SET ctrip_ticket.business_code = ctrip_order.business_code
-        WHERE ctrip_ticket.order_id = ctrip_order.order_id AND ctrip_order.business_code != ''
-    `)
   }
 }
