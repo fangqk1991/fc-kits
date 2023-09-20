@@ -71,18 +71,6 @@ describe('Test HuilianyiModelsCore.test.ts', () => {
     console.info(formNameList)
   })
 
-  it(`HLY_OrderFlight.getOrderStatusList`, async () => {
-    const HLY_OrderFlight = huilianyiService.modelsCore.HLY_OrderFlight
-    const statusList = await HLY_OrderFlight.getOrderStatusList()
-    console.info(statusList)
-  })
-
-  it(`HLY_OrderHotel.getOrderStatusList`, async () => {
-    const HLY_OrderHotel = huilianyiService.modelsCore.HLY_OrderHotel
-    const statusList = await HLY_OrderHotel.getOrderStatusList()
-    console.info(statusList)
-  })
-
   it(`$keywords`, async () => {
     const pageResult = await huilianyiService.modelsCore.HLY_Travel.getPageResult({
       $keywords: '方',

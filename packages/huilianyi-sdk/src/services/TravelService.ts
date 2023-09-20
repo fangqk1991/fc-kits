@@ -4,7 +4,7 @@ import {
   App_TrafficTicket,
   App_TravelCoreItinerary,
   App_TravelOrderExtras,
-  HLY_ClosedLoopStatus,
+  HLY_ClosedLoopStatus, HLY_OrderType,
   HLY_PrettyStatus,
   HLY_TravelStatus,
   TimeUtils,
@@ -287,37 +287,9 @@ export class TravelService {
       }
     }
 
-    const todoTickets: App_TrafficTicket[] = []
-    {
-      const searcher = new this.modelsCore.HLY_OrderFlight().fc_searcher()
-      const feeds = await searcher.queryAllFeeds()
-      for (const item of feeds) {
-        const extrasData = item.extrasData() as App_TravelOrderExtras
-        const commonTickets = extrasData.commonTickets
-        commonTickets.forEach((ticket) => {
-          ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.hlyCode || item.businessCode || ''
-          const orderStatus = item.ctripStatus || item.orderStatus
-          ticket.ctripStatus = orderStatus
-          ticket.ctripValid = ['已成交', '航班变更'].includes(orderStatus) ? 1 : 0
-        })
-        todoTickets.push(...commonTickets)
-      }
-    }
-    {
-      const searcher = new this.modelsCore.HLY_OrderTrain().fc_searcher()
-      const feeds = await searcher.queryAllFeeds()
-      for (const item of feeds) {
-        const extrasData = item.extrasData() as App_TravelOrderExtras
-        const commonTickets = extrasData.commonTickets
-        commonTickets.forEach((ticket) => {
-          ticket.hlyCode = linkedTicketMap[ticket.ticketId] || ticket.hlyCode || item.businessCode || ''
-          const orderStatus = item.ctripStatus || item.orderStatus
-          ticket.ctripStatus = orderStatus
-          ticket.ctripValid = ['已购票', '待出票'].includes(orderStatus) ? 1 : 0
-        })
-        todoTickets.push(...commonTickets)
-      }
-    }
+    const searcher = new this.modelsCore.CTrip_Ticket().fc_searcher()
+    const feeds = await searcher.queryAllFeeds()
+    const todoTickets: App_TrafficTicket[] = feeds.map((item) => item.makeCommonTicket())
 
     const dbSpec = new this.modelsCore.HLY_TrafficTicket().dbSpec()
     const runner = dbSpec.database.createTransactionRunner()

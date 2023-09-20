@@ -8,9 +8,6 @@ import { _HLY_Config } from '../models/extensions/_HLY_Config'
 import { _HLY_TravelAllowance } from '../models/extensions/_HLY_TravelAllowance'
 import { _HLY_AllowanceSnapshot } from '../models/extensions/_HLY_AllowanceSnapshot'
 import { _HLY_SnapshotLog } from '../models/extensions/_HLY_SnapshotLog'
-import { _HLY_OrderFlight } from '../models/extensions/_HLY_OrderFlight'
-import { _HLY_OrderTrain } from '../models/extensions/_HLY_OrderTrain'
-import { _HLY_OrderHotel } from '../models/extensions/_HLY_OrderHotel'
 import { _HLY_ExpenseApplication } from '../models/extensions/_HLY_ExpenseApplication'
 import { _HLY_PublicPayment } from '../models/extensions/_HLY_PublicPayment'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
@@ -40,9 +37,6 @@ export class HuilianyiModelsCore {
   public readonly HLY_AllowanceSnapshot!: { new (): _HLY_AllowanceSnapshot } & typeof _HLY_AllowanceSnapshot
   public readonly HLY_AllowanceDraft!: { new (): _HLY_AllowanceDraft } & typeof _HLY_AllowanceDraft
   public readonly HLY_SnapshotLog!: { new (): _HLY_SnapshotLog } & typeof _HLY_SnapshotLog
-  public readonly HLY_OrderFlight!: { new (): _HLY_OrderFlight } & typeof _HLY_OrderFlight
-  public readonly HLY_OrderTrain!: { new (): _HLY_OrderTrain } & typeof _HLY_OrderTrain
-  public readonly HLY_OrderHotel!: { new (): _HLY_OrderHotel } & typeof _HLY_OrderHotel
   public readonly HLY_PublicPayment!: { new (): _HLY_PublicPayment } & typeof _HLY_PublicPayment
   public readonly HLY_AllowanceRule!: { new (): _HLY_AllowanceRule } & typeof _HLY_AllowanceRule
 
@@ -134,24 +128,6 @@ export class HuilianyiModelsCore {
       database: database,
     })
     this.HLY_SnapshotLog = HLY_SnapshotLog
-
-    class HLY_OrderFlight extends _HLY_OrderFlight {}
-    HLY_OrderFlight.addStaticOptions({
-      database: database,
-    })
-    this.HLY_OrderFlight = HLY_OrderFlight
-
-    class HLY_OrderTrain extends _HLY_OrderTrain {}
-    HLY_OrderTrain.addStaticOptions({
-      database: database,
-    })
-    this.HLY_OrderTrain = HLY_OrderTrain
-
-    class HLY_OrderHotel extends _HLY_OrderHotel {}
-    HLY_OrderHotel.addStaticOptions({
-      database: database,
-    })
-    this.HLY_OrderHotel = HLY_OrderHotel
 
     class HLY_ExpenseApplication extends _HLY_ExpenseApplication {}
     HLY_ExpenseApplication.addStaticOptions({

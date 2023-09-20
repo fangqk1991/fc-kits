@@ -655,7 +655,7 @@ export class HuilianyiSyncHandler {
         for (let i = 0; i < ticketInfoList.length; ++i) {
           const ticketInfo = ticketInfoList[i]
           const ticket = new CTrip_Ticket()
-          ticket.orderType = item.orderType!
+          ticket.orderType = item.orderType as HLY_OrderType
           ticket.orderId = item.orderId
           ticket.infoId = `${ticketInfo.ElectronicOrderNo}`
           ticket.employeeId = passenger.EmployeeID
@@ -734,7 +734,7 @@ export class HuilianyiSyncHandler {
           const flightInfo = flightInfoList[i]
           const sequence = passenger.SequenceInfo[i]
           const ticket = new CTrip_Ticket()
-          ticket.orderType = item.orderType!
+          ticket.orderType = item.orderType as HLY_OrderType
           ticket.orderId = item.orderId
           ticket.infoId = ''
           ticket.employeeId = passenger.PassengerBasic.CorpEid

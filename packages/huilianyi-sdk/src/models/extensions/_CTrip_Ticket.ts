@@ -1,5 +1,5 @@
 import __CTrip_Ticket from '../auto-build/__CTrip_Ticket'
-import { App_OrderBizType } from '../../core'
+import { App_OrderBizType, App_TrafficTicket, HLY_OrderType } from '../../core'
 
 export class _CTrip_Ticket extends __CTrip_Ticket {
   public constructor() {
@@ -24,5 +24,33 @@ export class _CTrip_Ticket extends __CTrip_Ticket {
       }
     }
     return searcher
+  }
+
+  public orderType!: HLY_OrderType
+  public makeCommonTicket(): App_TrafficTicket {
+    const ctripValid = ['已购票', '待出票', '已成交', '航班变更'].includes(this.ctripStatus!) ? 1 : 0
+    return {
+      ticketId: this.deprecatedId || this.ticketId,
+      orderType: this.orderType,
+      orderId: this.orderId,
+      orderOid: '',
+      userOid: this.userOid,
+      employeeId: this.employeeId || '',
+      userName: this.userName,
+      baseCity: this.baseCity,
+      trafficCode: this.trafficCode,
+      fromTime: this.fromTime!,
+      toTime: this.toTime!,
+      fromCity: this.fromCity,
+      toCity: this.toCity,
+      journeyNo: this.journeyNo,
+      businessCode: this.businessCode,
+      hlyCode: this.businessCode,
+      customCode: '',
+      isValid: ctripValid,
+      isDummy: 0,
+      ctripValid: ctripValid,
+      ctripStatus: this.ctripStatus!,
+    }
   }
 }
