@@ -37,7 +37,7 @@ export class HuilianyiSyncHandler {
   }
 
   private async getLastTime(
-    tableClass: { new (): FeedBase } & typeof FeedBase,
+    tableClass: { new(): FeedBase } & typeof FeedBase,
     customHandler?: (searcher: SQLSearcher) => void
   ) {
     const progressDBSpec = new tableClass().dbSpec()
@@ -916,6 +916,8 @@ export class HuilianyiSyncHandler {
                 feed.orderStatus = orderItem.BasicInfo.NewOrderStatusName || orderItem.BasicInfo.OrderStatusName
                 feed.changeStatus = orderItem.BasicInfo.ChangeTicketStatusName || ''
                 feed.journeyNo = orderItem.CorpOrderInfo.JourneyID || ''
+                feed.businessCode =
+                  feed.journeyNo && /^[\w]{10}-[\w-]+$/.test(feed.journeyNo) ? feed.journeyNo.split('-')[0] : ''
                 feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.DataChange_CreateTime)
                 feed.extrasInfo = JSON.stringify(orderItem)
                 bulkAdder.putObject(feed.fc_encode())
@@ -979,7 +981,7 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => item !== 'business_code'))
     bulkAdder.declareTimestampKey('from_time')
     bulkAdder.declareTimestampKey('to_time')
 
@@ -1017,8 +1019,7 @@ export class HuilianyiSyncHandler {
             ticket.baseCity = ticket.userOid && staffMapper[ticket.userOid] ? staffMapper[ticket.userOid].baseCity : ''
           }
           ticket.journeyNo = item.journeyNo
-          ticket.businessCode =
-            item.journeyNo && /^[\w]{10}-[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : ''
+          // ticket.businessCode = item.businessCode
           ticket.ctripStatus = item.orderStatus
           ticket.trafficCode = ticketInfo.TrainName
           ticket.fromTime = TimeUtils.correctUTC8Timestamp(ticketInfo.DepartureDateTime)
@@ -1042,6 +1043,12 @@ export class HuilianyiSyncHandler {
       }
     }
     await bulkAdder.execute()
+
+    await this.syncCore.modelsCore.database.update(`
+        UPDATE ctrip_order, ctrip_ticket
+        SET ctrip_ticket.business_code = ctrip_order.business_code
+        WHERE ctrip_ticket.order_id = ctrip_order.order_id AND ctrip_order.business_code != ''
+    `)
   }
 
   public async extractFlightTicketsFromOrders() {
@@ -1060,7 +1067,7 @@ export class HuilianyiSyncHandler {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
-    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.setInsertKeys(dbSpec.insertableCols().filter((item) => item !== 'business_code'))
     bulkAdder.declareTimestampKey('from_time')
     bulkAdder.declareTimestampKey('to_time')
 
@@ -1095,8 +1102,7 @@ export class HuilianyiSyncHandler {
             ticket.baseCity = ticket.userOid && staffMapper[ticket.userOid] ? staffMapper[ticket.userOid].baseCity : ''
           }
           ticket.journeyNo = item.journeyNo
-          ticket.businessCode =
-            item.journeyNo && /^[\w]{10}-[\w-]+$/.test(item.journeyNo) ? item.journeyNo.split('-')[0] : ''
+          ticket.businessCode = item.businessCode
           ticket.ctripStatus = item.orderStatus
           ticket.trafficCode = flightInfo.Flight
           ticket.fromTime = TimeUtils.correctUTC8Timestamp(flightInfo.TakeoffTime)
@@ -1142,5 +1148,11 @@ export class HuilianyiSyncHandler {
     }
 
     await bulkAdder.execute()
+
+    await this.syncCore.modelsCore.database.update(`
+        UPDATE ctrip_order, ctrip_ticket
+        SET ctrip_ticket.business_code = ctrip_order.business_code
+        WHERE ctrip_ticket.order_id = ctrip_order.order_id AND ctrip_order.business_code != ''
+    `)
   }
 }

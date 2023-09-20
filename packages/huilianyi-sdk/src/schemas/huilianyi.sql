@@ -676,6 +676,7 @@ CREATE TABLE IF NOT EXISTS ctrip_order
     order_status  VARCHAR(20)     NULL,
     change_status VARCHAR(20)     NULL,
     journey_no    VARCHAR(20)     NOT NULL DEFAULT '',
+    business_code VARCHAR(20)     NOT NULL DEFAULT '' COLLATE ascii_bin,
     created_date  TIMESTAMP       NULL,
     extras_info   MEDIUMTEXT COMMENT '附加信息，空 | JSON 字符串',
     is_locked     TINYINT         NOT NULL DEFAULT 0 COMMENT '是否锁定',

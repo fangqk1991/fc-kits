@@ -255,18 +255,7 @@ export class TravelService {
     return groups
   }
 
-  public async fillTravelOrdersCTripStatus() {
-    await this.modelsCore.database.update(`
-        UPDATE hly_order_flight, ctrip_order
-        SET hly_order_flight.ctrip_status = ctrip_order.order_status
-        WHERE hly_order_flight.hly_id = ctrip_order.order_id
-    `)
-    await this.modelsCore.database.update(`
-        UPDATE hly_order_train, ctrip_order
-        SET hly_order_train.ctrip_status = ctrip_order.order_status
-        WHERE hly_order_train.hly_id = ctrip_order.order_id
-    `)
-  }
+  public async fillTravelOrdersCTripStatus() {}
 
   public async fillTravelOrdersBusinessCode() {
     {
