@@ -16,6 +16,12 @@ export class _Dummy_Travel extends __Dummy_Travel {
     }))!
   }
 
+  public fc_searcher(params = {}) {
+    const searcher = super.fc_searcher(params)
+    searcher.processor().addConditionKeyNotInArray('travel_status', [HLY_TravelStatus.Deleted])
+    return searcher
+  }
+
   public toJSON() {
     return this.modelForClient()
   }

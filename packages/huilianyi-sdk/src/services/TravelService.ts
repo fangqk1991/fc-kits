@@ -569,4 +569,24 @@ export class TravelService {
     }
     return ticketsData
   }
+
+  public async removeEmptyDummyTravels() {
+    const items = await this.getEmptyDummyTravels()
+    const runner = new this.modelsCore.Dummy_Travel().dbSpec().database.createTransactionRunner()
+    await runner.commit(async (transaction) => {
+      for (const item of items) {
+        await item.deleteFromDB(transaction)
+      }
+    })
+  }
+
+  public async getEmptyDummyTravels() {
+    const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
+    searcher
+      .processor()
+      .addSpecialCondition(
+        'NOT EXISTS (SELECT hly_traffic_ticket.ticket_id FROM hly_traffic_ticket WHERE hly_traffic_ticket.business_code = dummy_travel.business_code)'
+      )
+    return await searcher.queryAllFeeds()
+  }
 }
