@@ -13,7 +13,6 @@ import * as moment from 'moment'
 import { SQLBulkAdder, SQLModifier, Transaction } from 'fc-sql'
 import assert from '@fangcha/assert'
 import { makeRandomStr, md5 } from '@fangcha/tools'
-import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Travel } from '../models/extensions/_HLY_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
 import { _HLY_TrafficTicket } from '../models/extensions/_HLY_TrafficTicket'
@@ -378,24 +377,10 @@ export class TravelService {
     searcher.processor().addConditionKeyInArray('ticket_id', ticketIdList)
     const tickets = await searcher.queryAllFeeds()
 
-    const todoTravelList: _Dummy_Travel[] = []
-    for (const ticketId of ticketIdList) {
-      const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
-      searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
-      searcher.processor().addSpecialCondition('FIND_IN_SET(?, ticket_id_list_str)', ticketId)
-      const items = await searcher.queryAllFeeds()
-      todoTravelList.push(...items)
-    }
-
     const runner = new this.modelsCore.HLY_TrafficTicket().dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       for (const ticket of tickets) {
         await ticket.unlinkBusinessCode(transaction)
-      }
-      for (const dummyTravel of todoTravelList) {
-        dummyTravel.fc_edit()
-        dummyTravel.travelStatus = HLY_TravelStatus.Deleted
-        await dummyTravel.updateToDB(transaction)
       }
     })
   }
