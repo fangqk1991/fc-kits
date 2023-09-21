@@ -604,6 +604,8 @@ export class HuilianyiSyncHandler {
                   }
                 }
                 feed.journeyNo = orderItem.BasicInfo.JourneyID || ''
+                feed.businessCode =
+                  feed.journeyNo && /^[\w]{10}-[\w-]+$/.test(feed.journeyNo) ? feed.journeyNo.split('-')[0] : ''
                 feed.createdDate = TimeUtils.correctUTC8Timestamp(orderItem.BasicInfo.CreateTime)
                 feed.extrasInfo = JSON.stringify(orderItem)
                 bulkAdder.putObject(feed.fc_encode())
