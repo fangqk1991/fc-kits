@@ -576,7 +576,7 @@ export class TravelService {
     await runner.commit(async (transaction) => {
       for (const item of items) {
         const travel = new this.modelsCore.HLY_Travel()
-        travel.businessCode = item.businessCode
+        travel.hlyId = item.hlyId
         travel.fc_edit()
         travel.travelStatus = HLY_TravelStatus.Deleted
         await travel.updateToDB(transaction)
