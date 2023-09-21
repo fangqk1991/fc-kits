@@ -575,6 +575,10 @@ export class TravelService {
     const runner = new this.modelsCore.Dummy_Travel().dbSpec().database.createTransactionRunner()
     await runner.commit(async (transaction) => {
       for (const item of items) {
+        const travel = new this.modelsCore.HLY_Travel()
+        travel.fc_edit()
+        travel.travelStatus = HLY_TravelStatus.Deleted
+        await travel.updateToDB(transaction)
         await item.deleteFromDB(transaction)
       }
     })

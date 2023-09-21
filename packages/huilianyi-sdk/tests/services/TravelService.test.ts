@@ -84,13 +84,14 @@ describe('Test HuilianyiService.test.ts', () => {
     console.info(ticketsData)
   })
 
+  it(`removeEmptyDummyTravels`, async () => {
+    await travelService.removeEmptyDummyTravels()
+  })
+
   it(`getEmptyDummyTravels`, async () => {
     const items = await travelService.getEmptyDummyTravels()
     console.info(`${items.length} items.`)
     console.info(items.map((item) => item.modelForClient()))
-    for (const item of items) {
-      await item.deleteFromDB()
-    }
   })
 
   it(`createDummyTravelsByLonelyTickets`, async () => {

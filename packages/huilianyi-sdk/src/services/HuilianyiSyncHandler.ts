@@ -2,11 +2,11 @@ import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder, SQLSearcher, Transaction } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
-import { HLY_Company, HLY_StaffRole, HLY_TravelParticipant, HLY_TravelStatus, TimeUtils, } from '../core'
+import { HLY_Company, HLY_StaffRole, HLY_TravelParticipant, HLY_TravelStatus, TimeUtils } from '../core'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
-import { CTrip_FlightChangeInfoEntity, } from '@fangcha/ctrip-sdk'
+import { CTrip_FlightChangeInfoEntity } from '@fangcha/ctrip-sdk'
 import { SystemConfigHandler } from './SystemConfigHandler'
 
 export class HuilianyiSyncHandler {
@@ -320,11 +320,16 @@ export class HuilianyiSyncHandler {
 
   public async syncDummyTravelRecords() {
     const syncCore = this.syncCore
-    const Dummy_Travel = syncCore.modelsCore.Dummy_Travel
-    const dummyItems = await new Dummy_Travel().fc_searcher().queryAllFeeds()
+    const dummyItems = await new syncCore.modelsCore.Dummy_Travel().fc_searcher().queryAllFeeds()
     const staffMapper = await syncCore.modelsCore.HLY_Staff.staffMapper()
     const companyMapper = await new SystemConfigHandler(syncCore).getCompanyMetadata()
     await this.do_syncDummyTravelRecords(dummyItems, staffMapper, companyMapper)
+
+    await syncCore.modelsCore.database.update(`
+        UPDATE hly_travel, dummy_travel
+        SET hly_travel.travel_status = dummy_travel.travel_status
+        WHERE hly_travel.business_code = dummy_travel.business_code
+    `)
   }
 
   public async dumpTravelRecords(forceReload = false) {
