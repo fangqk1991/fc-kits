@@ -40,21 +40,4 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
   it(`dumpExpenseApplicationRecords`, async () => {
     await huilianyiService.syncHandler().dumpExpenseApplicationRecords(true)
   })
-
-  it(`dumpCtripOrders`, async () => {
-    await huilianyiService.syncHandler().dumpCtripOrders()
-  })
-
-  it(`extractTrainTicketsFromOrders`, async () => {
-    await huilianyiService.syncHandler().extractTrainTicketsFromOrders()
-  })
-
-  it(`extractFlightTicketsFromOrders`, async () => {
-    await huilianyiService.syncHandler().extractFlightTicketsFromOrders()
-  })
-
-  it(`fetchCtripOrderIds`, async () => {
-    const orderIdList = await huilianyiService.syncHandler().fetchCtripOrderIds()
-    console.info(orderIdList)
-  })
 })

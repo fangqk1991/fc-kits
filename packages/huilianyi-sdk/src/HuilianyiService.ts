@@ -10,6 +10,7 @@ import { PublicPaymentService } from './services/PublicPaymentService'
 import { CTripOptions } from '@fangcha/ctrip-sdk'
 import { DummyTicketHandler } from './services/DummyTicketHandler'
 import { CommonTicketHandler } from './services/CommonTicketHandler'
+import { CTripSyncHandler } from './services/CTripSyncHandler'
 
 interface Options {
   database: FCDatabase
@@ -32,6 +33,10 @@ export class HuilianyiService {
 
   public syncHandler() {
     return new HuilianyiSyncHandler(this.syncCore)
+  }
+
+  public ctripHandler() {
+    return new CTripSyncHandler(this.syncCore)
   }
 
   public monthAllowanceMaker() {
@@ -60,6 +65,7 @@ export class HuilianyiService {
 
   public async syncAndRefreshData(forceReload?: boolean) {
     const syncHandler = this.syncHandler()
+    const ctripHandler = this.ctripHandler()
 
     await syncHandler.dumpExpenseApplicationRecords(forceReload)
     await syncHandler.dumpExpenseRecords(forceReload)
@@ -76,10 +82,10 @@ export class HuilianyiService {
     await syncHandler.dumpStaffRecords()
 
     if (forceReload) {
-      await syncHandler.dumpCtripOrders()
+      await ctripHandler.dumpCtripOrders()
     }
-    await syncHandler.extractTrainTicketsFromOrders()
-    await syncHandler.extractFlightTicketsFromOrders()
+    await ctripHandler.extractTrainTicketsFromOrders()
+    await ctripHandler.extractFlightTicketsFromOrders()
 
     await this.travelService().fillCTripTicketsBusinessCode()
 
