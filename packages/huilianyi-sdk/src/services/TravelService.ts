@@ -521,9 +521,15 @@ export class TravelService {
           special_key: specialKey,
         })
         if (dummyTravel) {
-          console.error(
+          console.warn(
             `${dummyTravel.businessCode} - ${dummyTravel.applicantOid} - ${month} - ${dummyTravel.applicantName} exists`
           )
+          const runner = dummyTravel.dbSpec().database.createTransactionRunner()
+          await runner.commit(async (transaction) => {
+            for (const ticket of tickets) {
+              await ticket.linkBusinessCode(dummyTravel.businessCode, transaction)
+            }
+          })
           continue
         }
         await this.makeDummyTravel(
