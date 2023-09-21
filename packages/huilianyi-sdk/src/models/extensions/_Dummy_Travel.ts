@@ -30,11 +30,4 @@ export class _Dummy_Travel extends __Dummy_Travel {
     this.travelStatus = HLY_TravelStatus.Deleted
     await this.updateToDB(transaction)
   }
-
-  public ticketIdList() {
-    return (this.ticketIdListStr || '')
-      .split(',')
-      .map((item) => item.trim())
-      .filter((item) => !!item)
-  }
 }

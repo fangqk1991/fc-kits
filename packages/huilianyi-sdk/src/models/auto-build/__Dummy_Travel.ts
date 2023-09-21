@@ -14,7 +14,6 @@ const _cols: string[] = [
   'end_time',
   'version',
   'travel_status',
-  'ticket_id_list_str',
   'remarks',
   'create_time',
   'update_time',
@@ -32,7 +31,6 @@ const _insertableCols: string[] = [
   'end_time',
   'version',
   'travel_status',
-  'ticket_id_list_str',
   'remarks',
 ]
 const _modifiableCols: string[] = [
@@ -46,7 +44,6 @@ const _modifiableCols: string[] = [
   'end_time',
   'version',
   'travel_status',
-  'ticket_id_list_str',
   'remarks',
 ]
 
@@ -129,10 +126,6 @@ export default class __Dummy_Travel extends FeedBase {
    */
   public travelStatus!: number | null
   /**
-   * @description [text]
-   */
-  public ticketIdListStr!: string
-  /**
    * @description [varchar(255)] 备注
    */
   public remarks!: string
@@ -187,7 +180,6 @@ export default class __Dummy_Travel extends FeedBase {
     this.endTime = null
     this.version = 0
     this.travelStatus = null
-    this.ticketIdListStr = ''
     this.remarks = ''
   }
 
@@ -204,7 +196,6 @@ export default class __Dummy_Travel extends FeedBase {
       endTime: 'end_time',
       version: 'version',
       travelStatus: 'travel_status',
-      ticketIdListStr: 'ticket_id_list_str',
       remarks: 'remarks',
       createTime: 'create_time',
       updateTime: 'update_time',

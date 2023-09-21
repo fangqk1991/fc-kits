@@ -274,18 +274,6 @@ export class TravelService {
   }
 
   public async makeCommonTrafficTickets() {
-    const linkedTicketMap: { [ticketId: string]: string } = {}
-    {
-      const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
-      searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
-      const feeds = await searcher.queryAllFeeds()
-      for (const dummyTravel of feeds) {
-        for (const ticketId of dummyTravel.ticketIdList()) {
-          linkedTicketMap[ticketId] = dummyTravel.businessCode
-        }
-      }
-    }
-
     const searcher = new this.modelsCore.CTrip_Ticket().fc_searcher()
     const feeds = await searcher.queryAllFeeds()
     const todoTickets: App_TrafficTicket[] = feeds.map((item) => item.makeCommonTicket())
@@ -430,12 +418,6 @@ export class TravelService {
       assert.ok(!ticket.businessCode, `所选票据中存在已关联出差申请单的票据`)
       assert.ok(userOid === ticket.userOid, `所选票据并非来自同一人`)
     })
-    for (const ticketId of ticketIdList) {
-      const searcher = new this.modelsCore.Dummy_Travel().fc_searcher()
-      searcher.processor().addSpecialCondition('travel_status != ?', HLY_TravelStatus.Deleted)
-      searcher.processor().addSpecialCondition('FIND_IN_SET(?, ticket_id_list_str)', ticketId)
-      assert.ok((await searcher.queryCount()) === 0, `票据[${ticketId}]已被其他虚拟行程单关联`, 500)
-    }
 
     // const closedLoops = TravelTools.makeClosedLoopsV2(tickets.map((item) => item.modelForClient()))
     // assert.ok(closedLoops.length > 0, `所选票据未构成闭环行程`)
@@ -450,7 +432,6 @@ export class TravelService {
     dummyTravel.startTime = tickets[0].fromTime
     dummyTravel.endTime = tickets[tickets.length - 1].toTime
     dummyTravel.travelStatus = HLY_TravelStatus.Passed
-    dummyTravel.ticketIdListStr = tickets.map((item) => item.ticketId).join(',')
     dummyTravel.remarks = options.remarks || ''
     if (options.specialKey) {
       dummyTravel.specialKey = options.specialKey
