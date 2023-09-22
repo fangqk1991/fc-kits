@@ -12,6 +12,11 @@ describe('Test HLY_BasicDataProxy.test.ts', () => {
     console.info(JSON.stringify(items, null, 2))
   })
 
+  it(`getStaffDetail`, async () => {
+    const data = await basicDataProxy.getStaffDetail('xxxxxxxxxx')
+    console.info(JSON.stringify(data, null, 2))
+  })
+
   it(`getUserGroupList`, async () => {
     const items = await basicDataProxy.getUserGroupList()
     console.info(items)

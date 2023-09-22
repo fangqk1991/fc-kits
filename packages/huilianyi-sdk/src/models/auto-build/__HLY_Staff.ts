@@ -10,6 +10,9 @@ const _cols: string[] = [
   'full_name',
   'email',
   'base_city',
+  'in_force_spend_group',
+  'in_none_spend_group',
+  'is_special_allowance',
   'without_allowance',
   'department_oid',
   'department_path',
@@ -32,6 +35,9 @@ const _insertableCols: string[] = [
   'full_name',
   'email',
   'base_city',
+  'in_force_spend_group',
+  'in_none_spend_group',
+  'is_special_allowance',
   'without_allowance',
   'department_oid',
   'department_path',
@@ -50,6 +56,9 @@ const _modifiableCols: string[] = [
   'full_name',
   'email',
   'base_city',
+  'in_force_spend_group',
+  'in_none_spend_group',
+  'is_special_allowance',
   'without_allowance',
   'department_oid',
   'department_path',
@@ -126,6 +135,18 @@ export default class __HLY_Staff extends FeedBase {
    * @description [varchar(64)]
    */
   public baseCity!: string
+  /**
+   * @description [tinyint]
+   */
+  public inForceSpendGroup!: number
+  /**
+   * @description [tinyint]
+   */
+  public inNoneSpendGroup!: number
+  /**
+   * @description [tinyint]
+   */
+  public isSpecialAllowance!: number
   /**
    * @description [tinyint] 不发放出差补贴
    */
@@ -211,6 +232,9 @@ export default class __HLY_Staff extends FeedBase {
     this.fullName = ''
     this.email = null
     this.baseCity = ''
+    this.inForceSpendGroup = 0
+    this.inNoneSpendGroup = 0
+    this.isSpecialAllowance = 0
     this.withoutAllowance = 0
     this.departmentOid = null
     this.departmentPath = ''
@@ -231,6 +255,9 @@ export default class __HLY_Staff extends FeedBase {
       fullName: 'full_name',
       email: 'email',
       baseCity: 'base_city',
+      inForceSpendGroup: 'in_force_spend_group',
+      inNoneSpendGroup: 'in_none_spend_group',
+      isSpecialAllowance: 'is_special_allowance',
       withoutAllowance: 'without_allowance',
       departmentOid: 'department_oid',
       departmentPath: 'department_path',

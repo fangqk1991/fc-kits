@@ -116,7 +116,18 @@ export class HuilianyiSyncHandler {
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
     bulkAdder.setInsertKeys(
-      dbSpec.insertableCols().filter((item) => !['base_city', 'without_allowance'].includes(item))
+      dbSpec
+        .insertableCols()
+        .filter(
+          (item) =>
+            ![
+              'base_city',
+              'in_force_spend_group',
+              'in_none_spend_group',
+              'is_special_allowance',
+              'without_allowance',
+            ].includes(item)
+        )
     )
     bulkAdder.declareTimestampKey('entry_date')
     bulkAdder.declareTimestampKey('leaving_date')

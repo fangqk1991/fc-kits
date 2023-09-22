@@ -1,6 +1,5 @@
 import { HuilianyiServiceDev } from './HuilianyiServiceDev'
 import { CTrip_FlightChangeTypeDescriptor, CTrip_OrderType, CTrip_TrainOrderInfoEntity } from '@fangcha/ctrip-sdk'
-import * as assert from 'assert'
 
 describe('Test CTrip_Order.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
