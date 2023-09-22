@@ -220,6 +220,14 @@ export class CTripSyncHandler {
           if (hasChanged && ticketInfo.TrainTicketType === 'D') {
             ticket.ctripStatus = '已改签'
           }
+          if (
+            item.orderStatus === '部分退票' &&
+            passenger.OrderTicket &&
+            passenger.OrderTicket.length === ticketInfoList.length
+          ) {
+            const ticketOrder = passenger.OrderTicket[i]
+            ticket.ctripStatus = ticketOrder.RefundTicketStatus === 'S' ? '已退票' : '已购票'
+          }
           bulkAdder.putObject(ticket.fc_encode())
         }
       }

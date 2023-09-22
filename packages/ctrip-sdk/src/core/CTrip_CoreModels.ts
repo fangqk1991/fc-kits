@@ -75,6 +75,7 @@ export interface CTrip_TrainOrderInfoEntity {
       AfterTakeTicketId: number
       AfterTakeTicketFee: number
       ChangePreApprovalId: string
+      RefundTicketStatus: string // 'S': 退票成功
       Sequence: number
     }[]
   }[]
