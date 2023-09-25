@@ -10,9 +10,9 @@ const values = [HLY_StaffAllowanceStatus.UseAllowance, HLY_StaffAllowanceStatus.
 const describe = (code: HLY_StaffAllowanceStatus) => {
   switch (code) {
     case HLY_StaffAllowanceStatus.UseAllowance:
-      return '发放补贴'
+      return '自动计算补贴'
     case HLY_StaffAllowanceStatus.WithoutAllowance:
-      return '不发放补贴'
+      return '不自动计算补贴'
   }
   return code
 }
