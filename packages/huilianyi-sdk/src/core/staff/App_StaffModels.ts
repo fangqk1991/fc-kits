@@ -17,6 +17,9 @@ export interface App_StaffModel {
   groupOids: string[]
   groupCodes: string[]
   groupNames: string[]
+  inForceSpendGroup: number
+  inNoneSpendGroup: number
+  isSpecialAllowance: number
   withoutAllowance: number
 }
 
