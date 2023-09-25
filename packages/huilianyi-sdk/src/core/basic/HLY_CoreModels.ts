@@ -1,5 +1,6 @@
 import { HLY_Department } from './HuilianyiModels'
 import { HLY_LabelType } from './HLY_LabelType'
+import { HLY_StaffStatus } from '../staff/HLY_StaffStatus'
 
 /**
  * @description https://opendocs.huilianyi.com/widget.html
@@ -33,7 +34,7 @@ export interface HLY_Staff extends HLY_StaffCoreDTO {
   mobile: string
   fullName: string
   email: string
-  status: number // 1001--正常;1002--待离职;1003--离职
+  status: HLY_StaffStatus
   title: string
   userOID: string
   departmentOID: string

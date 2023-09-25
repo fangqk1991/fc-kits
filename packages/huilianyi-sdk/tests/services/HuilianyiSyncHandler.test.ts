@@ -7,12 +7,7 @@ describe('Test HuilianyiSyncHandler.test.ts', () => {
     await huilianyiService.syncHandler().dumpDepartmentRecords()
   })
 
-  it(`dumpStaffGroupRecords`, async () => {
-    await huilianyiService.syncHandler().dumpStaffGroupRecords()
-  })
-
   it(`dumpStaffRecords`, async () => {
-    await huilianyiService.syncHandler().dumpStaffGroupRecords()
     await huilianyiService.syncHandler().dumpStaffRecords()
   })
 

@@ -2,7 +2,15 @@ import { HuilianyiSyncCore } from './HuilianyiSyncCore'
 import { FeedBase } from 'fc-feed'
 import { SQLBulkAdder, SQLSearcher, Transaction } from 'fc-sql'
 import { HuilianyiFormatter } from '../client/HuilianyiFormatter'
-import { HLY_Company, HLY_StaffRole, HLY_TravelParticipant, HLY_TravelStatus, TimeUtils } from '../core'
+import {
+  HLY_Company,
+  HLY_Staff,
+  HLY_StaffRole,
+  HLY_StaffStatus,
+  HLY_TravelParticipant,
+  HLY_TravelStatus,
+  TimeUtils,
+} from '../core'
 import { _HLY_StaffGroup } from '../models/extensions/_HLY_StaffGroup'
 import { _Dummy_Travel } from '../models/extensions/_Dummy_Travel'
 import { _HLY_Staff } from '../models/extensions/_HLY_Staff'
@@ -31,19 +39,19 @@ export class HuilianyiSyncHandler {
     return result['last_time']
   }
 
-  public async dumpStaffGroupRecords() {
+  public async dumpStaffRecords() {
     const syncCore = this.syncCore
     const HLY_StaffGroup = syncCore.modelsCore.HLY_StaffGroup
 
-    const items = await syncCore.basicDataProxy.getUserGroupList()
-    console.info(`[dumpStaffGroupRecords] fetch ${items.length} items.`)
+    const groupList = await syncCore.basicDataProxy.getUserGroupList()
+    const staffList = await syncCore.basicDataProxy.getAllStaffs()
 
     const dbSpec = new HLY_StaffGroup().dbSpec()
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.useUpdateWhenDuplicate()
     bulkAdder.setInsertKeys(dbSpec.insertableCols())
-    for (const item of items) {
+    for (const item of groupList) {
       const feed = new HLY_StaffGroup()
       feed.groupOid = item.userGroupOID
       feed.groupCode = item.code
@@ -56,7 +64,7 @@ export class HuilianyiSyncHandler {
 
     const HLY_StaffGroupMember = syncCore.modelsCore.HLY_StaffGroupMember
 
-    for (const group of items) {
+    for (const group of groupList) {
       const dbSpec = new HLY_StaffGroupMember().dbSpec()
       const newMembers = await syncCore.basicDataProxy.getUserGroupMembers(group.code)
 
@@ -79,6 +87,10 @@ export class HuilianyiSyncHandler {
         const searcher = new HLY_StaffGroupMember().fc_searcher()
         searcher.processor().transaction = transaction
         searcher.processor().addConditionKV('group_oid', group.userGroupOID)
+        searcher.processor().addConditionKeyNotInArray(
+          'user_oid',
+          staffList.filter((item) => item.status === HLY_StaffStatus.Quited).map((item) => item.userOID)
+        )
         searcher.processor().addConditionKeyNotInArray('user_oid', userOidList)
         const toRemoveItems = await searcher.queryAllFeeds()
 
@@ -87,16 +99,17 @@ export class HuilianyiSyncHandler {
         }
       })
     }
+
+    await this.writeStaffRecords(staffList)
   }
 
-  public async dumpStaffRecords() {
+  private async writeStaffRecords(items: HLY_Staff[]) {
+    console.info(`[writeStaffRecords] fetch ${items.length} items.`)
+
     const syncCore = this.syncCore
     const HLY_Staff = syncCore.modelsCore.HLY_Staff
     const HLY_StaffGroup = syncCore.modelsCore.HLY_StaffGroup
     const HLY_StaffGroupMember = syncCore.modelsCore.HLY_StaffGroupMember
-
-    const items = await syncCore.basicDataProxy.getAllStaffs()
-    console.info(`[dumpStaffRecords] fetch ${items.length} items.`)
 
     const groupMapper = await HLY_StaffGroup.wholeGroupMapper()
     const groupMembers = await new HLY_StaffGroupMember().fc_searcher().queryAllFeeds()
