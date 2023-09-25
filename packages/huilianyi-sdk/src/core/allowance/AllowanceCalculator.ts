@@ -1,6 +1,6 @@
 import { AllowanceDayItem, AllowanceUnitPriceInfo, App_AllowanceRuleModel } from './App_AllowanceModels'
 import { App_MatchType } from './App_MatchType'
-import { App_ClosedLoop } from '../travel/App_TravelModels'
+import { App_TicketsFragment } from '../travel/App_TravelModels'
 import { TimeUtils } from '../tools/TimeUtils'
 import { HLY_StaffAllowanceStatus } from '../travel/HLY_StaffAllowanceStatus'
 
@@ -36,7 +36,7 @@ export class AllowanceCalculator {
       roleCodeList: string[]
       withoutAllowance?: HLY_StaffAllowanceStatus
     },
-    loopItems: App_ClosedLoop[]
+    loopItems: App_TicketsFragment[]
   ): AllowanceDayItem[] {
     const allDayItems: AllowanceDayItem[] = []
     for (const closedLoop of loopItems) {

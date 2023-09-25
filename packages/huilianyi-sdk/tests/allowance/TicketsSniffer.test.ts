@@ -1,5 +1,6 @@
 import { HuilianyiServiceDev } from '../services/HuilianyiServiceDev'
 import { App_TrafficTicket, TravelTools } from '../../src'
+import * as assert from 'assert'
 
 describe('Test TicketsSniffer.test.ts', () => {
   const huilianyiService = HuilianyiServiceDev
@@ -42,7 +43,7 @@ describe('Test TicketsSniffer.test.ts', () => {
       //     })
       //   })
       // )
-      const closedLoops = TravelTools.makeClosedLoopsV2(tickets)
+      const { closedLoops } = TravelTools.makeClosedLoopsV2(tickets)
       for (const loopItem of closedLoops) {
         if (loopItem.tickets[0].userOid) {
           await huilianyiService.travelService().makeDummyTravel(loopItem.tickets.map((item) => item.ticketId))
@@ -56,29 +57,60 @@ describe('Test TicketsSniffer.test.ts', () => {
   it(`makeClosedLoopsV2`, async () => {
     const tickets = [
       {
+        fromTime: '2000-01-01 01:00:00',
+        toTime: '2000-01-01 01:00:00',
         fromCity: 'A',
         toCity: 'B',
       },
       {
+        fromTime: '2000-01-02 01:00:00',
+        toTime: '2000-01-02 01:00:00',
         fromCity: 'B',
         toCity: 'C',
       },
       {
+        fromTime: '2000-01-02 02:00:00',
+        toTime: '2000-01-02 02:00:00',
+        fromCity: 'B',
+        toCity: 'D',
+      },
+      {
+        fromTime: '2000-01-03 01:00:00',
+        toTime: '2000-01-03 01:00:00',
         fromCity: 'B',
         toCity: 'A',
       },
       {
+        fromTime: '2000-01-04 01:00:00',
+        toTime: '2000-01-04 01:00:00',
         fromCity: 'A',
         toCity: 'C',
       },
       {
+        fromTime: '2000-01-05 01:00:00',
+        toTime: '2000-01-05 01:00:00',
         fromCity: 'C',
         toCity: 'A',
       },
+      {
+        fromTime: '2000-01-06 02:00:00',
+        toTime: '2000-01-06 02:00:00',
+        fromCity: 'B',
+        toCity: 'D',
+      },
     ] as App_TrafficTicket[]
-    const closedLoops = TravelTools.makeClosedLoopsV2(tickets)
+    const { closedLoops, otherFragments } = TravelTools.makeClosedLoopsV2(tickets)
+    assert.ok(closedLoops.length > 0)
     console.info(
-      closedLoops.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`)),
+      'closedLoops',
+      closedLoops.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
+    )
+    console.info(
+      'otherFragments',
+      otherFragments.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
+    )
+    console.info(
+      'tickets',
       tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`)
     )
   })

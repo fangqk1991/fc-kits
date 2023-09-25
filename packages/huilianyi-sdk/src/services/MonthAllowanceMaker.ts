@@ -2,7 +2,7 @@ import { md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   AllowanceCalculator,
-  App_ClosedLoop,
+  App_TicketsFragment,
   App_TrafficTicket,
   App_TravelAllowanceExtrasData,
   HLY_AllowanceCase,
@@ -49,7 +49,7 @@ export class MonthAllowanceMaker {
         const trafficItem = travelItem
           .employeeTrafficItems()
           .find((trafficItem) => trafficItem.employeeName === participant.fullName)
-        let closedLoops: App_ClosedLoop[] = []
+        let closedLoops: App_TicketsFragment[] = []
         let tickets: App_TrafficTicket[] = []
         if (trafficItem) {
           closedLoops = trafficItem.closedLoops || []

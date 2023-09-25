@@ -1,5 +1,5 @@
 import * as moment from 'moment/moment'
-import { App_AllowanceCoreData, App_ClosedLoop, App_TrafficTicket } from '../travel/App_TravelModels'
+import { App_AllowanceCoreData, App_TicketsFragment, App_TrafficTicket } from '../travel/App_TravelModels'
 import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
 
 export class TravelTools {
@@ -31,7 +31,8 @@ export class TravelTools {
 
   public static makeClosedLoopsV2(tickets: App_TrafficTicket[]) {
     const ticketFragments = this.splitTickets(tickets)
-    const closedLoops: App_ClosedLoop[] = []
+    const closedLoops: App_TicketsFragment[] = []
+    const otherFragments: App_TicketsFragment[] = []
     const calcLoopTickets = (
       curTickets: App_TrafficTicket[],
       remainTickets: App_TrafficTicket[]
@@ -61,17 +62,40 @@ export class TravelTools {
         })
       }
     }
-    return closedLoops
+    {
+      let curTickets: App_TrafficTicket[] = []
+      for (const ticket of tickets) {
+        if (ticket.useForAllowance === 1) {
+          if (curTickets.length > 0) {
+            otherFragments.push({
+              tickets: curTickets,
+            })
+          }
+          curTickets = []
+        } else {
+          curTickets.push(ticket)
+        }
+      }
+      if (curTickets.length > 0) {
+        otherFragments.push({
+          tickets: curTickets,
+        })
+      }
+    }
+    return {
+      closedLoops: closedLoops,
+      otherFragments: otherFragments,
+    }
   }
 
   /**
    * @deprecated
    */
-  public static makeClosedLoops(tickets: App_TrafficTicket[]): App_ClosedLoop[] | null {
+  public static makeClosedLoops(tickets: App_TrafficTicket[]): App_TicketsFragment[] | null {
     tickets = [...tickets]
     tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
 
-    const closedLoops: App_ClosedLoop[] = [
+    const closedLoops: App_TicketsFragment[] = [
       {
         tickets: [],
       },

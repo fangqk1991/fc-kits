@@ -55,7 +55,7 @@ export interface App_TravelModel extends App_FormBase<App_TravelExtrasData> {
 
 export interface App_TravelAllowanceExtrasData {
   itineraryItems: App_TravelCoreItinerary[]
-  closedLoops: App_ClosedLoop[]
+  closedLoops: App_TicketsFragment[]
   tickets: App_TrafficTicket[]
 }
 
@@ -128,7 +128,7 @@ export interface App_TrafficTicket {
   remarks?: string
 }
 
-export interface App_ClosedLoop {
+export interface App_TicketsFragment {
   tickets: App_TrafficTicket[]
 }
 
@@ -138,7 +138,7 @@ export interface App_EmployeeTrafficData {
   employeeName: string
   isClosedLoop: boolean
   tickets: App_TrafficTicket[]
-  closedLoops: App_ClosedLoop[]
+  closedLoops: App_TicketsFragment[]
   allowanceDayItems: AllowanceDayItem[]
 }
 
