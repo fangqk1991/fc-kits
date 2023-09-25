@@ -54,7 +54,19 @@ export class AllowanceCalculator {
         },
       ]
       for (let i = 1; i < closedLoop.tickets.length; ++i) {
+        const prevTicket = closedLoop.tickets[i - 1]
         const ticket = closedLoop.tickets[i]
+
+        if (
+          TimeUtils.momentUTC8(prevTicket.toTime).format('YYYY-MM-DD') ===
+          TimeUtils.momentUTC8(ticket.fromTime).format('YYYY-MM-DD')
+        ) {
+          const ruleResult = this.calculateRules(staffProps.roleCodeList, ticket.toCity)
+          dayItems[dayItems.length - 1].cityName = ticket.toCity
+          dayItems[dayItems.length - 1].amount = ticket.toCity === ticket.baseCity ? 0 : ruleResult.unitPrice
+          continue
+        }
+
         const lastCity = ticket.fromCity
         const ruleResult = this.calculateRules(staffProps.roleCodeList, lastCity)
 
