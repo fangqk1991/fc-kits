@@ -71,7 +71,7 @@ describe('Test TicketsSniffer.test.ts', () => {
       {
         fromTime: '2000-01-02 02:00:00',
         toTime: '2000-01-02 02:00:00',
-        fromCity: 'B',
+        fromCity: 'C',
         toCity: 'D',
       },
       {
@@ -99,15 +99,15 @@ describe('Test TicketsSniffer.test.ts', () => {
         toCity: 'D',
       },
     ] as App_TrafficTicket[]
-    const { closedLoops, otherFragments } = TravelTools.makeClosedLoopsV2(tickets)
+    const { closedLoops, singleLinks } = TravelTools.makeClosedLoopsV2(tickets)
     assert.ok(closedLoops.length > 0)
     console.info(
       'closedLoops',
       closedLoops.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
     )
     console.info(
-      'otherFragments',
-      otherFragments.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
+      'singleLinks',
+      singleLinks.map((item) => item.tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
     )
     console.info(
       'tickets',

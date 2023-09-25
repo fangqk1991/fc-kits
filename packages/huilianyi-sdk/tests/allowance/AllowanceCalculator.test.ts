@@ -53,6 +53,7 @@ describe('Test AllowanceCalculator.test.ts', () => {
       },
       [
         {
+          isPretty: true,
           tickets: [
             {
               ticketId: '',

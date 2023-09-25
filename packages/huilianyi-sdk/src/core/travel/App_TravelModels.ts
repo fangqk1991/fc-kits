@@ -129,6 +129,7 @@ export interface App_TrafficTicket {
 }
 
 export interface App_TicketsFragment {
+  isPretty?: boolean
   tickets: App_TrafficTicket[]
 }
 

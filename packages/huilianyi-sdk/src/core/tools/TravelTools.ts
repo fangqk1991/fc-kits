@@ -58,6 +58,7 @@ export class TravelTools {
       if (loopTickets) {
         loopTickets.forEach((ticket) => (ticket.useForAllowance = 1))
         closedLoops.push({
+          isPretty: true,
           tickets: loopTickets,
         })
       }
@@ -68,6 +69,7 @@ export class TravelTools {
         if (ticket.useForAllowance === 1) {
           if (curTickets.length > 0) {
             otherFragments.push({
+              isPretty: false,
               tickets: curTickets,
             })
           }
@@ -78,13 +80,30 @@ export class TravelTools {
       }
       if (curTickets.length > 0) {
         otherFragments.push({
+          isPretty: false,
           tickets: curTickets,
         })
       }
     }
+    const singleLinks: App_TicketsFragment[] = []
+    for (const { tickets } of otherFragments) {
+      let i = 0
+      while (i < tickets.length) {
+        const link: App_TicketsFragment = {
+          isPretty: true,
+          tickets: [tickets[i]],
+        }
+        ++i
+        while (i < tickets.length && tickets[i - 1].toCity === tickets[i].fromCity) {
+          link.tickets.push(tickets[i])
+          ++i
+        }
+        singleLinks.push(link)
+      }
+    }
     return {
       closedLoops: closedLoops,
-      otherFragments: otherFragments,
+      singleLinks: singleLinks.filter((item) => item.tickets.length > 1),
     }
   }
 
@@ -97,6 +116,7 @@ export class TravelTools {
 
     const closedLoops: App_TicketsFragment[] = [
       {
+        isPretty: true,
         tickets: [],
       },
     ]
@@ -119,6 +139,7 @@ export class TravelTools {
 
       if (startCity === ticket.toCity) {
         closedLoops.push({
+          isPretty: true,
           tickets: [],
         })
         startCity = ''
