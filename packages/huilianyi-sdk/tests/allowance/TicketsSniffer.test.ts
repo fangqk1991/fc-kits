@@ -123,10 +123,10 @@ describe('Test TicketsSniffer.test.ts', () => {
       'loopTicketGroups',
       loopTicketGroups.map((tickets) => tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
     )
-    // console.info(
-    //   'otherTicketGroups',
-    //   otherTicketGroups.map((item) => tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
-    // )
+    console.info(
+      'otherTicketGroups',
+      otherTicketGroups.map((tickets) => tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
+    )
   })
 
   it(`makeClosedLoopsV2`, async () => {
