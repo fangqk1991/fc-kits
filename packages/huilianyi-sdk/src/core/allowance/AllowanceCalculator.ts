@@ -51,7 +51,10 @@ export class AllowanceCalculator {
     for (let i = 1; i < tickets.length; ++i) {
       const lastTicket = targetTickets[targetTickets.length - 1]
       const curTicket = tickets[i]
-      if (TimeUtils.momentUTC8(curTicket.fromTime).unix() - TimeUtils.momentUTC8(lastTicket.toTime).unix() < 3600 * 4) {
+      if (
+        curTicket.toCity !== curTicket.baseCity &&
+        TimeUtils.momentUTC8(curTicket.fromTime).unix() - TimeUtils.momentUTC8(lastTicket.toTime).unix() < 3600 * 4
+      ) {
         lastTicket.toCity = curTicket.toCity
         lastTicket.toTime = curTicket.toTime
         continue
