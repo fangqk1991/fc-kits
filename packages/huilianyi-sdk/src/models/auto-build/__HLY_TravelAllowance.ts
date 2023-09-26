@@ -28,6 +28,7 @@ const _cols: string[] = [
   'allowance_case',
   'without_allowance',
   'pay_amount',
+  'batch_no',
   'snap_hash',
   'create_time',
   'update_time',
@@ -57,6 +58,7 @@ const _insertableCols: string[] = [
   'allowance_case',
   'without_allowance',
   'pay_amount',
+  'batch_no',
   'snap_hash',
 ]
 const _modifiableCols: string[] = [
@@ -85,6 +87,7 @@ const _modifiableCols: string[] = [
   'allowance_case',
   'without_allowance',
   'pay_amount',
+  'batch_no',
   'snap_hash',
 ]
 
@@ -224,6 +227,10 @@ export default class __HLY_TravelAllowance extends FeedBase {
    */
   public payAmount!: number
   /**
+   * @description [char(32)] 批次号
+   */
+  public batchNo!: string
+  /**
    * @description [char(32)] uid + days_count + amount MD5
    */
   public snapHash!: string
@@ -289,6 +296,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
     this.allowanceCase = 0
     this.withoutAllowance = 0
     this.payAmount = 0
+    this.batchNo = ''
     this.snapHash = ''
   }
 
@@ -319,6 +327,7 @@ export default class __HLY_TravelAllowance extends FeedBase {
       allowanceCase: 'allowance_case',
       withoutAllowance: 'without_allowance',
       payAmount: 'pay_amount',
+      batchNo: 'batch_no',
       snapHash: 'snap_hash',
       createTime: 'create_time',
       updateTime: 'update_time',

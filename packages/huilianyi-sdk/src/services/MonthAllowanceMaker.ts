@@ -1,4 +1,4 @@
-import { md5 } from '@fangcha/tools'
+import { makeUUID, md5 } from '@fangcha/tools'
 import { HuilianyiModelsCore } from './HuilianyiModelsCore'
 import {
   AllowanceCalculator,
@@ -27,6 +27,7 @@ export class MonthAllowanceMaker {
   }
 
   public async makeMonthAllowance(AllowanceClass?: { new (): _HLY_TravelAllowance } & typeof _HLY_TravelAllowance) {
+    const batchNo = makeUUID()
     const rules = await this.modelsCore.HLY_AllowanceRule.allRules()
     const calculator = new AllowanceCalculator(rules)
     AllowanceClass = AllowanceClass || this.modelsCore.HLY_TravelAllowance
@@ -107,6 +108,7 @@ export class MonthAllowanceMaker {
           allowance.endTime = travelItem.endTime
           allowance.withoutAllowance = staff.withoutAllowance
           allowance.uid = md5([travelItem.businessCode, month, participant.userOID].join(','))
+          allowance.batchNo = batchNo
 
           const prevAllowance = await AllowanceClass.findWithUid(allowance.uid)
           const coreData = TravelTools.makeAllowanceCoreData(
@@ -135,10 +137,7 @@ export class MonthAllowanceMaker {
       const allowanceDbSpec = new AllowanceClass().dbSpec()
       const remover = new SQLRemover(allowanceDbSpec.database)
       remover.setTable(allowanceDbSpec.table)
-      remover.addConditionKeyNotInArray(
-        'business_code',
-        items.map((item) => item.businessCode)
-      )
+      remover.addSpecialCondition('batch_no != ?', batchNo)
       await remover.execute()
     }
 
