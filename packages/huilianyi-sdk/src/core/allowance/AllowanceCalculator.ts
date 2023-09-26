@@ -57,7 +57,10 @@ export class AllowanceCalculator {
         const prevTicket = closedLoop.tickets[i - 1]
         const ticket = closedLoop.tickets[i]
 
-        if (TimeUtils.momentUTC8(ticket.fromTime).unix() - TimeUtils.momentUTC8(prevTicket.toTime).unix() < 3600 * 4) {
+        if (
+          ticket.toCity !== ticket.baseCity &&
+          TimeUtils.momentUTC8(ticket.fromTime).unix() - TimeUtils.momentUTC8(prevTicket.toTime).unix() < 3600 * 4
+        ) {
           const ruleResult = this.calculateRules(staffProps.roleCodeList, ticket.toCity)
           dayItems[dayItems.length - 1].cityName = ticket.toCity
           dayItems[dayItems.length - 1].amount = ticket.toCity === ticket.baseCity ? 0 : ruleResult.unitPrice
