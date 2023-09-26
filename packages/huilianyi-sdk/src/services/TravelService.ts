@@ -94,6 +94,7 @@ export class TravelService {
             isClosedLoop: false,
             tickets: [],
             closedLoops: [],
+            singleLinks: [],
             allowanceDayItems: [],
           }
         }
@@ -110,13 +111,14 @@ export class TravelService {
       const trafficItems = businessTrafficItemsMapper[businessCode]
       for (const trafficData of trafficItems) {
         trafficData.tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
-        const { closedLoops } = TravelTools.makeClosedLoopsV2(trafficData.tickets)
+        const { closedLoops, singleLinks } = TravelTools.makeClosedLoopsV2(trafficData.tickets)
         if (closedLoops.length === 0) {
           trafficData.isClosedLoop = false
           continue
         }
         trafficData.isClosedLoop = true
         trafficData.closedLoops = closedLoops
+        trafficData.singleLinks = singleLinks
 
         const staff = staffMapper[trafficData.userOid]
         if (!staff) {

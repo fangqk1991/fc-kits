@@ -426,6 +426,7 @@ CREATE TABLE IF NOT EXISTS hly_traffic_ticket
     ctrip_status      VARCHAR(20)     NULL,
     custom_valid      TINYINT         NULL COMMENT '自定义有效状态',
     use_for_allowance TINYINT         NOT NULL DEFAULT 0 COMMENT '是否参与补贴计算',
+    in_closed_loop    TINYINT         NOT NULL DEFAULT 0 COMMENT '位于闭环行程中',
     is_editable       TINYINT         NOT NULL DEFAULT 0 COMMENT '是否可被编辑',
     is_dummy          TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为虚拟票据',
     remarks           VARCHAR(255)    NOT NULL DEFAULT '' COMMENT '备注',

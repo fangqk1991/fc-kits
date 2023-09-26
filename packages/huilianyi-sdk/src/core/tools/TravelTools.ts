@@ -98,12 +98,18 @@ export class TravelTools {
       )
     }
 
-    tickets.forEach((ticket) => (ticket.useForAllowance = 0))
+    tickets.forEach((ticket) => {
+      ticket.useForAllowance = 0
+      ticket.inClosedLoop = 0
+    })
     for (const tickets of loopTicketGroups) {
       const [firstTicket, ...remainTickets] = tickets
       const loopTickets = calcLoopTickets([firstTicket], remainTickets)
       if (loopTickets) {
-        loopTickets.forEach((ticket) => (ticket.useForAllowance = 1))
+        loopTickets.forEach((ticket) => {
+          ticket.useForAllowance = 1
+          ticket.inClosedLoop = 1
+        })
         closedLoops.push({
           isPretty: true,
           tickets: loopTickets,
@@ -123,6 +129,9 @@ export class TravelTools {
           link.tickets.push(tickets[i])
           ++i
         }
+        link.tickets.forEach((ticket) => {
+          ticket.useForAllowance = 1
+        })
         singleLinks.push(link)
       }
     }

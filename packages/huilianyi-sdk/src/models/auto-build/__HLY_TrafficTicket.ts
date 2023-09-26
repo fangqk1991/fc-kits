@@ -25,6 +25,7 @@ const _cols: string[] = [
   'ctrip_status',
   'custom_valid',
   'use_for_allowance',
+  'in_closed_loop',
   'is_editable',
   'is_dummy',
   'remarks',
@@ -55,6 +56,7 @@ const _insertableCols: string[] = [
   'ctrip_status',
   'custom_valid',
   'use_for_allowance',
+  'in_closed_loop',
   'is_editable',
   'is_dummy',
   'remarks',
@@ -82,6 +84,7 @@ const _modifiableCols: string[] = [
   'ctrip_status',
   'custom_valid',
   'use_for_allowance',
+  'in_closed_loop',
   'is_editable',
   'is_dummy',
   'remarks',
@@ -216,6 +219,10 @@ export default class __HLY_TrafficTicket extends FeedBase {
    */
   public useForAllowance!: number
   /**
+   * @description [tinyint] 位于闭环行程中
+   */
+  public inClosedLoop!: number
+  /**
    * @description [tinyint]
    */
   public isEditable!: number
@@ -284,6 +291,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
     this.ctripStatus = null
     this.customValid = null
     this.useForAllowance = 0
+    this.inClosedLoop = 0
     this.isEditable = 0
     this.isDummy = 0
     this.remarks = ''
@@ -313,6 +321,7 @@ export default class __HLY_TrafficTicket extends FeedBase {
       ctripStatus: 'ctrip_status',
       customValid: 'custom_valid',
       useForAllowance: 'use_for_allowance',
+      inClosedLoop: 'in_closed_loop',
       isEditable: 'is_editable',
       isDummy: 'is_dummy',
       remarks: 'remarks',

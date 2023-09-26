@@ -125,6 +125,7 @@ export interface App_TrafficTicket {
   ctripValid?: number
   ctripStatus?: string
   useForAllowance?: number
+  inClosedLoop?: number
   remarks?: string
 }
 
@@ -140,6 +141,7 @@ export interface App_EmployeeTrafficData {
   isClosedLoop: boolean
   tickets: App_TrafficTicket[]
   closedLoops: App_TicketsFragment[]
+  singleLinks: App_TicketsFragment[]
   allowanceDayItems: AllowanceDayItem[]
 }
 
