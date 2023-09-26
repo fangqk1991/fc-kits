@@ -1,38 +1,85 @@
 import * as moment from 'moment/moment'
 import { App_AllowanceCoreData, App_TicketsFragment, App_TrafficTicket } from '../travel/App_TravelModels'
-import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
+import { AllowanceCoreTicket, AllowanceDayItem } from '../allowance/App_AllowanceModels'
 
 export class TravelTools {
-  public static splitTickets(tickets: App_TrafficTicket[]) {
+  public static splitTickets<T extends AllowanceCoreTicket>(tickets: T[]) {
     tickets = [...tickets]
     tickets.sort((a, b) => moment(a.fromTime).valueOf() - moment(b.toTime).valueOf())
-    const fragments: App_TrafficTicket[][] = []
     if (tickets.length === 0) {
-      return []
+      return {
+        loopTicketGroups: [],
+        otherTicketGroups: [],
+      }
     }
     const baseCity = tickets[0].baseCity || tickets[0].fromCity
-    let curTickets: App_TrafficTicket[] = []
-    for (const ticket of tickets) {
-      if (curTickets.length === 0 && ticket.fromCity !== baseCity) {
-        continue
+
+    let leftIndex = 0
+    let rightIndex = 0
+    const loopRanges: { left: number; right: number }[] = []
+    let otherRanges: { left: number; right: number }[] = []
+    while (leftIndex < tickets.length && rightIndex < tickets.length) {
+      while (leftIndex < tickets.length && tickets[leftIndex].fromCity !== baseCity) {
+        ++leftIndex
       }
-      if (ticket.fromCity === baseCity) {
-        curTickets = [ticket]
-        continue
+      if (leftIndex === tickets.length) {
+        break
       }
-      curTickets.push(ticket)
-      if (ticket.toCity === baseCity) {
-        fragments.push(curTickets)
-        curTickets = []
+
+      rightIndex = leftIndex
+      while (rightIndex < tickets.length && tickets[rightIndex].toCity !== baseCity) {
+        if (tickets[rightIndex].fromCity == baseCity) {
+          leftIndex = rightIndex
+        }
+        ++rightIndex
       }
+      if (rightIndex === tickets.length) {
+        break
+      }
+      loopRanges.push({
+        left: leftIndex,
+        right: rightIndex,
+      })
+      leftIndex = rightIndex + 1
     }
-    return fragments
+    if (loopRanges.length === 0) {
+      otherRanges = [
+        {
+          left: 0,
+          right: tickets.length - 1,
+        },
+      ]
+    } else {
+      const tmpRanges: { left: number; right: number }[] = []
+      tmpRanges.push({
+        left: 0,
+        right: loopRanges[0].left - 1,
+      })
+      for (let i = 1; i < loopRanges.length; ++i) {
+        tmpRanges.push({
+          left: loopRanges[i - 1].right + 1,
+          right: loopRanges[i].left - 1,
+        })
+      }
+      tmpRanges.push({
+        left: loopRanges[loopRanges.length - 1].right + 1,
+        right: tickets.length - 1,
+      })
+      otherRanges = tmpRanges.filter((range) => range.left <= range.right)
+    }
+
+    // console.info(`loopRanges: `, loopRanges)
+    // console.info(`otherRanges: `, otherRanges)
+
+    return {
+      loopTicketGroups: loopRanges.map(({ left, right }) => tickets.slice(left, right + 1)),
+      otherTicketGroups: otherRanges.map(({ left, right }) => tickets.slice(left, right + 1)),
+    }
   }
 
   public static makeClosedLoopsV2(tickets: App_TrafficTicket[]) {
-    const ticketFragments = this.splitTickets(tickets)
+    const { loopTicketGroups, otherTicketGroups } = this.splitTickets(tickets)
     const closedLoops: App_TicketsFragment[] = []
-    const otherFragments: App_TicketsFragment[] = []
     const calcLoopTickets = (
       curTickets: App_TrafficTicket[],
       remainTickets: App_TrafficTicket[]
@@ -52,7 +99,7 @@ export class TravelTools {
     }
 
     tickets.forEach((ticket) => (ticket.useForAllowance = 0))
-    for (const tickets of ticketFragments) {
+    for (const tickets of loopTicketGroups) {
       const [firstTicket, ...remainTickets] = tickets
       const loopTickets = calcLoopTickets([firstTicket], remainTickets)
       if (loopTickets) {
@@ -63,30 +110,8 @@ export class TravelTools {
         })
       }
     }
-    {
-      let curTickets: App_TrafficTicket[] = []
-      for (const ticket of tickets) {
-        if (ticket.useForAllowance === 1) {
-          if (curTickets.length > 0) {
-            otherFragments.push({
-              isPretty: false,
-              tickets: curTickets,
-            })
-          }
-          curTickets = []
-        } else {
-          curTickets.push(ticket)
-        }
-      }
-      if (curTickets.length > 0) {
-        otherFragments.push({
-          isPretty: false,
-          tickets: curTickets,
-        })
-      }
-    }
     const singleLinks: App_TicketsFragment[] = []
-    for (const { tickets } of otherFragments) {
+    for (const tickets of otherTicketGroups) {
       let i = 0
       while (i < tickets.length) {
         const link: App_TicketsFragment = {

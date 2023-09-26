@@ -1,5 +1,5 @@
 import { HuilianyiServiceDev } from '../services/HuilianyiServiceDev'
-import { App_TrafficTicket, TravelTools } from '../../src'
+import { AllowanceCoreTicket, App_TrafficTicket, TravelTools } from '../../src'
 import * as assert from 'assert'
 
 describe('Test TicketsSniffer.test.ts', () => {
@@ -54,6 +54,81 @@ describe('Test TicketsSniffer.test.ts', () => {
     }
   })
 
+  it(`splitTickets`, async () => {
+    const tickets: AllowanceCoreTicket[] = [
+      {
+        fromTime: '2000-01-01 01:00:00',
+        toTime: '2000-01-01 01:00:00',
+        fromCity: 'A',
+        toCity: 'B',
+        // baseCity: 'B',
+      },
+      {
+        fromTime: '2000-01-02 01:00:00',
+        toTime: '2000-01-02 01:00:00',
+        fromCity: 'B',
+        toCity: 'C',
+      },
+      {
+        fromTime: '2000-01-02 02:00:00',
+        toTime: '2000-01-02 02:00:00',
+        fromCity: 'C',
+        toCity: 'D',
+      },
+      // {
+      //   fromTime: '2000-01-02 03:00:00',
+      //   toTime: '2000-01-02 03:00:00',
+      //   fromCity: 'A',
+      //   toCity: 'D',
+      // },
+      {
+        fromTime: '2000-01-03 01:00:00',
+        toTime: '2000-01-03 01:00:00',
+        fromCity: 'B',
+        toCity: 'A',
+      },
+      {
+        fromTime: '2000-01-03 02:00:00',
+        toTime: '2000-01-03 02:00:00',
+        fromCity: 'A',
+        toCity: 'S',
+      },
+      {
+        fromTime: '2000-01-04 01:00:00',
+        toTime: '2000-01-04 01:00:00',
+        fromCity: 'A',
+        toCity: 'C',
+      },
+      {
+        fromTime: '2000-01-05 01:00:00',
+        toTime: '2000-01-05 01:00:00',
+        fromCity: 'C',
+        toCity: 'A',
+      },
+      {
+        fromTime: '2000-01-06 02:00:00',
+        toTime: '2000-01-06 02:00:00',
+        fromCity: 'B',
+        toCity: 'D',
+      },
+      {
+        fromTime: '2000-01-07 02:00:00',
+        toTime: '2000-01-07 02:00:00',
+        fromCity: 'S',
+        toCity: 'B',
+      },
+    ]
+    const { loopTicketGroups, otherTicketGroups } = TravelTools.splitTickets(tickets)
+    console.info(
+      'loopTicketGroups',
+      loopTicketGroups.map((tickets) => tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
+    )
+    // console.info(
+    //   'otherTicketGroups',
+    //   otherTicketGroups.map((item) => tickets.map((ticket) => `${ticket.fromCity} - ${ticket.toCity}`))
+    // )
+  })
+
   it(`makeClosedLoopsV2`, async () => {
     const tickets = [
       {
@@ -97,6 +172,12 @@ describe('Test TicketsSniffer.test.ts', () => {
         toTime: '2000-01-06 02:00:00',
         fromCity: 'B',
         toCity: 'D',
+      },
+      {
+        fromTime: '2000-01-06 03:00:00',
+        toTime: '2000-01-06 03:00:00',
+        fromCity: 'D',
+        toCity: 'E',
       },
     ] as App_TrafficTicket[]
     const { closedLoops, singleLinks } = TravelTools.makeClosedLoopsV2(tickets)

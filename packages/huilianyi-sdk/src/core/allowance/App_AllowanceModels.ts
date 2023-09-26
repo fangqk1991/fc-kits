@@ -32,5 +32,5 @@ export interface AllowanceCoreTicket {
   toCity: string
   fromTime: string
   toTime: string
-  baseCity: string
+  baseCity?: string
 }
