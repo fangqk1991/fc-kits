@@ -26,3 +26,11 @@ export interface AllowanceSnapshotLogModel {
   createTime: string
   updateTime: string
 }
+
+export interface AllowanceCoreTicket {
+  fromCity: string
+  toCity: string
+  fromTime: string
+  toTime: string
+  baseCity: string
+}

@@ -1,4 +1,9 @@
-import { AllowanceDayItem, AllowanceUnitPriceInfo, App_AllowanceRuleModel } from './App_AllowanceModels'
+import {
+  AllowanceCoreTicket,
+  AllowanceDayItem,
+  AllowanceUnitPriceInfo,
+  App_AllowanceRuleModel,
+} from './App_AllowanceModels'
 import { App_MatchType } from './App_MatchType'
 import { App_TicketsFragment } from '../travel/App_TravelModels'
 import { TimeUtils } from '../tools/TimeUtils'
@@ -31,6 +36,31 @@ export class AllowanceCalculator {
     return result
   }
 
+  private reduceCoreTickets(tickets: AllowanceCoreTicket[]) {
+    if (tickets.length === 0) {
+      return []
+    }
+    tickets = tickets.map((ticket) => ({
+      fromCity: ticket.fromCity,
+      toCity: ticket.toCity,
+      fromTime: ticket.fromTime,
+      toTime: ticket.toTime,
+      baseCity: ticket.baseCity,
+    }))
+    const targetTickets: AllowanceCoreTicket[] = [tickets[0]]
+    for (let i = 1; i < tickets.length; ++i) {
+      const lastTicket = targetTickets[targetTickets.length - 1]
+      const curTicket = tickets[i]
+      if (TimeUtils.momentUTC8(curTicket.fromTime).unix() - TimeUtils.momentUTC8(lastTicket.toTime).unix() < 3600 * 4) {
+        lastTicket.toCity = curTicket.toCity
+        lastTicket.toTime = curTicket.toTime
+        continue
+      }
+      targetTickets.push(curTicket)
+    }
+    return targetTickets
+  }
+
   public calculateAllowanceDayItems(
     staffProps: {
       roleCodeList: string[]
@@ -40,9 +70,10 @@ export class AllowanceCalculator {
   ): AllowanceDayItem[] {
     const allDayItems: AllowanceDayItem[] = []
     for (const closedLoop of loopItems) {
+      const logicTickets = this.reduceCoreTickets(closedLoop.tickets)
       // 最后一段行程按出发地，其他均按目的地
-      const firstTicket = closedLoop.tickets[0]
-      const lastTicket = closedLoop.tickets[closedLoop.tickets.length - 1]
+      const firstTicket = logicTickets[0]
+      const lastTicket = logicTickets[logicTickets.length - 1]
       let curDate = TimeUtils.momentUTC8(firstTicket.fromTime).startOf('day')
       const ruleResult = this.calculateRules(staffProps.roleCodeList, firstTicket.toCity)
       const dayItems: AllowanceDayItem[] = [
@@ -53,19 +84,8 @@ export class AllowanceCalculator {
           halfDay: false,
         },
       ]
-      for (let i = 1; i < closedLoop.tickets.length; ++i) {
-        const prevTicket = closedLoop.tickets[i - 1]
-        const ticket = closedLoop.tickets[i]
-
-        if (
-          ticket.toCity !== ticket.baseCity &&
-          TimeUtils.momentUTC8(ticket.fromTime).unix() - TimeUtils.momentUTC8(prevTicket.toTime).unix() < 3600 * 4
-        ) {
-          const ruleResult = this.calculateRules(staffProps.roleCodeList, ticket.toCity)
-          dayItems[dayItems.length - 1].cityName = ticket.toCity
-          dayItems[dayItems.length - 1].amount = ticket.toCity === ticket.baseCity ? 0 : ruleResult.unitPrice
-          continue
-        }
+      for (let i = 1; i < logicTickets.length; ++i) {
+        const ticket = logicTickets[i]
 
         const lastCity = ticket.fromCity
         const ruleResult = this.calculateRules(staffProps.roleCodeList, lastCity)
@@ -92,10 +112,10 @@ export class AllowanceCalculator {
       // console.info('--- START ---')
       // console.info(dayItems)
       // console.info(
-      //   closedLoop.tickets.map((item) => `${item.fromTime} ~ ${item.toTime} | ${item.fromCity} -> ${item.toCity}`)
+      //   logicTickets.map((item) => `${item.fromTime} ~ ${item.toTime} | ${item.fromCity} -> ${item.toCity}`)
       // )
       // console.info('--- END ---')
-      // for (const ticket of closedLoop.tickets) {
+      // for (const ticket of logicTickets) {
       //   console.info(TimeUtils.momentUTC8(ticket.fromTime), ticket.fromTime, ticket.toTime)
       // }
     }
