@@ -3,6 +3,7 @@ import {
   AllowanceDayItem,
   AllowanceUnitPriceInfo,
   App_AllowanceRuleModel,
+  CityStayItem,
 } from './App_AllowanceModels'
 import { App_MatchType } from './App_MatchType'
 import { App_TicketsFragment } from '../travel/App_TravelModels'
@@ -127,5 +128,38 @@ export class AllowanceCalculator {
       allDayItems.forEach((item) => (item.amount = 0))
     }
     return allDayItems
+  }
+
+  public calculateCityStayItems(tickets: AllowanceCoreTicket[]): CityStayItem[] {
+    if (tickets.length === 0) {
+      return []
+    }
+    const logicTickets = this.reduceCoreTickets(tickets)
+    const stayItems: CityStayItem[] = []
+
+    {
+      const ticket = logicTickets[0]
+      stayItems.push({
+        cityName: ticket.toCity,
+        fromTime: ticket.fromTime,
+        toTime: ticket.toTime,
+      })
+    }
+
+    for (let i = 1; i < logicTickets.length; ++i) {
+      const ticket = logicTickets[i]
+
+      const lastStay = stayItems[stayItems.length - 1]
+      if (lastStay.cityName === ticket.fromCity) {
+        lastStay.toTime = ticket.fromTime
+      } else {
+        stayItems.push({
+          cityName: ticket.toCity,
+          fromTime: ticket.fromTime,
+          toTime: ticket.toTime,
+        })
+      }
+    }
+    return stayItems
   }
 }

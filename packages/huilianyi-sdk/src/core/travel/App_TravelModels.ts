@@ -5,7 +5,7 @@ import { HLY_TravelStatus } from './HLY_TravelStatus'
 import { HLY_VerifiedStatus } from './HLY_VerifiedStatus'
 import { HLY_OrderHotelCoreInfo } from './HLY_TravelOrderModels'
 import { App_FormBase } from '../basic/App_CoreModels'
-import { AllowanceDayItem } from '../allowance/App_AllowanceModels'
+import { AllowanceDayItem, CityStayItem } from '../allowance/App_AllowanceModels'
 import { HLY_OrderType } from './HLY_OrderType'
 import { HLY_AllowanceCase } from './HLY_AllowanceCase'
 
@@ -143,6 +143,7 @@ export interface App_EmployeeTrafficData {
   closedLoops: App_TicketsFragment[]
   singleLinks: App_TicketsFragment[]
   allowanceDayItems: AllowanceDayItem[]
+  cityStayItems: CityStayItem[]
 }
 
 export interface App_TravelFlightTicketInfo {

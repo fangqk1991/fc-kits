@@ -34,3 +34,9 @@ export interface AllowanceCoreTicket {
   toTime: string
   baseCity?: string
 }
+
+export interface CityStayItem {
+  cityName: string
+  fromTime: string
+  toTime: string
+}
