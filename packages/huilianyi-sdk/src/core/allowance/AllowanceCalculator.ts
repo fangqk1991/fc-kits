@@ -136,6 +136,7 @@ export class AllowanceCalculator {
     }
     const logicTickets = this.reduceCoreTickets(tickets)
     const stayItems: CityStayItem[] = []
+    const baseCity = logicTickets[0].baseCity
 
     {
       const ticket = logicTickets[0]
@@ -147,20 +148,26 @@ export class AllowanceCalculator {
     }
 
     for (let i = 1; i < logicTickets.length; ++i) {
+      const prevTicket = logicTickets[i - 1]
       const ticket = logicTickets[i]
-
       const lastStay = stayItems[stayItems.length - 1]
-      if (lastStay.cityName === ticket.fromCity) {
-        lastStay.toTime = ticket.toTime
+
+      if (prevTicket.toCity === ticket.fromCity) {
+        lastStay.toTime = ticket.fromTime
         lastStay.isVerified = true
-      } else {
-        stayItems.push({
-          cityName: ticket.toCity,
-          fromTime: ticket.fromTime,
-          toTime: ticket.toTime,
-        })
+      }
+      const newStayItem: CityStayItem = {
+        cityName: ticket.toCity,
+        fromTime: ticket.fromTime,
+        toTime: ticket.toTime,
+      }
+      stayItems.push(newStayItem)
+
+      if (ticket.toCity === baseCity) {
+        lastStay.toTime = ticket.toTime
+        newStayItem.fromTime = ticket.toTime
       }
     }
-    return stayItems
+    return stayItems.filter((item) => item.cityName === baseCity)
   }
 }
