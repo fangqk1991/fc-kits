@@ -53,7 +53,7 @@ export class AllowanceCalculator {
       const lastTicket = targetTickets[targetTickets.length - 1]
       const curTicket = tickets[i]
       if (
-        curTicket.toCity !== curTicket.baseCity &&
+        (lastTicket.fromTime !== lastTicket.baseCity || curTicket.toCity !== curTicket.baseCity) &&
         TimeUtils.momentUTC8(curTicket.fromTime).unix() - TimeUtils.momentUTC8(lastTicket.toTime).unix() < 3600 * 4
       ) {
         lastTicket.toCity = curTicket.toCity
@@ -168,6 +168,6 @@ export class AllowanceCalculator {
         newStayItem.fromTime = ticket.toTime
       }
     }
-    return stayItems.filter((item) => item.cityName === baseCity)
+    return stayItems.filter((item) => item.cityName !== baseCity)
   }
 }
