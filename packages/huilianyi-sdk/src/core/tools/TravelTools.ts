@@ -129,9 +129,9 @@ export class TravelTools {
           link.tickets.push(tickets[i])
           ++i
         }
-        link.tickets.forEach((ticket) => {
-          ticket.useForAllowance = 1
-        })
+        // link.tickets.forEach((ticket) => {
+        //   ticket.useForAllowance = 1
+        // })
         singleLinks.push(link)
       }
     }
