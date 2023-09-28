@@ -39,4 +39,5 @@ export interface CityStayItem {
   cityName: string
   fromTime: string
   toTime: string
+  isVerified?: boolean
 }
