@@ -151,7 +151,7 @@ export class AllowanceCalculator {
 
       const lastStay = stayItems[stayItems.length - 1]
       if (lastStay.cityName === ticket.fromCity) {
-        lastStay.toTime = ticket.fromTime
+        lastStay.toTime = ticket.toTime
       } else {
         stayItems.push({
           cityName: ticket.toCity,
