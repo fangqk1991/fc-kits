@@ -143,18 +143,12 @@ importers:
       '@fangcha/ali-oss':
         specifier: workspace:^
         version: link:../ali-oss
-      '@fangcha/general-job':
-        specifier: workspace:^
-        version: link:../general-job
       '@fangcha/generator':
         specifier: workspace:^
         version: link:../fc-generator
       '@fangcha/logger':
         specifier: workspace:^
         version: link:../fc-logger
-      '@fangcha/resque':
-        specifier: ^1.6.0
-        version: 1.6.0
       '@fangcha/router':
         specifier: workspace:^
         version: link:../fc-router
@@ -915,37 +909,6 @@ importers:
       fc-sql:
         specifier: workspace:^
         version: link:../fc-sql
-
-  packages/general-job:
-    dependencies:
-      moment:
-        specifier: ^2.29.4
-        version: 2.29.4
-    devDependencies:
-      '@fangcha/assert':
-        specifier: workspace:^
-        version: link:../assert
-      '@fangcha/generator':
-        specifier: workspace:^
-        version: link:../fc-generator
-      '@fangcha/logger':
-        specifier: workspace:^
-        version: link:../fc-logger
-      '@fangcha/resque':
-        specifier: ^1.6.0
-        version: 1.6.0
-      '@fangcha/tools':
-        specifier: workspace:^
-        version: link:../fc-tools
-      fc-feed:
-        specifier: workspace:^
-        version: link:../fc-feed
-      fc-sql:
-        specifier: workspace:^
-        version: link:../fc-sql
-      typescript:
-        specifier: ^4.6.2
-        version: 4.9.5
 
   packages/http-request:
     dependencies:

@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/backend-kit",
-  "version": "0.63.0",
+  "version": "0.64.0",
   "description": "Backend Kit.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "@fangcha/ali-oss": "workspace:^",
-    "@fangcha/general-job": "workspace:^",
     "@fangcha/generator": "workspace:^",
     "@fangcha/logger": "workspace:^",
     "@fangcha/router": "workspace:^",
@@ -40,7 +39,6 @@
     "fc-feed": "workspace:^",
     "fc-model": "workspace:^",
     "fc-sql": "workspace:^",
-    "@fangcha/resque": "^1.6.0",
     "@types/ali-oss": "^6.16.6",
     "@types/assert": "^1.5.6",
     "@types/jsonwebtoken": "^8.5.9",
