@@ -31,9 +31,25 @@ export class SimpleInputDialog extends ReactDialog<Props, string> {
           {(() => {
             switch (type) {
               case 'number':
-                return <ProFormDigit name='content' placeholder={props.placeholder} />
+                return (
+                  <ProFormDigit
+                    name='content'
+                    placeholder={props.placeholder}
+                    fieldProps={{
+                      onPressEnter: props.context.onClickSubmit,
+                    }}
+                  />
+                )
               case 'text':
-                return <ProFormText name='content' placeholder={props.placeholder} />
+                return (
+                  <ProFormText
+                    name='content'
+                    placeholder={props.placeholder}
+                    fieldProps={{
+                      onPressEnter: props.context.onClickSubmit,
+                    }}
+                  />
+                )
               case 'textarea':
                 return (
                   <ProFormTextArea
@@ -45,7 +61,16 @@ export class SimpleInputDialog extends ReactDialog<Props, string> {
                   />
                 )
               case 'password':
-                return <ProFormText.Password name='content' label='Password' placeholder={props.placeholder} />
+                return (
+                  <ProFormText.Password
+                    name='content'
+                    label='Password'
+                    placeholder={props.placeholder}
+                    fieldProps={{
+                      onPressEnter: props.context.onClickSubmit,
+                    }}
+                  />
+                )
             }
           })()}
           {props.description && <div>{props.description}</div>}

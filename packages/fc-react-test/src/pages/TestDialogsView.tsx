@@ -39,7 +39,8 @@ export const TestDialogsView: React.FC = () => {
               title: 'SimpleInputDialog Title',
               curValue: `${Math.random()}`,
             })
-            dialog.show((value) => {
+            dialog.show(async (value) => {
+              await sleep(1000)
               message.success(`提交 ${value}`)
             })
           }}

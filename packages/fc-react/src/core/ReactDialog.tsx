@@ -10,6 +10,7 @@ export interface DialogProps<T = any> {
   curValue?: T
   context: {
     handleResult: () => any
+    onClickSubmit: () => any
   }
 }
 
@@ -26,6 +27,22 @@ interface Props extends DialogProps {
 export const BaseDialog: React.FC<Props> = (props) => {
   const [isOpen, setOpen] = useState(true)
   const [loading, setLoading] = useState(false)
+  const onOk = async () => {
+    if (props.callback) {
+      setLoading(true)
+      try {
+        const result = await props.context.handleResult()
+        await props.callback(result)
+        setLoading(false)
+      } catch (e) {
+        setLoading(false)
+        throw e
+      }
+    }
+    setOpen(false)
+  }
+  props.context.onClickSubmit = onOk
+
   useEffect(() => {
     if (!isOpen) {
       props.dom.remove()
@@ -42,20 +59,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
       okButtonProps={{
         loading: loading,
       }}
-      onOk={async () => {
-        if (props.callback) {
-          setLoading(true)
-          try {
-            const result = await props.context.handleResult()
-            await props.callback(result)
-            setLoading(false)
-          } catch (e) {
-            setLoading(false)
-            throw e
-          }
-        }
-        setOpen(false)
-      }}
+      onOk={onOk}
       okText={props.okText}
       footer={props.hideButtons ? null : undefined}
       maskClosable={!!props.hideButtons}
@@ -83,6 +87,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
     const RawComponent = this.rawComponent()
     const context = {
       handleResult: () => null,
+      onClickSubmit: () => {},
     }
     const dom = document.createElement('div')
     document.getElementsByTagName('body')[0].appendChild(dom)
