@@ -8,9 +8,20 @@ export class OpenSSL {
         silent: true,
       }
     )
-    const matches = result.stdout.match('notAfter=(.*)')
+    return this.extractExpireTime(result)
+  }
+
+  public static getCertExpireTime(certText: string) {
+    const result = shell.exec(`echo "${certText}" | openssl x509 -noout -dates`, {
+      silent: true,
+    })
+    return this.extractExpireTime(result)
+  }
+
+  private static extractExpireTime(certResult: shell.ShellString) {
+    const matches = certResult.stdout.match('notAfter=(.*)')
     if (!matches) {
-      throw new Error(result.stderr)
+      throw new Error(certResult.stderr)
     }
     return new Date(matches[1])
   }
