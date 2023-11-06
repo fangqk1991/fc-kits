@@ -1,6 +1,6 @@
 import * as shell from 'shelljs'
 import * as moment from 'moment/moment'
-import { SslCertInfo } from '../common/SslCertInfo'
+import { SslCertInfo } from '../common'
 
 export class OpenSSL {
   public static getDomainCertText(domain: string) {
@@ -31,7 +31,7 @@ export class OpenSSL {
     return {
       algorithm: text.match(/\n\s*Signature Algorithm: (\w+)/)![1],
       issuer: text.match(/\n\s*Issuer: (.*)/)![1],
-      subject: text.match(/\n\s*Subject: CN=([^\s,]*)/)![1],
+      subject: text.match(/\n\s*Subject: CN\s*=\s*([^\s,]*)/)![1],
       notBefore: moment(new Date(text.match(/\n\s*Not Before: (.*)/)![1])).format(),
       notAfter: moment(new Date(text.match(/\n\s*Not After\s*: (.*)/)![1])).format(),
       domains: text
