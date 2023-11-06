@@ -1,7 +1,7 @@
 import { OpenSSL } from '../../src/openssl'
 
 describe('OpenSSL.test.ts', () => {
-  const domain = 'fangcha.net'
+  const domain = 'google.com'
 
   it(`getDomainCertText`, async () => {
     console.info(OpenSSL.getDomainCertText(domain))
