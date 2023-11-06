@@ -1,29 +1,49 @@
 import * as shell from 'shelljs'
+import * as moment from 'moment/moment'
 
 export class OpenSSL {
+  public static getDomainCertText(domain: string) {
+    const result = shell.exec(`printf Q | openssl s_client -servername ${domain} -connect ${domain}:443`, {
+      silent: true,
+    })
+    const matches1 = result.stdout.match(/(-+BEGIN CERTIFICATE-+[\s\S]*?-+END CERTIFICATE-+)/)
+    if (!matches1) {
+      throw new Error('certificate info error')
+    }
+    return matches1[1]
+  }
+
+  public static parseDomain(domain: string) {
+    const text = OpenSSL.getDomainCertText(domain)
+    return OpenSSL.parseCertText(text)
+  }
+
+  public static parseCertText(certText: string) {
+    const result = shell.exec(`echo "${certText}" | openssl x509 -noout -text`, {
+      silent: true,
+    })
+    if (result.stderr) {
+      throw new Error(result.stderr)
+    }
+    const text = result.stdout
+    return {
+      algorithm: text.match(/\n\s*Signature Algorithm: (\w+)/)![1],
+      issue: text.match(/\n\s*Issuer: (.*)/)![1],
+      notBefore: moment(new Date(text.match(/\n\s*Not Before: (.*)/)![1])).format(),
+      notAfter: moment(new Date(text.match(/\n\s*Not After\s*: (.*)/)![1])).format(),
+      domains: text
+        .match(/\s*Subject Alternative Name:[\s\S]*?(DNS:.*)\n/)![1]
+        .split(',')
+        .map((item) => item.trim().replace(/^DNS:/, '')),
+    }
+  }
+
   public static getDomainCertExpireTime(domain: string) {
-    const result = shell.exec(
-      `printf Q | openssl s_client -servername ${domain} -connect ${domain}:443 | openssl x509 -noout -dates`,
-      {
-        silent: true,
-      }
-    )
-    return this.extractExpireTime(result)
+    return this.parseDomain(domain).notAfter
   }
 
   public static getCertExpireTime(certText: string) {
-    const result = shell.exec(`echo "${certText}" | openssl x509 -noout -dates`, {
-      silent: true,
-    })
-    return this.extractExpireTime(result)
-  }
-
-  private static extractExpireTime(certResult: shell.ShellString) {
-    const matches = certResult.stdout.match('notAfter=(.*)')
-    if (!matches) {
-      throw new Error(certResult.stderr)
-    }
-    return new Date(matches[1])
+    return this.parseCertText(certText).notAfter
   }
 
   public static getCertificateSign(certText: string) {
