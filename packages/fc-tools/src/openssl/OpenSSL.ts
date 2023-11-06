@@ -25,4 +25,36 @@ export class OpenSSL {
     }
     return new Date(matches[1])
   }
+
+  public static getCertificateSign(certText: string) {
+    const result = shell.exec(`echo "${certText}" | openssl x509 -pubkey -noout -outform pem | shasum`, {
+      silent: true,
+    })
+    if (result.stderr) {
+      throw new Error(result.stderr)
+    }
+    const matches = result.stdout.match(/^(\w{40})/)
+    if (!matches) {
+      throw new Error('getCertificateSign error')
+    }
+    return matches[1]
+  }
+
+  public static getPrivateKeySign(keyText: string) {
+    const result = shell.exec(`echo "${keyText}" | openssl pkey -pubout -outform pem | shasum`, {
+      silent: true,
+    })
+    if (result.stderr) {
+      throw new Error(result.stderr)
+    }
+    const matches = result.stdout.match(/^(\w{40})/)
+    if (!matches) {
+      throw new Error('getCertificateSign error')
+    }
+    return matches[1]
+  }
+
+  public static checkKeyPairsMatch(certText: string, keyText: string) {
+    return this.getCertificateSign(certText) === this.getPrivateKeySign(keyText)
+  }
 }
