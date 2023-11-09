@@ -6,6 +6,7 @@ import {
   JsonEditorDialog,
   MultiplePickerDialog,
   ReactDialogTheme,
+  ReactPreviewDialog,
   SimpleInputDialog,
   SimplePickerDialog,
   TextPreviewDialog,
@@ -204,6 +205,15 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           TextPreviewDialog.loadData
+        </Button>
+
+        <Button
+          type={'primary'}
+          onClick={() => {
+            ReactPreviewDialog.preview(<Tag color={'error'}>ReactPreviewDialog</Tag>)
+          }}
+        >
+          ReactPreviewDialog
         </Button>
       </Space>
     </>
