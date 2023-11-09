@@ -17,6 +17,10 @@ export function md5(content: string | Buffer) {
   return crypto.createHash('md5').update(content).digest('hex')
 }
 
+export function sha1(content: string | Buffer) {
+  return crypto.createHash('sha1').update(content).digest('hex')
+}
+
 export function hmacSha256Hex(secret: string, content: string | Buffer) {
   return crypto.createHmac('sha256', secret).update(content).digest('hex')
 }

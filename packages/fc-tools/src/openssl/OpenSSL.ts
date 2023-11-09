@@ -1,6 +1,6 @@
 import * as shell from 'shelljs'
 import * as moment from 'moment/moment'
-import { SslCertInfo } from '../common'
+import { sha1, SslCertInfo } from '../common'
 
 export class OpenSSL {
   public static getDomainCertText(domain: string) {
@@ -50,31 +50,23 @@ export class OpenSSL {
   }
 
   public static getCertificateSign(certText: string) {
-    const result = shell.exec(`echo "${certText}" | openssl x509 -pubkey -noout -outform pem | shasum`, {
+    const result = shell.exec(`echo "${certText}" | openssl x509 -pubkey -noout -outform pem`, {
       silent: true,
     })
     if (result.stderr) {
       throw new Error(result.stderr)
     }
-    const matches = result.stdout.match(/^(\w{40})/)
-    if (!matches) {
-      throw new Error('getCertificateSign error')
-    }
-    return matches[1]
+    return sha1(result.stdout)
   }
 
   public static getPrivateKeySign(keyText: string) {
-    const result = shell.exec(`echo "${keyText}" | openssl pkey -pubout -outform pem | shasum`, {
+    const result = shell.exec(`echo "${keyText}" | openssl pkey -pubout -outform pem`, {
       silent: true,
     })
     if (result.stderr) {
       throw new Error(result.stderr)
     }
-    const matches = result.stdout.match(/^(\w{40})/)
-    if (!matches) {
-      throw new Error('getCertificateSign error')
-    }
-    return matches[1]
+    return sha1(result.stdout)
   }
 
   public static checkKeyPairsMatch(certText: string, keyText: string) {
