@@ -1,13 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom'
 import React from 'react'
 import { MainLayout } from './MainLayout'
-import { LoadingView, RouteErrorBoundary } from '@fangcha/react'
+import { RouteErrorBoundary } from '@fangcha/react'
 import { TestTableView } from '../pages/table/TestTableView'
 import { TestDialogsView } from '../pages/TestDialogsView'
 import { TestWidgetsView } from '../pages/TestWidgetsView'
 import { TestFormsView } from '../pages/TestFormsView'
 import { TestRoutersView } from '../pages/TestRoutersView'
 import { TestExcelsView } from '../pages/TestExcelsView'
+import { TestLoadingView } from '../pages/TestLoadingView'
 
 export const MyRouter = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ export const MyRouter = createBrowserRouter([
       },
       {
         path: '/v1/loading-view',
-        element: <LoadingView style={{ height: '100vh' }} />,
+        element: <TestLoadingView />,
       },
       {
         path: '/v1/widgets',

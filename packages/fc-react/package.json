@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/react",
-  "version": "0.37.0",
+  "version": "0.38.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
