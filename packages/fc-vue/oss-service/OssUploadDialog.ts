@@ -1,7 +1,7 @@
 import './upload.dialog.scss'
 import { Component, CustomDialog, CustomDialogView, i18n } from '../src'
 import axios from 'axios'
-import { MetadataBuildProtocol, OSSResourceModel, OssTypicalParams } from '@fangcha/oss-service/lib/common/models'
+import { MetadataBuildProtocol, OSSResourceModel, OssTypicalParams } from '@fangcha/oss-models'
 import { FrontendFile } from '@fangcha/tools/lib/file-frontend'
 import { OssHTTP } from './OssHTTP'
 import { OssFrontendService } from './OssFrontendService'

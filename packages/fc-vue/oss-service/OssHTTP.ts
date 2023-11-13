@@ -1,6 +1,6 @@
 import { CommonAPI } from '@fangcha/app-request'
-import { OSSResourceModel, OssTypicalParams, ResourceMetadata } from '@fangcha/oss-service/lib/common/models'
-import { OssApis } from '@fangcha/oss-service/lib/common/apis'
+import { OSSResourceModel, OssTypicalParams, ResourceMetadata } from '@fangcha/oss-models'
+import { OssApis } from '@fangcha/oss-models'
 import { MyAxios } from '../basic'
 
 export class OssHTTP {

@@ -1,4 +1,4 @@
-import { MetadataBuildProtocol, OSSResourceModel } from '@fangcha/oss-service/lib/common/models'
+import { MetadataBuildProtocol, OSSResourceModel } from '@fangcha/oss-models'
 import { ViewController } from '../src/ViewController'
 import { Component, Prop } from 'vue-property-decorator'
 import { OssUploadDialog } from './OssUploadDialog'

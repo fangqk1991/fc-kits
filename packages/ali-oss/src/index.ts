@@ -1,6 +1,0 @@
-export * from './AliyunOSS'
-export * from './ReceivedFile'
-export * from './RemoteFile'
-export * from './OSSHelper'
-export * from './OSSUtils'
-export * from './OSSTypes'

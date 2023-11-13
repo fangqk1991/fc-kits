@@ -1,8 +1,8 @@
 import { Component, MySelect, MyTableView, TableViewProtocol, ViewController } from '../../src'
 import { CommonAPI } from '@fangcha/app-request'
 import { MyAxios } from '../../basic'
-import { DownloadApis } from '@fangcha/oss-service/lib/common/apis'
-import { ResourceTaskModel, ResourceTaskStatus } from '@fangcha/oss-service/lib/common/models'
+import { DownloadApis } from '@fangcha/oss-models'
+import { ResourceTaskModel, ResourceTaskStatus } from '@fangcha/oss-models'
 
 @Component({
   components: {

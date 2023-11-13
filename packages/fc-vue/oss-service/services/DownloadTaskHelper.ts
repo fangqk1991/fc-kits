@@ -1,6 +1,6 @@
 import { MessageBox } from 'element-ui'
 import { OssRouteData } from './OssRouteData'
-import { ResourceTaskModel, ResourceTaskStatus } from '@fangcha/oss-service/lib/common/models'
+import { ResourceTaskModel, ResourceTaskStatus } from '@fangcha/oss-models'
 
 export class DownloadTaskHelper {
   public static handleDownloadResponse(response: ResourceTaskModel) {

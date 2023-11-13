@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/vue",
-  "version": "0.78.0",
+  "version": "0.79.0",
   "main": "src/index.ts",
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
@@ -35,7 +35,7 @@
     "@fangcha/assert": "workspace:^",
     "@fangcha/backend-kit": "workspace:^",
     "@fangcha/event-stat": "workspace:^",
-    "@fangcha/oss-service": "workspace:^",
+    "@fangcha/oss-models": "^0.1.0",
     "@fangcha/router": "workspace:^",
     "@fangcha/swagger": "workspace:^",
     "@fangcha/tools": "workspace:^",

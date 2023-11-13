@@ -29,7 +29,7 @@
     "moment": "^2.29.4"
   },
   "devDependencies": {
-    "@fangcha/ali-oss": "workspace:^",
+    "@fangcha/ali-oss": "^1.2.0",
     "@fangcha/generator": "workspace:^",
     "@fangcha/logger": "workspace:^",
     "@fangcha/router": "workspace:^",
