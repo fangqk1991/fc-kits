@@ -8,6 +8,7 @@ interface Props extends DialogProps {
 
 export class LoadingDialog extends ReactDialog<Props> {
   hideButtons = true
+  maskClosable = false
   title = ''
   closeIcon = (<></>)
 

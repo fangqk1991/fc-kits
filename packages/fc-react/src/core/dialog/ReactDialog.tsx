@@ -26,6 +26,7 @@ interface Props extends DialogProps {
   okText?: React.ReactNode
   closeIcon?: React.ReactNode
   hideButtons?: boolean
+  maskClosable?: boolean
 }
 
 export const BaseDialog: React.FC<Props> = (props) => {
@@ -67,7 +68,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
       onOk={onOk}
       okText={props.okText}
       footer={props.hideButtons ? null : undefined}
-      maskClosable={!!props.hideButtons}
+      maskClosable={props.maskClosable && !!props.hideButtons}
       closeIcon={props.closeIcon}
     >
       {props.children}
@@ -81,6 +82,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
   okText?: React.ReactNode
   closeIcon?: React.ReactNode
   hideButtons = false
+  maskClosable = true
 
   props!: Omit<T, 'context'>
   context!: Context
@@ -124,6 +126,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
           dom={dom}
           context={this.context}
           hideButtons={this.hideButtons}
+          maskClosable={this.maskClosable}
           okText={this.okText}
           closeIcon={this.closeIcon}
           callback={callback}
