@@ -12,9 +12,12 @@ export class LoadingDialog extends ReactDialog<Props> {
   closeIcon = (<></>)
 
   public static show(message?: string) {
-    new LoadingDialog({
+    const dialog = new LoadingDialog({
       message: message,
-    }).show()
+    })
+    dialog.show()
+    console.info(dialog.context)
+    return dialog
   }
 
   public rawComponent(): React.FC<Props> {

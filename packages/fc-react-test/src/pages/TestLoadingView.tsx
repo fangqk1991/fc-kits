@@ -2,6 +2,7 @@ import React from 'react'
 import { LoadingDialog, LoadingView, useQueryParams } from '@fangcha/react'
 import { Button, Tabs } from 'antd'
 import { TestLoadingView_useLoadingData } from './table/TestLoadingView_useLoadingData'
+import { sleep } from '@fangcha/tools'
 
 export const TestLoadingView: React.FC = () => {
   const { queryParams, updateQueryParams, setQueryParams } = useQueryParams<{
@@ -32,8 +33,10 @@ export const TestLoadingView: React.FC = () => {
           children: (
             <div>
               <Button
-                onClick={() => {
-                  LoadingDialog.show('Testing...')
+                onClick={async () => {
+                  const dialog = LoadingDialog.show('Testing...')
+                  await sleep(1000)
+                  dialog.dismiss()
                 }}
               >
                 LoadingDialog

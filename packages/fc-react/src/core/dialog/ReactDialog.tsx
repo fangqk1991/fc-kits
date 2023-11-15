@@ -5,13 +5,16 @@ import { ReactTheme } from '../ReactTheme'
 
 export type DialogCallback<T = any> = (params: T) => void | Promise<void>
 
+interface Context {
+  handleResult: () => any
+  onClickSubmit: () => any
+  dismiss: () => void
+}
+
 export interface DialogProps<T = any> {
   title?: string
   curValue?: T
-  context: {
-    handleResult: () => any
-    onClickSubmit: () => any
-  }
+  context: Context
 }
 
 interface Props extends DialogProps {
@@ -43,6 +46,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
     setOpen(false)
   }
   props.context.onClickSubmit = onOk
+  props.context.dismiss = () => setOpen(false)
 
   useEffect(() => {
     if (!isOpen) {
@@ -79,19 +83,25 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
   hideButtons = false
 
   props!: Omit<T, 'context'>
+  context!: Context
 
   public constructor(props: Omit<T, 'context'>) {
     this.props = props
+    this.context = {
+      handleResult: () => null,
+      onClickSubmit: () => {},
+      dismiss: () => {},
+    }
+  }
+
+  public dismiss() {
+    return this.context.dismiss()
   }
 
   public abstract rawComponent(): React.FC<T>
 
   public show(callback?: DialogCallback<P>) {
     const RawComponent = this.rawComponent()
-    const context = {
-      handleResult: () => null,
-      onClickSubmit: () => {},
-    }
     const dom = document.createElement('div')
     document.getElementsByTagName('body')[0].appendChild(dom)
     const app = ReactDOM.createRoot(dom)
@@ -112,13 +122,13 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
           title={this.props.title || this.title}
           width={this.width}
           dom={dom}
-          context={context}
+          context={this.context}
           hideButtons={this.hideButtons}
           okText={this.okText}
           closeIcon={this.closeIcon}
           callback={callback}
         >
-          <RawComponent {...(this.props as any)} context={context} />
+          <RawComponent {...(this.props as any)} context={this.context} />
         </BaseDialog>
       </ConfigProvider>
     )
