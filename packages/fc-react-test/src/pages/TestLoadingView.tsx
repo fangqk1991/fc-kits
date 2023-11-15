@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoadingDialog, LoadingView, useQueryParams } from '@fangcha/react'
-import { Button, Tabs } from 'antd'
+import { Button, message, Space, Tabs } from 'antd'
 import { TestLoadingView_useLoadingData } from './table/TestLoadingView_useLoadingData'
 import { sleep } from '@fangcha/tools'
 
@@ -31,7 +31,7 @@ export const TestLoadingView: React.FC = () => {
           label: `LoadingDialog`,
           key: 'LoadingDialog',
           children: (
-            <div>
+            <Space>
               <Button
                 onClick={async () => {
                   const dialog = LoadingDialog.show('Testing...')
@@ -39,9 +39,20 @@ export const TestLoadingView: React.FC = () => {
                   dialog.dismiss()
                 }}
               >
-                LoadingDialog
+                LoadingDialog.show
               </Button>
-            </div>
+              <Button
+                onClick={async () => {
+                  const result = await LoadingDialog.execute(async () => {
+                    await sleep(1000)
+                    return 'Pong'
+                  }, 'Ping...')
+                  message.success(result)
+                }}
+              >
+                LoadingDialog.execute
+              </Button>
+            </Space>
           ),
         },
       ]}

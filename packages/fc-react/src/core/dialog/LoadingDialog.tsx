@@ -16,8 +16,22 @@ export class LoadingDialog extends ReactDialog<Props> {
       message: message,
     })
     dialog.show()
-    console.info(dialog.context)
     return dialog
+  }
+
+  public static async execute<T = any>(handler: () => Promise<T>, message?: string) {
+    const dialog = new LoadingDialog({
+      message: message,
+    })
+    dialog.show()
+    try {
+      const result = await handler()
+      dialog.dismiss()
+      return result
+    } catch (e) {
+      dialog.dismiss()
+      throw e
+    }
   }
 
   public rawComponent(): React.FC<Props> {
