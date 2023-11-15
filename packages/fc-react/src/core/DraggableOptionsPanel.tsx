@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Space, Tag } from 'antd'
 import { SelectOption } from '@fangcha/tools'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'

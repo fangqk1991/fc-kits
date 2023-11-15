@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Select } from 'antd'
 import { DialogProps, ReactDialog } from './ReactDialog'
-import { SelectOption } from '@fangcha/tools'
+import { SelectOption } from '@fangcha/tools/lib'
 
 interface Props extends DialogProps {
   options: SelectOption[]

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DialogProps, ReactDialog } from './ReactDialog'
-import { JsonPre } from './JsonPre'
-import { LoadingView } from './LoadingView'
+import { JsonPre } from '../JsonPre'
+import { LoadingView } from '../LoadingView'
 
 interface Props extends DialogProps<any> {
   loadData?: () => Promise<{}>

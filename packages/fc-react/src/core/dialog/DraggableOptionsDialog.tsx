@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { SelectOption } from '@fangcha/tools'
+import { SelectOption } from '@fangcha/tools/lib'
 import { DialogProps, ReactDialog } from './ReactDialog'
-import { DraggableOptionsPanel } from './DraggableOptionsPanel'
+import { DraggableOptionsPanel } from '../DraggableOptionsPanel'
 
 interface Props extends DialogProps {
   options: SelectOption[]
