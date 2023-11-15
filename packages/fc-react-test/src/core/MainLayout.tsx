@@ -4,7 +4,7 @@ import React from 'react'
 import { ConfigProvider } from 'antd'
 import { MyMenu } from './MyMenu'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { RouterLink } from '@fangcha/react'
+import { ReactTheme, RouterLink } from '@fangcha/react'
 
 export const MainLayout: React.FC = () => {
   const location = useLocation()
@@ -14,7 +14,7 @@ export const MainLayout: React.FC = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: 'rgb(221 115 164)',
+          colorPrimary: ReactTheme.colorPrimary,
         },
       }}
     >

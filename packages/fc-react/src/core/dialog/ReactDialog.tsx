@@ -1,7 +1,7 @@
 import { ConfigProvider, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import zhCN from 'antd/locale/zh_CN'
+import { ReactTheme } from '../ReactTheme'
 
 export type DialogCallback<T = any> = (params: T) => void | Promise<void>
 
@@ -21,6 +21,7 @@ interface Props extends DialogProps {
   callback?: DialogCallback<any>
   children: any
   okText?: React.ReactNode
+  closeIcon?: React.ReactNode
   hideButtons?: boolean
 }
 
@@ -63,6 +64,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
       okText={props.okText}
       footer={props.hideButtons ? null : undefined}
       maskClosable={!!props.hideButtons}
+      closeIcon={props.closeIcon}
     >
       {props.children}
     </Modal>
@@ -73,6 +75,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
   title: string = 'Title'
   width?: string | number
   okText?: React.ReactNode
+  closeIcon?: React.ReactNode
   hideButtons = false
 
   props!: Omit<T, 'context'>
@@ -94,12 +97,12 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
     const app = ReactDOM.createRoot(dom)
     app.render(
       <ConfigProvider
-        locale={ReactDialogTheme.locale}
+        locale={ReactTheme.locale}
         theme={{
           token: {
-            ...(ReactDialogTheme.colorPrimary
+            ...(ReactTheme.colorPrimary
               ? {
-                  colorPrimary: ReactDialogTheme.colorPrimary,
+                  colorPrimary: ReactTheme.colorPrimary,
                 }
               : {}),
           },
@@ -112,6 +115,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
           context={context}
           hideButtons={this.hideButtons}
           okText={this.okText}
+          closeIcon={this.closeIcon}
           callback={callback}
         >
           <RawComponent {...(this.props as any)} context={context} />
@@ -119,9 +123,4 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
       </ConfigProvider>
     )
   }
-}
-
-export const ReactDialogTheme = {
-  colorPrimary: '',
-  locale: zhCN,
 }

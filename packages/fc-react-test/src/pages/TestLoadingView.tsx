@@ -1,6 +1,6 @@
 import React from 'react'
-import { LoadingView, useQueryParams } from '@fangcha/react'
-import { Tabs } from 'antd'
+import { LoadingDialog, LoadingView, useQueryParams } from '@fangcha/react'
+import { Button, Tabs } from 'antd'
 import { TestLoadingView_useLoadingData } from './table/TestLoadingView_useLoadingData'
 
 export const TestLoadingView: React.FC = () => {
@@ -25,6 +25,21 @@ export const TestLoadingView: React.FC = () => {
           label: `useLoadingData`,
           key: 'useLoadingData',
           children: <TestLoadingView_useLoadingData />,
+        },
+        {
+          label: `LoadingDialog`,
+          key: 'LoadingDialog',
+          children: (
+            <div>
+              <Button
+                onClick={() => {
+                  LoadingDialog.show('Testing...')
+                }}
+              >
+                LoadingDialog
+              </Button>
+            </div>
+          ),
         },
       ]}
     />

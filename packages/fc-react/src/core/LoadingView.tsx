@@ -1,6 +1,7 @@
 import React from 'react'
 import { Spin } from 'antd'
 import styled from '@emotion/styled'
+import { ReactTheme } from './ReactTheme'
 
 const Loading = styled.div({
   width: '100%',
@@ -8,12 +9,16 @@ const Loading = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  flexDirection: 'column',
 })
 
 export const LoadingView: React.FC<{ text?: string; [p: string]: any }> = (props) => {
   return (
     <Loading {...props}>
-      <Spin size='large' tip={props.text || 'Loading……'} />
+      <div>
+        <Spin size='large' />
+      </div>
+      <div style={{ marginTop: '4px', color: ReactTheme.colorPrimary }}>{props.text || 'Loading……'}</div>
     </Loading>
   )
 }

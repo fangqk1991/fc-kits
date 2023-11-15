@@ -6,7 +6,6 @@ import {
   JsonEditorDialog,
   MessageDialog,
   MultiplePickerDialog,
-  ReactDialogTheme,
   ReactPreviewDialog,
   SimpleInputDialog,
   SimplePickerDialog,
@@ -15,8 +14,6 @@ import {
 import { sleep } from '@fangcha/tools'
 
 export const TestDialogsView: React.FC = () => {
-  ReactDialogTheme.colorPrimary = 'rgb(221 115 164)'
-
   return (
     <>
       <Space>

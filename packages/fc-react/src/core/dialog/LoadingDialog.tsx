@@ -1,0 +1,25 @@
+import React from 'react'
+import { DialogProps, ReactDialog } from './ReactDialog'
+import { LoadingView } from '../LoadingView'
+
+interface Props extends DialogProps {
+  message?: string
+}
+
+export class LoadingDialog extends ReactDialog<Props> {
+  hideButtons = true
+  title = ''
+  closeIcon = (<></>)
+
+  public static show(message?: string) {
+    new LoadingDialog({
+      message: message,
+    }).show()
+  }
+
+  public rawComponent(): React.FC<Props> {
+    return (props) => {
+      return <LoadingView text={props.message} />
+    }
+  }
+}
