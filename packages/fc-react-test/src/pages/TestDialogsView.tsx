@@ -4,6 +4,7 @@ import {
   ConfirmDialog,
   InformationDialog,
   JsonEditorDialog,
+  MessageDialog,
   MultiplePickerDialog,
   ReactDialogTheme,
   ReactPreviewDialog,
@@ -214,6 +215,14 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           ReactPreviewDialog
+        </Button>
+
+        <Button
+          onClick={() => {
+            MessageDialog.alert(<Tag color={'geekblue'}>MessageDialog.alert</Tag>)
+          }}
+        >
+          MessageDialog
         </Button>
       </Space>
     </>

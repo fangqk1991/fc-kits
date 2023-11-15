@@ -7,7 +7,7 @@ interface Props extends DialogProps {
 
 export class MessageDialog extends ReactDialog<Props> {
   title = 'Alert'
-  width = 800
+  // width = 800
   hideButtons = true
 
   public static alert(element: React.ReactNode) {
