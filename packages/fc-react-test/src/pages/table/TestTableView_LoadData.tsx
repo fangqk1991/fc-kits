@@ -32,7 +32,6 @@ export const TestTableView_LoadData: React.FC<Props> = ({ version }) => {
           },
         ]}
         loadData={async (retainParams) => {
-          console.info(retainParams)
           const items = TestTableView_Tools.makeDataList()
           await sleep(1000)
           const pageResult: PageResult<TestTableView_SomeData> = {

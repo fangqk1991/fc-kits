@@ -172,8 +172,9 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       dataSource={pageResult.items}
       {...(props.tableProps || {})}
       onChange={(pagination, filters, sorter, extra) => {
+        // console.info(pagination, filters, sorter, extra)
         const newParams: any = {}
-        if (sorter && sorter['columnKey'] && sorter['order']) {
+        if (sorter && sorter['column'] && sorter['columnKey']) {
           Object.assign(newParams, {
             sortKey: sorter['columnKey'],
             sortDirection: sorter['order'],
