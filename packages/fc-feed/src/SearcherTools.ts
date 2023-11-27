@@ -1,4 +1,4 @@
-import { SQLSearcher } from 'fc-sql'
+import { SearchBuilder, SQLSearcher } from 'fc-sql'
 import { FilterOptions } from './FeedBase'
 
 const _buildLimitInfo = (params: any) => {
@@ -85,6 +85,39 @@ export class SearcherTools {
           searcher.addConditionKeyInArray(columnKey, values)
         } else if (symbol === '$notInStr') {
           searcher.addConditionKeyNotInArray(columnKey, values)
+        }
+      } else if (
+        ['$include_any', '$include_all', '$exclude_any', '$exclude_all'].includes(symbol) &&
+        typeof params[key] === 'string'
+      ) {
+        const values = (params[key] as string)
+          .split(',')
+          .map((item) => item.trim())
+          .filter((item) => !!item)
+        if (symbol === '$include_any') {
+          const builder = new SearchBuilder()
+          builder.setLogic('OR')
+          builder.addCondition(`1 = 0`)
+          for (const val of values) {
+            builder.addCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
+          }
+          builder.injectToSearcher(searcher)
+        } else if (symbol === '$include_all') {
+          for (const val of values) {
+            searcher.addSpecialCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
+          }
+        } else if (symbol === '$exclude_any') {
+          const builder = new SearchBuilder()
+          builder.setLogic('OR')
+          builder.addCondition(`1 = 0`)
+          for (const val of values) {
+            builder.addCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
+          }
+          builder.injectToSearcher(searcher)
+        } else if (symbol === '$exclude_all') {
+          for (const val of values) {
+            searcher.addSpecialCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
+          }
         }
       } else if (['$eq', '$ne'].includes(symbol) && typeof params[key] === 'string') {
         const value = params[key]
