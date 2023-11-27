@@ -55,13 +55,13 @@ export class SearcherTools {
     const paramsKeys = Object.keys(params)
     paramsKeys
       .filter((key: string) => {
-        return /^[a-zA-Z]\w+$/.test(key) && key in colsMapper && !!params[key]
+        return /^[a-zA-Z_][\w.]+$/.test(key) && key in colsMapper && !!params[key]
       })
       .forEach((key) => {
         searcher.addConditionKV(colsMapper[key], params[key])
       })
     for (const key of paramsKeys) {
-      const matches = key.match(/^([a-zA-Z]\w+)\.(\$\w+)(\.\w+)?$/)
+      const matches = key.match(/^([a-zA-Z_][\w.]+)\.(\$\w+)(\.\w+)?$/)
       if (!matches || !(matches[1] in colsMapper)) {
         continue
       }
