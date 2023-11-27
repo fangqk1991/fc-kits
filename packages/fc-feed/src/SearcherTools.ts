@@ -66,7 +66,7 @@ export class SearcherTools {
         continue
       }
       const columnKey = colsMapper[matches[1]]
-      const wrappedColumnKey = /^\w+$/.test(columnKey) ? columnKey : `\`${columnKey}\``
+      const wrappedColumnKey = /^\w+$/.test(columnKey) ? `\`${columnKey}\`` : columnKey
       const symbol = matches[2]
       if (symbol === '$like') {
         searcher.addConditionLikeKeywords(columnKey, params[key])

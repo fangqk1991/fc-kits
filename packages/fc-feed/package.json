@@ -1,6 +1,6 @@
 {
   "name": "fc-feed",
-  "version": "0.32.1",
+  "version": "0.32.2",
   "description": "A feed-model use fc-model & fc-sql",
   "main": "src/index.ts",
   "publishConfig": {
