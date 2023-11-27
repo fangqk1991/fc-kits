@@ -2,6 +2,7 @@ import { DBProtocolV2, DBSpec, DBTools, SQLSearcher, Transaction } from 'fc-sql'
 import { FCModel } from 'fc-model'
 import { FeedSearcher } from './FeedSearcher'
 import * as assert from 'assert'
+import { SearcherTools } from './SearcherTools'
 
 interface PageDataV3<T> {
   // 偏移量
@@ -34,34 +35,6 @@ export interface FilterOptions {
 
 interface Params {
   [p: string]: number | string
-}
-
-const _buildSortRule = (params: any) => {
-  let sortDirection = params._sortDirection || 'ASC'
-  if (!['ASC', 'DESC'].includes(sortDirection)) {
-    if (sortDirection === 'ascending') {
-      sortDirection = 'ASC'
-    } else if (sortDirection === 'descending') {
-      sortDirection = 'DESC'
-    } else {
-      sortDirection = 'ASC'
-    }
-  }
-
-  return {
-    sortKey: params._sortKey || '',
-    sortDirection: sortDirection,
-  }
-}
-
-const _buildLimitInfo = (params: any) => {
-  let { _offset = -1, _length = -1 } = params
-  _offset = Number(_offset)
-  _length = Number(_length)
-  return {
-    offset: _offset,
-    length: _length,
-  }
 }
 
 export class FeedBase extends FCModel {
@@ -274,110 +247,15 @@ export class FeedBase extends FCModel {
    */
   fc_searcher(params: FilterOptions = {}) {
     const searcher = new FeedSearcher(this)
-    const mapper = this.fc_propertyMapper()
-    const { sortKey, sortDirection } = _buildSortRule(params)
-    if (sortKey && mapper[sortKey]) {
-      const dbSpec = this.dbSpec()
-      const gbkCols = dbSpec.gbkCols()
-      searcher
-        .processor()
-        .addOrderRule(
-          gbkCols.includes(mapper[sortKey]) ? `CONVERT(\`${mapper[sortKey]}\` USING gbk)` : mapper[sortKey],
-          sortDirection
-        )
-    }
-    const paramsKeys = Object.keys(params)
-    paramsKeys
-      .filter((key: string) => {
-        return /^[a-zA-Z]\w+$/.test(key) && key in mapper && !!params[key]
-      })
-      .forEach((key) => {
-        searcher.processor().addConditionKV(mapper[key], params[key])
-      })
-    for (const key of paramsKeys) {
-      const matches = key.match(/^([a-zA-Z]\w+)\.(\$\w+)(\.\w+)?$/)
-      if (!matches || !(matches[1] in mapper)) {
-        continue
-      }
-      const columnKey = mapper[matches[1]]
-      const symbol = matches[2]
-      if (symbol === '$like') {
-        searcher.processor().addConditionLikeKeywords(columnKey, params[key])
-      } else if (['$in', '$notIn'].includes(symbol) && Array.isArray(params[key])) {
-        if (symbol === '$in') {
-          searcher.processor().addConditionKeyInArray(columnKey, params[key])
-        } else if (symbol === '$notIn') {
-          searcher.processor().addConditionKeyNotInArray(columnKey, params[key])
-        }
-      } else if (['$inStr', '$notInStr'].includes(symbol) && typeof params[key] === 'string') {
-        const values = (params[key] as string)
-          .split(',')
-          .map((item) => item.trim())
-          .filter((item) => !!item)
-        if (symbol === '$inStr') {
-          searcher.processor().addConditionKeyInArray(columnKey, values)
-        } else if (symbol === '$notInStr') {
-          searcher.processor().addConditionKeyNotInArray(columnKey, values)
-        }
-      } else if (['$eq', '$ne'].includes(symbol) && typeof params[key] === 'string') {
-        const value = params[key]
-        if (symbol === '$eq') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` = ?`, value)
-        } else if (symbol === '$ne') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` != ?`, value)
-        }
-      } else if (
-        ['$lt', '$le', '$gt', '$ge', '$eq', '$ne'].includes(symbol) &&
-        ((typeof params[key] === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(params[key])) ||
-          typeof params[key] === 'number')
-      ) {
-        const isTimestamp = this.dbSpec().checkTimestampKey(columnKey)
-        const placeholder = isTimestamp ? 'FROM_UNIXTIME(?)' : '?'
-        const value = Number(params[key])
-        if (symbol === '$lt') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` < ${placeholder}`, value)
-        } else if (symbol === '$le') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` <= ${placeholder}`, value)
-        } else if (symbol === '$gt') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` > ${placeholder}`, value)
-        } else if (symbol === '$ge') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` >= ${placeholder}`, value)
-        } else if (symbol === '$eq') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` = ${placeholder}`, value)
-        } else if (symbol === '$ne') {
-          searcher.processor().addSpecialCondition(`\`${columnKey}\` != ${placeholder}`, value)
-        }
-      }
-    }
-    if (params['$keywords'] && `${params['$keywords']}`.trim()) {
-      const keywords = `${params['$keywords']}`.trim()
-      const dbSpec = this.dbSpec()
-      const exactSearchCols = dbSpec.exactSearchCols()
-      const fuzzySearchCols = dbSpec.fuzzySearchCols()
-      const conditionList: string[] = []
-      const stmtValues: any[] = []
-      for (let col of exactSearchCols) {
-        if (/^\w+$/.test(col)) {
-          col = `\`${col}\``
-        }
-        conditionList.push(`${col} = ? COLLATE utf8mb4_general_ci`)
-        stmtValues.push(keywords)
-      }
-      for (let col of fuzzySearchCols) {
-        if (/^\w+$/.test(col)) {
-          col = `\`${col}\``
-        }
-        conditionList.push(`${col} LIKE ? COLLATE utf8mb4_general_ci`)
-        stmtValues.push(`%${keywords}%`)
-      }
-      if (conditionList.length > 0) {
-        searcher.processor().addSpecialCondition(conditionList.join(' OR '), ...stmtValues)
-      }
-    }
-    const limitInfo = _buildLimitInfo(params)
-    if (limitInfo.offset >= 0 && limitInfo.length > 0) {
-      searcher.processor().setLimitInfo(limitInfo.offset, limitInfo.length)
-    }
+    const dbSpec = this.dbSpec()
+    SearcherTools.injectConditions(searcher.processor(), {
+      colsMapper: this.fc_propertyMapper(),
+      params: params,
+      gbkCols: dbSpec.gbkCols(),
+      exactSearchCols: dbSpec.exactSearchCols(),
+      fuzzySearchCols: dbSpec.fuzzySearchCols(),
+      timestampTypeCols: dbSpec.timestampTypeCols(),
+    })
     return searcher
   }
 
