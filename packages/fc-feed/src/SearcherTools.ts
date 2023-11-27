@@ -66,6 +66,7 @@ export class SearcherTools {
         continue
       }
       const columnKey = colsMapper[matches[1]]
+      const wrappedColumnKey = /^\w+$/.test(columnKey) ? columnKey : `\`${columnKey}\``
       const symbol = matches[2]
       if (symbol === '$like') {
         searcher.addConditionLikeKeywords(columnKey, params[key])
@@ -88,9 +89,9 @@ export class SearcherTools {
       } else if (['$eq', '$ne'].includes(symbol) && typeof params[key] === 'string') {
         const value = params[key]
         if (symbol === '$eq') {
-          searcher.addSpecialCondition(`\`${columnKey}\` = ?`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} = ?`, value)
         } else if (symbol === '$ne') {
-          searcher.addSpecialCondition(`\`${columnKey}\` != ?`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} != ?`, value)
         }
       } else if (
         ['$lt', '$le', '$gt', '$ge', '$eq', '$ne'].includes(symbol) &&
@@ -101,17 +102,17 @@ export class SearcherTools {
         const placeholder = isTimestamp ? 'FROM_UNIXTIME(?)' : '?'
         const value = Number(params[key])
         if (symbol === '$lt') {
-          searcher.addSpecialCondition(`\`${columnKey}\` < ${placeholder}`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} < ${placeholder}`, value)
         } else if (symbol === '$le') {
-          searcher.addSpecialCondition(`\`${columnKey}\` <= ${placeholder}`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} <= ${placeholder}`, value)
         } else if (symbol === '$gt') {
-          searcher.addSpecialCondition(`\`${columnKey}\` > ${placeholder}`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} > ${placeholder}`, value)
         } else if (symbol === '$ge') {
-          searcher.addSpecialCondition(`\`${columnKey}\` >= ${placeholder}`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} >= ${placeholder}`, value)
         } else if (symbol === '$eq') {
-          searcher.addSpecialCondition(`\`${columnKey}\` = ${placeholder}`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} = ${placeholder}`, value)
         } else if (symbol === '$ne') {
-          searcher.addSpecialCondition(`\`${columnKey}\` != ${placeholder}`, value)
+          searcher.addSpecialCondition(`${wrappedColumnKey} != ${placeholder}`, value)
         }
       }
     }
