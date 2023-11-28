@@ -18,7 +18,6 @@ export const TestDialogsView: React.FC = () => {
     <>
       <Space>
         <Button
-          type={'primary'}
           onClick={() => {
             const dialog = new ConfirmDialog({
               title: 'Confirm Title',
@@ -30,6 +29,21 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           ConfirmDialog
+        </Button>
+        <Button
+          type={'primary'}
+          onClick={() => {
+            const dialog = new ConfirmDialog({
+              title: 'Confirm Title',
+              content: '这是一条确认信息',
+              forceVerify: true,
+            })
+            dialog.show(() => {
+              message.success('已点击「确认」')
+            })
+          }}
+        >
+          ConfirmDialog.strong
         </Button>
 
         <Button
