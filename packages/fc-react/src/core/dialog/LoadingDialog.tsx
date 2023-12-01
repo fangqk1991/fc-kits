@@ -3,7 +3,7 @@ import { DialogProps, ReactDialog } from './ReactDialog'
 import { LoadingView, LoadingViewContext } from '../LoadingView'
 
 interface Props extends DialogProps {
-  message?: string
+  message?: React.ReactNode
 }
 
 export class LoadingDialog extends ReactDialog<Props> {
@@ -21,7 +21,10 @@ export class LoadingDialog extends ReactDialog<Props> {
     return dialog
   }
 
-  public static async execute<T = any>(handler: (context: LoadingViewContext) => Promise<T>, message?: string) {
+  public static async execute<T = any>(
+    handler: (context: LoadingViewContext) => Promise<T>,
+    message?: React.ReactNode
+  ) {
     const dialog = new LoadingDialog({
       message: message,
     })

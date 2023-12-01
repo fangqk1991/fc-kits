@@ -13,11 +13,11 @@ const Loading = styled.div({
 })
 
 export interface LoadingViewContext {
-  setText: (text: string) => void
+  setText: (text: React.ReactNode) => void
 }
 
-export const LoadingView: React.FC<{ text?: string; context?: LoadingViewContext; [p: string]: any }> = (props) => {
-  const [text, setText] = useState(props.text || 'Loading……')
+export const LoadingView: React.FC<{ text?: React.ReactNode; context?: LoadingViewContext; [p: string]: any }> = (props) => {
+  const [text, setText] = useState<React.ReactNode>(props.text || 'Loading……')
   if (props.context) {
     props.context.setText = setText
   }
