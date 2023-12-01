@@ -43,18 +43,23 @@ export const TestLoadingView: React.FC = () => {
               </Button>
               <Button
                 onClick={async () => {
-                  const result = await LoadingDialog.execute(async (context) => {
-                    const count = 10
-                    for (let i = 1; i <= 10; ++i) {
-                      context.setText(
-                        <b style={{ color: 'red' }}>
-                          {i} / {count}
-                        </b>
-                      )
-                      await sleep(500)
-                    }
-                    return 'Pong'
-                  }, 'Ping...')
+                  const result = await LoadingDialog.execute({
+                    handler: async (context) => {
+                      const count = 10
+                      for (let i = 1; i <= 10; ++i) {
+                        context.setText(
+                          <b style={{ color: 'red' }}>
+                            {i} / {count}
+                          </b>
+                        )
+                        await sleep(500)
+                      }
+                      context.setText(<Button onClick={() => context.dismiss()}>关闭</Button>, true)
+                      return 'Pong'
+                    },
+                    message: 'Ping...',
+                    manualDismiss: true,
+                  })
                   message.success(result)
                 }}
               >

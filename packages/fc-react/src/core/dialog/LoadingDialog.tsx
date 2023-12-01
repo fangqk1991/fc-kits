@@ -1,9 +1,15 @@
 import React from 'react'
-import { DialogProps, ReactDialog } from './ReactDialog'
+import { DialogContext, DialogProps, ReactDialog } from './ReactDialog'
 import { LoadingView, LoadingViewContext } from '../LoadingView'
 
 interface Props extends DialogProps {
   message?: React.ReactNode
+}
+
+interface ExecuteProps<T> {
+  handler: (context: DialogContext & LoadingViewContext) => Promise<T>
+  message?: React.ReactNode
+  manualDismiss?: boolean
 }
 
 export class LoadingDialog extends ReactDialog<Props> {
@@ -11,7 +17,7 @@ export class LoadingDialog extends ReactDialog<Props> {
   maskClosable = false
   title = ''
   closeIcon = (<></>)
-  loadingContext!: LoadingViewContext
+  context!: DialogContext & LoadingViewContext
 
   public static show(message?: string) {
     const dialog = new LoadingDialog({
@@ -21,20 +27,17 @@ export class LoadingDialog extends ReactDialog<Props> {
     return dialog
   }
 
-  public static async execute<T = any>(
-    handler: (context: LoadingViewContext) => Promise<T>,
-    message?: React.ReactNode
-  ) {
+  public static async execute<T = any>(props: ExecuteProps<T>) {
     const dialog = new LoadingDialog({
-      message: message,
+      message: props.message,
     })
-    dialog.loadingContext = {
-      setText: () => {},
-    }
+    dialog.context.setText = () => {}
     dialog.show()
     try {
-      const result = await handler(dialog.loadingContext)
-      dialog.dismiss()
+      const result = await props.handler(dialog.context)
+      if (!props.manualDismiss) {
+        dialog.dismiss()
+      }
       return result
     } catch (e) {
       dialog.dismiss()
@@ -44,7 +47,7 @@ export class LoadingDialog extends ReactDialog<Props> {
 
   public rawComponent(): React.FC<Props> {
     return (props) => {
-      return <LoadingView text={props.message} context={this.loadingContext} />
+      return <LoadingView text={props.message} context={this.context} />
     }
   }
 }

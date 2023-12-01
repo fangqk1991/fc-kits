@@ -5,7 +5,7 @@ import { ReactTheme } from '../ReactTheme'
 
 export type DialogCallback<T = any> = (params: T) => void | Promise<void>
 
-interface Context {
+export interface DialogContext {
   handleResult: () => any
   onClickSubmit: () => any
   dismiss: () => void
@@ -14,7 +14,7 @@ interface Context {
 export interface DialogProps<T = any> {
   title?: string
   curValue?: T
-  context: Context
+  context: DialogContext
 }
 
 interface Props extends DialogProps {
@@ -85,7 +85,7 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
   maskClosable = true
 
   props!: Omit<T, 'context'>
-  context!: Context
+  context!: DialogContext
 
   public constructor(props: Omit<T, 'context'>) {
     this.props = props

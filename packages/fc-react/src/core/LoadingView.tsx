@@ -13,19 +13,27 @@ const Loading = styled.div({
 })
 
 export interface LoadingViewContext {
-  setText: (text: React.ReactNode) => void
+  setText: (text: React.ReactNode, hideSpin?: boolean) => void
 }
 
-export const LoadingView: React.FC<{ text?: React.ReactNode; context?: LoadingViewContext; [p: string]: any }> = (props) => {
+export const LoadingView: React.FC<{ text?: React.ReactNode; context?: LoadingViewContext; [p: string]: any }> = (
+  props
+) => {
   const [text, setText] = useState<React.ReactNode>(props.text || 'Loading……')
+  const [spinHidden, setSpinHidden] = useState(false)
   if (props.context) {
-    props.context.setText = setText
+    props.context.setText = (text: React.ReactNode, hideSpin?: boolean) => {
+      setText(text)
+      setSpinHidden(!!hideSpin)
+    }
   }
   return (
     <Loading {...props}>
-      <div>
-        <Spin size='large' />
-      </div>
+      {!spinHidden && (
+        <div>
+          <Spin size='large' />
+        </div>
+      )}
       <div style={{ marginTop: '4px', color: ReactTheme.colorPrimary }}>{text}</div>
     </Loading>
   )
