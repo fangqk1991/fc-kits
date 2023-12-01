@@ -43,8 +43,12 @@ export const TestLoadingView: React.FC = () => {
               </Button>
               <Button
                 onClick={async () => {
-                  const result = await LoadingDialog.execute(async () => {
-                    await sleep(1000)
+                  const result = await LoadingDialog.execute(async (context) => {
+                    const count = 10
+                    for (let i = 1; i <= 10; ++i) {
+                      context.setText(`${i} / ${count}`)
+                      await sleep(500)
+                    }
                     return 'Pong'
                   }, 'Ping...')
                   message.success(result)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Spin } from 'antd'
 import styled from '@emotion/styled'
 import { ReactTheme } from './ReactTheme'
@@ -12,13 +12,21 @@ const Loading = styled.div({
   flexDirection: 'column',
 })
 
-export const LoadingView: React.FC<{ text?: string; [p: string]: any }> = (props) => {
+export interface LoadingViewContext {
+  setText: (text: string) => void
+}
+
+export const LoadingView: React.FC<{ text?: string; context?: LoadingViewContext; [p: string]: any }> = (props) => {
+  const [text, setText] = useState(props.text || 'Loading……')
+  if (props.context) {
+    props.context.setText = setText
+  }
   return (
     <Loading {...props}>
       <div>
         <Spin size='large' />
       </div>
-      <div style={{ marginTop: '4px', color: ReactTheme.colorPrimary }}>{props.text || 'Loading……'}</div>
+      <div style={{ marginTop: '4px', color: ReactTheme.colorPrimary }}>{text}</div>
     </Loading>
   )
 }

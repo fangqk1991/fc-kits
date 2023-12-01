@@ -1,6 +1,6 @@
 import React from 'react'
 import { DialogProps, ReactDialog } from './ReactDialog'
-import { LoadingView } from '../LoadingView'
+import { LoadingView, LoadingViewContext } from '../LoadingView'
 
 interface Props extends DialogProps {
   message?: string
@@ -11,6 +11,7 @@ export class LoadingDialog extends ReactDialog<Props> {
   maskClosable = false
   title = ''
   closeIcon = (<></>)
+  loadingContext!: LoadingViewContext
 
   public static show(message?: string) {
     const dialog = new LoadingDialog({
@@ -20,13 +21,16 @@ export class LoadingDialog extends ReactDialog<Props> {
     return dialog
   }
 
-  public static async execute<T = any>(handler: () => Promise<T>, message?: string) {
+  public static async execute<T = any>(handler: (context: LoadingViewContext) => Promise<T>, message?: string) {
     const dialog = new LoadingDialog({
       message: message,
     })
+    dialog.loadingContext = {
+      setText: () => {},
+    }
     dialog.show()
     try {
-      const result = await handler()
+      const result = await handler(dialog.loadingContext)
       dialog.dismiss()
       return result
     } catch (e) {
@@ -37,7 +41,7 @@ export class LoadingDialog extends ReactDialog<Props> {
 
   public rawComponent(): React.FC<Props> {
     return (props) => {
-      return <LoadingView text={props.message} />
+      return <LoadingView text={props.message} context={this.loadingContext} />
     }
   }
 }
