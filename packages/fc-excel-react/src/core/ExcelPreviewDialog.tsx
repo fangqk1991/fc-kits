@@ -32,6 +32,9 @@ export class ExcelPreviewDialog<T extends object> extends ReactDialog<Props<T>, 
           ]}
           dataSource={props.records}
           pagination={false}
+          scroll={{
+            x: 'max-content',
+          }}
         />
       )
     }
