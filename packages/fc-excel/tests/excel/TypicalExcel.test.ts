@@ -20,9 +20,11 @@ describe('Test TypicalExcel', () => {
     await excel.writeFile(filepath)
 
     const excel2 = await TypicalExcel.excelFromFile(filepath, {
-      ID: 'id',
-      Name: 'name',
-      Date: 'date',
+      name2keyMap: {
+        ID: 'id',
+        Name: 'name',
+        Date: 'date',
+      },
     })
     console.info(excel2.records())
     assert.ok(DiffMapper.checkEquals(excel.columnKeys, columnKeys))

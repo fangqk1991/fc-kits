@@ -28,6 +28,10 @@ export interface TypicalColumn<T> {
   width?: number
 }
 
+export interface ExcelParseOptions {
+  name2keyMap?: StringDict
+}
+
 export class TypicalExcel<T extends object = {}> {
   public readonly columnKeys: string[] = []
   protected readonly _workbook: Workbook
@@ -68,7 +72,10 @@ export class TypicalExcel<T extends object = {}> {
   }
 
   public typicalColumns?: TypicalColumn<T>[]
-  public static excelWithTypicalColumns<T extends object = {}>(columns: TypicalColumn<T>[], options1: TypicalExcelOptions = {}) {
+  public static excelWithTypicalColumns<T extends object = {}>(
+    columns: TypicalColumn<T>[],
+    options1: TypicalExcelOptions = {}
+  ) {
     const columnKeys = columns.map((item) => item.columnKey)
     const options: TypicalExcelOptions = {
       headerNameMap: {},
@@ -182,7 +189,8 @@ export class TypicalExcel<T extends object = {}> {
     return workbook.commit()
   }
 
-  public static async parseWorkbook<T extends object = {}>(workbook: Workbook, name2keyMap: StringDict = {}) {
+  public static async parseWorkbook<T extends object = {}>(workbook: Workbook, options: ExcelParseOptions = {}) {
+    const name2keyMap = options.name2keyMap || {}
     const sheet = workbook.worksheets[0]
     assert.ok(sheet.rowCount > 0, 'No Data')
     const firstRow = sheet.getRow(1)
@@ -223,15 +231,15 @@ export class TypicalExcel<T extends object = {}> {
     return excel
   }
 
-  public static async excelFromFile<T extends object = {}>(filePath: string, name2keyMap?: StringDict) {
+  public static async excelFromFile<T extends object = {}>(filePath: string, options: ExcelParseOptions = {}) {
     const workbook = new Workbook()
     await workbook.xlsx.readFile(filePath)
-    return this.parseWorkbook<T>(workbook, name2keyMap)
+    return this.parseWorkbook<T>(workbook, options)
   }
 
-  public static async excelFromBuffer<T extends object = {}>(buffer: Buffer, name2keyMap?: StringDict) {
+  public static async excelFromBuffer<T extends object = {}>(buffer: Buffer, options: ExcelParseOptions = {}) {
     const workbook = new Workbook()
     await workbook.xlsx.load(buffer)
-    return this.parseWorkbook<T>(workbook, name2keyMap)
+    return this.parseWorkbook<T>(workbook, options)
   }
 }

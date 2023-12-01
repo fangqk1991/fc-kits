@@ -33,14 +33,14 @@ export const ExcelPickButton = <T extends object = {}>({
         }
         dialog.show(async (file) => {
           const buffer = await FrontendFileReader.loadFileBuffer(file)
-          await TypicalExcel.excelFromBuffer<T>(
-            buffer as any,
-            columns &&
-              columns.reduce((result, field) => {
-                result[field.columnName] = field.columnKey
-                return result
-              }, {})
-          )
+          await TypicalExcel.excelFromBuffer<T>(buffer as any, {
+            name2keyMap: columns
+              ? columns.reduce((result, field) => {
+                  result[field.columnName] = field.columnKey
+                  return result
+                }, {})
+              : {},
+          })
             .then(async (excel) => {
               message.success(`文件解析成功`)
               excel.fileName = file.name || ''
