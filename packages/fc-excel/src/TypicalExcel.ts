@@ -30,6 +30,7 @@ export interface TypicalColumn<T> {
 
 export interface ExcelParseOptions {
   name2keyMap?: StringDict
+  text2ValueTransform?: (text: string, curKey: string) => any
 }
 
 export class TypicalExcel<T extends object = {}> {
@@ -191,6 +192,7 @@ export class TypicalExcel<T extends object = {}> {
 
   public static async parseWorkbook<T extends object = {}>(workbook: Workbook, options: ExcelParseOptions = {}) {
     const name2keyMap = options.name2keyMap || {}
+    const text2ValueTransform = options.text2ValueTransform || ((text) => text)
     const sheet = workbook.worksheets[0]
     assert.ok(sheet.rowCount > 0, 'No Data')
     const firstRow = sheet.getRow(1)
@@ -209,10 +211,10 @@ export class TypicalExcel<T extends object = {}> {
       let notEmpty = false
       columnKeys.forEach((columnKey, index) => {
         const value = (row.values as [])[index + 1]
-        data[columnKey] = value !== undefined ? value : ''
+        data[columnKey] = text2ValueTransform(value !== undefined ? value : '', columnKey)
         if (Object.prototype.toString.call(value) === '[object Object]') {
           const cell = row.getCell(index + 1)
-          data[columnKey] = cell.text
+          data[columnKey] = text2ValueTransform(cell.text, columnKey)
         }
         if (data[columnKey] !== '') {
           notEmpty = true

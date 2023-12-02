@@ -12,6 +12,7 @@ interface Props<T extends object = {}> {
   onPickExcel?: (excel: TypicalExcel<T>) => Promise<void> | void
   filePickBtnText?: string
   previewSubmitBtnText?: string
+  text2ValueTransform?: (text: string, curKey: string) => any
 }
 
 export const ExcelPickButton = <T extends object = {}>({
@@ -19,6 +20,7 @@ export const ExcelPickButton = <T extends object = {}>({
   description,
   onPickExcel,
   skipPreview,
+  text2ValueTransform,
   ...props
 }: ButtonProps & Props<T>) => {
   return (
@@ -40,6 +42,7 @@ export const ExcelPickButton = <T extends object = {}>({
                   return result
                 }, {})
               : {},
+            text2ValueTransform: text2ValueTransform,
           })
             .then(async (excel) => {
               message.success(`文件解析成功`)
