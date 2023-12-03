@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, message, Space } from 'antd'
-import { ExcelPickButton, HotExcelPanel } from '@fangcha/excel-react'
+import { ExcelPickButton, HotExcelPanel, Json2ExcelButton } from '@fangcha/excel-react'
 import { TypicalColumn } from '@fangcha/excel'
 import { sleep } from '@fangcha/tools'
 
@@ -54,6 +54,7 @@ export const TestExcelsView: React.FC = () => {
         >
           Pick Excel without Preview
         </ExcelPickButton>
+        <Json2ExcelButton description={'文本格式需要为 JSON 数组'}/>
       </Space>
     </div>
   )
