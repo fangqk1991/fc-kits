@@ -47,6 +47,7 @@ export const Json2ExcelButton = <T extends object = {}>({
           const previewDialog = new ExcelPreviewDialog({
             columns: columns,
             records: items,
+            // previewLength: 3,
           })
           if (props.previewSubmitBtnText) {
             previewDialog.okText = props.previewSubmitBtnText
