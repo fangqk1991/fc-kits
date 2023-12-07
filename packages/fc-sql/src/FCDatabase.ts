@@ -1,4 +1,4 @@
-import { Options, QueryTypes, Sequelize, Transaction } from 'sequelize'
+import { Options, QueryOptionsWithType, QueryTypes, Sequelize, Transaction } from 'sequelize'
 import { SQLSearcher } from './SQLSearcher'
 import { SQLAdder } from './SQLAdder'
 import { SQLModifier } from './SQLModifier'
@@ -6,7 +6,6 @@ import { SQLRemover } from './SQLRemover'
 import * as moment from 'moment'
 import { TransactionRunner } from './TransactionRunner'
 import { DBTableHandler } from './DBTableHandler'
-import { QueryOptionsWithType } from 'sequelize/types'
 import { SequelizeProtocol } from './SequelizeProtocol'
 import * as assert from 'assert'
 
@@ -85,17 +84,50 @@ export class FCDatabase<T extends SequelizeProtocol = Sequelize> {
     query: string,
     replacements: (string | number | null)[] = [],
     transaction: Transaction | null = null
-  ): Promise<{ [key: string]: any }[]> {
-    const options: Partial<QueryOptionsWithType<QueryTypes>> = {
+  ) {
+    const items = (await this.execute(query, {
       replacements: replacements,
+      transaction: transaction,
       type: QueryTypes.SELECT,
       raw: true,
+    })) as { [p: string]: any }[]
+
+    if (items && items.length > 0) {
+      const remainKeyMap = Object.keys(items[0]).reduce((result: any, cur: string) => {
+        result[cur] = true
+        return result
+      }, {})
+      for (const item of items) {
+        const keys = Object.keys(remainKeyMap)
+        for (const key of keys) {
+          if (Object.prototype.toString.call(item[key]) === '[object Date]') {
+            const time = moment(item[key])
+            item[key] = time.isValid() ? time.format() : null
+          } else {
+            if (item[key] !== null && item[key] !== undefined) {
+              delete remainKeyMap[key]
+            }
+          }
+        }
+      }
     }
-    if (transaction) {
-      options.transaction = transaction
-    }
+    return items
+  }
+
+  public async update(
+    query: string,
+    replacements: (string | number | null)[] = [],
+    transaction: Transaction | null = null
+  ): Promise<any> {
+    return await this.execute(query, {
+      replacements: replacements,
+      transaction: transaction,
+    })
+  }
+
+  public async execute(query: string, options: Partial<QueryOptionsWithType<QueryTypes>> = {}): Promise<any> {
     const items = (await this._db().query(query, options)) as any[]
-    if (items.length > 0) {
+    if (items && items.length > 0) {
       const remainKeyMap = Object.keys(items[0]).reduce((result: any, cur: string) => {
         result[cur] = true
         return result
@@ -115,20 +147,6 @@ export class FCDatabase<T extends SequelizeProtocol = Sequelize> {
       }
     }
     return items as { [p: string]: number | string }[]
-  }
-
-  public async update(
-    query: string,
-    replacements: (string | number | null)[] = [],
-    transaction: Transaction | null = null
-  ): Promise<any> {
-    const options: Partial<QueryOptionsWithType<QueryTypes>> = {
-      replacements: replacements,
-    }
-    if (transaction) {
-      options.transaction = transaction
-    }
-    return this._db().query(query, options)
   }
 
   public _db(): T {
