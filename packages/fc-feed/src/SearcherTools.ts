@@ -36,6 +36,7 @@ export class SearcherTools {
       colsMapper: { [p: string]: string } | string[]
       params: FilterOptions
       gbkCols?: string[]
+      withoutFilterCols?: string[]
       exactSearchCols?: string[]
       fuzzySearchCols?: string[]
       timestampTypeCols?: string[]
@@ -47,6 +48,11 @@ export class SearcherTools {
           return result
         }, {})
       : options.colsMapper
+    const filterColsMapper = { ...colsMapper }
+    const withoutFilterCols = options.withoutFilterCols || []
+    withoutFilterCols.forEach((col) => {
+      delete filterColsMapper[col]
+    })
     const params = options.params
     const timestampMap = (options.timestampTypeCols || []).reduce((result, cur) => {
       result[cur] = true
@@ -55,17 +61,17 @@ export class SearcherTools {
     const paramsKeys = Object.keys(params)
     paramsKeys
       .filter((key: string) => {
-        return /^[a-zA-Z_][\w.]+$/.test(key) && key in colsMapper && !!params[key]
+        return /^[a-zA-Z_][\w.]+$/.test(key) && key in filterColsMapper && !!params[key]
       })
       .forEach((key) => {
-        searcher.addConditionKV(colsMapper[key], params[key])
+        searcher.addConditionKV(filterColsMapper[key], params[key])
       })
     for (const key of paramsKeys) {
       const matches = key.match(/^([a-zA-Z_][\w.]+)\.(\$\w+)(\.\w+)?$/)
-      if (!matches || !(matches[1] in colsMapper)) {
+      if (!matches || !(matches[1] in filterColsMapper)) {
         continue
       }
-      const columnKey = colsMapper[matches[1]]
+      const columnKey = filterColsMapper[matches[1]]
       const wrappedColumnKey = /^\w+$/.test(columnKey) ? `\`${columnKey}\`` : columnKey
       const symbol = matches[2]
       if (symbol === '$like') {
