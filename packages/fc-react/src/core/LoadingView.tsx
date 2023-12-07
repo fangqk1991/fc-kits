@@ -14,17 +14,21 @@ const Loading = styled.div({
 
 export interface LoadingViewContext {
   setText: (text: React.ReactNode, hideSpin?: boolean) => void
+  addText: (text: React.ReactNode) => void
 }
 
 export const LoadingView: React.FC<{ text?: React.ReactNode; context?: LoadingViewContext; [p: string]: any }> = (
   props
 ) => {
-  const [text, setText] = useState<React.ReactNode>(props.text || 'Loading……')
+  const [nodeItems, setNodeItems] = useState<React.ReactNode[]>([props.text || 'Loading……'])
   const [spinHidden, setSpinHidden] = useState(false)
   if (props.context) {
     props.context.setText = (text: React.ReactNode, hideSpin?: boolean) => {
-      setText(text)
+      setNodeItems([text])
       setSpinHidden(!!hideSpin)
+    }
+    props.context.addText = (text: React.ReactNode) => {
+      setNodeItems([...nodeItems, text])
     }
   }
   return (
@@ -34,7 +38,22 @@ export const LoadingView: React.FC<{ text?: React.ReactNode; context?: LoadingVi
           <Spin size='large' />
         </div>
       )}
-      <div style={{ marginTop: '4px', color: ReactTheme.colorPrimary }}>{text}</div>
+      <div style={{ marginTop: '4px', color: ReactTheme.colorPrimary }}>
+        {nodeItems.length > 1 ? (
+          <ul
+            style={{
+              paddingInlineStart: '10px',
+              marginBlockStart: '4px',
+            }}
+          >
+            {nodeItems.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          nodeItems[0]
+        )}
+      </div>
     </Loading>
   )
 }

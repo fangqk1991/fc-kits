@@ -32,6 +32,7 @@ export class LoadingDialog extends ReactDialog<Props> {
       message: props.message,
     })
     dialog.context.setText = () => {}
+    dialog.context.addText = () => {}
     dialog.show()
     try {
       const result = await props.handler(dialog.context)

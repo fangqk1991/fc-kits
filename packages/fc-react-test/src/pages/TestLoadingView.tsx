@@ -46,8 +46,9 @@ export const TestLoadingView: React.FC = () => {
                   const result = await LoadingDialog.execute({
                     handler: async (context) => {
                       const count = 10
+                      await sleep(500)
                       for (let i = 1; i <= 10; ++i) {
-                        context.setText(
+                        context.addText(
                           <b style={{ color: 'red' }}>
                             {i} / {count}
                           </b>
