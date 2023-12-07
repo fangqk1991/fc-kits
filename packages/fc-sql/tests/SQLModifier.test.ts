@@ -52,9 +52,9 @@ describe('Test SQLModifier', () => {
       modifier.updateKVForTimestamp('create_time', createTime)
       modifier.addConditionKV('uid', dataBefore['uid'])
       await modifier.execute()
-      const [{ create_time: createTime2 }] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [
-        dataBefore.uid,
-      ])
+      const [{ create_time: createTime2 }] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [dataBefore.uid],
+      })
       assert.equal(moment(createTime).valueOf(), moment(createTime2).valueOf())
     }
     {
@@ -64,9 +64,9 @@ describe('Test SQLModifier', () => {
       modifier.updateKVForTimestamp('create_time', moment(createTime))
       modifier.addConditionKV('uid', dataBefore['uid'])
       await modifier.execute()
-      const [{ create_time: createTime2 }] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [
-        dataBefore.uid,
-      ])
+      const [{ create_time: createTime2 }] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [dataBefore.uid],
+      })
       assert.equal(moment(createTime).valueOf(), moment(createTime2).valueOf())
     }
     {
@@ -76,9 +76,9 @@ describe('Test SQLModifier', () => {
       modifier.updateKVForTimestamp('create_time', moment(createTime).format())
       modifier.addConditionKV('uid', dataBefore['uid'])
       await modifier.execute()
-      const [{ create_time: createTime2 }] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [
-        dataBefore.uid,
-      ])
+      const [{ create_time: createTime2 }] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [dataBefore.uid],
+      })
       assert.equal(moment(createTime).valueOf(), moment(createTime2).valueOf())
     }
     {
@@ -88,9 +88,9 @@ describe('Test SQLModifier', () => {
       modifier.updateKVForTimestamp('create_time', moment(createTime).valueOf())
       modifier.addConditionKV('uid', dataBefore['uid'])
       await modifier.execute()
-      const [{ create_time: createTime2 }] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [
-        dataBefore.uid,
-      ])
+      const [{ create_time: createTime2 }] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [dataBefore.uid],
+      })
       assert.equal(moment(createTime).valueOf(), moment(createTime2).valueOf())
     }
   })

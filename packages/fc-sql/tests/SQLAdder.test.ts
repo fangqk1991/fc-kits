@@ -35,7 +35,7 @@ describe('Test SQLAdder', () => {
     const count = 5
     await generateRecords(count)
     const countBefore = await fetchRecordCount()
-    const feeds = await demoDatabase.query(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
+    const feeds = await demoDatabase.queryV2(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
     for (const feed of feeds) {
       const newKey1 = `K1 - ${Math.random()}`
       const newKey2 = `K2 - ${Math.random()}`
@@ -48,7 +48,9 @@ describe('Test SQLAdder', () => {
         .execute()
 
       assert.equal(lastInsertId, 0)
-      const [newData2] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [feed.uid])
+      const [newData2] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [feed.uid],
+      })
       assert.equal(newData2.uid, feed.uid)
       assert.equal(newData2.key1, newKey1)
       assert.equal(newData2.key2, newKey2)
@@ -61,7 +63,7 @@ describe('Test SQLAdder', () => {
     const count = 5
     await generateRecords(count)
     const countBefore = await fetchRecordCount()
-    const feeds = await demoDatabase.query(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
+    const feeds = await demoDatabase.queryV2(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
     for (const feed of feeds) {
       const newKey1 = `K1 - ${Math.random()}`
       const newKey2 = `K2 - ${Math.random()}`
@@ -75,7 +77,9 @@ describe('Test SQLAdder', () => {
         .execute()
 
       assert.equal(lastInsertId, 0)
-      const [newData2] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [feed.uid])
+      const [newData2] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [feed.uid],
+      })
       assert.equal(newData2.uid, feed.uid)
       assert.equal(newData2.key1, feed.key1)
       assert.equal(newData2.key2, feed.key2)
@@ -89,8 +93,10 @@ describe('Test SQLAdder', () => {
     {
       const sql = `INSERT INTO demo_table(key1, key2, create_time) VALUES (?, ?, FROM_UNIXTIME(?))`
       await demoDatabase.update(sql, [`K1 - ${Math.random()}`, `K2 - ${Math.random()}`, moment(createTime).unix()])
-      const [{ lastInsertId }] = (await demoDatabase.query('SELECT LAST_INSERT_ID() AS lastInsertId', [])) as any
-      const [newData] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [lastInsertId])
+      const [{ lastInsertId }] = (await demoDatabase.queryV2('SELECT LAST_INSERT_ID() AS lastInsertId')) as any
+      const [newData] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [lastInsertId],
+      })
       assert.equal(moment(createTime).valueOf(), moment(newData['create_time']).valueOf())
     }
     {
@@ -100,7 +106,9 @@ describe('Test SQLAdder', () => {
       adder.insertKV('key2', `K2 - ${Math.random()}`)
       adder.insertKVForTimestamp('create_time', createTime)
       const uid = await adder.execute()
-      const [{ create_time: createTime2 }] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [uid])
+      const [{ create_time: createTime2 }] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [uid],
+      })
       assert.equal(moment(createTime).valueOf(), moment(createTime2).valueOf())
     }
   })

@@ -17,7 +17,7 @@ describe('SQLBulkAdder', () => {
     await generateRecords(count)
 
     const countBefore = await fetchRecordCount()
-    const feeds = await demoDatabase.query(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
+    const feeds = await demoDatabase.queryV2(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
     const newDataList = feeds.map((feed) => {
       return {
         uid: feed['uid'],
@@ -39,7 +39,9 @@ describe('SQLBulkAdder', () => {
     assert.strictEqual(countBefore, countAfter2)
 
     for (const newData of newDataList) {
-      const [newData2] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [newData.uid])
+      const [newData2] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [newData.uid],
+      })
       assert.equal(newData2.uid, newData.uid)
       assert.equal(newData2.key1, newData.key1)
       assert.equal(newData2.key2, newData.key2)
@@ -51,7 +53,7 @@ describe('SQLBulkAdder', () => {
     await generateRecords(count)
 
     const countBefore = await fetchRecordCount()
-    const feeds = await demoDatabase.query(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
+    const feeds = await demoDatabase.queryV2(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
     {
       const bulkAdder = new SQLBulkAdder(demoDatabase)
       bulkAdder.setTable('demo_table')
@@ -71,7 +73,9 @@ describe('SQLBulkAdder', () => {
     assert.strictEqual(countBefore, countAfter2)
 
     for (const feed of feeds) {
-      const [newData2] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [feed.uid])
+      const [newData2] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [feed.uid],
+      })
       assert.equal(newData2.uid, feed.uid)
       assert.equal(newData2.key1, feed.key1)
       assert.equal(newData2.key2, feed.key2)
