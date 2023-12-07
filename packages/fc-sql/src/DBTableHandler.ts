@@ -46,7 +46,9 @@ export class DBTableHandler {
     }
 
     const sql = `CREATE TABLE \`${this.tableName}\` (rid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY)`
-    await this.database.update(sql, [], this.transaction)
+    await this.database.updateV2(sql, {
+      transaction: this.transaction,
+    })
   }
 
   public async dropFromDatabase() {
@@ -55,23 +57,31 @@ export class DBTableHandler {
     }
 
     const sql = `DROP TABLE \`${this.tableName}\``
-    await this.database.update(sql, [], this.transaction)
+    await this.database.updateV2(sql, {
+      transaction: this.transaction,
+    })
   }
 
   public async addColumn(columnName: string, columnSpec: string) {
     const columns = await this.getColumns()
     const lastColumn = columns.pop() as DBColumn
     const sql = `ALTER TABLE \`${this.tableName}\` ADD \`${columnName}\` ${columnSpec} AFTER \`${lastColumn.Field}\``
-    await this.database.update(sql, [], this.transaction)
+    await this.database.updateV2(sql, {
+      transaction: this.transaction,
+    })
   }
 
   public async changeColumn(columnName: string, columnSpec: string) {
     const sql = `ALTER TABLE \`${this.tableName}\` CHANGE \`${columnName}\` \`${columnName}\` ${columnSpec}`
-    await this.database.update(sql, [], this.transaction)
+    await this.database.updateV2(sql, {
+      transaction: this.transaction,
+    })
   }
 
   public async dropColumn(columnName: string) {
     const sql = `ALTER TABLE \`${this.tableName}\` DROP \`${columnName}\``
-    await this.database.update(sql, [], this.transaction)
+    await this.database.updateV2(sql, {
+      transaction: this.transaction,
+    })
   }
 }

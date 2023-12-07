@@ -19,7 +19,7 @@ database.init({
 })
 
 const clearRecords = async () => {
-  await database.update('TRUNCATE demo_table')
+  await database.updateV2('TRUNCATE demo_table')
 }
 
 const buildSomeRecords = async (count: number) => {

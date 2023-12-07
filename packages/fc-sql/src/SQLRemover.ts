@@ -10,6 +10,10 @@ export class SQLRemover extends SQLBuilderBase {
     assert.ok(this.conditionColumns.length > 0, `${this.constructor.name}: conditionColumns missing.`)
 
     const query = `DELETE FROM ${this.table} WHERE (${this.conditions().join(' AND ')})`
-    await this.database.update(query, this.stmtValues(), this.transaction)
+    await this.database.updateV2(query, {
+      ...this.options,
+      replacements: this.stmtValues(),
+      transaction: this.transaction || this.options.transaction,
+    })
   }
 }

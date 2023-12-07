@@ -19,7 +19,7 @@ globalSearcher.setTable('demo_table_2')
 globalSearcher.setColumns(['*'])
 
 const clearRecords = async () => {
-  await database.update('TRUNCATE demo_table_2')
+  await database.updateV2('TRUNCATE demo_table_2')
 }
 
 const buildSomeRecords = async (count: number) => {
@@ -120,7 +120,9 @@ describe('Test TransactionRunner', () => {
 
     assert.equal(await globalSearcher.queryCount(), count - 1)
 
-    await database.update('UPDATE demo_table_2 SET key2 = ?', [key2Desc])
+    await database.updateV2('UPDATE demo_table_2 SET key2 = ?', {
+      replacements: [key2Desc],
+    })
     {
       const searcher = new SQLSearcher(database)
       searcher.setTable('demo_table_2')

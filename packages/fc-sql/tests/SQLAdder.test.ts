@@ -92,7 +92,9 @@ describe('Test SQLAdder', () => {
     const createTime = new Date('2011-01-01')
     {
       const sql = `INSERT INTO demo_table(key1, key2, create_time) VALUES (?, ?, FROM_UNIXTIME(?))`
-      await demoDatabase.update(sql, [`K1 - ${Math.random()}`, `K2 - ${Math.random()}`, moment(createTime).unix()])
+      await demoDatabase.updateV2(sql, {
+        replacements: [`K1 - ${Math.random()}`, `K2 - ${Math.random()}`, moment(createTime).unix()],
+      })
       const [{ lastInsertId }] = (await demoDatabase.queryV2('SELECT LAST_INSERT_ID() AS lastInsertId')) as any
       const [newData] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
         replacements: [lastInsertId],

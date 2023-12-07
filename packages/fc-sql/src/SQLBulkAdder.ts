@@ -108,6 +108,10 @@ export class SQLBulkAdder extends SQLBuilderBase {
       const key = CommonFuncs.wrapColumn(this._fixedKey)
       query = `${query} ON DUPLICATE KEY UPDATE ${key} = VALUES(${key})`
     }
-    await this.database.update(query, values, this.transaction)
+    await this.database.updateV2(query, {
+      ...this.options,
+      replacements: values,
+      transaction: this.transaction || this.options.transaction,
+    })
   }
 }

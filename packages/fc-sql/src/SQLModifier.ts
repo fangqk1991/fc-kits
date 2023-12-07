@@ -65,6 +65,10 @@ export class SQLModifier extends SQLBuilderBase {
     const query = `UPDATE ${this.table} SET ${this._updateColumns.join(', ')} WHERE (${this.conditions().join(
       ' AND '
     )})`
-    await this.database.update(query, this.stmtValues(), this.transaction)
+    await this.database.updateV2(query, {
+      ...this.options,
+      replacements: this.stmtValues(),
+      transaction: this.transaction || this.options.transaction,
+    })
   }
 }

@@ -8,15 +8,19 @@ describe('Test SQL', () => {
     FCDatabase.getInstance()
 
     await demoDatabase.ping()
-    await demoDatabase.update('DELETE FROM demo_table')
+    await demoDatabase.updateV2('DELETE FROM demo_table')
 
     {
       const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
       assert.ok(Array.isArray(items) && items.length === 0)
     }
 
-    await demoDatabase.update('INSERT INTO demo_table(key1, key2) VALUES(?, ?)', ['K1', 'K2'])
-    await demoDatabase.update('INSERT INTO demo_table(key1, key2) VALUES(?, ?)', ['K100', 'K2'])
+    await demoDatabase.updateV2('INSERT INTO demo_table(key1, key2) VALUES(?, ?)', {
+      replacements: ['K1', 'K2'],
+    })
+    await demoDatabase.updateV2('INSERT INTO demo_table(key1, key2) VALUES(?, ?)', {
+      replacements: ['K100', 'K2'],
+    })
 
     {
       const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
@@ -25,7 +29,9 @@ describe('Test SQL', () => {
       assert.ok(items[1]['key1'] === 'K100' && items[1]['key2'] === 'K2')
     }
 
-    await demoDatabase.update('UPDATE demo_table SET key2 = ? WHERE key1 = ?', ['K2-Changed', 'K1'])
+    await demoDatabase.updateV2('UPDATE demo_table SET key2 = ? WHERE key1 = ?', {
+      replacements: ['K2-Changed', 'K1'],
+    })
 
     {
       const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
@@ -34,7 +40,9 @@ describe('Test SQL', () => {
       assert.ok(items[1]['key1'] === 'K100' && items[1]['key2'] === 'K2')
     }
 
-    await demoDatabase.update('DELETE FROM demo_table WHERE key1 = ?', ['K100'])
+    await demoDatabase.updateV2('DELETE FROM demo_table WHERE key1 = ?', {
+      replacements: ['K100'],
+    })
 
     {
       const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
@@ -42,7 +50,9 @@ describe('Test SQL', () => {
       assert.ok(items[0]['key1'] === 'K1' && items[0]['key2'] === 'K2-Changed')
     }
 
-    await demoDatabase.update('DELETE FROM demo_table WHERE key1 = ?', ['K1'])
+    await demoDatabase.updateV2('DELETE FROM demo_table WHERE key1 = ?', {
+      replacements: ['K1'],
+    })
 
     {
       const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
