@@ -85,11 +85,19 @@ export class SQLAdder extends SQLBuilderBase {
         const key = CommonFuncs.wrapColumn(this._fixedKey)
         query = `${query} ON DUPLICATE KEY UPDATE ${key} = VALUES(${key})`
       }
-      await this.database.update(query, values2, this.transaction)
+      await this.database.updateV2(query, {
+        ...this.options,
+        replacements: values2,
+        transaction: this.transaction || this.options.transaction,
+      })
       if (this._updateWhenDuplicate || this._keepOldDataWhenDuplicate) {
         return 0
       }
-      const data = (await this.database.query('SELECT LAST_INSERT_ID() AS lastInsertId', [], this.transaction)) as any
+      const data = await this.database.queryV2('SELECT LAST_INSERT_ID() AS lastInsertId', {
+        ...this.options,
+        replacements: [],
+        transaction: this.transaction || this.options.transaction,
+      })
       return data[0]['lastInsertId'] as number
     }
 

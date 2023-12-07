@@ -177,7 +177,11 @@ export class SQLSearcher extends SQLBuilderBase {
       query = `${query} LIMIT ${this._offset}, ${this._length}`
     }
 
-    return (await this.database.query(query, stmtValues, this.transaction)) as { [p: string]: any }[]
+    return await this.database.queryV2(query, {
+      ...this.options,
+      replacements: stmtValues,
+      transaction: this.transaction || this.options.transaction,
+    })
   }
 
   /**
@@ -211,7 +215,11 @@ export class SQLSearcher extends SQLBuilderBase {
       query = `${query} WHERE ${this.buildConditionStr()}`
     }
 
-    const result = await this.database.query(query, this.stmtValues(), this.transaction)
+    const result = await this.database.queryV2(query, {
+      ...this.options,
+      replacements: this.stmtValues(),
+      transaction: this.transaction || this.options.transaction,
+    })
     return result[0]['count'] as number
   }
 

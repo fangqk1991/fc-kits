@@ -20,7 +20,9 @@ describe('Test SQLAdder', () => {
       adder.insertKV('key2', data.key2)
       data.uid = await adder.execute()
       console.warn(`Last Insert ID: ${data.uid}`)
-      const [newData] = await demoDatabase.query('SELECT * FROM demo_table WHERE uid = ?', [data.uid])
+      const [newData] = await demoDatabase.queryV2('SELECT * FROM demo_table WHERE uid = ?', {
+        replacements: [data.uid],
+      })
       assert.equal(data.uid, newData.uid)
       assert.equal(data.key1, newData.key1)
       assert.equal(data.key2, newData.key2)

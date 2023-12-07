@@ -1,12 +1,14 @@
 import { FCDatabase } from './FCDatabase'
 import * as assert from 'assert'
-import { Transaction } from 'sequelize'
+import { QueryOptionsWithType, QueryTypes, Transaction } from 'sequelize'
 
 export abstract class SQLBuilderBase {
   database: FCDatabase
   conditionColumns: string[] = []
   conditionValues: (string | number)[] = []
   table: string = ''
+
+  public readonly options: Partial<QueryOptionsWithType<QueryTypes>> = {}
 
   public transaction!: Transaction
   public abstract execute(): Promise<any>

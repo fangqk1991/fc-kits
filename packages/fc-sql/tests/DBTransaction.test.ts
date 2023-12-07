@@ -86,14 +86,16 @@ describe('Test TransactionRunner', () => {
         })
 
         {
-          const items = await database.query('SELECT COUNT(*) AS count FROM demo_table_2')
+          const items = await database.queryV2('SELECT COUNT(*) AS count FROM demo_table_2')
           assert.ok(Array.isArray(items))
           const count = items[0]['count']
           assert.equal(count, 0)
         }
 
         {
-          const items = await database.query('SELECT COUNT(*) AS count FROM demo_table_2', [], transaction)
+          const items = await database.queryV2('SELECT COUNT(*) AS count FROM demo_table_2', {
+            transaction: transaction,
+          })
           assert.ok(Array.isArray(items))
           const count = items[0]['count']
           assert.equal(count, i + 1)

@@ -26,7 +26,9 @@ export class DBTableHandler {
 
   public async getColumns() {
     const sql = `SHOW FULL COLUMNS FROM \`${this.tableName}\``
-    return (await this.database.query(sql, [], this.transaction)) as DBColumn[]
+    return (await this.database.queryV2(sql, {
+      transaction: this.transaction,
+    })) as DBColumn[]
   }
 
   public async checkTableExists() {

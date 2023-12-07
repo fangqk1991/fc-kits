@@ -11,7 +11,7 @@ describe('Test SQL', () => {
     await demoDatabase.update('DELETE FROM demo_table')
 
     {
-      const items = await demoDatabase.query('SELECT * FROM demo_table')
+      const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
       assert.ok(Array.isArray(items) && items.length === 0)
     }
 
@@ -19,7 +19,7 @@ describe('Test SQL', () => {
     await demoDatabase.update('INSERT INTO demo_table(key1, key2) VALUES(?, ?)', ['K100', 'K2'])
 
     {
-      const items = await demoDatabase.query('SELECT * FROM demo_table')
+      const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
       assert.ok(Array.isArray(items) && items.length === 2)
       assert.ok(items[0]['key1'] === 'K1' && items[0]['key2'] === 'K2')
       assert.ok(items[1]['key1'] === 'K100' && items[1]['key2'] === 'K2')
@@ -28,7 +28,7 @@ describe('Test SQL', () => {
     await demoDatabase.update('UPDATE demo_table SET key2 = ? WHERE key1 = ?', ['K2-Changed', 'K1'])
 
     {
-      const items = await demoDatabase.query('SELECT * FROM demo_table')
+      const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
       assert.ok(Array.isArray(items) && items.length === 2)
       assert.ok(items[0]['key1'] === 'K1' && items[0]['key2'] === 'K2-Changed')
       assert.ok(items[1]['key1'] === 'K100' && items[1]['key2'] === 'K2')
@@ -37,7 +37,7 @@ describe('Test SQL', () => {
     await demoDatabase.update('DELETE FROM demo_table WHERE key1 = ?', ['K100'])
 
     {
-      const items = await demoDatabase.query('SELECT * FROM demo_table')
+      const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
       assert.ok(Array.isArray(items) && items.length === 1)
       assert.ok(items[0]['key1'] === 'K1' && items[0]['key2'] === 'K2-Changed')
     }
@@ -45,7 +45,7 @@ describe('Test SQL', () => {
     await demoDatabase.update('DELETE FROM demo_table WHERE key1 = ?', ['K1'])
 
     {
-      const items = await demoDatabase.query('SELECT * FROM demo_table')
+      const items = await demoDatabase.queryV2('SELECT * FROM demo_table')
       assert.ok(Array.isArray(items) && items.length === 0)
     }
   })

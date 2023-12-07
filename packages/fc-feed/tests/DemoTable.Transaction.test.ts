@@ -76,12 +76,14 @@ describe('Test DemoTable.Transaction', (): void => {
           console.info(`Transaction callback: [uid: ${feed.uid}]`)
 
           {
-            const items = await database.query('SELECT COUNT(*) AS count FROM demo_table')
+            const items = await database.queryV2('SELECT COUNT(*) AS count FROM demo_table')
             const count = items[0]['count']
             assert.equal(count, 0)
           }
           {
-            const items = await database.query('SELECT COUNT(*) AS count FROM demo_table', [], transaction)
+            const items = await database.queryV2('SELECT COUNT(*) AS count FROM demo_table', {
+              transaction: transaction,
+            })
             const count = items[0]['count']
             assert.equal(count, i + 1)
           }

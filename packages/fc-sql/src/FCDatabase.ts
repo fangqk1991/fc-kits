@@ -11,6 +11,8 @@ import * as assert from 'assert'
 
 const _instanceMap: { [key: string]: any } = {}
 
+type ExecuteOptions = Partial<QueryOptionsWithType<QueryTypes>>
+
 interface SubDatabase<T extends SequelizeProtocol = Sequelize> {
   options?: Options
   entity?: T
@@ -80,18 +82,26 @@ export class FCDatabase<T extends SequelizeProtocol = Sequelize> {
     return this.__curDatabase().options!.database as string
   }
 
+  /**
+   * @deprecated
+   */
   public async query(
     query: string,
     replacements: (string | number | null)[] = [],
     transaction: Transaction | null = null
   ) {
-    const items = (await this.execute(query, {
+    return await this.queryV2(query, {
       replacements: replacements,
       transaction: transaction,
+    })
+  }
+
+  public async queryV2(query: string, options: ExecuteOptions= {}) {
+    const items = (await this.execute(query, {
+      ...options,
       type: QueryTypes.SELECT,
       raw: true,
     })) as { [p: string]: any }[]
-
     if (items && items.length > 0) {
       const remainKeyMap = Object.keys(items[0]).reduce((result: any, cur: string) => {
         result[cur] = true
@@ -114,39 +124,26 @@ export class FCDatabase<T extends SequelizeProtocol = Sequelize> {
     return items
   }
 
+  /**
+   * @deprecated
+   */
   public async update(
     query: string,
     replacements: (string | number | null)[] = [],
     transaction: Transaction | null = null
-  ): Promise<any> {
-    return await this.execute(query, {
+  ) {
+    return await this.updateV2(query, {
       replacements: replacements,
       transaction: transaction,
     })
   }
 
-  public async execute(query: string, options: Partial<QueryOptionsWithType<QueryTypes>> = {}): Promise<any> {
-    const items = (await this._db().query(query, options)) as any[]
-    if (items && items.length > 0) {
-      const remainKeyMap = Object.keys(items[0]).reduce((result: any, cur: string) => {
-        result[cur] = true
-        return result
-      }, {})
-      for (const item of items) {
-        const keys = Object.keys(remainKeyMap)
-        for (const key of keys) {
-          if (Object.prototype.toString.call(item[key]) === '[object Date]') {
-            const time = moment(item[key])
-            item[key] = time.isValid() ? time.format() : null
-          } else {
-            if (item[key] !== null && item[key] !== undefined) {
-              delete remainKeyMap[key]
-            }
-          }
-        }
-      }
-    }
-    return items as { [p: string]: number | string }[]
+  public async updateV2(query: string, options: ExecuteOptions = {}) {
+    return await this.execute(query, options)
+  }
+
+  public async execute(query: string, options: ExecuteOptions = {}): Promise<any> {
+    return await this._db().query(query, options)
   }
 
   public _db(): T {
@@ -183,13 +180,13 @@ export class FCDatabase<T extends SequelizeProtocol = Sequelize> {
   }
 
   public async timezone() {
-    const result = await this.query(`SHOW VARIABLES LIKE "time_zone"`)
+    const result = await this.queryV2(`SHOW VARIABLES LIKE "time_zone"`)
     return result[0]['Value']
   }
 
   public async ping() {
     const database = this.__curDatabase()
-    await this.query('SELECT 1').catch((err) => {
+    await this.queryV2('SELECT 1').catch((err) => {
       throw new Error(
         `[${this.__curDbKey}][${database.options?.username} -> ${database.options?.database}] ${err.message}`
       )
@@ -198,7 +195,7 @@ export class FCDatabase<T extends SequelizeProtocol = Sequelize> {
   }
 
   public async getTables() {
-    const items = await this.query('SHOW TABLES')
+    const items = await this.queryV2('SHOW TABLES')
     return items.map((item) => item[`Tables_in_${this.dbName()}`]) as string[]
   }
 }

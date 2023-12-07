@@ -107,7 +107,7 @@ describe('Test DBTools', (): void => {
       const tools = new DBTools(protocol)
 
       const countBefore = await fetchRecordCount()
-      const feeds = await demoDatabase.query(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
+      const feeds = await demoDatabase.queryV2(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
       for (const feed of feeds) {
         const newData = {
           uid: feed.uid,
@@ -134,7 +134,7 @@ describe('Test DBTools', (): void => {
       const tools = new DBTools(protocol)
 
       const countBefore = await fetchRecordCount()
-      const feeds = await demoDatabase.query(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
+      const feeds = await demoDatabase.queryV2(`SELECT * FROM demo_table ORDER BY uid DESC LIMIT ${count}`)
       for (const feed of feeds) {
         const newData = {
           uid: feed.uid,
