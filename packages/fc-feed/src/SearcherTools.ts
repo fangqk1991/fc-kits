@@ -158,6 +158,18 @@ export class SearcherTools {
         } else if (symbol === TextSymbol.$ne) {
           searcher.addSpecialCondition(`${wrappedColumnKey} != ${placeholder}`, value)
         }
+      } else if (symbol === TextSymbol.$between) {
+        const value = params[key]
+        if (Array.isArray(value) && value.length === 2) {
+          searcher.addSpecialCondition(`${wrappedColumnKey} BETWEEN ? AND ?`, value[0], value[1])
+        }
+      } else if (symbol === TextSymbol.$boolEQ) {
+        const value = params[key]
+        if (value === 'true') {
+          searcher.addSpecialCondition(`${wrappedColumnKey} IS NOT NULL AND ${wrappedColumnKey} != ''`)
+        } else if (value === 'false') {
+          searcher.addSpecialCondition(`${wrappedColumnKey} IS NULL OR ${wrappedColumnKey} = ''`)
+        }
       }
     }
     if (params['$keywords'] && `${params['$keywords']}`.trim()) {
