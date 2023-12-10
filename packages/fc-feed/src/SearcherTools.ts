@@ -67,6 +67,25 @@ export class SearcherTools {
       .forEach((key) => {
         searcher.addConditionKV(filterColsMapper[key], params[key])
       })
+    const checkValNumber = (val: string | number | any[]) => {
+      if (Array.isArray(val)) {
+        for (const subVal of val) {
+          if (!checkValNumber(subVal)) {
+            return false
+          }
+        }
+        return val.length > 0
+      }
+      return (typeof val === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(val)) || typeof val === 'number'
+    }
+    const makeArrayValues = (value: any) => {
+      return Array.isArray(value)
+        ? value
+        : (value as string)
+            .split(',')
+            .map((item) => item.trim())
+            .filter((item) => !!item)
+    }
     for (const key of paramsKeys) {
       const matches = key.match(/^([a-zA-Z_][\w.]+)\.(\$\w+)(\.\w+)?$/)
       if (!matches || !(matches[1] in filterColsMapper)) {
@@ -83,36 +102,20 @@ export class SearcherTools {
         case TextSymbol.$le:
         case TextSymbol.$lt:
           {
-            if ([TextSymbol.$eq, TextSymbol.$ne].includes(symbol) && typeof params[key] === 'string') {
-              const value = params[key]
-              if (symbol === TextSymbol.$eq) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} = ?`, value)
-              } else if (symbol === TextSymbol.$ne) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} != ?`, value)
-              }
-            } else if (
-              [TextSymbol.$eq, TextSymbol.$ne, TextSymbol.$ge, TextSymbol.$gt, TextSymbol.$le, TextSymbol.$lt].includes(
-                symbol
-              ) &&
-              ((typeof params[key] === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(params[key])) ||
-                typeof params[key] === 'number')
-            ) {
-              const isTimestamp = !!timestampMap[columnKey]
-              const placeholder = isTimestamp ? 'FROM_UNIXTIME(?)' : '?'
-              const value = Number(params[key])
-              if (symbol === TextSymbol.$lt) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} < ${placeholder}`, value)
-              } else if (symbol === TextSymbol.$le) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} <= ${placeholder}`, value)
-              } else if (symbol === TextSymbol.$gt) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} > ${placeholder}`, value)
-              } else if (symbol === TextSymbol.$ge) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} >= ${placeholder}`, value)
-              } else if (symbol === TextSymbol.$eq) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} = ${placeholder}`, value)
-              } else if (symbol === TextSymbol.$ne) {
-                searcher.addSpecialCondition(`${wrappedColumnKey} != ${placeholder}`, value)
-              }
+            const placeholder = checkValNumber(params[key]) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
+            const value = params[key]
+            if (symbol === TextSymbol.$lt) {
+              searcher.addSpecialCondition(`${wrappedColumnKey} < ${placeholder}`, value)
+            } else if (symbol === TextSymbol.$le) {
+              searcher.addSpecialCondition(`${wrappedColumnKey} <= ${placeholder}`, value)
+            } else if (symbol === TextSymbol.$gt) {
+              searcher.addSpecialCondition(`${wrappedColumnKey} > ${placeholder}`, value)
+            } else if (symbol === TextSymbol.$ge) {
+              searcher.addSpecialCondition(`${wrappedColumnKey} >= ${placeholder}`, value)
+            } else if (symbol === TextSymbol.$eq) {
+              searcher.addSpecialCondition(`${wrappedColumnKey} = ${placeholder}`, value)
+            } else if (symbol === TextSymbol.$ne) {
+              searcher.addSpecialCondition(`${wrappedColumnKey} != ${placeholder}`, value)
             }
           }
           break
@@ -121,10 +124,7 @@ export class SearcherTools {
         case TextSymbol.$excludeAll:
         case TextSymbol.$excludeAny:
           {
-            const values = (params[key] as string)
-              .split(',')
-              .map((item) => item.trim())
-              .filter((item) => !!item)
+            const values = makeArrayValues(params[key])
             if (symbol === TextSymbol.$includeAny) {
               const builder = new SearchBuilder()
               builder.setLogic('OR')
@@ -153,41 +153,21 @@ export class SearcherTools {
           }
           break
         case TextSymbol.$in:
-          Array.isArray(params[key]) && searcher.addConditionKeyInArray(columnKey, params[key])
+          searcher.addConditionKeyInArray(columnKey, makeArrayValues(params[key]))
           break
         case TextSymbol.$notIn:
-          Array.isArray(params[key]) && searcher.addConditionKeyNotInArray(columnKey, params[key])
-          break
-        case TextSymbol.$inStr:
-        case TextSymbol.$notInStr:
-          if (typeof params[key] === 'string') {
-            const values = (params[key] as string)
-              .split(',')
-              .map((item) => item.trim())
-              .filter((item) => !!item)
-            if (symbol === TextSymbol.$inStr) {
-              searcher.addConditionKeyInArray(columnKey, values)
-            } else if (symbol === TextSymbol.$notInStr) {
-              searcher.addConditionKeyNotInArray(columnKey, values)
-            }
-          }
+          searcher.addConditionKeyNotInArray(columnKey, makeArrayValues(params[key]))
           break
         case TextSymbol.$between:
           {
-            const value = params[key]
-            if (Array.isArray(value) && value.length === 2) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} BETWEEN ? AND ?`, value[0], value[1])
-            }
-          }
-          break
-        case TextSymbol.$betweenStr:
-          if (typeof params[key] === 'string') {
-            const values = (params[key] as string)
-              .split(',')
-              .map((item) => item.trim())
-              .filter((item) => !!item)
+            const values = makeArrayValues(params[key])
             if (Array.isArray(values) && values.length === 2) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} BETWEEN ? AND ?`, values[0], values[1])
+              const placeholder = checkValNumber(values) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
+              searcher.addSpecialCondition(
+                `${wrappedColumnKey} BETWEEN ${placeholder} AND ${placeholder}`,
+                values[0],
+                values[1]
+              )
             }
           }
           break

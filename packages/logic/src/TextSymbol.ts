@@ -12,11 +12,8 @@ export enum TextSymbol {
   $excludeAll = '$excludeAll',
   $excludeAny = '$excludeAny',
   $in = '$in',
-  $inStr = '$inStr',
   $notIn = '$notIn',
-  $notInStr = '$notInStr',
   $between = '$between',
-  $betweenStr = '$betweenStr',
   $like = '$like',
   $boolEQ = '$boolEQ',
   $isNull = '$isNull',
@@ -35,11 +32,8 @@ const values = [
   TextSymbol.$excludeAll,
   TextSymbol.$excludeAny,
   TextSymbol.$in,
-  TextSymbol.$inStr,
   TextSymbol.$notIn,
-  TextSymbol.$notInStr,
   TextSymbol.$between,
-  TextSymbol.$betweenStr,
   TextSymbol.$like,
   TextSymbol.$boolEQ,
   TextSymbol.$isNull,
@@ -70,16 +64,10 @@ const describe = (code: TextSymbol) => {
       return 'excludeAny'
     case TextSymbol.$in:
       return 'in'
-    case TextSymbol.$inStr:
-      return 'inStr'
     case TextSymbol.$notIn:
       return 'notIn'
-    case TextSymbol.$notInStr:
-      return 'notInStr'
     case TextSymbol.$between:
       return 'between'
-    case TextSymbol.$betweenStr:
-      return 'betweenStr'
     case TextSymbol.$like:
       return 'like'
     case TextSymbol.$boolEQ:
