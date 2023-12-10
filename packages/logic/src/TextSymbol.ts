@@ -16,6 +16,8 @@ export enum TextSymbol {
   $notIn = '$notIn',
   $notInStr = '$notInStr',
   $like = '$like',
+  $between = '$between',
+  $boolEQ = '$boolEQ',
 }
 
 const values = [
@@ -34,6 +36,8 @@ const values = [
   TextSymbol.$notIn,
   TextSymbol.$notInStr,
   TextSymbol.$like,
+  TextSymbol.$between,
+  TextSymbol.$boolEQ,
 ]
 
 const describe = (code: TextSymbol) => {
@@ -68,6 +72,10 @@ const describe = (code: TextSymbol) => {
       return 'notInStr'
     case TextSymbol.$like:
       return 'like'
+    case TextSymbol.$between:
+      return 'between'
+    case TextSymbol.$boolEQ:
+      return 'bool eq'
   }
   return code
 }
