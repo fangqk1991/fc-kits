@@ -971,6 +971,15 @@ importers:
         specifier: workspace:^
         version: link:../fc-sql
 
+  packages/logic:
+    devDependencies:
+      '@fangcha/assert':
+        specifier: workspace:^
+        version: link:../assert
+      '@fangcha/tools':
+        specifier: workspace:^
+        version: link:../fc-tools
+
   packages/notification-center: {}
 
   packages/webpack:
