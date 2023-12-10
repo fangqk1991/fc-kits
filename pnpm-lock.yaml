@@ -381,6 +381,9 @@ importers:
 
   packages/fc-feed:
     dependencies:
+      '@fangcha/logic':
+        specifier: workspace:^
+        version: link:../logic
       fc-model:
         specifier: workspace:^
         version: link:../fc-model

@@ -1,5 +1,6 @@
 import { SearchBuilder, SQLSearcher } from 'fc-sql'
 import { FilterOptions } from './FeedBase'
+import { TextSymbol } from '@fangcha/logic'
 
 const _buildLimitInfo = (params: any) => {
   let { _offset = -1, _length = -1 } = params
@@ -73,34 +74,36 @@ export class SearcherTools {
       }
       const columnKey = filterColsMapper[matches[1]]
       const wrappedColumnKey = /^\w+$/.test(columnKey) ? `\`${columnKey}\`` : columnKey
-      const symbol = matches[2]
-      if (symbol === '$like') {
+      const symbol = matches[2] as TextSymbol
+      if (symbol === TextSymbol.$like) {
         searcher.addConditionLikeKeywords(columnKey, params[key])
-      } else if (['$in', '$notIn'].includes(symbol) && Array.isArray(params[key])) {
-        if (symbol === '$in') {
+      } else if ([TextSymbol.$in, TextSymbol.$notIn].includes(symbol) && Array.isArray(params[key])) {
+        if (symbol === TextSymbol.$in) {
           searcher.addConditionKeyInArray(columnKey, params[key])
-        } else if (symbol === '$notIn') {
+        } else if (symbol === TextSymbol.$notIn) {
           searcher.addConditionKeyNotInArray(columnKey, params[key])
         }
-      } else if (['$inStr', '$notInStr'].includes(symbol) && typeof params[key] === 'string') {
+      } else if ([TextSymbol.$inStr, TextSymbol.$notInStr].includes(symbol) && typeof params[key] === 'string') {
         const values = (params[key] as string)
           .split(',')
           .map((item) => item.trim())
           .filter((item) => !!item)
-        if (symbol === '$inStr') {
+        if (symbol === TextSymbol.$inStr) {
           searcher.addConditionKeyInArray(columnKey, values)
-        } else if (symbol === '$notInStr') {
+        } else if (symbol === TextSymbol.$notInStr) {
           searcher.addConditionKeyNotInArray(columnKey, values)
         }
       } else if (
-        ['$include_any', '$include_all', '$exclude_any', '$exclude_all'].includes(symbol) &&
+        [TextSymbol.$includeAny, TextSymbol.$includeAll, TextSymbol.$excludeAny, TextSymbol.$excludeAll].includes(
+          symbol
+        ) &&
         typeof params[key] === 'string'
       ) {
         const values = (params[key] as string)
           .split(',')
           .map((item) => item.trim())
           .filter((item) => !!item)
-        if (symbol === '$include_any') {
+        if (symbol === TextSymbol.$includeAny) {
           const builder = new SearchBuilder()
           builder.setLogic('OR')
           builder.addCondition(`1 = 0`)
@@ -108,11 +111,11 @@ export class SearcherTools {
             builder.addCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
           }
           builder.injectToSearcher(searcher)
-        } else if (symbol === '$include_all') {
+        } else if (symbol === TextSymbol.$includeAll) {
           for (const val of values) {
             searcher.addSpecialCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
           }
-        } else if (symbol === '$exclude_any') {
+        } else if (symbol === TextSymbol.$excludeAny) {
           const builder = new SearchBuilder()
           builder.setLogic('OR')
           builder.addCondition(`1 = 0`)
@@ -120,37 +123,39 @@ export class SearcherTools {
             builder.addCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
           }
           builder.injectToSearcher(searcher)
-        } else if (symbol === '$exclude_all') {
+        } else if (symbol === TextSymbol.$excludeAll) {
           for (const val of values) {
             searcher.addSpecialCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
           }
         }
-      } else if (['$eq', '$ne'].includes(symbol) && typeof params[key] === 'string') {
+      } else if ([TextSymbol.$eq, TextSymbol.$ne].includes(symbol) && typeof params[key] === 'string') {
         const value = params[key]
-        if (symbol === '$eq') {
+        if (symbol === TextSymbol.$eq) {
           searcher.addSpecialCondition(`${wrappedColumnKey} = ?`, value)
-        } else if (symbol === '$ne') {
+        } else if (symbol === TextSymbol.$ne) {
           searcher.addSpecialCondition(`${wrappedColumnKey} != ?`, value)
         }
       } else if (
-        ['$lt', '$le', '$gt', '$ge', '$eq', '$ne'].includes(symbol) &&
+        [TextSymbol.$eq, TextSymbol.$ne, TextSymbol.$ge, TextSymbol.$gt, TextSymbol.$le, TextSymbol.$lt].includes(
+          symbol
+        ) &&
         ((typeof params[key] === 'string' && /^(-?\d+)$|^(-?\d+\.\d+)$/.test(params[key])) ||
           typeof params[key] === 'number')
       ) {
         const isTimestamp = !!timestampMap[columnKey]
         const placeholder = isTimestamp ? 'FROM_UNIXTIME(?)' : '?'
         const value = Number(params[key])
-        if (symbol === '$lt') {
+        if (symbol === TextSymbol.$lt) {
           searcher.addSpecialCondition(`${wrappedColumnKey} < ${placeholder}`, value)
-        } else if (symbol === '$le') {
+        } else if (symbol === TextSymbol.$le) {
           searcher.addSpecialCondition(`${wrappedColumnKey} <= ${placeholder}`, value)
-        } else if (symbol === '$gt') {
+        } else if (symbol === TextSymbol.$gt) {
           searcher.addSpecialCondition(`${wrappedColumnKey} > ${placeholder}`, value)
-        } else if (symbol === '$ge') {
+        } else if (symbol === TextSymbol.$ge) {
           searcher.addSpecialCondition(`${wrappedColumnKey} >= ${placeholder}`, value)
-        } else if (symbol === '$eq') {
+        } else if (symbol === TextSymbol.$eq) {
           searcher.addSpecialCondition(`${wrappedColumnKey} = ${placeholder}`, value)
-        } else if (symbol === '$ne') {
+        } else if (symbol === TextSymbol.$ne) {
           searcher.addSpecialCondition(`${wrappedColumnKey} != ${placeholder}`, value)
         }
       }
