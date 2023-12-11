@@ -1,4 +1,4 @@
-import { Descriptor } from '@fangcha/tools'
+import { Descriptor, I18nLanguage } from '@fangcha/tools'
 
 export enum TextSymbol {
   $eq = '$eq',
@@ -45,27 +45,27 @@ const describe = (code: TextSymbol) => {
     case TextSymbol.$eq:
       return '='
     case TextSymbol.$ne:
-      return '!='
+      return '≠'
     case TextSymbol.$ge:
-      return '>='
+      return '≥'
     case TextSymbol.$gt:
       return '>'
     case TextSymbol.$le:
-      return '<='
+      return '≤'
     case TextSymbol.$lt:
       return '<'
     case TextSymbol.$includeAll:
-      return 'includeAll'
+      return 'include all'
     case TextSymbol.$includeAny:
-      return 'includeAny'
+      return 'include any'
     case TextSymbol.$excludeAll:
-      return 'excludeAll'
+      return 'exclude all'
     case TextSymbol.$excludeAny:
-      return 'excludeAny'
+      return 'exclude any'
     case TextSymbol.$in:
       return 'in'
     case TextSymbol.$notIn:
-      return 'notIn'
+      return 'not in'
     case TextSymbol.$between:
       return 'between'
     case TextSymbol.$like:
@@ -81,3 +81,48 @@ const describe = (code: TextSymbol) => {
 }
 
 export const TextSymbolDescriptor = new Descriptor(values, describe)
+TextSymbolDescriptor.setI18nData(
+  {
+    'include all': {
+      en: `include all`,
+      zh: `包含全部`,
+    },
+    'include any': {
+      en: `include any`,
+      zh: `包含任一`,
+    },
+    'exclude all': {
+      en: `exclude all`,
+      zh: `不包含全部`,
+    },
+    'exclude any': {
+      en: `include any`,
+      zh: `不包含任一`,
+    },
+    in: {
+      en: `in`,
+      zh: `属于`,
+    },
+    'not in': {
+      en: `not in`,
+      zh: `不属于`,
+    },
+    like: {
+      en: `like`,
+      zh: `模糊匹配`,
+    },
+    between: {
+      en: `between`,
+      zh: `位于区间`,
+    },
+    'is null': {
+      en: `is null`,
+      zh: `为空`,
+    },
+    'is not null': {
+      en: `is not null`,
+      zh: `不为空`,
+    },
+  },
+  I18nLanguage.zh
+)
