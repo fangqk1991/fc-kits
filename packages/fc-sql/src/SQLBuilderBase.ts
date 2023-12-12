@@ -38,6 +38,7 @@ export abstract class SQLBuilderBase {
    * @param value {string | number}
    */
   public addConditionKV(key: string, value: string | number) {
+    assert.ok(!value || typeof value !== 'object', `${this.constructor.name}: addConditionKV: incorrect value`)
     if (/^\w+$/.test(key)) {
       key = `\`${key}\``
     }
@@ -68,6 +69,9 @@ export abstract class SQLBuilderBase {
       (condition.match(/\?/g) || []).length === args.length,
       `${this.constructor.name}: addSpecialCondition: Incorrect number of arguments.`
     )
+    args.forEach((value) => {
+      assert.ok(!value || typeof value !== 'object', `${this.constructor.name}: _addSpecialCondition: incorrect value`)
+    })
     this.conditionColumns.push(`(${condition})`)
     this.conditionValues = this.conditionValues.concat(args)
     return this
