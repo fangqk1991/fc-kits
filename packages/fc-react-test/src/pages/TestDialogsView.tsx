@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Divider, message, Space, Tag } from 'antd'
 import {
   ConfirmDialog,
+  FlexibleFormDialog,
   InformationDialog,
   JsonEditorDialog,
   MessageDialog,
@@ -12,6 +13,7 @@ import {
   TextPreviewDialog,
 } from '@fangcha/react'
 import { sleep } from '@fangcha/tools'
+import { ProFormDigit, ProFormRadio, ProFormText, ProFormTextArea } from '@ant-design/pro-components'
 
 export const TestDialogsView: React.FC = () => {
   return (
@@ -234,6 +236,50 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           MessageDialog
+        </Button>
+
+        <Button
+          type={'primary'}
+          onClick={() => {
+            const dialog = new FlexibleFormDialog({
+              formBody: (
+                <>
+                  <ProFormDigit name={'number'} label={'Number'} />
+                  <ProFormText name={'text'} label={'Text'} />
+                  <ProFormTextArea
+                    name={'textArea'}
+                    label={'TextArea'}
+                    fieldProps={{
+                      rows: 3,
+                    }}
+                  />
+                  <ProFormRadio.Group
+                    name={'radio'}
+                    label={'Radio'}
+                    options={[
+                      {
+                        label: 'Radio 1',
+                        value: 1,
+                      },
+                      {
+                        label: 'Radio 2',
+                        value: 2,
+                      },
+                    ]}
+                    radioType='button'
+                  />
+                </>
+              ),
+              placeholder: {
+                number: 1,
+              },
+            })
+            dialog.show(async (params) => {
+              message.info(JSON.stringify(params))
+            })
+          }}
+        >
+          FlexibleFormDialog
         </Button>
       </Space>
     </>
