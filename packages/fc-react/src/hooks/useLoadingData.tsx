@@ -9,8 +9,8 @@ export const useLoadingData = <T,>(loadData: LoadData<T>, deps?: any[]) => {
     setLoading(true)
     loadData()
       .then((data) => {
-        setLoading(false)
         setData(data)
+        setLoading(false)
       })
       .catch((err) => {
         setLoading(false)
