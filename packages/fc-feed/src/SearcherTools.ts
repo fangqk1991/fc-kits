@@ -87,13 +87,14 @@ export class SearcherTools {
             .filter((item) => !!item)
     }
     for (const key of paramsKeys) {
-      const matches = key.match(/^([a-zA-Z_][\w.]+)\.(\$\w+)(\.\w+)?$/)
+      const matches = key.match(/^([a-zA-Z_][\w.]+)\.(\$not\.)?(\$\w+)(\.\w+)?$/)
       if (!matches || !(matches[1] in filterColsMapper)) {
         continue
       }
       const columnKey = filterColsMapper[matches[1]]
       const wrappedColumnKey = /^\w+$/.test(columnKey) ? `\`${columnKey}\`` : columnKey
-      const symbol = matches[2] as TextSymbol
+      const isTrue = matches[2] !== '$not.'
+      const symbol = matches[3] as TextSymbol
       switch (symbol) {
         case TextSymbol.$eq:
         case TextSymbol.$ne:
@@ -105,17 +106,17 @@ export class SearcherTools {
             const placeholder = checkValNumber(params[key]) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
             const value = params[key]
             if (symbol === TextSymbol.$lt) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} < ${placeholder}`, value)
+              searcher.addCondition(`${wrappedColumnKey} < ${placeholder}`, [value], isTrue)
             } else if (symbol === TextSymbol.$le) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} <= ${placeholder}`, value)
+              searcher.addCondition(`${wrappedColumnKey} <= ${placeholder}`, [value], isTrue)
             } else if (symbol === TextSymbol.$gt) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} > ${placeholder}`, value)
+              searcher.addCondition(`${wrappedColumnKey} > ${placeholder}`, [value], isTrue)
             } else if (symbol === TextSymbol.$ge) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} >= ${placeholder}`, value)
+              searcher.addCondition(`${wrappedColumnKey} >= ${placeholder}`, [value], isTrue)
             } else if (symbol === TextSymbol.$eq) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} = ${placeholder}`, value)
+              searcher.addCondition(`${wrappedColumnKey} = ${placeholder}`, [value], isTrue)
             } else if (symbol === TextSymbol.$ne) {
-              searcher.addSpecialCondition(`${wrappedColumnKey} != ${placeholder}`, value)
+              searcher.addCondition(`${wrappedColumnKey} != ${placeholder}`, [value], isTrue)
             }
           }
           break
@@ -132,11 +133,14 @@ export class SearcherTools {
               for (const val of values) {
                 builder.addCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
               }
-              builder.injectToSearcher(searcher)
+              builder.injectToSearcher(searcher, isTrue)
             } else if (symbol === TextSymbol.$includeAll) {
+              const builder = new SearchBuilder()
+              builder.setLogic('AND')
               for (const val of values) {
-                searcher.addSpecialCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
+                builder.addCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
               }
+              builder.injectToSearcher(searcher, isTrue)
             } else if (symbol === TextSymbol.$excludeAny) {
               const builder = new SearchBuilder()
               builder.setLogic('OR')
@@ -144,51 +148,56 @@ export class SearcherTools {
               for (const val of values) {
                 builder.addCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
               }
-              builder.injectToSearcher(searcher)
+              builder.injectToSearcher(searcher, isTrue)
             } else if (symbol === TextSymbol.$excludeAll) {
+              const builder = new SearchBuilder()
+              builder.setLogic('AND')
               for (const val of values) {
-                searcher.addSpecialCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
+                builder.addCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
               }
+              builder.injectToSearcher(searcher, isTrue)
             }
           }
           break
         case TextSymbol.$in:
-          searcher.addConditionKeyInArray(columnKey, makeArrayValues(params[key]))
+          searcher.addConditionKeyInArray(columnKey, makeArrayValues(params[key]), isTrue)
           break
         case TextSymbol.$notIn:
-          searcher.addConditionKeyNotInArray(columnKey, makeArrayValues(params[key]))
+          isTrue
+            ? searcher.addConditionKeyNotInArray(columnKey, makeArrayValues(params[key]))
+            : searcher.addConditionKeyInArray(columnKey, makeArrayValues(params[key]))
           break
         case TextSymbol.$between:
           {
             const values = makeArrayValues(params[key])
             if (Array.isArray(values) && values.length === 2) {
               const placeholder = checkValNumber(values) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
-              searcher.addSpecialCondition(
+              searcher.addCondition(
                 `${wrappedColumnKey} BETWEEN ${placeholder} AND ${placeholder}`,
-                values[0],
-                values[1]
+                [values[0], values[1]],
+                isTrue
               )
             }
           }
           break
         case TextSymbol.$like:
-          searcher.addConditionLikeKeywords(columnKey, params[key])
+          searcher.addConditionLikeKeywords(columnKey, params[key], isTrue)
           break
         case TextSymbol.$boolEQ:
           {
             const value = params[key]
             if (value === 'true') {
-              searcher.addSpecialCondition(`${wrappedColumnKey} IS NOT NULL AND ${wrappedColumnKey} != ''`)
+              searcher.addCondition(`${wrappedColumnKey} IS NOT NULL AND ${wrappedColumnKey} != ''`, [], isTrue)
             } else if (value === 'false') {
-              searcher.addSpecialCondition(`${wrappedColumnKey} IS NULL OR ${wrappedColumnKey} = ''`)
+              searcher.addCondition(`${wrappedColumnKey} IS NULL OR ${wrappedColumnKey} = ''`, [], isTrue)
             }
           }
           break
         case TextSymbol.$isNull:
-          searcher.addSpecialCondition(`${wrappedColumnKey} IS NULL`)
+          searcher.addCondition(`${wrappedColumnKey} IS NULL`, [], isTrue)
           break
         case TextSymbol.$isNotNull:
-          searcher.addSpecialCondition(`${wrappedColumnKey} IS NOT NULL`)
+          searcher.addCondition(`${wrappedColumnKey} IS NOT NULL`, [], isTrue)
           break
       }
     }

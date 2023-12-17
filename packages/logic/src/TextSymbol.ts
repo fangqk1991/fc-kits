@@ -12,11 +12,18 @@ export enum TextSymbol {
   $excludeAll = '$excludeAll',
   $excludeAny = '$excludeAny',
   $in = '$in',
+  /**
+   * @deprecated
+   */
   $notIn = '$notIn',
   $between = '$between',
   $like = '$like',
   $boolEQ = '$boolEQ',
+  $isTrue = '$isTrue',
   $isNull = '$isNull',
+  /**
+   * @deprecated
+   */
   $isNotNull = '$isNotNull',
 }
 
@@ -36,6 +43,7 @@ const values = [
   TextSymbol.$between,
   TextSymbol.$like,
   TextSymbol.$boolEQ,
+  TextSymbol.$isTrue,
   TextSymbol.$isNull,
   TextSymbol.$isNotNull,
 ]
@@ -72,6 +80,8 @@ const describe = (code: TextSymbol) => {
       return 'like'
     case TextSymbol.$boolEQ:
       return 'bool eq'
+    case TextSymbol.$isTrue:
+      return 'is true'
     case TextSymbol.$isNull:
       return 'is null'
     case TextSymbol.$isNotNull:
@@ -114,6 +124,10 @@ TextSymbolDescriptor.setI18nData(
     between: {
       en: `between`,
       zh: `位于区间`,
+    },
+    'is true': {
+      en: `is true`,
+      zh: `为真`,
     },
     'is null': {
       en: `is null`,

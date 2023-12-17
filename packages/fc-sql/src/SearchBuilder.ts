@@ -118,13 +118,13 @@ export class SearchBuilder {
     })
   }
 
-  public injectToSearcher(searcher: SQLSearcher) {
+  public injectToSearcher(searcher: SQLSearcher, isTrue = true) {
     if (this._conditions.length === 0) {
       return
     }
 
     const { conditions, values } = this.buildConditionsAndValues()
-    searcher.addSpecialCondition(conditions.join(` ${this._logic} `), ...values)
+    searcher.addCondition(conditions.join(` ${this._logic} `), values, isTrue)
 
     for (const orderRule of this._orderRules) {
       searcher.addOrderRule(orderRule.sortKey, orderRule.direction, ...orderRule.args)

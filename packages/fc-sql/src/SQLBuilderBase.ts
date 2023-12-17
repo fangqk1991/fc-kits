@@ -36,22 +36,21 @@ export abstract class SQLBuilderBase {
    * @description Add (column = value) condition, for instance, passing ('name', 'fang') means (name = 'fang')
    * @param key {string}
    * @param value {string | number}
+   * @param isTrue
    */
-  public addConditionKV(key: string, value: string | number) {
+  public addConditionKV(key: string, value: string | number, isTrue = true) {
     assert.ok(!value || typeof value !== 'object', `${this.constructor.name}: addConditionKV: incorrect value`)
     if (/^\w+$/.test(key)) {
       key = `\`${key}\``
     }
-    this.conditionColumns.push(`(${key} = ?)`)
-    this.conditionValues.push(value)
-    return this
+    return this.addCondition(`${key} = ?`, [value], isTrue)
   }
 
-  public addConditionLikeKeywords(key: string, keywords: string) {
+  public addConditionLikeKeywords(key: string, keywords: string, isTrue = true) {
     if (/^\w+$/.test(key)) {
       key = `\`${key}\``
     }
-    this.addSpecialCondition(`${key} LIKE ?`, `%${keywords}%`)
+    this.addCondition(`${key} LIKE ?`, [`%${keywords}%`], isTrue)
     return this
   }
 
@@ -98,16 +97,16 @@ export abstract class SQLBuilderBase {
     return this
   }
 
-  public addConditionKeyInArray(key: string, values: (string | number)[]) {
+  public addConditionKeyInArray(key: string, values: (string | number)[], isTrue = true) {
     if (values.length === 0) {
-      this.addSpecialCondition('1 = 0')
+      this.addCondition('1 = 0', [], isTrue)
       return this
     }
     const quotes = Array(values.length).fill('?').join(', ')
     if (/^\w+$/.test(key)) {
       key = `\`${key}\``
     }
-    this._addSpecialCondition(`${key} IN (${quotes})`, values)
+    this.addCondition(`${key} IN (${quotes})`, values, isTrue)
     return this
   }
 
