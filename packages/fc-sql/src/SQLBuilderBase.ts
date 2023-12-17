@@ -2,6 +2,10 @@ import { FCDatabase } from './FCDatabase'
 import * as assert from 'assert'
 import { QueryOptionsWithType, QueryTypes, Transaction } from 'sequelize'
 
+const wrapperKey = (key: string) => {
+  return /^\w+$/.test(key) ? `\`${key}\`` : key
+}
+
 export abstract class SQLBuilderBase {
   database: FCDatabase
   conditionColumns: string[] = []
@@ -40,17 +44,21 @@ export abstract class SQLBuilderBase {
    */
   public addConditionKV(key: string, value: string | number, isTrue = true) {
     assert.ok(!value || typeof value !== 'object', `${this.constructor.name}: addConditionKV: incorrect value`)
-    if (/^\w+$/.test(key)) {
-      key = `\`${key}\``
-    }
-    return this.addCondition(`${key} = ?`, [value], isTrue)
+    return this.addCondition(`${wrapperKey(key)} = ?`, [value], isTrue)
   }
 
   public addConditionLikeKeywords(key: string, keywords: string, isTrue = true) {
-    if (/^\w+$/.test(key)) {
-      key = `\`${key}\``
-    }
-    this.addCondition(`${key} LIKE ?`, [`%${keywords}%`], isTrue)
+    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`%${keywords}%`], isTrue)
+    return this
+  }
+
+  public addConditionStartsWithKeywords(key: string, keywords: string, isTrue = true) {
+    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`%${keywords}`], isTrue)
+    return this
+  }
+
+  public addConditionEndsWithKeywords(key: string, keywords: string, isTrue = true) {
+    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`${keywords}%`], isTrue)
     return this
   }
 
@@ -103,10 +111,7 @@ export abstract class SQLBuilderBase {
       return this
     }
     const quotes = Array(values.length).fill('?').join(', ')
-    if (/^\w+$/.test(key)) {
-      key = `\`${key}\``
-    }
-    this.addCondition(`${key} IN (${quotes})`, values, isTrue)
+    this.addCondition(`${wrapperKey(key)} IN (${quotes})`, values, isTrue)
     return this
   }
 
@@ -116,10 +121,7 @@ export abstract class SQLBuilderBase {
       return this
     }
     const quotes = Array(values.length).fill('?').join(', ')
-    if (/^\w+$/.test(key)) {
-      key = `\`${key}\``
-    }
-    this._addSpecialCondition(`${key} NOT IN (${quotes})`, values)
+    this._addSpecialCondition(`${wrapperKey(key)} NOT IN (${quotes})`, values)
     return this
   }
 

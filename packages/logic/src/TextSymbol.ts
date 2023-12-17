@@ -18,6 +18,8 @@ export enum TextSymbol {
   $notIn = '$notIn',
   $between = '$between',
   $like = '$like',
+  $startsWith = '$startsWith',
+  $endsWith = '$endsWith',
   $boolEQ = '$boolEQ',
   $isTrue = '$isTrue',
   $isNull = '$isNull',
@@ -42,6 +44,8 @@ const values = [
   TextSymbol.$notIn,
   TextSymbol.$between,
   TextSymbol.$like,
+  TextSymbol.$startsWith,
+  TextSymbol.$endsWith,
   TextSymbol.$boolEQ,
   TextSymbol.$isTrue,
   TextSymbol.$isNull,
@@ -78,6 +82,10 @@ const describe = (code: TextSymbol) => {
       return 'between'
     case TextSymbol.$like:
       return 'like'
+    case TextSymbol.$startsWith:
+      return 'prefix'
+    case TextSymbol.$endsWith:
+      return 'suffix'
     case TextSymbol.$boolEQ:
       return 'bool eq'
     case TextSymbol.$isTrue:
@@ -119,7 +127,15 @@ TextSymbolDescriptor.setI18nData(
     },
     like: {
       en: `like`,
-      zh: `模糊匹配`,
+      zh: `部分匹配`,
+    },
+    prefix: {
+      en: `prefix`,
+      zh: `前缀匹配`,
+    },
+    suffix: {
+      en: `suffix`,
+      zh: `后缀匹配`,
     },
     between: {
       en: `between`,

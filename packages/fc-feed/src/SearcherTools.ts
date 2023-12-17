@@ -183,6 +183,12 @@ export class SearcherTools {
         case TextSymbol.$like:
           searcher.addConditionLikeKeywords(columnKey, params[key], isTrue)
           break
+        case TextSymbol.$startsWith:
+          searcher.addConditionStartsWithKeywords(columnKey, params[key], isTrue)
+          break
+        case TextSymbol.$endsWith:
+          searcher.addConditionEndsWithKeywords(columnKey, params[key], isTrue)
+          break
         case TextSymbol.$boolEQ:
           {
             const value = params[key]
@@ -192,6 +198,9 @@ export class SearcherTools {
               searcher.addCondition(`${wrappedColumnKey} IS NULL OR ${wrappedColumnKey} = ''`, [], isTrue)
             }
           }
+          break
+        case TextSymbol.$isTrue:
+          searcher.addCondition(`${wrappedColumnKey} IS NOT NULL AND ${wrappedColumnKey} != ''`, [], isTrue)
           break
         case TextSymbol.$isNull:
           searcher.addCondition(`${wrappedColumnKey} IS NULL`, [], isTrue)
