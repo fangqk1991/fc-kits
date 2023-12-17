@@ -53,12 +53,12 @@ export abstract class SQLBuilderBase {
   }
 
   public addConditionStartsWithKeywords(key: string, keywords: string, isTrue = true) {
-    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`%${keywords}`], isTrue)
+    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`${keywords}%`], isTrue)
     return this
   }
 
   public addConditionEndsWithKeywords(key: string, keywords: string, isTrue = true) {
-    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`${keywords}%`], isTrue)
+    this.addCondition(`${wrapperKey(key)} LIKE ?`, [`%${keywords}`], isTrue)
     return this
   }
 
