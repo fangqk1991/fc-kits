@@ -61,7 +61,18 @@ export abstract class SQLBuilderBase {
    * @param args
    */
   public addSpecialCondition(condition: string, ...args: (string | number)[]) {
-    return this._addSpecialCondition(condition, args)
+    return this.addCondition(condition, args, true)
+  }
+
+  public addFalseSpecialCondition(condition: string, ...args: (string | number)[]) {
+    return this.addCondition(condition, args, false)
+  }
+
+  public addCondition(condition: string, args: (string | number)[] = [], isTrue = true) {
+    if (isTrue) {
+      return this._addSpecialCondition(condition, args)
+    }
+    return this._addSpecialCondition(`NOT (${condition})`, args)
   }
 
   private _addSpecialCondition(condition: string, args: (string | number)[]) {

@@ -3,6 +3,51 @@ import * as assert from 'assert'
 import { demoDatabase, generateRecords } from './DemoHelper'
 
 describe('Test SQLSearcher.test.ts', () => {
+  it(`Test addCondition`, async () => {
+    await generateRecords(10)
+
+    const totalCount = await (async () => {
+      const searcher = new SQLSearcher(demoDatabase)
+      searcher.setTable('demo_table')
+      searcher.setColumns(['*'])
+      return searcher.queryCount()
+    })()
+    {
+      const trueCount = await (async () => {
+        const searcher = new SQLSearcher(demoDatabase)
+        searcher.setTable('demo_table')
+        searcher.setColumns(['*'])
+        searcher.addCondition('MOD(uid, 3) = 0')
+        return searcher.queryCount()
+      })()
+      const falseCount = await (async () => {
+        const searcher = new SQLSearcher(demoDatabase)
+        searcher.setTable('demo_table')
+        searcher.setColumns(['*'])
+        searcher.addCondition('MOD(uid, 3) = 0', [], false)
+        return searcher.queryCount()
+      })()
+      assert.ok(totalCount === trueCount + falseCount)
+    }
+    {
+      const trueCount = await (async () => {
+        const searcher = new SQLSearcher(demoDatabase)
+        searcher.setTable('demo_table')
+        searcher.setColumns(['*'])
+        searcher.addSpecialCondition('MOD(uid, 3) = 0')
+        return searcher.queryCount()
+      })()
+      const falseCount = await (async () => {
+        const searcher = new SQLSearcher(demoDatabase)
+        searcher.setTable('demo_table')
+        searcher.setColumns(['*'])
+        searcher.addFalseSpecialCondition('MOD(uid, 3) = 0')
+        return searcher.queryCount()
+      })()
+      assert.ok(totalCount === trueCount + falseCount)
+    }
+  })
+
   it(`Test groupBy`, async () => {
     await generateRecords(10)
     {
