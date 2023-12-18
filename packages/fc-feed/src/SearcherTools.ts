@@ -95,6 +95,10 @@ export class SearcherTools {
       const wrappedColumnKey = /^\w+$/.test(columnKey) ? `\`${columnKey}\`` : columnKey
       const isTrue = matches[2] !== '$not.'
       const symbol = matches[3] as TextSymbol
+      const extensions = matches[4]
+      if (extensions === '.disabled') {
+        continue
+      }
       switch (symbol) {
         case TextSymbol.$eq:
         case TextSymbol.$ne:
