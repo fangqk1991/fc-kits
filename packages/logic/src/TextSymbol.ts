@@ -9,7 +9,13 @@ export enum TextSymbol {
   $lt = '$lt',
   $includeAll = '$includeAll',
   $includeAny = '$includeAny',
+  /**
+   * @deprecated
+   */
   $excludeAll = '$excludeAll',
+  /**
+   * @deprecated
+   */
   $excludeAny = '$excludeAny',
   $in = '$in',
   /**

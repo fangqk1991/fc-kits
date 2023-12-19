@@ -130,36 +130,21 @@ export class SearcherTools {
         case TextSymbol.$excludeAny:
           {
             const values = makeArrayValues(params[key])
-            if (symbol === TextSymbol.$includeAny) {
+            if (symbol === TextSymbol.$includeAny || symbol === TextSymbol.$excludeAny) {
               const builder = new SearchBuilder()
               builder.setLogic('OR')
               builder.addCondition(`1 = 0`)
               for (const val of values) {
                 builder.addCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
               }
-              builder.injectToSearcher(searcher, isTrue)
-            } else if (symbol === TextSymbol.$includeAll) {
+              builder.injectToSearcher(searcher, symbol === TextSymbol.$includeAny ? isTrue : !isTrue)
+            } else if (symbol === TextSymbol.$includeAll || symbol === TextSymbol.$excludeAll) {
               const builder = new SearchBuilder()
               builder.setLogic('AND')
               for (const val of values) {
                 builder.addCondition(`FIND_IN_SET(?, ${wrappedColumnKey})`, val)
               }
-              builder.injectToSearcher(searcher, isTrue)
-            } else if (symbol === TextSymbol.$excludeAny) {
-              const builder = new SearchBuilder()
-              builder.setLogic('OR')
-              builder.addCondition(`1 = 0`)
-              for (const val of values) {
-                builder.addCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
-              }
-              builder.injectToSearcher(searcher, isTrue)
-            } else if (symbol === TextSymbol.$excludeAll) {
-              const builder = new SearchBuilder()
-              builder.setLogic('AND')
-              for (const val of values) {
-                builder.addCondition(`NOT FIND_IN_SET(?, ${wrappedColumnKey})`, val)
-              }
-              builder.injectToSearcher(searcher, isTrue)
+              builder.injectToSearcher(searcher, symbol === TextSymbol.$includeAll ? isTrue : !isTrue)
             }
           }
           break
