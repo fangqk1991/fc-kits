@@ -440,6 +440,21 @@ importers:
         specifier: workspace:^
         version: link:../fc-tools
 
+  packages/fc-oss-react:
+    devDependencies:
+      '@fangcha/app-request':
+        specifier: workspace:^
+        version: link:../http-request
+      '@fangcha/auth-react':
+        specifier: ^0.18.0
+        version: 0.18.0(@popperjs/core@2.11.7)
+      '@fangcha/react':
+        specifier: workspace:^
+        version: link:../fc-react
+      '@fangcha/tools':
+        specifier: workspace:^
+        version: link:../fc-tools
+
   packages/fc-queue: {}
 
   packages/fc-react:
@@ -2842,6 +2857,14 @@ packages:
       - supports-color
     dev: true
 
+  /@fangcha/auth-react@0.18.0(@popperjs/core@2.11.7):
+    resolution: {integrity: sha512-PgRH4G1X5O67xhVHulKY3wjjSFoCxdqbzwjil3Mh3QJXNlVk95unwxqJlS2+6VHtD8uOvkWYdWho94881e9FmQ==}
+    dependencies:
+      bootstrap: 5.2.3(@popperjs/core@2.11.7)
+    transitivePeerDependencies:
+      - '@popperjs/core'
+    dev: true
+
   /@fangcha/oss-models@0.1.0:
     resolution: {integrity: sha512-tkkLWyoTU8r6jHdBZIuwNLp6yyzZXMC11lrEFhqsWYGzbCDrJeezGlsqd0IXDUqJe1JpuwgLl2r06N74T20U2g==}
     dev: true
@@ -2999,7 +3022,6 @@ packages:
 
   /@popperjs/core@2.11.7:
     resolution: {integrity: sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==}
-    dev: false
 
   /@rc-component/color-picker@1.4.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-vh5EWqnsayZa/JwUznqDaPJz39jznx/YDbyBuVJntv735tKXKwEUZZb2jYEldOg+NKWZwtALjGMrNeGBmqFoEw==}
@@ -4604,7 +4626,6 @@ packages:
       '@popperjs/core': ^2.11.6
     dependencies:
       '@popperjs/core': 2.11.7
-    dev: false
 
   /bowser@1.9.4:
     resolution: {integrity: sha512-9IdMmj2KjigRq6oWhmwv1W36pDuA4STQZ8q6YO9um+x07xgYNCD3Oou+WP/3L1HNz7iqythGet3/p4wvc8AAwQ==}
