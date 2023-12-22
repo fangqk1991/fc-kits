@@ -67,7 +67,9 @@ export class FilePickerDialog extends ReactDialog<Props, File> {
           {!!file && (
             <>
               <Divider />
-              <div>已选择 {file.name}</div>
+              <div>
+                已选择 {file.name} - <b>{(file.size! / 1024 / 1024).toFixed(2)}M</b>
+              </div>
             </>
           )}
         </div>
