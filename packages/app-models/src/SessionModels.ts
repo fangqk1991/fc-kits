@@ -1,3 +1,12 @@
+export interface SessionUserInfo {
+  email: string
+  isAdmin?: boolean
+  permissionKeyMap: {
+    [p: string]: 1
+  }
+  [p: string]: any
+}
+
 export interface SessionInfo<
   T = {
     [key: string]: any
@@ -8,7 +17,5 @@ export interface SessionInfo<
   codeVersion: string
   config: T
 
-  userInfo: {
-    email: string
-  } | null
+  userInfo: SessionUserInfo | null
 }
