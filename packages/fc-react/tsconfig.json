@@ -20,6 +20,6 @@
     "sourceMap": true,
     "inlineSourceMap": false
   },
-  "include": ["./src"],
+  "include": ["./src", "./rich-text"],
   "exclude": ["node_modules"]
 }
