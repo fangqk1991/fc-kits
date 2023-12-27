@@ -9,6 +9,7 @@ import { TestFormsView } from '../pages/TestFormsView'
 import { TestRoutersView } from '../pages/TestRoutersView'
 import { TestExcelsView } from '../pages/TestExcelsView'
 import { TestLoadingView } from '../pages/TestLoadingView'
+import { TestTextEditor } from '../pages/TestTextEditor'
 
 export const MyRouter = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const MyRouter = createBrowserRouter([
       {
         path: '/v1/excels',
         element: <TestExcelsView />,
+      },
+      {
+        path: '/v1/text-editor',
+        element: <TestTextEditor />,
       },
       {
         path: '*',

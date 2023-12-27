@@ -18,6 +18,7 @@
     "@types/assert": "^1.5.6",
     "@types/mocha": "^10.0.0",
     "@types/node": "^18.11.9",
+    "react-quill": "^2.0.0",
     "antd": "^5.11.1",
     "mocha": "^10.1.0",
     "nyc": "^15.1.0",

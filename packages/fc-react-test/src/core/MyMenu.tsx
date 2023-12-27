@@ -36,6 +36,10 @@ export const MyMenu: Route = {
           path: '/v1/excels',
           name: 'Excels',
         },
+        {
+          path: '/v1/text-editor',
+          name: 'Text Editor',
+        },
       ],
     },
   ],
