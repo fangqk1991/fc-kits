@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactQuill from 'react-quill'
+import ReactQuill, { ReactQuillProps } from 'react-quill'
 import styled from '@emotion/styled'
 import 'react-quill/dist/quill.snow.css'
 
@@ -9,18 +9,11 @@ const Wrapper = styled.div`
   }
 `
 
-interface Props {
-  value?: string
-  onChange?: (value: string) => void
-}
-
-export const RichTextEditor: React.FC<Props> = (props) => {
+export const RichTextEditor: React.FC<ReactQuillProps> = (props) => {
   return (
     <Wrapper>
       <ReactQuill
         theme='snow'
-        value={props.value || ''}
-        onChange={props.onChange}
         modules={{
           toolbar: [
             ['bold', 'italic', 'underline'],
@@ -32,6 +25,7 @@ export const RichTextEditor: React.FC<Props> = (props) => {
             ['link'],
           ],
         }}
+        {...props}
       />
     </Wrapper>
   )
