@@ -10,6 +10,15 @@ const Wrapper = styled.div`
 `
 
 export const RichTextEditor: React.FC<ReactQuillProps> = (props) => {
+  const [enabled, setEnabled] = React.useState(false)
+  React.useEffect(() => {
+    setEnabled(true)
+  }, [])
+
+  if (!enabled) {
+    return null
+  }
+
   return (
     <Wrapper>
       <ReactQuill
