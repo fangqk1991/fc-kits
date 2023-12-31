@@ -19,8 +19,8 @@ export class FlexibleFormDialog<T = any> extends ReactDialog<Props<T>, T> {
       const [form] = Form.useForm()
       props.context.handleResult = () => {
         return {
-          ...form.getFieldsValue(),
           ...params,
+          ...form.getFieldsValue(),
         }
       }
 
