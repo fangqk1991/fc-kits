@@ -4,12 +4,12 @@ import { SelectOption } from '@fangcha/tools'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { MenuOutlined } from '@ant-design/icons'
 
-interface Props {
-  options: SelectOption[]
+interface Props<T = any> {
+  options: (SelectOption & { entity?: T })[]
   onChange?: (newOptions: SelectOption[]) => void | Promise<void>
 }
 
-export const DraggableOptionsPanel: React.FC<Props> = (props) => {
+export const DraggableOptionsPanel = <T,>(props: Props<T>) => {
   const options = props.options
 
   return (

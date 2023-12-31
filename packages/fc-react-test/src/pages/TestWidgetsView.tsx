@@ -46,7 +46,7 @@ export const TestWidgetsView: React.FC = () => {
                 },
               ])
               dialog.show(async (options) => {
-                message.success(`${options.map((item) => item.label).join(', ')}`)
+                message.success(`${options.map((item) => `${item.index}.${item.label}`).join('  ')}`)
               })
             }}
           >

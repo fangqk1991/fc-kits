@@ -3,23 +3,30 @@ import { SelectOption } from '@fangcha/tools/lib'
 import { DialogProps, ReactDialog } from './ReactDialog'
 import { DraggableOptionsPanel } from '../DraggableOptionsPanel'
 
-interface Props extends DialogProps {
-  options: SelectOption[]
+interface Props<T = any> extends DialogProps {
+  options: (SelectOption & { entity?: T })[]
 }
 
-export class DraggableOptionsDialog extends ReactDialog<Props, SelectOption[]> {
+export class DraggableOptionsDialog<T = any> extends ReactDialog<
+  Props<T>,
+  (SelectOption & { entity: T; index: number })[]
+> {
   title = '拖动调整顺序'
 
-  static dialogWithOptions(options: SelectOption[]) {
+  static dialogWithOptions<T = any>(options: (SelectOption & { entity?: T })[]) {
     return new DraggableOptionsDialog({ options: options })
   }
 
-  public rawComponent(): React.FC<Props> {
+  public rawComponent(): React.FC<Props<T>> {
     return (props) => {
       const [options, setOptions] = useState([...props.options])
 
       props.context.handleResult = () => {
-        return options
+        return options.map((option, index) => ({
+          ...option,
+          entity: option.entity !== undefined ? option.entity : option.value,
+          index: index,
+        }))
       }
 
       return <DraggableOptionsPanel options={options} onChange={(newOptions) => setOptions(newOptions)} />
