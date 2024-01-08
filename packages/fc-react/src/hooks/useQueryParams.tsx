@@ -17,7 +17,7 @@ export function useQueryParams<T = {}>() {
         })
       )
     },
-    updateQueryParams: (params: Partial<T>) => {
+    updateQueryParams: (params: Partial<T>, replace = true) => {
       setSearchParams(
         qs.stringify(
           {
@@ -27,7 +27,10 @@ export function useQueryParams<T = {}>() {
           {
             arrayFormat: 'repeat',
           }
-        )
+        ),
+        {
+          replace: replace,
+        }
       )
     },
   }

@@ -14,7 +14,7 @@ export const TestLoadingView: React.FC = () => {
   return (
     <Tabs
       activeKey={queryParams.curTab || 'LoadingView'}
-      onChange={(curTab) => updateQueryParams({ curTab: curTab })}
+      onChange={(curTab) => updateQueryParams({ curTab: curTab }, false)}
       type='card'
       items={[
         {

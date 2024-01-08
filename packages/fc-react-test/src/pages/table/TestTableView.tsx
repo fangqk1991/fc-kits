@@ -25,7 +25,7 @@ export const TestTableView: React.FC = () => {
       <Divider />
       <Tabs
         activeKey={queryParams.curTab || 'loadData'}
-        onChange={(curTab) => updateQueryParams({ curTab: curTab })}
+        onChange={(curTab) => updateQueryParams({ curTab: curTab }, false)}
         type='card'
         items={[
           {
