@@ -53,7 +53,12 @@ export class SQLAdder extends SQLBuilderBase {
   }
 
   public stmtValues(): (string | number | null)[] {
-    return this._insertValues
+    return this._insertValues.map((val) => {
+      if (val === undefined) {
+        return null
+      }
+      return !!val && typeof val === 'object' ? JSON.stringify(val) : val
+    })
   }
 
   public async execute() {

@@ -130,7 +130,12 @@ export abstract class SQLBuilderBase {
   }
 
   public stmtValues(): (string | number | null)[] {
-    return this.conditionValues
+    return this.conditionValues.map((val) => {
+      if (val === undefined) {
+        return null
+      }
+      return !!val && typeof val === 'object' ? JSON.stringify(val) : val
+    })
   }
 
   public checkTableValid() {

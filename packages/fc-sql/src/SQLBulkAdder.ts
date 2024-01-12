@@ -77,7 +77,7 @@ export class SQLBulkAdder extends SQLBuilderBase {
     const values: Value[] = []
     this._insertObjects.forEach((obj) => {
       this._insertKeys.forEach((key) => {
-        if (Array.isArray(obj[key])) {
+        if (!!obj[key] && typeof obj[key] === 'object') {
           values.push(JSON.stringify(obj[key]))
         } else if (obj[key] !== undefined) {
           values.push(obj[key])

@@ -52,7 +52,12 @@ export class SQLModifier extends SQLBuilderBase {
   }
 
   stmtValues(): (string | number | null)[] {
-    return this._updateValues.concat(this.conditionValues)
+    return this._updateValues.concat(this.conditionValues).map((val) => {
+      if (val === undefined) {
+        return null
+      }
+      return !!val && typeof val === 'object' ? JSON.stringify(val) : val
+    })
   }
 
   public async execute() {
