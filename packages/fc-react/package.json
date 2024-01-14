@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/react",
-  "version": "0.56.0",
+  "version": "0.57.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
@@ -13,8 +13,8 @@
     "@ant-design/pro-components": "^2.6.43",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@types/react-dom": "^18.0.11",
-    "antd": "^5.11.2",
+    "@types/react-dom": "^18.2.18",
+    "antd": "5.12.8",
     "react-router": "^6.8.2",
     "react-router-dom": "^6.8.2",
     "@emotion/react": "^11.10.6",
