@@ -10,8 +10,8 @@ interface Props<T extends object = {}> {
   columns?: TypicalColumn<T>[]
   description?: React.ReactNode
   onPickExcel?: (excel: TypicalExcel<T>) => Promise<void> | void
-  filePickBtnText?: string
-  previewSubmitBtnText?: string
+  filePickBtnText?: React.ReactNode
+  previewSubmitBtnText?: React.ReactNode
   text2ValueTransform?: (text: string, curKey: string) => any
 }
 
@@ -21,6 +21,8 @@ export const ExcelPickButton = <T extends object = {}>({
   onPickExcel,
   skipPreview,
   text2ValueTransform,
+  filePickBtnText,
+  previewSubmitBtnText,
   ...props
 }: ButtonProps & Props<T>) => {
   return (
@@ -30,8 +32,8 @@ export const ExcelPickButton = <T extends object = {}>({
           title: '选择 Excel',
           description: description,
         })
-        if (props.filePickBtnText) {
-          dialog.okText = props.filePickBtnText
+        if (filePickBtnText) {
+          dialog.okText = filePickBtnText
         }
         dialog.show(async (file) => {
           const buffer = await FrontendFileReader.loadFileBuffer(file)
@@ -62,8 +64,8 @@ export const ExcelPickButton = <T extends object = {}>({
                     })),
                   records: excel.records(),
                 })
-                if (props.previewSubmitBtnText) {
-                  previewDialog.okText = props.previewSubmitBtnText
+                if (previewSubmitBtnText) {
+                  previewDialog.okText = previewSubmitBtnText
                 }
                 previewDialog.show(async () => {
                   if (onPickExcel) {
