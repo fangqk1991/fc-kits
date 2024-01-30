@@ -16,7 +16,7 @@ interface Record<T = any> {
 
 export class ExcelPreviewDialog<T extends object> extends ReactDialog<Props<T>, T[]> {
   title = '预览 Excel 数据'
-  width = '90%'
+  width: string | number = '90%'
 
   public rawComponent(): React.FC<Props<T>> {
     return (props) => {

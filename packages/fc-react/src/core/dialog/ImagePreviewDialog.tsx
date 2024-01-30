@@ -7,7 +7,7 @@ interface Props extends DialogProps<any> {
 
 export class ImagePreviewDialog extends ReactDialog<Props> {
   title = 'Preview'
-  width = '90%'
+  width: string | number = '90%'
   hideButtons = true
 
   public static preview(imgSrc: string) {

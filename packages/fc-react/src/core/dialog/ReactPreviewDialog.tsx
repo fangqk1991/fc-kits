@@ -7,7 +7,7 @@ interface Props extends DialogProps {
 
 export class ReactPreviewDialog extends ReactDialog<Props> {
   title = 'Preview'
-  width = 800
+  width: string | number = 800
   hideButtons = true
 
   public static preview(element: React.ReactNode) {

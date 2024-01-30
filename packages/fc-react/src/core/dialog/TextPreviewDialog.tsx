@@ -9,7 +9,7 @@ interface Props extends DialogProps<any> {
 
 export class TextPreviewDialog extends ReactDialog<Props> {
   title = 'Preview'
-  width = 800
+  width: string | number = 800
   hideButtons = true
 
   public static previewData(data: any) {

@@ -9,7 +9,7 @@ interface Props extends DialogProps {
 
 export class FilePickerDialog extends ReactDialog<Props, File> {
   title = '选择文件'
-  width = 1000
+  width: string | number = 1000
   // hideButtons = true
 
   public static pickFile(callback: (file: File) => Promise<void>) {

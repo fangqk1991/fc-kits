@@ -11,7 +11,7 @@ type Props = DialogProps<{}>
 
 export class JsonEditorDialog extends ReactDialog<Props, {}> {
   title = '编辑'
-  width = 1000
+  width: string | number = 1000
 
   public static dialogForEditing(data: {}, title?: string) {
     const dialog = new JsonEditorDialog({

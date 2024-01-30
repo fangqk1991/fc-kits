@@ -87,6 +87,8 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
   props!: Omit<T, 'context'>
   context!: DialogContext
 
+  isLoading = false
+
   public constructor(props: Omit<T, 'context'>) {
     this.props = props
     this.context = {
