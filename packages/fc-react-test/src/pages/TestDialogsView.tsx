@@ -231,6 +231,18 @@ export const TestDialogsView: React.FC = () => {
         </Button>
 
         <Button
+          type={'primary'}
+          onClick={() => {
+            ReactPreviewDialog.asyncPreview(async () => {
+              await sleep(2000)
+              return <Tag color={'error'}>ReactPreviewDialog</Tag>
+            })
+          }}
+        >
+          ReactPreviewDialog.async
+        </Button>
+
+        <Button
           onClick={() => {
             MessageDialog.alert(<Tag color={'geekblue'}>MessageDialog.alert</Tag>)
           }}
