@@ -2,6 +2,7 @@ import { ConfigProvider, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { ReactTheme } from '../ReactTheme'
+import { LoadingView } from '../LoadingView'
 
 export type DialogCallback<T = any> = (params: T) => void | Promise<void>
 
@@ -76,6 +77,43 @@ export const BaseDialog: React.FC<Props> = (props) => {
   )
 }
 
+const ContentContainer: React.FC<{
+  loadData?: () => Promise<any>
+  element: () => React.ReactNode
+}> = (props) => {
+  const [loading, setLoading] = useState(false)
+  const [element, setElement] = useState<React.ReactNode>()
+  const [errMsg, setErrMsg] = useState('')
+  useEffect(() => {
+    if (props.loadData) {
+      setLoading(true)
+      props
+        .loadData()
+        .then(() => {
+          setLoading(false)
+          setErrMsg('')
+          setElement(props.element())
+        })
+        .catch((err) => {
+          setLoading(false)
+          setErrMsg(err.message)
+          throw err
+        })
+    } else {
+      setElement(props.element())
+    }
+  }, [])
+
+  if (loading) {
+    return <LoadingView />
+  }
+  if (errMsg) {
+    return <p>{errMsg}</p>
+  }
+
+  return <>{element}</>
+}
+
 export abstract class ReactDialog<T extends DialogProps, P = any> {
   title: string = 'Title'
   width?: string | number
@@ -101,6 +139,8 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
   }
 
   public abstract rawComponent(): React.FC<T>
+
+  loadData?: () => Promise<any>
 
   public show(callback?: DialogCallback<P>) {
     const RawComponent = this.rawComponent()
@@ -131,7 +171,10 @@ export abstract class ReactDialog<T extends DialogProps, P = any> {
           closeIcon={this.closeIcon}
           callback={callback}
         >
-          <RawComponent {...(this.props as any)} context={this.context} />
+          <ContentContainer
+            loadData={this.loadData}
+            element={() => <RawComponent {...(this.props as any)} context={this.context} />}
+          />
         </BaseDialog>
       </ConfigProvider>
     )

@@ -293,6 +293,53 @@ export const TestDialogsView: React.FC = () => {
         >
           FlexibleFormDialog
         </Button>
+
+        <Button
+          type={'primary'}
+          onClick={() => {
+            const dialog = new FlexibleFormDialog({
+              formBody: (
+                <>
+                  <ProFormDigit name={'number'} label={'Number'} />
+                  <ProFormText name={'text'} label={'Text'} />
+                  <ProFormTextArea
+                    name={'textArea'}
+                    label={'TextArea'}
+                    fieldProps={{
+                      rows: 3,
+                    }}
+                  />
+                  <ProFormRadio.Group
+                    name={'radio'}
+                    label={'Radio'}
+                    options={[
+                      {
+                        label: 'Radio 1',
+                        value: 1,
+                      },
+                      {
+                        label: 'Radio 2',
+                        value: 2,
+                      },
+                    ]}
+                    radioType='button'
+                  />
+                </>
+              ),
+            })
+            dialog.loadData = async () => {
+              await sleep(1000)
+              dialog.props.placeholder = {
+                number: 123,
+              }
+            }
+            dialog.show(async (params) => {
+              message.info(JSON.stringify(params))
+            })
+          }}
+        >
+          FlexibleFormDialog.async
+        </Button>
       </Space>
     </>
   )
