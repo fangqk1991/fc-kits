@@ -30,6 +30,7 @@ type TableViewProtocol<T = any> = {
   reactiveQuery?: boolean
   namespace?: string
   hidePagination?: boolean
+  showTotal?: boolean
 }
 
 export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
@@ -164,6 +165,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           //     pageSize: pageSize,
           //   })
           // },
+          showTotal: props.showTotal ? (totalCount) => `Total: ${totalCount}` : undefined,
           current: realSettings.pageNumber,
           pageSize: realSettings.pageSize,
           total: pageResult.totalCount,

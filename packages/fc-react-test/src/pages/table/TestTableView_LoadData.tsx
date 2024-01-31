@@ -48,6 +48,7 @@ export const TestTableView_LoadData: React.FC<Props> = ({ version }) => {
         reactiveQuery={true}
         namespace={'table2'}
         version={version}
+        showTotal={true}
         tableProps={{
           size: 'small',
         }}
