@@ -8,13 +8,25 @@ export const PercentSpan: React.FC<Props> = ({ value, ...props }) => {
   const valueText = `${(value * 100).toFixed(2)}%`
   if (value > 0) {
     return (
-      <b style={{ color: '#28a745' }} {...props}>
+      <b
+        {...props}
+        style={{
+          color: '#28a745',
+          ...(props.style || {}),
+        }}
+      >
         +{valueText}
       </b>
     )
   } else if (value < 0) {
     return (
-      <b style={{ color: '#dc3545' }} {...props}>
+      <b
+        {...props}
+        style={{
+          color: '#dc3545',
+          ...(props.style || {}),
+        }}
+      >
         {valueText}
       </b>
     )
