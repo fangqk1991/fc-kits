@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SelectOption } from '@fangcha/tools/lib'
+import { SelectOption } from '@fangcha/tools'
 import { DialogProps, ReactDialog } from './ReactDialog'
 import { DraggableOptionsPanel } from '../DraggableOptionsPanel'
 
