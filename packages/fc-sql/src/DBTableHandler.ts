@@ -14,6 +14,24 @@ export interface DBColumn {
   Comment: string
 }
 
+interface RawDBIndex {
+  Table: string
+  Non_unique: number
+  Key_name: 'PRIMARY' | string
+  Seq_in_index: number
+  Column_name: string
+  Collation: string // 'A'
+  Null: string
+  Comment: string
+}
+
+export interface DBIndex {
+  table: string
+  indexKey: 'PRIMARY' | string
+  isUnique: boolean
+  columns: string[]
+}
+
 export class DBTableHandler {
   public tableName: string
   public database: FCDatabase
@@ -29,6 +47,28 @@ export class DBTableHandler {
     return (await this.database.queryV2(sql, {
       transaction: this.transaction,
     })) as DBColumn[]
+  }
+
+  public async getIndexes() {
+    const sql = `SHOW INDEXES FROM \`${this.tableName}\``
+    const rawItems = (await this.database.queryV2(sql, {
+      transaction: this.transaction,
+    })) as RawDBIndex[]
+    const groupMap: { [indexName: string]: RawDBIndex[] } = {}
+    rawItems.forEach((item) => {
+      if (!groupMap[item.Key_name]) {
+        groupMap[item.Key_name] = []
+      }
+      groupMap[item.Key_name].push(item)
+    })
+    return Object.values(groupMap).map((group): DBIndex => {
+      return {
+        table: group[0].Table,
+        indexKey: group[0].Key_name,
+        isUnique: group[0].Non_unique === 0,
+        columns: group.map((item) => item.Column_name),
+      }
+    })
   }
 
   public async checkTableExists() {

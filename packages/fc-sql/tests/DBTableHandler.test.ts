@@ -1,4 +1,4 @@
-import { FCDatabase, DBTableHandler } from '../src'
+import { DBTableHandler, FCDatabase } from '../src'
 import * as assert from 'assert'
 
 const database = FCDatabase.getInstance()
