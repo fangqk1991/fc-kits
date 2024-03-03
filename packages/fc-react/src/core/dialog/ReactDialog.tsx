@@ -61,6 +61,7 @@ export const BaseDialog: React.FC<Props> = (props) => {
       title={props.title}
       width={props.width}
       open={isOpen}
+      style={{ top: '40px' }}
       destroyOnClose={true}
       onCancel={() => setOpen(false)}
       okButtonProps={{
