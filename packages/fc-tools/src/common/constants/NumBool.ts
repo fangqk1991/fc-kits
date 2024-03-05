@@ -18,3 +18,5 @@ const describe = (code: NumBool) => {
 }
 
 export const NumBoolDescriptor = new Descriptor(values, describe)
+
+export const BoolOptions = NumBoolDescriptor.options().map((item) => ({ ...item, value: !!item.value }))

@@ -1,6 +1,6 @@
 export interface SelectOption {
   label: string
-  value: string | number
+  value: string | number | any
   disabled?: boolean
 }
 
