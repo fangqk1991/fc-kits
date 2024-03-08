@@ -68,7 +68,14 @@ export class LogicExpressionHelper {
           }
         }
       } else if (meta.condition) {
-        const inputVal = data[meta.condition.leftKey]
+        let inputVal: any = data
+        const keys = Array.isArray(meta.condition.leftKey) ? meta.condition.leftKey : [meta.condition.leftKey]
+        for (const key of keys) {
+          if (!inputVal || typeof inputVal !== 'object') {
+            return false
+          }
+          inputVal = inputVal[key]
+        }
         const expectVal = meta.condition.rightValue
         switch (meta.condition.symbol) {
           case FilterSymbol.IN:

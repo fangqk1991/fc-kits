@@ -5,13 +5,13 @@ describe('Test LogicExpression.test.ts', () => {
     const expression: LogicExpression = {
       logic: LogicSymbol.OR,
       elements: [
-        {
-          condition: {
-            leftKey: 'a',
-            symbol: FilterSymbol.LIKE,
-            rightValue: '^2$',
-          },
-        },
+        // {
+        //   condition: {
+        //     leftKey: 'a',
+        //     symbol: FilterSymbol.LIKE,
+        //     rightValue: '^2$',
+        //   },
+        // },
         {
           logic: LogicSymbol.AND,
           elements: [
@@ -31,12 +31,22 @@ describe('Test LogicExpression.test.ts', () => {
             },
           ],
         },
+        {
+          condition: {
+            leftKey: ['c', 's'],
+            symbol: FilterSymbol.EQ,
+            rightValue: 1,
+          },
+        },
       ],
     }
     console.info(
       LogicExpressionHelper.calcExpression(expression, {
         a: 2,
         b: 30,
+        c: {
+          s: 1,
+        },
       })
     )
   })

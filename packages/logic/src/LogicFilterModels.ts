@@ -2,7 +2,7 @@ import { FilterSymbol } from './FilterSymbol'
 import { LogicSymbol } from './LogicSymbol'
 
 export interface FilterCondition {
-  leftKey: string
+  leftKey: string | string[]
   symbol: FilterSymbol
   rightValue: number | string | (string | number)[]
 }
