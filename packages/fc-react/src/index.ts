@@ -1,3 +1,4 @@
+import './assets/bootstrap-like.scss'
 export * from './core/ReactApp'
 export * from './core/JsonPre'
 export * from './core/LoadingView'
