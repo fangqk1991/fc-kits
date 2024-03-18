@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/app-request-extensions",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple networking framework for node.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -26,11 +26,10 @@
     "@fangcha/app-request": "workspace:^",
     "@fangcha/tools": "workspace:^",
     "@fangcha/logger": "workspace:^",
+    "https-proxy-agent": "^7.0.4",
     "log4js": "^6.7.1"
   },
   "devDependencies": {
-    "@types/tunnel": "^0.0.3",
-    "tunnel": "^0.0.6",
     "typescript": "4.6.2"
   },
   "files": [

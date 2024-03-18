@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/bot-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Bot Kit.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -22,14 +22,16 @@
   "dependencies": {
     "@fangcha/app-error": "workspace:^",
     "@fangcha/app-request": "workspace:^",
-    "@fangcha/app-request-extensions": "workspace:^",
     "@fangcha/assert": "workspace:^",
     "@fangcha/tools": "workspace:^",
     "moment": "^2.29.4"
   },
+  "peerDependencies": {
+    "@fangcha/app-request": "^1.9.0",
+    "@fangcha/app-request-extensions": "^0.3.0"
+  },
   "devDependencies": {
     "jsonwebtoken": "^8.5.1",
-    "tunnel": "^0.0.6",
     "typescript": "4.6.4"
   },
   "files": [

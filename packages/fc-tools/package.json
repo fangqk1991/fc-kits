@@ -41,8 +41,6 @@
     "sequelize": "^5.21.2",
     "cron": "^1.8.2",
     "@types/cron": "^1.7.2",
-    "tunnel": "^0.0.6",
-    "@types/tunnel": "^0.0.2",
     "ioredis": "^4.28.5",
     "@types/ioredis": "^4.28.10",
     "@types/uuid": "^9.0.0",

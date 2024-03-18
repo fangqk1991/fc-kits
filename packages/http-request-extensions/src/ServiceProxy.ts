@@ -1,6 +1,7 @@
 import { RequestFollower } from './RequestFollower'
 import { AxiosBuilder } from '@fangcha/app-request'
 import { makeUUID } from '@fangcha/tools'
+import { HttpsProxyAgent } from 'https-proxy-agent'
 
 export class ServiceProxy<Config = {}> {
   protected _config: Config
@@ -25,6 +26,12 @@ export class ServiceProxy<Config = {}> {
   protected onRequestMade(request: AxiosBuilder) {
     const requestId = this._requestId || makeUUID()
     request.addHeader('x-request-id', requestId)
+
+    if (request.getRequestUrl().startsWith('https://') && process.env.https_proxy) {
+      const httpsAgent = new HttpsProxyAgent(process.env.https_proxy)
+      request.addAxiosConfig({ proxy: false, httpsAgent: httpsAgent })
+    }
+
     if (this._observerClass) {
       request.setObserver(new this._observerClass(requestId))
     }
