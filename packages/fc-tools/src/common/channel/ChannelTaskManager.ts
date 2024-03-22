@@ -14,15 +14,23 @@ class _ChannelManager {
         pendingCount: 0,
       }
     }
-    await sleep(0)
-    await this._wait(channelId)
+
+    {
+      // Waiting to unlock...
+      ++this._entityMap[channelId].pendingCount
+      while (this._entityMap[channelId].isRunning) {
+        await sleep(100)
+      }
+      --this._entityMap[channelId].pendingCount
+    }
+
     if (this._entityMap[channelId].isDone) {
       const result = this._entityMap[channelId].result as T
       this._dispose(channelId)
       return result
     }
     this._entityMap[channelId].isRunning = true
-    await sleep(0)
+
     const result = await handler().catch((err) => {
       Object.assign(this._entityMap[channelId], {
         isRunning: false,
@@ -40,16 +48,8 @@ class _ChannelManager {
     return result
   }
 
-  private async _wait(channelId: string) {
-    ++this._entityMap[channelId].pendingCount
-    while (this._entityMap[channelId].isRunning) {
-      await sleep(100)
-    }
-    --this._entityMap[channelId].pendingCount
-  }
-
   private _dispose(channelId: string) {
-    if (this._entityMap[channelId].pendingCount === 0) {
+    if (this._entityMap[channelId].pendingCount <= 0) {
       delete this._entityMap[channelId]
       // console.debug(`Channel[${channelId}] released.`)
     }

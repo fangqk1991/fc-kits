@@ -7,9 +7,11 @@ describe('Test ChannelManager.test.ts', () => {
     const channelName = 'xxx'
     let matchedResult = 0
     await Promise.all(
-      new Array(100).fill(1).map(() => {
+      new Array(100).fill(1).map((_, index) => {
         return ChannelTaskManager.handleInChannel(channelName, async () => {
-          await sleep(2000)
+          assert.strictEqual(index, 0)
+          console.info('0. handler running.', index)
+          // await sleep(1000)
           return matchedResult++
         }).then((result) => {
           assert.strictEqual(result, 0)
@@ -18,17 +20,30 @@ describe('Test ChannelManager.test.ts', () => {
     )
     assert.strictEqual(matchedResult, 1)
 
+    ChannelTaskManager.handleInChannel(channelName, async () => {
+      console.info('1. handler running.')
+      await sleep(0)
+      return matchedResult++
+    }).then((result) => {
+      assert.strictEqual(result, 1)
+    })
+    assert.strictEqual(matchedResult, 1)
+
+    await sleep(0)
+
     await Promise.all(
-      new Array(100).fill(1).map(() => {
+      new Array(100).fill(1).map((_, index) => {
         return ChannelTaskManager.handleInChannel(channelName, async () => {
-          await sleep(2000)
+          assert.strictEqual(index, 0)
+          console.info('2. handler running.')
+          await sleep(10)
           return matchedResult++
         }).then((result) => {
-          assert.strictEqual(result, 1)
+          assert.strictEqual(result, 2)
         })
       })
     )
-    assert.strictEqual(matchedResult, 2)
+    assert.strictEqual(matchedResult, 3)
   })
 
   it(`Test: exception`, async () => {
