@@ -1,6 +1,5 @@
-import { sleep } from '../src'
+import { ChannelTask, ChannelTaskManager, sleep } from '../src'
 import * as assert from 'assert'
-import { ChannelTask, ChannelTaskManager } from '../src/common/channel'
 
 describe('Test ChannelManager.test.ts', () => {
   it(`Test: multi-execute`, async () => {
