@@ -1,5 +1,5 @@
 import * as Koa from 'koa'
-import { SwaggerDocItem } from './SwaggerDocItem'
+import { RawSwaggerDocItem, SwaggerDocItem } from './SwaggerDocItem'
 import { SwaggerBuilder } from './SwaggerBuilder'
 import { FCRouter } from './FCRouter'
 import { Spec } from './FCRouterModels'
@@ -11,6 +11,7 @@ export interface RouterAppParams {
   description?: string
   useBasicAuth?: boolean
   docItems: SwaggerDocItem[]
+  rawSwaggerItems?: RawSwaggerDocItem[]
   swaggerResource?: SwaggerResource
 }
 
@@ -32,6 +33,14 @@ export class RouterApp {
   public addDocItem(...docItems: SwaggerDocItem[]) {
     for (const docItem of docItems) {
       this.params.docItems.push(docItem)
+    }
+    return this
+  }
+
+  public addRawSwaggerDocItem(...docItems: RawSwaggerDocItem[]) {
+    this.params.rawSwaggerItems = this.params.rawSwaggerItems || []
+    for (const docItem of docItems) {
+      this.params.rawSwaggerItems.push(docItem)
     }
     return this
   }
@@ -97,6 +106,9 @@ export class RouterApp {
         resourceOptions: this.params.swaggerResource,
       })
     })
+    if (this.params.rawSwaggerItems) {
+      this.params.rawSwaggerItems.forEach((item) => myRouter.addRawSwaggerDocItem(item))
+    }
     return myRouter
   }
 }
