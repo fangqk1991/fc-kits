@@ -3,6 +3,7 @@ import { SwaggerDocItem } from './SwaggerDocItem'
 import { SwaggerBuilder } from './SwaggerBuilder'
 import { FCRouter } from './FCRouter'
 import { Spec } from './FCRouterModels'
+import { SwaggerResource } from '@fangcha/swagger'
 
 export interface RouterAppParams {
   baseURL?: string
@@ -13,23 +14,11 @@ export interface RouterAppParams {
   swaggerResource?: SwaggerResource
 }
 
-export interface SwaggerResource {
-  cssMain: string
-  jsBundle: string
-  jsPreset: string
-}
-
 const _defaultPrivateSpecCheck = (spec: Spec) => {
   return !spec['skipAuth']
 }
 
 export class RouterApp {
-  public static defaultSwaggerResource: SwaggerResource = {
-    cssMain: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.1/swagger-ui.min.css',
-    jsBundle: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.1/swagger-ui-bundle.js',
-    jsPreset: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.1/swagger-ui-standalone-preset.js',
-  }
-
   private readonly params: RouterAppParams
 
   constructor(params: RouterAppParams) {
@@ -86,85 +75,26 @@ export class RouterApp {
   }
 
   private makeSwaggerRouter() {
-    const swaggerResource = this.params.swaggerResource || RouterApp.defaultSwaggerResource
     const myRouter = new FCRouter()
     this.params.docItems.forEach((item) => {
-      myRouter.router.get(item.pageURL, async (ctx) => {
-        ctx.body = `
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Swagger UI</title>
-    <link rel="stylesheet" type="text/css" href="${swaggerResource.cssMain}" />
-    <style>
-      html
-      {
-        box-sizing: border-box;
-        overflow: -moz-scrollbars-vertical;
-        overflow-y: scroll;
-      }
-
-      *,
-      *:before,
-      *:after
-      {
-        box-sizing: inherit;
-      }
-
-      body
-      {
-        margin:0;
-        background: #fafafa;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="swagger-ui"></div>
-    <script src="${swaggerResource.jsBundle}" charset="UTF-8"> </script>
-    <script src="${swaggerResource.jsPreset}" charset="UTF-8"> </script>
-    <script>
-    window.onload = function() {
-      // Begin Swagger UI call region
-      const ui = SwaggerUIBundle({
-        "dom_id": "#swagger-ui",
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIStandalonePreset
-        ],
-        plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl
-        ],
-        layout: "StandaloneLayout",
-        queryConfigEnabled: true,
-        validatorUrl: "https://validator.swagger.io/validator",
-        url: "${item.pageURL}/swagger.json",
+      const baseURL = this.params.baseURL || ''
+      const swagger = new SwaggerBuilder({
+        title: item.name,
+        description: item.description || this.params.description || '',
+        version: item.version || this.params.version || '1.0.0',
+        baseURL: baseURL,
       })
-      window.ui = ui;
-    };
-  </script>
-  </body>
-</html>
-`
-      })
-      myRouter.router.get(`${item.pageURL}/swagger.json`, async (ctx) => {
-        const baseURL = this.params.baseURL || ''
-        const swagger = new SwaggerBuilder({
-          title: item.name,
-          description: item.description || this.params.description || '',
-          version: item.version || this.params.version || '1.0.0',
-          baseURL: baseURL,
-        })
-        if (this.params.useBasicAuth) {
-          swagger.useBasicAuth()
-        }
-        swagger.addSpec(...item.specs)
-        if (item.models) {
-          swagger.addModel(...item.models)
-        }
-        ctx.body = swagger.buildJSON()
+      if (this.params.useBasicAuth) {
+        swagger.useBasicAuth()
+      }
+      swagger.addSpec(...item.specs)
+      if (item.models) {
+        swagger.addModel(...item.models)
+      }
+      myRouter.addRawSwaggerDocItem({
+        pageURL: item.pageURL,
+        swaggerJSON: swagger.buildJSON(),
+        resourceOptions: this.params.swaggerResource,
       })
     })
     return myRouter

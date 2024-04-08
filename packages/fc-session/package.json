@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/session",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "lib/index.js",
@@ -16,10 +16,6 @@
   ],
   "author": "fang <me@fangqk.com>",
   "license": "MIT",
-  "dependencies": {
-    "@fangcha/router": "workspace:^",
-    "@fangcha/tools": "workspace:^"
-  },
   "devDependencies": {
     "@fangcha/assert": "workspace:^",
     "@fangcha/logger": "workspace:^",
@@ -27,7 +23,9 @@
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
-    "@fangcha/backend-kit": "*"
+    "@fangcha/backend-kit": "*",
+    "@fangcha/router": "*",
+    "@fangcha/tools": "*"
   },
   "files": [
     "lib/*",

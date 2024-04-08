@@ -1,4 +1,4 @@
-import { SwaggerModelDefinitionV2 } from '@fangcha/swagger'
+import { SwaggerModelDefinitionV2, SwaggerResource } from '@fangcha/swagger'
 import { Spec } from './FCRouterModels'
 
 export type PrivateSpecCheck = (spec?: Spec) => boolean
@@ -8,11 +8,13 @@ export interface SwaggerDocItem {
   description?: string
   version?: string
   pageURL: string
-  /**
-   * @deprecated
-   */
-  jsonURL?: string
   specs: Spec[]
   privateSpecCheck?: PrivateSpecCheck
   models?: SwaggerModelDefinitionV2[]
+}
+
+export interface RawSwaggerDocItem {
+  pageURL: string
+  swaggerJSON: any
+  resourceOptions?: Partial<SwaggerResource>
 }

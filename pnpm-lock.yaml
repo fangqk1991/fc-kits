@@ -86,7 +86,7 @@ importers:
         version: link:../http-request
       '@fangcha/app-request-extensions':
         specifier: ^0.3.0
-        version: link:../http-request-extensions
+        version: 0.3.0
       '@fangcha/assert':
         specifier: workspace:^
         version: link:../assert
@@ -168,7 +168,7 @@ importers:
         version: link:../http-request
       '@fangcha/app-request-extensions':
         specifier: ^0.3.0
-        version: link:../http-request-extensions
+        version: 0.3.0
       '@fangcha/assert':
         specifier: workspace:^
         version: link:../assert
@@ -615,10 +615,10 @@ importers:
         specifier: '*'
         version: link:../backend-kit
       '@fangcha/router':
-        specifier: workspace:^
+        specifier: '*'
         version: link:../fc-router
       '@fangcha/tools':
-        specifier: workspace:^
+        specifier: '*'
         version: link:../fc-tools
     devDependencies:
       '@fangcha/assert':
@@ -2851,9 +2851,51 @@ packages:
       - supports-color
     dev: true
 
+  /@fangcha/app-error@1.6.0:
+    resolution: {integrity: sha512-8X/WE1W+YRePXzlK8hALIkMNPsfB7fOydzsDHdjj9Gd19YWTF5Z4A8NTSQDAKvDrngFkh73aPWKUq12EXo2a7g==}
+    dev: false
+
+  /@fangcha/app-request-extensions@0.3.0:
+    resolution: {integrity: sha512-Z7xKjk5ZMknibBeWgrq5xGfSwHloIG7RKJxjUoxzk6xL+gZiSYzhetvrVihz3tnoUcgkORWtImqybFhDn9T1rQ==}
+    dependencies:
+      '@fangcha/app-error': 1.6.0
+      '@fangcha/app-request': 1.9.0
+      '@fangcha/logger': 0.5.0
+      '@fangcha/tools': 1.40.1
+      https-proxy-agent: 7.0.4
+      log4js: 6.9.1
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+    dev: false
+
+  /@fangcha/app-request@1.9.0:
+    resolution: {integrity: sha512-PzouGeAcEqWOLgYza6tXz7ib2K1k3BOyIKMQHqiVixOBgsQEL20QSmQ50JfUW8unXIvWsPdYUHVnXr9/1DO+aw==}
+    dependencies:
+      '@fangcha/app-error': 1.6.0
+      axios: 1.6.8
+      form-data: 4.0.0
+      qs: 6.11.1
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@fangcha/logger@0.5.0:
+    resolution: {integrity: sha512-mtX82gxL+heXN5PK/0exEQZDKq4SFRkHPhO6XyQnn1LOd5y9NwGMLrCTjPXPwUGhP+r75HsG1z8OHb/61b3aKA==}
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+
   /@fangcha/oss-models@0.1.0:
     resolution: {integrity: sha512-tkkLWyoTU8r6jHdBZIuwNLp6yyzZXMC11lrEFhqsWYGzbCDrJeezGlsqd0IXDUqJe1JpuwgLl2r06N74T20U2g==}
     dev: true
+
+  /@fangcha/tools@1.40.1:
+    resolution: {integrity: sha512-kQZLU5kcVCLLZJGjYBx91N2p6HgBaFaYuhpHkzLsaLG6AbxLRdZG1fRQtdiKGjTHtKAlKinlnLV64iX1vv1BsA==}
+    dependencies:
+      moment: 2.29.4
+      uuid: 9.0.0
+    dev: false
 
   /@fast-csv/format@4.3.5:
     resolution: {integrity: sha512-8iRn6QF3I8Ak78lNAa+Gdl5MJJBM5vRHivFtMRUWINdevNo00K7OXxS2PshawLKTejVwieIlPmK5YlLu6w4u8A==}

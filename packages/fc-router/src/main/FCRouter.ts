@@ -1,6 +1,8 @@
 import * as KoaRouter from '@koa/router'
 import assert from '@fangcha/assert'
 import { Handler, Spec } from './FCRouterModels'
+import { RawSwaggerDocItem } from './SwaggerDocItem'
+import { SwaggerMaker } from '@fangcha/swagger'
 
 export class SpecFormatter {
   public static formatSpec(spec: Spec) {
@@ -47,6 +49,16 @@ export class FCRouter {
 
   public middleware() {
     return this.router.routes()
+  }
+
+  public addRawSwaggerDocItem(item: RawSwaggerDocItem) {
+    const jsonUrl = `${item.pageURL}/swagger.json`
+    this.router.get(item.pageURL, async (ctx) => {
+      ctx.body = SwaggerMaker.makeSwaggerHTML(jsonUrl, item.resourceOptions)
+    })
+    this.router.get(jsonUrl, async (ctx) => {
+      ctx.body = item.swaggerJSON
+    })
   }
 
   private _addRoute(spec: Spec) {
