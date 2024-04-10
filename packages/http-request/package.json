@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/app-request",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "A simple networking framework for node.",
   "main": "src/index.ts",
   "publishConfig": {

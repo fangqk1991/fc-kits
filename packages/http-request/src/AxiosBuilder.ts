@@ -245,12 +245,11 @@ export class AxiosBuilder {
         } else {
           const response = error.response!
           this.axiosResponse = response
+          statusCode = response.status || 500
           if (response && response.data) {
             message = typeof response.data === 'object' ? JSON.stringify(response.data, null, 2) : response.data
-          }
-          statusCode = response.status || 500
-          if (!message) {
-            message = error.message || response.statusText || 'Unknown'
+          } else {
+            message = error.message || response.statusText || 'Unknown error'
           }
         }
         this.appError = new AppError(message, statusCode, this.axiosError)

@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/bot-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Bot Kit.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -27,8 +27,8 @@
     "moment": "^2.29.4"
   },
   "peerDependencies": {
-    "@fangcha/app-request": "^1.9.0",
-    "@fangcha/app-request-extensions": "^0.3.0"
+    "@fangcha/app-request": "*",
+    "@fangcha/app-request-extensions": "*"
   },
   "devDependencies": {
     "jsonwebtoken": "^8.5.1",

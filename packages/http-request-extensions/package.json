@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/app-request-extensions",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A simple networking framework for node.",
   "main": "src/index.ts",
   "publishConfig": {
