@@ -43,10 +43,7 @@ describe('Test AxiosBuilder', () => {
       await builder.execute()
       assert.fail()
     } catch (e: any) {
-      const error = e.extras as AxiosError
-      assert.ok(error.isAxiosError)
-      assert.ok(!!error.response)
-      assert.strictEqual(error.response?.status, 302)
+      assert.strictEqual(e.statusCode, 302)
     }
   })
 
@@ -64,10 +61,7 @@ describe('Test AxiosBuilder', () => {
       await axiosGET('https://service.fangcha.me/api/test/http/test_code').setObserver(observer).execute()
       assert.fail()
     } catch (e: any) {
-      const error = e.extras as AxiosError
-      assert.ok(error.isAxiosError)
-      assert.ok(!!error.response)
-      assert.strictEqual(error.response!.status, 400)
+      assert.strictEqual(e.statusCode, 400)
     }
   })
 
@@ -76,10 +70,7 @@ describe('Test AxiosBuilder', () => {
       await axiosGET('https://service.fangcha.me/api/test/http/nonexistence').setObserver(observer).execute()
       assert.fail()
     } catch (e: any) {
-      const error = e.extras as AxiosError
-      assert.ok(error.isAxiosError)
-      assert.ok(!!error.response)
-      assert.strictEqual(error.response!.status, 404)
+      assert.strictEqual(e.statusCode, 404)
     }
   })
 
@@ -88,10 +79,7 @@ describe('Test AxiosBuilder', () => {
       await axiosGET('http://nonexistence.server/').setObserver(observer).execute()
       assert.fail()
     } catch (e: any) {
-      const error = e.extras as AxiosError
-      assert.ok(error.isAxiosError)
-      assert.ok(!!error.response)
-      assert.strictEqual(error.response!.status, 503)
+      assert.strictEqual(e.statusCode, 503)
     }
   })
 
@@ -122,9 +110,7 @@ describe('Test AxiosBuilder', () => {
     const builder = axiosGET('https://service.fangcha.me/api/test/http/nonexistence')
     builder.setObserver(observer)
     builder.setErrorHandler((error) => {
-      assert.ok(error.extras.isAxiosError)
-      assert.ok(!!error.extras.response)
-      assert.strictEqual(error.extras.response!.status, 404)
+      assert.strictEqual(error.statusCode, 404)
     })
     await builder.execute()
   })
