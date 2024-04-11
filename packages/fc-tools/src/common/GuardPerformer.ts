@@ -1,4 +1,5 @@
 type Handler<T> = () => Promise<T>
+type ErrorHandler = (err: Error) => void | Promise<void>
 
 export class GuardPerformer {
   public maxTimes = 3
@@ -7,7 +8,7 @@ export class GuardPerformer {
     this.maxTimes = maxTimes
   }
 
-  public async handle<T>(handler: Handler<T>, onFailHandler?: (err: Error) => void | Promise<void>) {
+  public async handle<T>(handler: Handler<T>, onFailHandler?: ErrorHandler) {
     let remainingTimes = this.maxTimes
     let err!: Error
     while (remainingTimes--) {
@@ -24,7 +25,7 @@ export class GuardPerformer {
     throw err
   }
 
-  public static async perform<T>(handler: Handler<T>, onFailHandler?: () => void | Promise<void>) {
+  public static async perform<T>(handler: Handler<T>, onFailHandler?: ErrorHandler) {
     const performer = new GuardPerformer()
     return await performer.handle(handler, onFailHandler)
   }
