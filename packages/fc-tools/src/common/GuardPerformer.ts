@@ -3,9 +3,11 @@ type ErrorHandler = (err: Error) => void | Promise<void>
 
 export class GuardPerformer {
   public maxTimes = 3
+  public mute = false
 
-  public constructor(maxTimes = 3) {
+  public constructor(maxTimes = 3, mute = false) {
     this.maxTimes = maxTimes
+    this.mute = mute
   }
 
   public async handle<T>(handler: Handler<T>, onFailHandler?: ErrorHandler) {
@@ -16,7 +18,9 @@ export class GuardPerformer {
         return await handler()
       } catch (e) {
         err = e as any
-        console.error(e)
+        if (!this.mute) {
+          console.error(e)
+        }
         if (onFailHandler) {
           await onFailHandler(err)
         }
