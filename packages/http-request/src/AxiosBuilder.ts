@@ -252,7 +252,7 @@ export class AxiosBuilder {
             message = error.message || response.statusText || 'Unknown error'
           }
         }
-        this.appError = new AppError(message, statusCode, this.axiosError)
+        this.appError = new AppError(message, statusCode, this.axiosResponse?.data || {})
 
         if (
           error.response &&
