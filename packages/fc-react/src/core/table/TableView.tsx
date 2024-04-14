@@ -33,6 +33,26 @@ type TableViewProtocol<T = any> = {
   showTotal?: boolean
 }
 
+const correctParams = (realSettings: DefaultSettings) => {
+  const pageNumber = realSettings.pageNumber
+  const pageSize = realSettings.pageSize
+  const params: Partial<RetainParams> = {}
+  if (pageNumber && pageSize) {
+    params._offset = (pageNumber - 1) * pageSize
+    params._length = pageSize
+  }
+  if (realSettings.sortKey) {
+    params._sortKey = realSettings.sortKey
+    params._sortDirection = realSettings.sortDirection
+  }
+  if (params._sortDirection) {
+    if (['ascend', 'descend'].includes(params._sortDirection)) {
+      params._sortDirection = `${params._sortDirection}ing`
+    }
+  }
+  return params
+}
+
 export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
   const { queryParams, updateQueryParams } = useQueryParams<DefaultSettings>()
 
@@ -71,26 +91,6 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
   })
   const [loading, setLoading] = useState(true)
 
-  const getRetainedParams = () => {
-    const pageNumber = realSettings.pageNumber
-    const pageSize = realSettings.pageSize
-    const params: Partial<RetainParams> = {}
-    if (pageNumber && pageSize) {
-      params._offset = (pageNumber - 1) * pageSize
-      params._length = pageSize
-    }
-    if (realSettings.sortKey) {
-      params._sortKey = realSettings.sortKey
-      params._sortDirection = realSettings.sortDirection
-    }
-    if (params._sortDirection) {
-      if (['ascend', 'descend'].includes(params._sortDirection)) {
-        params._sortDirection = `${params._sortDirection}ing`
-      }
-    }
-    return params
-  }
-
   const updateSettings = (params: Partial<DefaultSettings>) => {
     const newParams = ['pageNumber', 'pageSize', 'sortKey', 'sortDirection']
       .filter((key) => key in params)
@@ -108,8 +108,8 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
     }
   }
 
-  const reloadData = () => {
-    const retainedParams = getRetainedParams()
+  useEffect(() => {
+    const retainedParams = correctParams(realSettings)
     if (props.loadOnePageItems) {
       setLoading(true)
       props
@@ -140,10 +140,6 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
           throw e
         })
     }
-  }
-
-  useEffect(() => {
-    reloadData()
   }, [realSettings, props.version, props.loadData, props.loadOnePageItems])
 
   return (
@@ -175,7 +171,7 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       {...(props.tableProps || {})}
       onChange={(pagination, filters, sorter, extra) => {
         const newParams: any = {}
-        if (sorter && sorter['columnKey'] && (settings.sortKey || sorter['order'])) {
+        if (sorter && sorter['columnKey'] && (realSettings.sortKey || sorter['order'])) {
           Object.assign(newParams, {
             sortKey: sorter['columnKey'],
             sortDirection: sorter['order'],
