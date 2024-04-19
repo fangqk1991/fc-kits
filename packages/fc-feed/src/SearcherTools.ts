@@ -87,6 +87,9 @@ export class SearcherTools {
             .filter((item) => !!item)
     }
     for (const key of paramsKeys) {
+      if (params[key] === null || params[key] === '') {
+        continue
+      }
       const matches = key.match(/^([a-zA-Z_][\w.]+)\.(\$not\.)?(\$\w+)(\.\w+)?$/)
       if (!matches || !(matches[1] in filterColsMapper)) {
         continue
