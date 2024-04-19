@@ -99,7 +99,7 @@ export class SearcherTools {
       const isTrue = matches[2] !== '$not.'
       const symbol = matches[3] as TextSymbol
       const extensions = matches[4]
-      if (extensions.startsWith('.disabled')) {
+      if (extensions && extensions.startsWith('.disabled')) {
         continue
       }
       switch (symbol) {
