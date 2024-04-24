@@ -1,5 +1,4 @@
 import * as assert from 'assert'
-import * as moment from 'moment'
 import DemoTable from './DemoTable'
 
 describe('Test DemoTable', (): void => {
@@ -131,6 +130,13 @@ describe('Test DemoTable', (): void => {
   it(`Test $keywords`, async () => {
     const items = await DemoTable.getPageResult({
       $keywords: '0.2',
+    })
+    console.info(items)
+  })
+
+  it(`Test symbol`, async () => {
+    const items = await DemoTable.getPageResult({
+      [`createTime.$ne`]: '::updateTime',
     })
     console.info(items)
   })

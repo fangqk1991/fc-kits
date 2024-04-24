@@ -103,6 +103,14 @@ export class SearcherTools {
         continue
       }
       const value = params[key]
+      let rightColumnKey = ''
+      if (typeof value === 'string') {
+        const matches = value.match(/^::([\w.]+)$/)
+        if (matches && filterColsMapper[matches[1]]) {
+          rightColumnKey = filterColsMapper[matches[1]]
+          rightColumnKey = /^\w+$/.test(rightColumnKey) ? `\`${rightColumnKey}\`` : rightColumnKey
+        }
+      }
       switch (symbol) {
         case TextSymbol.$eq:
         case TextSymbol.$ne:
@@ -111,19 +119,32 @@ export class SearcherTools {
         case TextSymbol.$le:
         case TextSymbol.$lt:
           {
-            const placeholder = checkValNumber(value) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
-            if (symbol === TextSymbol.$lt) {
-              searcher.addCondition(`${wrappedColumnKey} < ${placeholder}`, [value], isTrue)
-            } else if (symbol === TextSymbol.$le) {
-              searcher.addCondition(`${wrappedColumnKey} <= ${placeholder}`, [value], isTrue)
-            } else if (symbol === TextSymbol.$gt) {
-              searcher.addCondition(`${wrappedColumnKey} > ${placeholder}`, [value], isTrue)
-            } else if (symbol === TextSymbol.$ge) {
-              searcher.addCondition(`${wrappedColumnKey} >= ${placeholder}`, [value], isTrue)
-            } else if (symbol === TextSymbol.$eq) {
-              searcher.addCondition(`${wrappedColumnKey} = ${placeholder}`, [value], isTrue)
-            } else if (symbol === TextSymbol.$ne) {
-              searcher.addCondition(`${wrappedColumnKey} != ${placeholder}`, [value], isTrue)
+            let sqlSymbol = '='
+            switch (symbol) {
+              case TextSymbol.$eq:
+                sqlSymbol = '='
+                break
+              case TextSymbol.$ne:
+                sqlSymbol = '!='
+                break
+              case TextSymbol.$ge:
+                sqlSymbol = '>='
+                break
+              case TextSymbol.$gt:
+                sqlSymbol = '>'
+                break
+              case TextSymbol.$le:
+                sqlSymbol = '<='
+                break
+              case TextSymbol.$lt:
+                sqlSymbol = '<'
+                break
+            }
+            if (rightColumnKey) {
+              searcher.addCondition(`${wrappedColumnKey} ${sqlSymbol} ${rightColumnKey}`, [], isTrue)
+            } else {
+              const placeholder = checkValNumber(value) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
+              searcher.addCondition(`${wrappedColumnKey} ${sqlSymbol} ${placeholder}`, [value], isTrue)
             }
           }
           break
