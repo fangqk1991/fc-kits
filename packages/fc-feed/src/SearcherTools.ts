@@ -102,6 +102,7 @@ export class SearcherTools {
       if (extensions && extensions.startsWith('.disabled')) {
         continue
       }
+      const value = params[key]
       switch (symbol) {
         case TextSymbol.$eq:
         case TextSymbol.$ne:
@@ -110,8 +111,7 @@ export class SearcherTools {
         case TextSymbol.$le:
         case TextSymbol.$lt:
           {
-            const placeholder = checkValNumber(params[key]) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
-            const value = params[key]
+            const placeholder = checkValNumber(value) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
             if (symbol === TextSymbol.$lt) {
               searcher.addCondition(`${wrappedColumnKey} < ${placeholder}`, [value], isTrue)
             } else if (symbol === TextSymbol.$le) {
@@ -132,7 +132,7 @@ export class SearcherTools {
         case TextSymbol.$excludeAll:
         case TextSymbol.$excludeAny:
           {
-            const values = makeArrayValues(params[key])
+            const values = makeArrayValues(value)
             if (symbol === TextSymbol.$includeAny || symbol === TextSymbol.$excludeAny) {
               const builder = new SearchBuilder()
               builder.setLogic('OR')
@@ -152,16 +152,16 @@ export class SearcherTools {
           }
           break
         case TextSymbol.$in:
-          searcher.addConditionKeyInArray(columnKey, makeArrayValues(params[key]), isTrue)
+          searcher.addConditionKeyInArray(columnKey, makeArrayValues(value), isTrue)
           break
         case TextSymbol.$notIn:
           isTrue
-            ? searcher.addConditionKeyNotInArray(columnKey, makeArrayValues(params[key]))
-            : searcher.addConditionKeyInArray(columnKey, makeArrayValues(params[key]))
+            ? searcher.addConditionKeyNotInArray(columnKey, makeArrayValues(value))
+            : searcher.addConditionKeyInArray(columnKey, makeArrayValues(value))
           break
         case TextSymbol.$between:
           {
-            const values = makeArrayValues(params[key])
+            const values = makeArrayValues(value)
             if (Array.isArray(values) && values.length === 2) {
               const placeholder = checkValNumber(values) && !!timestampMap[columnKey] ? 'FROM_UNIXTIME(?)' : '?'
               searcher.addCondition(
@@ -173,17 +173,16 @@ export class SearcherTools {
           }
           break
         case TextSymbol.$like:
-          searcher.addConditionLikeKeywords(columnKey, params[key], isTrue)
+          searcher.addConditionLikeKeywords(columnKey, value, isTrue)
           break
         case TextSymbol.$startsWith:
-          searcher.addConditionStartsWithKeywords(columnKey, params[key], isTrue)
+          searcher.addConditionStartsWithKeywords(columnKey, value, isTrue)
           break
         case TextSymbol.$endsWith:
-          searcher.addConditionEndsWithKeywords(columnKey, params[key], isTrue)
+          searcher.addConditionEndsWithKeywords(columnKey, value, isTrue)
           break
         case TextSymbol.$boolEQ:
           {
-            const value = params[key]
             if (value === 'true') {
               searcher.addCondition(`${wrappedColumnKey} IS NOT NULL AND ${wrappedColumnKey} != ''`, [], isTrue)
             } else if (value === 'false') {
