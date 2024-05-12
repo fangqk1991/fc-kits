@@ -14,7 +14,13 @@ export class JsonEditorDialog extends ReactDialog<Props, {}> {
   width: string | number = 1000
   // escDisabled = true
 
-  public static dialogForEditing(data: {}, title?: string) {
+  public static dialogForEditing(data: {} | string, title?: string) {
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data)
+      } catch (e) {}
+    }
+
     const dialog = new JsonEditorDialog({
       curValue: data,
     })
