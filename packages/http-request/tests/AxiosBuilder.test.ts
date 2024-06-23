@@ -1,6 +1,5 @@
 import * as assert from 'assert'
 import { axiosDownload, axiosGET, axiosPOST, RequestObserverV2 } from '../src'
-import { AxiosError } from 'axios'
 import * as fs from 'fs'
 import AppError from '@fangcha/app-error'
 
@@ -162,5 +161,17 @@ describe('Test AxiosBuilder', () => {
         assert.strictEqual(theError, err)
       })
       .quickSend()
+  })
+
+  it(`Test addBeforeExecuteHandler`, async () => {
+    const builder = axiosGET('https://httpbin.org/get')
+      .setObserver(observer)
+      .addBeforeExecuteHandler(async (client) => {
+        client.addQueryParams({ before: 'marked' })
+      })
+      .setQueryParams({ a: [1, 2] })
+    await builder.quickSend()
+    assert.strictEqual(builder.getRequestMethod(), 'GET')
+    assert.strictEqual(builder.getRequestUrl(), 'https://httpbin.org/get?a=1&a=2&before=marked')
   })
 })

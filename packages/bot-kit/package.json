@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/bot-kit",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Bot Kit.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -21,7 +21,6 @@
   "license": "MIT",
   "dependencies": {
     "@fangcha/app-error": "workspace:^",
-    "@fangcha/app-request": "workspace:^",
     "@fangcha/assert": "workspace:^",
     "@fangcha/tools": "workspace:^",
     "moment": "^2.29.4"

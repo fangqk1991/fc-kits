@@ -6,6 +6,7 @@ import AppError, { AppException, ErrorModel } from '@fangcha/app-error'
 import * as qs from 'qs'
 const axios = require('axios')
 
+export type BeforeExecuteHandler = (client: AxiosBuilder) => Promise<void> | void
 export type Response200Checker = (responseData: any) => Promise<void> | void
 
 export type ErrorHandler = (error: AppError) => Promise<void> | void
@@ -26,15 +27,16 @@ export class AxiosBuilder {
   public bodyData: any
   public formData!: FormData
   public commonApi!: CommonAPI
-  private _response200Checker?: Response200Checker
-  private _errorHandler?: ErrorHandler
-  private _errorParser?: ErrorParser
+  protected _beforeExecuteHandlers: BeforeExecuteHandler[] = []
+  protected _response200Checker?: Response200Checker
+  protected _errorHandler?: ErrorHandler
+  protected _errorParser?: ErrorParser
   public axiosError?: AxiosError
   public appError?: AppError
   public axiosResponse?: AxiosResponse
-  private _observer?: RequestObserverV2
-  private _startTs = 0
-  private _endTs = 0
+  protected _observer?: RequestObserverV2
+  protected _startTs = 0
+  protected _endTs = 0
   public queryParamsSerializer: ParamsSerializerOptions = {
     serialize: (params: any) => {
       return qs.stringify(params, {
@@ -97,6 +99,11 @@ export class AxiosBuilder {
 
   public setQueryParams<T = {}>(queryParams: T) {
     this.queryParams = queryParams as any
+    return this
+  }
+
+  public addQueryParams<T = {}>(queryParams: T) {
+    Object.assign(this.queryParams, queryParams)
     return this
   }
 
@@ -189,7 +196,20 @@ export class AxiosBuilder {
     return this
   }
 
+  public addBeforeExecuteHandler(handler: BeforeExecuteHandler) {
+    this._beforeExecuteHandlers.push(handler)
+    return this
+  }
+
+  public setBeforeExecuteHandlers(handlers: BeforeExecuteHandler[]) {
+    this._beforeExecuteHandlers = handlers
+    return this
+  }
+
   public async execute() {
+    for (const handler of this._beforeExecuteHandlers) {
+      await handler(this)
+    }
     const options: AxiosRequestConfig = {
       method: this.commonApi.method as Method,
       url: this.commonApi.api,
