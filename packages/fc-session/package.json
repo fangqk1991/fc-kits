@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/session",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "lib/index.js",
@@ -19,11 +19,11 @@
   "devDependencies": {
     "@fangcha/assert": "workspace:^",
     "@fangcha/logger": "workspace:^",
+    "@fangcha/app-models": "workspace:^",
     "log4js": "^6.7.0",
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
-    "@fangcha/backend-kit": "*",
     "@fangcha/router": "*",
     "@fangcha/tools": "*"
   },

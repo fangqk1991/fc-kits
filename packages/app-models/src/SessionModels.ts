@@ -1,7 +1,8 @@
 export interface SessionUserInfo {
   email: string
+  nickName: string
   isAdmin?: boolean
-  permissionKeyMap: {
+  permissionKeyMap?: {
     [p: string]: 1
   }
   [p: string]: any

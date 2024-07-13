@@ -3,14 +3,12 @@ import * as jsonwebtoken from 'jsonwebtoken'
 import assert from '@fangcha/assert'
 import { FangchaSession } from './FangchaSession'
 import { _SessionApp } from './_SessionApp'
-
-interface UserCoreInfo {
-  email: string
-}
+import { SessionUserInfo } from '@fangcha/app-models'
 
 export class FangchaJwtSession extends FangchaSession {
-  protected _authInfo: UserCoreInfo = {
+  protected _authInfo: SessionUserInfo = {
     email: '',
+    nickName: '',
   }
   private _jwtCookieStr: string
 
@@ -45,14 +43,15 @@ export class FangchaJwtSession extends FangchaSession {
   }
 
   private extractAuthInfo(verifySign = false) {
-    let result: UserCoreInfo = {
+    let result: SessionUserInfo = {
       email: '',
+      nickName: '',
     }
     const authInfo = (
       verifySign
         ? jsonwebtoken.verify(this._jwtCookieStr, _SessionApp.jwtProtocol.jwtSecret)
         : jsonwebtoken.decode(this._jwtCookieStr)
-    ) as UserCoreInfo
+    ) as SessionUserInfo
     if (authInfo && authInfo.email) {
       result = authInfo
     }
@@ -62,7 +61,7 @@ export class FangchaJwtSession extends FangchaSession {
   public auth() {
     try {
       this._authInfo = this.extractAuthInfo(true)
-      assert.ok(!!this._authInfo.email, 'JWT Authorization missing.', 401)
+      assert.ok(!!this._authInfo.email, 'JWT Email missing.', 401)
     } catch (e) {
       assert.ok(false, 'JWT Authorization missing.', 401)
     }

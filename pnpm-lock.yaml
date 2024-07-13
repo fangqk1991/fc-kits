@@ -164,7 +164,7 @@ importers:
         specifier: workspace:^
         version: link:../app-error
       '@fangcha/app-request':
-        specifier: workspace:^
+        specifier: '*'
         version: link:../http-request
       '@fangcha/app-request-extensions':
         specifier: '*'
@@ -611,9 +611,6 @@ importers:
 
   packages/fc-session:
     dependencies:
-      '@fangcha/backend-kit':
-        specifier: '*'
-        version: link:../backend-kit
       '@fangcha/router':
         specifier: '*'
         version: link:../fc-router
@@ -621,6 +618,9 @@ importers:
         specifier: '*'
         version: link:../fc-tools
     devDependencies:
+      '@fangcha/app-models':
+        specifier: workspace:^
+        version: link:../app-models
       '@fangcha/assert':
         specifier: workspace:^
         version: link:../assert
