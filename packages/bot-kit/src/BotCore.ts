@@ -68,7 +68,7 @@ export abstract class BotCore extends ServiceProxy {
       extrasList.push(this.hostname)
     }
     const extras = extrasList.map((item) => `[${item}]`).join('')
-    message = `${extras} ${message}`
+    message = extras ? `${extras} ${message}` : message
     if (this._mute) {
       console.error('sendMessage in mute-mode:', message)
       return
