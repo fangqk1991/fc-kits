@@ -7,6 +7,7 @@ import { SessionUserInfo } from '@fangcha/app-models'
 
 export class FangchaJwtSession extends FangchaSession {
   protected _authInfo: SessionUserInfo = {
+    accountUid: '',
     email: '',
     nickName: '',
   }
@@ -44,6 +45,7 @@ export class FangchaJwtSession extends FangchaSession {
 
   private extractAuthInfo(verifySign = false) {
     let result: SessionUserInfo = {
+      accountUid: '',
       email: '',
       nickName: '',
     }

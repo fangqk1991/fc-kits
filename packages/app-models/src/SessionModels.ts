@@ -1,4 +1,5 @@
 export interface SessionUserInfo {
+  accountUid: string
   email: string
   nickName: string
   isAdmin?: boolean
