@@ -3,42 +3,32 @@ import { DataZoomComponentOption, GridComponentOption, YAXisComponentOption } fr
 import { BoxLayoutOptionMixin } from 'echarts/types/src/util/types'
 import { EChartsOptionsHelper, EchartsSeriesOption } from './EChartsOptionsHelper'
 
-interface Value {
-  x: string
-  y: number
-}
-
 interface ChartBuilderParams {
+  timeList: string[]
+  mainSeriesOptionList: EchartsSeriesOption[]
   defaultZoom?: 'none' | 'end'
   defaultZoomRange?: [number, number]
   showZoomSlider?: boolean
+  xAxisOptions?: Partial<XAXisComponentOption>
 }
 
 export class EChartOptionBuilder {
-  public upColor = '#26a69a'
-  public downColor = '#ef5350'
-
   public readonly isMobile: boolean
-  public readonly values: Value[]
+  public readonly timeList: string[]
   public readonly grids: ChartGridBuilder[]
 
   public readonly params: ChartBuilderParams
 
-  public constructor(values: Value[], params: ChartBuilderParams = {}) {
+  public constructor(params: ChartBuilderParams) {
     this.isMobile = window.innerWidth < 768
-
     this.params = params
-    this.values = values
+    this.timeList = params.timeList
     this.grids = []
     this.addMainGrid()
   }
 
   public get mainGrid() {
     return this.grids[0]
-  }
-
-  public get mainSeries() {
-    return this.mainGrid.seriesItems[0]
   }
 
   public get height() {
@@ -49,22 +39,16 @@ export class EChartOptionBuilder {
 
   private addMainGrid() {
     const mainGrid = this.addGrid()
-    mainGrid.addSeries({
-      name: 'mainName',
-      type: 'line',
-      data: this.values.map((item) => item.y),
-      smooth: true,
-      showSymbol: false,
-      // ...((props.extras || {}) as any),
-    })
-
-    const mainSeries = this.mainSeries
-
+    const [firstItem, ...otherItems] = this.params.mainSeriesOptionList
+    mainGrid.addSeries(firstItem)
+    if (otherItems.length > 0) {
+      mainGrid.addYAxisAndSeries({}, ...otherItems)
+    }
     return mainGrid
   }
 
   public addGrid() {
-    const grid = new ChartGridBuilder(this.values)
+    const grid = new ChartGridBuilder(this.timeList, this.params.xAxisOptions)
     this.grids.push(grid)
     return grid
   }
@@ -152,11 +136,11 @@ export class EChartOptionBuilder {
     let zoomRange: [any, any] = [undefined, undefined]
     if (this.params.defaultZoomRange) {
       zoomRange = [
-        Math.floor((this.params.defaultZoomRange[0] / this.values.length) * 100),
-        Math.floor((this.params.defaultZoomRange[1] / this.values.length) * 100),
+        Math.floor((this.params.defaultZoomRange[0] / this.timeList.length) * 100),
+        Math.floor((this.params.defaultZoomRange[1] / this.timeList.length) * 100),
       ]
     } else if (this.params.defaultZoom !== 'none') {
-      zoomRange = [Math.floor(100 - (Math.min(100, this.values.length) / this.values.length) * 100), 100]
+      zoomRange = [Math.floor(100 - (Math.min(100, this.timeList.length) / this.timeList.length) * 100), 100]
     }
     const dataZoomItems: DataZoomComponentOption[] = [
       {
@@ -207,18 +191,22 @@ export class EChartOptionBuilder {
       series: seriesItems,
     }
   }
+
+  public static buildOptions(options: ChartBuilderParams) {
+    return new EChartOptionBuilder(options).build()
+  }
 }
 
-export class ChartGridBuilder {
-  values: Value[]
+class ChartGridBuilder {
+  timeList: string[]
   seriesItems: EchartsSeriesOption[]
   xAxis: XAXisComponentOption
   yAxisItems: YAXisComponentOption[]
 
-  public constructor(values: Value[]) {
-    this.values = values
+  public constructor(timeList: string[], xAxisOptions: Partial<XAXisComponentOption> = {}) {
+    this.timeList = timeList
     this.seriesItems = []
-    this.xAxis = EChartsOptionsHelper.makeTimeXAxis(values.map((item) => item.x))
+    this.xAxis = EChartsOptionsHelper.makeTimeXAxis(timeList, xAxisOptions)
     this.yAxisItems = [
       {
         scale: true,
@@ -230,7 +218,12 @@ export class ChartGridBuilder {
   }
 
   public addSeries(series: EchartsSeriesOption) {
-    this.seriesItems.push(series)
+    this.seriesItems.push({
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      ...series,
+    } as EchartsSeriesOption)
   }
 
   public addYAxisAndSeries(yAxis: YAXisComponentOption, ...seriesItems: EchartsSeriesOption[]) {
@@ -245,10 +238,16 @@ export class ChartGridBuilder {
       ...yAxis,
     })
     this.seriesItems.push(
-      ...seriesItems.map((item) => ({
-        yAxisIndex: this.yAxisItems.length - 1,
-        ...item,
-      }))
+      ...seriesItems.map(
+        (item) =>
+          ({
+            type: 'line',
+            smooth: true,
+            showSymbol: false,
+            yAxisIndex: this.yAxisItems.length - 1,
+            ...item,
+          } as EchartsSeriesOption)
+      )
     )
   }
 }
