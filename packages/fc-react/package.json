@@ -1,6 +1,6 @@
 {
   "name": "@fangcha/react",
-  "version": "0.68.0",
+  "version": "0.69.0",
   "main": "src/index.ts",
   "repository": "https://github.com/fangqk1991/fc-kits.git",
   "keywords": [
@@ -40,6 +40,7 @@
   },
   "files": [
     "src/*",
-    "rich-text/*"
+    "rich-text/*",
+    "echarts/*"
   ]
 }

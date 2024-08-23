@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { EChartOptionBuilder } from './EChartOptionBuilder'
+import { EChartOptionBuilder } from '@fangcha/react/echarts'
 import ReactECharts from 'echarts-for-react'
 
 export const EChartsLineDemoView: React.FC = () => {
