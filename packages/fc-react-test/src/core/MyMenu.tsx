@@ -40,6 +40,10 @@ export const MyMenu: Route = {
           path: '/v1/text-editor',
           name: 'Text Editor',
         },
+        {
+          path: '/v1/echarts',
+          name: 'ECharts',
+        },
       ],
     },
   ],

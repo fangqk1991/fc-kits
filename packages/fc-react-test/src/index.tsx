@@ -9,6 +9,7 @@ import { TestFormsView } from './pages/TestFormsView'
 import { TestRoutersView } from './pages/TestRoutersView'
 import { TestExcelsView } from './pages/TestExcelsView'
 import { TestTextEditor } from './pages/TestTextEditor'
+import { TestEChartsView } from './pages/TestEChartsView'
 
 new ReactApp({
   colorPrimary: 'rgb(221 115 164)',
@@ -45,6 +46,10 @@ new ReactApp({
     {
       path: '/v1/text-editor',
       element: <TestTextEditor />,
+    },
+    {
+      path: '/v1/echarts',
+      element: <TestEChartsView />,
     },
   ],
 }).launch()

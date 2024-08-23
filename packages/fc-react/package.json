@@ -20,7 +20,9 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "react-beautiful-dnd": "^13.1.1",
-    "@types/react-beautiful-dnd": "^13.1.4"
+    "@types/react-beautiful-dnd": "^13.1.4",
+    "echarts": "^5.5.1",
+    "echarts-for-react": "^3.0.2"
   },
   "devDependencies": {
     "@fangcha/app-error": "workspace:^",
