@@ -47,6 +47,7 @@ export interface Api {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | string
   route: string
   description: string
+  contentType?: string
   detailInfo?: any
   skipAuth?: boolean
   responseDemo?: any

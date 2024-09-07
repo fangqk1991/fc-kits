@@ -130,6 +130,7 @@ class SpecBuilder {
         summary: this._api.description,
         description: detailInfo.replace(/\n/g, '\n\n'),
         tags: [this.factory.category],
+        consumes: this._api.contentType ? [this._api.contentType] : undefined,
         parameters: [...(this._api.parameters || [])],
       },
       handler: this._handler,
