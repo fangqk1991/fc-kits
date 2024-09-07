@@ -8,6 +8,7 @@ export interface SwaggerResponse {
 export interface SwaggerMeta {
   summary: string
   tags: string[]
+  consumes?: string[]
   description?: string
   parameters?: SwaggerParameter[]
   responses?: {

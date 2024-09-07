@@ -114,6 +114,7 @@ export class SwaggerBuilder {
         responses: Object.assign(responses, swaggerMeta.responses || {}),
         summary: swaggerMeta.summary,
         tags: swaggerMeta.tags,
+        consumes: swaggerMeta.consumes,
         parameters: [...parameters, ...(swaggerMeta.parameters || [])],
       }
       if (swaggerMeta.description) {
