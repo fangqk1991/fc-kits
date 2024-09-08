@@ -114,10 +114,6 @@ export class RouterPlugin implements AppPluginProtocol {
         writeLogMiddlewareBuilder.build(),
 
         async (ctx: Context, next: Function) => {
-          if (ctx.headers['content-type'] === 'text/plain') {
-            await next()
-            return
-          }
           const parser = bodyParser({ multipart: true })
           try {
             await parser(ctx, () => {})
