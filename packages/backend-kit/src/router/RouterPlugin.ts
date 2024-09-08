@@ -114,14 +114,16 @@ export class RouterPlugin implements AppPluginProtocol {
         writeLogMiddlewareBuilder.build(),
 
         async (ctx: Context, next: Function) => {
+          if (ctx.headers['content-type'] === 'text/plain') {
+            await next()
+            return
+          }
           const parser = bodyParser({ multipart: true })
           try {
             await parser(ctx, () => {})
           } catch (e) {
-            if (ctx.headers['content-type'] !== 'text/plain') {
-              console.error(e)
-              throw new AppError(`JSON parse error. ${(e as Error).message}`, 400)
-            }
+            console.error(e)
+            throw new AppError(`JSON parse error. ${(e as Error).message}`, 400)
           }
           await next()
         },
