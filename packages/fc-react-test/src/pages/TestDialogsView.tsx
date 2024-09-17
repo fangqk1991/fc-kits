@@ -67,6 +67,7 @@ export const TestDialogsView: React.FC = () => {
           type={'primary'}
           onClick={() => {
             const dialog = new SimplePickerDialog({
+              curValue: 'A',
               options: [
                 {
                   label: 'A',
@@ -78,6 +79,7 @@ export const TestDialogsView: React.FC = () => {
                 },
               ],
             })
+            // dialog.forceUsing = 'Select'
             dialog.show((value) => {
               message.success(`提交 ${value}`)
             })
