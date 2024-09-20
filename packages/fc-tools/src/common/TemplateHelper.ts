@@ -1,7 +1,7 @@
 export class TemplateHelper {
   public static renderTmpl(tmpl: string, data: { [p: string]: any }, renderUndefinedProps = true) {
     return (tmpl || '').replace(/\{\{\.(.*?)\}\}/g, (_: any, dataKey: string) => {
-      return dataKey in data ? data[dataKey] : renderUndefinedProps ? '' : `{{.${dataKey}}}`
+      return dataKey in data && data[dataKey] !== null ? data[dataKey] : renderUndefinedProps ? '' : `{{.${dataKey}}}`
     })
   }
 
