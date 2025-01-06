@@ -42,7 +42,7 @@ export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fraction
           }
           let val = Math.abs(value)
           let unit
-          if (usingThreshold && val >= usingThreshold) {
+          if (!usingThreshold || val >= usingThreshold) {
             const units = ['', 'K', 'M', 'B', 'T', 'E15', 'E18', 'E21', 'E24', 'E27', 'E30']
             let usingUnits = [...units]
             // billion, trillion, quadrillion, quintillion, sextillion, septillion
