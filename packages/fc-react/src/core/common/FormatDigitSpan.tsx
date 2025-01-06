@@ -6,10 +6,11 @@ interface Props extends HTMLAttributes<any> {
   color?: string
   fontWeight?: 'normal' | 'bold' | 'lighter' | 'bolder' | number
   fractionDigits?: number
+  usingThreshold?: number
   value: number
 }
 
-export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fractionDigits, ...props }) => {
+export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fractionDigits, usingThreshold, ...props }) => {
   let color = props.color || ''
   if (props.mode === 'profit') {
     color = '#888888'
@@ -41,15 +42,18 @@ export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fraction
           }
           let val = Math.abs(value)
           let unit
-          const units = ['', 'K', 'M', 'B', 'T', 'E15', 'E18', 'E21', 'E24', 'E27', 'E30']
-          let usingUnits = [...units]
-          // billion, trillion, quadrillion, quintillion, sextillion, septillion
-          while ((unit = usingUnits.shift()) !== undefined && val >= 1000) {
-            val = val / 1000
+          if (usingThreshold && val >= usingThreshold) {
+            const units = ['', 'K', 'M', 'B', 'T', 'E15', 'E18', 'E21', 'E24', 'E27', 'E30']
+            let usingUnits = [...units]
+            // billion, trillion, quadrillion, quintillion, sextillion, septillion
+            while ((unit = usingUnits.shift()) !== undefined && val >= 1000) {
+              val = val / 1000
+            }
+            if (unit === undefined) {
+              unit = units[units.length - 1]
+            }
           }
-          if (unit === undefined) {
-            unit = units[units.length - 1]
-          }
+          unit = unit || ''
           return (
             <>
               {prefix}
