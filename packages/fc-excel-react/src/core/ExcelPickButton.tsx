@@ -1,5 +1,5 @@
 import { FilePickerDialog } from '@fangcha/react'
-import { TypicalColumn, TypicalExcel } from '@fangcha/excel'
+import { ExcelParseOptions, TypicalColumn, TypicalExcel } from '@fangcha/excel'
 import { ExcelPreviewDialog } from './ExcelPreviewDialog'
 import React from 'react'
 import { Button, ButtonProps, message } from 'antd'
@@ -12,6 +12,7 @@ interface Props<T extends object = {}> {
   onPickExcel?: (excel: TypicalExcel<T>) => Promise<void> | void
   filePickBtnText?: React.ReactNode
   previewSubmitBtnText?: React.ReactNode
+  excelOptions?: ExcelParseOptions
   text2ValueTransform?: (text: string, curKey: string) => any
 }
 
@@ -23,6 +24,7 @@ export const ExcelPickButton = <T extends object = {}>({
   text2ValueTransform,
   filePickBtnText,
   previewSubmitBtnText,
+  excelOptions,
   ...props
 }: ButtonProps & Props<T>) => {
   return (
@@ -45,6 +47,7 @@ export const ExcelPickButton = <T extends object = {}>({
                 }, {})
               : {},
             text2ValueTransform: text2ValueTransform,
+            ...excelOptions,
           })
             .then(async (excel) => {
               message.success(`文件解析成功`)
