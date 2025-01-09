@@ -29,6 +29,7 @@ export interface TypicalColumn<T> {
 }
 
 export interface ExcelParseOptions {
+  useIndex?: boolean
   name2keyMap?: StringDict
   text2ValueTransform?: (text: string, curKey: string) => any
 }
@@ -196,7 +197,10 @@ export class TypicalExcel<T extends object = {}> {
     const sheet = workbook.worksheets[0]
     assert.ok(sheet.rowCount > 0, 'No Data')
     const firstRow = sheet.getRow(1)
-    const columnNames = (firstRow.values as []).slice(1) as string[]
+    let columnNames = (firstRow.values as []).slice(1) as string[]
+    if (options.useIndex) {
+      columnNames = new Array(sheet.columns.length).fill(0).map((_, index) => `${index}`)
+    }
     const columnKeys: string[] = []
     const headerNameMap: StringDict = {}
     columnNames.forEach((name) => {
@@ -204,6 +208,7 @@ export class TypicalExcel<T extends object = {}> {
       columnKeys.push(key)
       headerNameMap[key] = name
     })
+
     const records: any[] = []
     for (let i = 2; i <= sheet.rowCount; ++i) {
       const data: any = {}

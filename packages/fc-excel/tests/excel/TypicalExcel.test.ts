@@ -57,4 +57,11 @@ describe('Test TypicalExcel', () => {
     excel.addRow({ id: 2, name: 'B', date: new Date('2019-01-01') })
     await excel.commit()
   })
+
+  it(`Test index headers`, async () => {
+    const filepath = `${__dirname}/run.local/325.xlsx`
+
+    const excel = await TypicalExcel.excelFromFile(filepath, { useIndex: true })
+    console.info(excel.records())
+  })
 })
