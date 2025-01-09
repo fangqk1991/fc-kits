@@ -24,7 +24,7 @@ export const ExcelPickButton = <T extends object = {}>({
   text2ValueTransform,
   filePickBtnText,
   previewSubmitBtnText,
-  excelOptions,
+  excelOptions = {},
   ...props
 }: ButtonProps & Props<T>) => {
   return (
