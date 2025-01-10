@@ -428,6 +428,7 @@ export class FeedBase extends FCModel {
     groupByKeys?: string[]
     filterParams?: FilterOptions
     customHandler?: (searcher: SQLSearcher) => void
+    transaction?: Transaction
   }) {
     const groupByKeys = options.groupByKeys || []
     const feed = new this() as FeedBase
@@ -435,6 +436,9 @@ export class FeedBase extends FCModel {
     const processor = searcher.processor()
     processor.setColumns(options.columns)
     processor.setGroupByKeys(groupByKeys)
+    if (options.transaction) {
+      processor.transaction = options.transaction
+    }
     if (options.customHandler) {
       options.customHandler(processor)
     }
