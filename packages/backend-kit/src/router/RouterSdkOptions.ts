@@ -30,4 +30,6 @@ export interface RouterSdkOptions {
    * @description If using basicAuthProtocol, Session default will be FangchaOpenSession
    */
   basicAuthProtocol?: BasicAuthProtocol
+
+  bodyParserOptions?: {}
 }

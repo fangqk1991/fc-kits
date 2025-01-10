@@ -114,7 +114,8 @@ export class RouterPlugin implements AppPluginProtocol {
         writeLogMiddlewareBuilder.build(),
 
         async (ctx: Context, next: Function) => {
-          const parser = bodyParser({ multipart: true })
+          const bodyParserOptions = options.bodyParserOptions || {}
+          const parser = bodyParser({ multipart: true, ...bodyParserOptions })
           try {
             await parser(ctx, () => {})
           } catch (e) {
