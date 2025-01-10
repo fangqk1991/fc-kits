@@ -36,7 +36,7 @@ class __SessionApp implements PermissionProtocol {
   }
 
   public assertUserIsAdmin(email: string) {
-    assert.ok(this.checkUserIsAdmin(email), `${email} 必须为应用的管理员`, 403)
+    assert.ok(this.checkUserIsAdmin(email), `${email} 不是管理员`, 403)
   }
 
   public assertUserHasPermission(email: string, permissionKey: string) {
@@ -44,7 +44,7 @@ class __SessionApp implements PermissionProtocol {
   }
 
   public assertUserInAnyGroup(email: string, ...groupIds: string[]) {
-    assert.ok(this.checkUserInAnyGroup(email, ...groupIds), `${email} 不 "${groupIds.join(' | ')}" 组中`, 403)
+    assert.ok(this.checkUserInAnyGroup(email, ...groupIds), `${email} 不在 "${groupIds.join(' | ')}" 组中`, 403)
   }
 
   public setPermissionProtocol(protocol: PermissionProtocol) {
