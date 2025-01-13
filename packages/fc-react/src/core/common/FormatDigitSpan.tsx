@@ -3,6 +3,7 @@ import React, { HTMLAttributes } from 'react'
 interface Props extends HTMLAttributes<any> {
   mode?: 'normal' | 'profit' | 'raw'
   usingPercent?: boolean
+  usingComma?: boolean
   color?: string
   fontWeight?: 'normal' | 'bold' | 'lighter' | 'bolder' | number
   fractionDigits?: number
@@ -10,7 +11,14 @@ interface Props extends HTMLAttributes<any> {
   value: number
 }
 
-export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fractionDigits, usingThreshold, ...props }) => {
+export const FormatDigitSpan: React.FC<Props> = ({
+  value,
+  usingPercent,
+  usingComma,
+  fractionDigits,
+  usingThreshold,
+  ...props
+}) => {
   let color = props.color || ''
   if (props.mode === 'profit') {
     color = '#888888'
@@ -42,7 +50,7 @@ export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fraction
           }
           let val = Math.abs(value)
           let unit
-          if (!usingThreshold || val >= usingThreshold) {
+          if (!usingComma && (!usingThreshold || val >= usingThreshold)) {
             const units = ['', 'K', 'M', 'B', 'T', 'E15', 'E18', 'E21', 'E24', 'E27', 'E30']
             let usingUnits = [...units]
             // billion, trillion, quadrillion, quintillion, sextillion, septillion
@@ -57,9 +65,14 @@ export const FormatDigitSpan: React.FC<Props> = ({ value, usingPercent, fraction
           return (
             <>
               {prefix}
-              {usingPercent
-                ? `${(val * 100).toFixed(fractionDigits)}${unit}%`
-                : `${val.toFixed(fractionDigits)}${unit}`}
+              {(() => {
+                if (usingComma) {
+                  return Number(val.toFixed(fractionDigits)).toLocaleString()
+                }
+                return usingPercent
+                  ? `${(val * 100).toFixed(fractionDigits)}${unit}%`
+                  : `${val.toFixed(fractionDigits)}${unit}`
+              })()}
             </>
           )
         }
