@@ -5,7 +5,7 @@ import React from 'react'
 import { Button, ButtonProps, message } from 'antd'
 import { FrontendFileReader } from './FrontendFileReader'
 
-interface Props<T extends object = {}> {
+export interface ExcelPickButtonProps<T extends object = {}> extends ButtonProps {
   skipPreview?: boolean
   columns?: TypicalColumn<T>[]
   description?: React.ReactNode
@@ -26,7 +26,7 @@ export const ExcelPickButton = <T extends object = {}>({
   previewSubmitBtnText,
   excelOptions = {},
   ...props
-}: ButtonProps & Props<T>) => {
+}: ExcelPickButtonProps<T>) => {
   return (
     <Button
       onClick={async () => {
