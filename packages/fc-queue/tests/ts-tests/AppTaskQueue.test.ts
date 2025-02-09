@@ -15,16 +15,13 @@ describe('Test AppTaskQueue', () => {
     const start = Date.now()
     const gap = 50
 
-    items.forEach(function(value) {
-      taskQueue.addTask(
-        new AppTask(async () => {
-          await sleep(gap)
-          result.push(value)
-
-          assert.ok(taskQueue.runningQueue().size() === 1)
-          assert.ok(taskQueue.pendingQueue().size() === items.length - result.length)
-        })
-      )
+    items.forEach(function (value) {
+      taskQueue.addPerformer(async () => {
+        await sleep(gap)
+        result.push(value)
+        assert.ok(taskQueue.runningQueue().size() === 1)
+        assert.ok(taskQueue.pendingQueue().size() === items.length - result.length)
+      })
     })
 
     taskQueue.setOnEmptyCallback(() => {
@@ -53,7 +50,7 @@ describe('Test AppTaskQueue', () => {
     const start = Date.now()
     const gap = 50
 
-    items.forEach(function(value) {
+    items.forEach(function (value) {
       taskQueue.addTask(
         new AppTask(async () => {
           await sleep(gap)
@@ -71,7 +68,6 @@ describe('Test AppTaskQueue', () => {
     taskQueue.resume()
   })
 
-
   it(`Test syncExecute`, async () => {
     const concurrent = 5
     const taskQueue = new AppTaskQueue()
@@ -82,7 +78,7 @@ describe('Test AppTaskQueue', () => {
     const start = Date.now()
     const gap = 50
 
-    items.forEach(function(value) {
+    items.forEach(function (value) {
       taskQueue.addTask(
         new AppTask(async () => {
           await sleep(gap)
@@ -105,7 +101,7 @@ describe('Test AppTaskQueue', () => {
     const result: any[] = []
     const gap = 50
 
-    items.forEach(function(value) {
+    items.forEach(function (value) {
       const task = new AppTask(async () => {
         await sleep(gap)
         result.push(value)
@@ -130,7 +126,7 @@ describe('Test AppTaskQueue', () => {
     const result: any[] = []
     const gap = 50
 
-    items.forEach(function(value) {
+    items.forEach(function (value) {
       const task = new AppTask(async () => {
         await sleep(gap)
         if (value % 2 === 0) {
@@ -156,7 +152,7 @@ describe('Test AppTaskQueue', () => {
     const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     const result: any[] = []
 
-    items.forEach(function(value, index) {
+    items.forEach(function (value, index) {
       taskQueue.addTask(
         new AppTask(async () => {
           if (index === 0) {
@@ -188,7 +184,7 @@ describe('Test AppTaskQueue', () => {
     const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     const result: any[] = []
 
-    items.forEach(function(value, index) {
+    items.forEach(function (value, index) {
       const flag = taskQueue.addTask(
         new AppTask(async () => {
           result.push(value)

@@ -52,10 +52,13 @@ export class AppTaskQueue {
     if (this.checkFullLoad()) {
       return false
     }
-
     this._pendingQueue.push(task)
     this._trigger()
     return true
+  }
+
+  public addPerformer(func: (args: any) => void | Promise<void>) {
+    return this.addTask(new AppTask(func))
   }
 
   public resume() {
