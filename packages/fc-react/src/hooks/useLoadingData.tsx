@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 type LoadData<T> = () => Promise<T>
 
-export const useLoadingData = <T,>(loadData: LoadData<T>, deps?: any[]) => {
+export const useLoadingData = <T,>(loadData: LoadData<T>, deps?: any[], defaultValue?: T) => {
   const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<T>()
+  const [data, setData] = useState(defaultValue)
   useEffect(() => {
     setLoading(true)
     loadData()
