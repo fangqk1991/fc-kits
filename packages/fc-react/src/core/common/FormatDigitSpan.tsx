@@ -2,6 +2,7 @@ import React, { HTMLAttributes } from 'react'
 
 interface Props extends HTMLAttributes<any> {
   mode?: 'normal' | 'profit' | 'raw'
+  valueThresholdForColor?: number
   usingPercent?: boolean
   usingComma?: boolean
   color?: string
@@ -17,14 +18,16 @@ export const FormatDigitSpan: React.FC<Props> = ({
   usingComma,
   fractionDigits,
   usingThreshold,
+  valueThresholdForColor,
   ...props
 }) => {
   let color = props.color || ''
-  if (props.mode === 'profit') {
+  if (props.mode === 'profit' || valueThresholdForColor !== undefined) {
+    valueThresholdForColor = valueThresholdForColor || 0
     color = '#888888'
-    if (value > 0) {
+    if (value > valueThresholdForColor) {
       color = '#28a745'
-    } else if (value < 0) {
+    } else if (value < valueThresholdForColor) {
       color = '#dc3545'
     }
   }
