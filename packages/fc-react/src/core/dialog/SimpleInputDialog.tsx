@@ -34,6 +34,7 @@ export class SimpleInputDialog extends ReactDialog<Props, string> {
                 return (
                   <ProFormDigit
                     name='content'
+                    min={Number.MIN_SAFE_INTEGER}
                     placeholder={props.placeholder}
                     fieldProps={{
                       onPressEnter: props.context.onClickSubmit,

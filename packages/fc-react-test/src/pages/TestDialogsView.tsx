@@ -51,7 +51,7 @@ export const TestDialogsView: React.FC = () => {
         <Button
           onClick={() => {
             const dialog = new SimpleInputDialog({
-              title: 'SimpleInputDialog Title',
+              title: 'SimpleInputDialog Text',
               curValue: `${Math.random()}`,
             })
             dialog.show(async (value) => {
@@ -60,7 +60,23 @@ export const TestDialogsView: React.FC = () => {
             })
           }}
         >
-          SimpleInputDialog
+          SimpleInputDialog.text
+        </Button>
+
+        <Button
+          onClick={() => {
+            const dialog = new SimpleInputDialog({
+              title: 'SimpleInputDialog Number',
+              type: 'number',
+              curValue: `${Math.random()}`,
+            })
+            dialog.show(async (value) => {
+              await sleep(1000)
+              message.success(`提交 ${value}`)
+            })
+          }}
+        >
+          SimpleInputDialog.number
         </Button>
 
         <Button
