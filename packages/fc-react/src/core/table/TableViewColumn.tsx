@@ -115,6 +115,9 @@ export class TableViewColumn {
     checkedValues,
     onCheckedValuesChanged,
   }) => {
+    if (checkedValues && !Array.isArray(checkedValues)) {
+      checkedValues = [checkedValues]
+    }
     return (
       <div style={{ padding: '8px' }}>
         {typeof title === 'string' && <h4 style={{ margin: '0 0 8px' }}>{title}</h4>}
