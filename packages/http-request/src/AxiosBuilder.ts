@@ -147,7 +147,7 @@ export class AxiosBuilder {
   }
 
   public addAxiosConfig(extras: Partial<AxiosRequestConfig>) {
-    this.axiosExtras = extras
+    Object.assign(this.axiosExtras, extras)
     return this
   }
 
