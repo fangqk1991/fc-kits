@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableView } from '@fangcha/react'
+import { getTableRef, TableView } from '@fangcha/react'
 import { PageResult, sleep } from '@fangcha/tools'
 import { TestTableView_SomeData, TestTableView_Tools } from './TestTableView_Tools'
 
@@ -8,9 +8,13 @@ interface Props {
 }
 
 export const TestTableView_LoadData: React.FC<Props> = ({ version }) => {
+  const tableRef = getTableRef()
+
   return (
     <div>
+      <a onClick={() => console.info(tableRef.current.getPageResult())}>Show Table Data</a>
       <TableView
+        ref={tableRef}
         reactiveQuery={true}
         version={version}
         tableProps={{
@@ -32,6 +36,7 @@ export const TestTableView_LoadData: React.FC<Props> = ({ version }) => {
           },
         ]}
         loadData={async (retainParams) => {
+          console.info(`TableView1 loadData`)
           const items = TestTableView_Tools.makeDataList()
           await sleep(1000)
           const pageResult: PageResult<TestTableView_SomeData> = {

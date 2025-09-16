@@ -1,4 +1,13 @@
-import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
+import React, {
+  ForwardedRef,
+  forwardRef,
+  PropsWithChildren,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableProps } from 'antd/es/table'
@@ -53,7 +62,18 @@ const correctParams = (realSettings: DefaultSettings) => {
   return params
 }
 
-export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
+export const getTableRef = () => {
+  return useRef({
+    getPageResult: () => ({
+      offset: 0,
+      length: 0,
+      totalCount: 0,
+      items: [],
+    }),
+  })
+}
+
+export const TableView = forwardRef(<T,>(props: PropsWithChildren<TableViewProtocol>, ref: ForwardedRef<any>) => {
   const { queryParams, updateQueryParams } = useQueryParams<DefaultSettings>()
 
   const getTargetKey = (key: string) => {
@@ -107,6 +127,10 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       })
     }
   }
+
+  useImperativeHandle(ref, () => ({
+    getPageResult: () => pageResult,
+  }))
 
   useEffect(() => {
     const retainedParams = correctParams(realSettings)
@@ -192,4 +216,4 @@ export const TableView = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) =>
       }}
     />
   )
-}
+})
