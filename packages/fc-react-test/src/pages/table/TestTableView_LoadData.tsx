@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const TestTableView_LoadData: React.FC<Props> = ({ version }) => {
-  const tableRef = getTableRef()
+  const tableRef = getTableRef<TestTableView_SomeData>()
 
   return (
     <div>

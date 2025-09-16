@@ -62,13 +62,13 @@ const correctParams = (realSettings: DefaultSettings) => {
   return params
 }
 
-export const getTableRef = () => {
+export const getTableRef = <T,>() => {
   return useRef({
     getPageResult: () => ({
       offset: 0,
       length: 0,
       totalCount: 0,
-      items: [],
+      items: [] as T[],
     }),
   })
 }
