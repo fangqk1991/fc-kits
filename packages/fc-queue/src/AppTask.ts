@@ -22,7 +22,7 @@ export class AppTask<T = any> {
   }
 
   private _errHandler?: ErrorHandler
-  private setErrorHandler(errHandler: ErrorHandler) {
+  public setErrorHandler(errHandler: ErrorHandler) {
     this._errHandler = errHandler
   }
 
