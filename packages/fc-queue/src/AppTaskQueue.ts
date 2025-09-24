@@ -1,10 +1,10 @@
 import { AppQueue } from './AppQueue'
 import { AppTask } from './AppTask'
 
-export class AppTaskQueue {
-  private readonly _runningQueue: AppQueue<AppTask>
-  private readonly _pendingQueue: AppQueue<AppTask>
-  private readonly _failureQueue: AppQueue<AppTask>
+export class AppTaskQueue<T = any> {
+  private readonly _runningQueue: AppQueue<AppTask<T>>
+  private readonly _pendingQueue: AppQueue<AppTask<T>>
+  private readonly _failureQueue: AppQueue<AppTask<T>>
   private _maxConcurrent: number
   private _running: boolean
   private _processedCount: number
@@ -13,9 +13,9 @@ export class AppTaskQueue {
   public autoPauseWhenRunningQueueEmpty: boolean
 
   public constructor() {
-    this._runningQueue = new AppQueue()
-    this._pendingQueue = new AppQueue()
-    this._failureQueue = new AppQueue()
+    this._runningQueue = new AppQueue<AppTask<T>>()
+    this._pendingQueue = new AppQueue<AppTask<T>>()
+    this._failureQueue = new AppQueue<AppTask<T>>()
     this._maxConcurrent = 1
     this._running = false
     this._processedCount = 0
@@ -48,7 +48,7 @@ export class AppTaskQueue {
     )
   }
 
-  public addTask(task: AppTask) {
+  public addTask(task: AppTask<T>) {
     if (this.checkFullLoad()) {
       return false
     }
@@ -125,5 +125,18 @@ export class AppTaskQueue {
 
   public processedCount() {
     return this._processedCount
+  }
+
+  public failedTasks() {
+    return this._failureQueue.allNodes()
+  }
+
+  public retryFailedTasks() {
+    const failureQueue = this.failureQueue()
+    while (!failureQueue.isEmpty()) {
+      const task = failureQueue.popFirst()
+      task.error = undefined
+      this.addTask(task)
+    }
   }
 }

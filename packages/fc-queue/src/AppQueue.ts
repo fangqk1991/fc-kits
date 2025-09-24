@@ -5,7 +5,7 @@ export class AppQueue<T> {
   private _tail: LinkedNode<T> | null
   private _length: number
 
-  public constructor () {
+  public constructor() {
     this._head = null
     this._tail = null
     this._length = 0
@@ -56,5 +56,15 @@ export class AppQueue<T> {
 
   public isEmpty() {
     return this.size() === 0
+  }
+
+  public allNodes() {
+    const items: T[] = []
+    let cur = this._head
+    while (cur) {
+      items.push(cur.entity)
+      cur = cur.next
+    }
+    return items
   }
 }

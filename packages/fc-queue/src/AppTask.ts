@@ -1,13 +1,17 @@
-export class AppTask {
-  private readonly _func: (args: any) => void | Promise<void>
-  private readonly _params: any
-  private _canceled: boolean
+type Handler<T = any> = (args?: T) => void | Promise<void>
+type ErrorHandler = (err: Error) => any
 
-  public constructor(func: (args: any) => void | Promise<void>, params: any = undefined) {
-    this._func = func
-    this._params = params
+export class AppTask<T = any> {
+  public readonly func: Handler<T>
+  public readonly params?: T
+
+  public constructor(func: Handler<T>, params?: T) {
+    this.func = func
+    this.params = params
     this._canceled = false
   }
+
+  private _canceled: boolean
 
   public cancel() {
     this._canceled = true
@@ -17,12 +21,23 @@ export class AppTask {
     return this._canceled
   }
 
+  private _errHandler?: ErrorHandler
+  private setErrorHandler(errHandler: ErrorHandler) {
+    this._errHandler = errHandler
+  }
+
+  public error?: Error
   public async execute() {
     try {
-      await this._func(this._params)
+      await this.func(this.params)
       return true
     } catch (e) {
-      console.error(e)
+      this.error = e as any
+      if (this._errHandler) {
+        await this._errHandler(e as Error)
+      } else {
+        console.error(e)
+      }
       return false
     }
   }

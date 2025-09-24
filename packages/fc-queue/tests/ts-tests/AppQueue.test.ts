@@ -12,6 +12,7 @@ describe('Test AppQueue', () => {
     assert.ok(!queue.isEmpty())
     assert.ok(queue.getFirst() === 100)
     assert.ok(queue.size() === 2)
+    console.info(queue.allNodes())
 
     assert.ok(queue.popFirst() === 100)
     assert.ok(!queue.isEmpty())
@@ -28,7 +29,6 @@ describe('Test AppQueue', () => {
       queue.popFirst()
       assert.fail()
       // eslint-disable-next-line no-empty
-    } catch (e) {
-    }
+    } catch (e) {}
   })
 })
