@@ -10,15 +10,17 @@ import {
   ReactPreviewDialog,
   SimpleInputDialog,
   SimplePickerDialog,
+  TablePickerDialog,
   TextPreviewDialog,
 } from '@fangcha/react'
 import { sleep } from '@fangcha/tools'
 import { ProFormDigit, ProFormRadio, ProFormText, ProFormTextArea } from '@ant-design/pro-components'
+import { TestTableView_SomeData, TestTableView_Tools } from './table/TestTableView_Tools'
 
 export const TestDialogsView: React.FC = () => {
   return (
     <>
-      <Space>
+      <Space wrap={true}>
         <Button
           onClick={() => {
             const dialog = new ConfirmDialog({
@@ -203,7 +205,7 @@ export const TestDialogsView: React.FC = () => {
 
       <Divider />
 
-      <Space>
+      <Space wrap={true}>
         <Button
           type={'primary'}
           onClick={() => {
@@ -357,6 +359,30 @@ export const TestDialogsView: React.FC = () => {
           }}
         >
           FlexibleFormDialog.async
+        </Button>
+
+        <Button
+          onClick={() => {
+            const dialog = new TablePickerDialog({
+              dataList: TestTableView_Tools.makeDataList(30),
+              rowKey: 'uid',
+              columns: [
+                {
+                  title: 'UID',
+                  render: (item: TestTableView_SomeData) => <span>{item.uid}</span>,
+                },
+                {
+                  title: 'Value',
+                  render: (item: TestTableView_SomeData) => <span>{item.value}</span>,
+                },
+              ],
+            })
+            dialog.show(async (items) => {
+              message.info(JSON.stringify(items))
+            })
+          }}
+        >
+          TablePickerDialog
         </Button>
       </Space>
     </>

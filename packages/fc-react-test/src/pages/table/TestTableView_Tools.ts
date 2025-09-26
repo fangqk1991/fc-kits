@@ -6,8 +6,8 @@ export interface TestTableView_SomeData {
 }
 
 export class TestTableView_Tools {
-  public static makeDataList() {
-    return new Array(10).fill(null).map(() => {
+  public static makeDataList(count = 10) {
+    return new Array(count).fill(null).map(() => {
       const data: TestTableView_SomeData = {
         uid: makeUUID(),
         value: Math.random(),
