@@ -7,13 +7,14 @@ interface Props<T = any> extends DialogProps {
   rowKey: string | ((record: T, index?: number) => string)
   // columns: ColumnsType<T>[]
   columns: any[]
+  tableProps?: TableProps<any>
 }
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection']
 
 export class TablePickerDialog<T = any> extends ReactDialog<Props<T>, T[]> {
   title = '请选择'
-  width = '80%'
+  width = '800px'
 
   public rawComponent(): React.FC<Props<T>> {
     return (props) => {
@@ -49,9 +50,10 @@ export class TablePickerDialog<T = any> extends ReactDialog<Props<T>, T[]> {
               setSelectedValues(newSelectedRowKeys)
             },
           }}
+          pagination={false}
+          {...(props.tableProps || {})}
           columns={props.columns as any}
           dataSource={props.dataList as any}
-          pagination={false}
         />
       )
     }
