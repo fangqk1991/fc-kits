@@ -28,6 +28,9 @@ export class TablePickerDialog<T = any> extends ReactDialog<Props<T>, T[]> {
       return (
         <Table
           size={'small'}
+          scroll={{
+            x: 'max-content',
+          }}
           rowKey={props.rowKey}
           rowSelection={{
             selectedRowKeys: selectedValues,
