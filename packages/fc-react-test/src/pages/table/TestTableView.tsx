@@ -6,6 +6,7 @@ import { TestTableView_LoadOnePageItems } from './TestTableView_LoadOnePageItems
 import { TestTableView_WideTable } from './TestTableView_WideTable'
 import { TestTableView_Filters } from './TestTableView_Filters'
 import { TestTableView_Picker } from './TestTableView_Picker'
+import { TestTableView_2 } from './TestTableView_2'
 
 export const TestTableView: React.FC = () => {
   const [version, setVersion] = useState(0)
@@ -53,6 +54,11 @@ export const TestTableView: React.FC = () => {
             label: `Picker`,
             key: 'picker',
             children: <TestTableView_Picker version={version} />,
+          },
+          {
+            label: `TestTableView_2`,
+            key: 'tableView2',
+            children: <TestTableView_2 version={version} />,
           },
         ]}
       />
