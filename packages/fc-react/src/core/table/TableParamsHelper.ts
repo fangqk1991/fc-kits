@@ -13,7 +13,7 @@ export interface TableDataParams {
 }
 
 export class TableParamsHelper {
-  public static extractDataParams(realSettings: TablePageOptions) {
+  public static extractPageDataParams(realSettings: TablePageOptions) {
     const pageNumber = realSettings.pageNumber
     const pageSize = realSettings.pageSize
     const params: Partial<TableDataParams> = {}
@@ -33,5 +33,30 @@ export class TableParamsHelper {
       }
     }
     return params
+  }
+
+  public static transferQueryParams(queryParams: {}) {
+    const pageNumber = queryParams['pageNumber']
+    const pageSize = queryParams['pageSize']
+    const params: Partial<TableDataParams> = {}
+    if (pageNumber && pageSize) {
+      params._offset = (pageNumber - 1) * pageSize
+    }
+    if (pageSize) {
+      params._length = pageSize
+    }
+    if (queryParams['sortKey']) {
+      params._sortKey = queryParams['sortKey']
+      params._sortDirection = queryParams['sortDirection']
+    }
+    if (params._sortDirection) {
+      if (['ascend', 'descend'].includes(params._sortDirection)) {
+        params._sortDirection = `${params._sortDirection}ing`
+      }
+    }
+    return {
+      ...queryParams,
+      ...params,
+    }
   }
 }
