@@ -2,13 +2,16 @@ import React, { PropsWithChildren, useState } from 'react'
 import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableProps } from 'antd/es/table'
-import { PageResult } from '@fangcha/tools'
 import { TablePageOptions } from './TableParamsHelper'
 
 type TableViewProtocol<T = any> = {
   columns: ColumnsType<T>
 
-  pageResult: PageResult<T>
+  items?: T[]
+  pageResult?: {
+    totalCount: number
+    items: T[]
+  }
   onParamsChanged?: (retainParams: Partial<TablePageOptions>) => void
   initialSettings?: TablePageOptions
   onDisplayItemsChanged?: (items: T[]) => void
@@ -20,7 +23,11 @@ type TableViewProtocol<T = any> = {
 }
 
 export const TableViewV2 = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) => {
-  const pageResult = props.pageResult
+  if (!props.pageResult && !props.items) {
+    throw new Error('At least one of items or pageResult must be defined.')
+  }
+  const items = props.items || props.pageResult?.items || []
+  const totalCount = props.items?.length || props.pageResult?.totalCount || 0
 
   const [realSettings, setRealSettings] = useState(() => {
     const settings = {
@@ -59,10 +66,10 @@ export const TableViewV2 = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) 
           showTotal: (totalCount) => `TOTAL: ${totalCount}`,
           current: realSettings.pageNumber,
           pageSize: realSettings.pageSize,
-          total: pageResult.totalCount,
+          total: totalCount,
         }
       }
-      dataSource={pageResult.items}
+      dataSource={items}
       {...(props.tableProps || {})}
       onChange={(pagination, filters, sorter, extra) => {
         const newOptions: any = { ...realSettings }
