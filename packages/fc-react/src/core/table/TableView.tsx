@@ -73,6 +73,9 @@ export const getTableRef = <T,>() => {
   })
 }
 
+/**
+ * @deprecated use TableViewV2 instead.
+ */
 export const TableView = forwardRef(<T,>(props: PropsWithChildren<TableViewProtocol>, ref: ForwardedRef<any>) => {
   const { queryParams, updateQueryParams } = useQueryParams<DefaultSettings>()
 
