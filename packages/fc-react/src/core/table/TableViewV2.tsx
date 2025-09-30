@@ -30,13 +30,12 @@ export const TableViewV2 = <T,>(props: PropsWithChildren<TableViewProtocol<T>>) 
   const totalCount = props.items?.length || props.pageResult?.totalCount || 0
 
   const [realSettings, setRealSettings] = useState(() => {
-    const settings = {
-      ...(props.initialSettings || {}),
-    }
-    settings.pageNumber = Number(settings.pageNumber || 0) || 1
-    settings.pageSize = Number(settings.pageSize || 10)
-    settings.sortKey = settings.sortKey || ''
-    settings.sortDirection = settings.sortDirection || ''
+    const initialSettings = props.initialSettings || {}
+    const settings: TablePageOptions = {}
+    settings.pageNumber = Number(initialSettings.pageNumber || 0) || 1
+    settings.pageSize = Number(initialSettings.pageSize || 10)
+    settings.sortKey = initialSettings.sortKey || ''
+    settings.sortDirection = initialSettings.sortDirection || ''
     return settings
   })
 
