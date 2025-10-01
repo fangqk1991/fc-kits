@@ -1,4 +1,5 @@
 import React, { HTMLAttributes } from 'react'
+import { Tooltip } from 'antd'
 
 interface Props extends HTMLAttributes<any> {
   mode?: 'normal' | 'profit' | 'raw'
@@ -9,6 +10,7 @@ interface Props extends HTMLAttributes<any> {
   fontWeight?: 'normal' | 'bold' | 'lighter' | 'bolder' | number
   fractionDigits?: number
   usingThreshold?: number
+  useTooltip?: boolean
   value: number
 }
 
@@ -31,7 +33,7 @@ export const FormatDigitSpan: React.FC<Props> = ({
       color = '#dc3545'
     }
   }
-  return (
+  const element = (
     <span
       {...props}
       style={{
@@ -82,4 +84,8 @@ export const FormatDigitSpan: React.FC<Props> = ({
       })()}
     </span>
   )
+  if (props.useTooltip) {
+    return <Tooltip title={<span>{value}</span>}>{element}</Tooltip>
+  }
+  return element
 }

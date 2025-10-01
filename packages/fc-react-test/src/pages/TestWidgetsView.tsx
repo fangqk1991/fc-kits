@@ -1,6 +1,13 @@
 import React from 'react'
 import { Button, Card, message, Space } from 'antd'
-import { DraggableOptionsDialog, DraggableOptionsPanel, JsonPre, MyTagsPanel, useQueryParams } from '@fangcha/react'
+import {
+  DraggableOptionsDialog,
+  DraggableOptionsPanel,
+  FormatDigitSpan,
+  JsonPre,
+  MyTagsPanel,
+  useQueryParams,
+} from '@fangcha/react'
 
 export const TestWidgetsView: React.FC = () => {
   const { queryParams } = useQueryParams()
@@ -52,6 +59,12 @@ export const TestWidgetsView: React.FC = () => {
           >
             DraggableOptionsDialog
           </Button>
+        </Card>
+        <Card size={'small'} title='FormatDigitSpan' style={{ width: 300 }}>
+          <Space>
+            <FormatDigitSpan value={123456} />
+            <FormatDigitSpan useTooltip={true} value={123456} mode={'profit'} />
+          </Space>
         </Card>
       </Space>
       <div style={{ width: '800px' }}>
