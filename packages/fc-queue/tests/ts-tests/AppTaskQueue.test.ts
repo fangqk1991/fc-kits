@@ -94,6 +94,39 @@ describe('Test AppTaskQueue', () => {
     assert.ok(result.length === items.length)
   })
 
+  it(`Test retryFailedTasks`, async () => {
+    const concurrent = 5
+    const taskQueue = new AppTaskQueue()
+    taskQueue.setMaxConcurrent(concurrent)
+
+    const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    const result = []
+    const start = Date.now()
+    const gap = 50
+
+    items.forEach(function (value, index) {
+      taskQueue.addTask(
+        new AppTask(async () => {
+          await sleep(gap)
+          if (index % 2 === 0) {
+            throw new Error(`${index} error`)
+          }
+          result.push(value)
+        })
+      )
+    })
+
+    await taskQueue.syncExecute()
+    const duration = Date.now() - start
+    assert.ok(duration < gap * items.length)
+    assert.ok(duration * concurrent > gap * items.length)
+
+    console.info('!!!!!!!!!!!!!!!!!!!')
+
+    await taskQueue.retryFailedTasks()
+    await sleep(2000)
+  })
+
   it(`Test task-cancel`, async () => {
     const taskQueue = new AppTaskQueue()
 
