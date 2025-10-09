@@ -5,7 +5,7 @@ import { Descriptions } from 'antd'
 interface Props extends DialogProps<any> {
   title: string
   infos: {
-    label: string
+    label: React.ReactNode
     value?: string | number
     render?: (value?: string | number) => React.ReactElement
   }[]
