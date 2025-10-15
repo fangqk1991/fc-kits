@@ -4,6 +4,7 @@ import { SelectOption } from '@fangcha/tools'
 import { SearchOutlined } from '@ant-design/icons'
 
 interface NormalProps<T = any> {
+  key?: string
   filterType?: ColumnFilterType
   title: React.ReactNode
   render?: (item: T, _: T, index: number) => React.ReactNode
@@ -41,20 +42,29 @@ export enum ColumnFilterType {
 
 export class TableViewColumn {
   public static makeColumns<T = any>(
-    propsList: (NormalProps<T> | SelectorProps<T> | MultiSelectorProps<T> | SingleValueProps<T>)[]
+    propsList: (NormalProps<T> | SelectorProps<T> | MultiSelectorProps<T> | SingleValueProps<T>)[],
+    pageOptions: { sortKey?: string; sortDirection?: string } = {}
   ): ColumnAttrs<T>[] {
     return propsList.map((props) => {
+      let attrs: ColumnAttrs<T> = TableViewColumn.normalColumn(props as NormalProps)
       switch (props.filterType) {
         case ColumnFilterType.Selector:
-          return TableViewColumn.selectorColumn(props as SelectorProps)
+          attrs = TableViewColumn.selectorColumn(props as SelectorProps)
+          break
         case ColumnFilterType.MultiSelector:
-          return TableViewColumn.multiSelectorColumn(props as MultiSelectorProps)
+          attrs = TableViewColumn.multiSelectorColumn(props as MultiSelectorProps)
+          break
         case ColumnFilterType.StrMultiSelector:
-          return TableViewColumn.strMultiSelectorColumn(props as MultiSelectorProps)
+          attrs = TableViewColumn.strMultiSelectorColumn(props as MultiSelectorProps)
+          break
         case ColumnFilterType.TextSearcher:
-          return TableViewColumn.textSearcherColumn(props as SingleValueProps)
+          attrs = TableViewColumn.textSearcherColumn(props as SingleValueProps)
+          break
       }
-      return TableViewColumn.normalColumn(props as NormalProps)
+      if (props.key && pageOptions.sortKey === props.key && pageOptions.sortDirection) {
+        attrs['sortOrder'] = pageOptions['sortDirection']
+      }
+      return attrs
     })
   }
 
