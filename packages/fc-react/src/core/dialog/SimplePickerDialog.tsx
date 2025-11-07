@@ -22,7 +22,7 @@ export class SimplePickerDialog extends ReactDialog<Props, string> {
         return result
       }
       const usingSelect = this.forceUsing === 'Select' || props.options.length >= 10
-      if (usingSelect) {
+      if (this.forceUsing !== 'Radio' && usingSelect) {
         return (
           <Select
             defaultValue={result}
