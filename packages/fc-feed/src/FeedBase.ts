@@ -1,4 +1,4 @@
-import { DBProtocolV2, DBSpec, DBTools, SQLSearcher, Transaction } from 'fc-sql'
+import { DBProtocolV2, DBSpec, DBTools, SQLBulkAdder, SQLSearcher, Transaction } from 'fc-sql'
 import { FCModel } from 'fc-model'
 import { FeedSearcher } from './FeedSearcher'
 import * as assert from 'assert'
@@ -443,5 +443,13 @@ export class FeedBase extends FCModel {
       options.customHandler(processor)
     }
     return (await processor.queryList()) as T[]
+  }
+
+  public makeBulkAdder() {
+    const dbSpec = this.dbSpec()
+    const bulkAdder = new SQLBulkAdder(dbSpec.database)
+    bulkAdder.setTable(dbSpec.table)
+    bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    return bulkAdder
   }
 }
