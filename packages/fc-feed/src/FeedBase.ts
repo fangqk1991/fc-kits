@@ -450,6 +450,7 @@ export class FeedBase extends FCModel {
     const bulkAdder = new SQLBulkAdder(dbSpec.database)
     bulkAdder.setTable(dbSpec.table)
     bulkAdder.setInsertKeys(dbSpec.insertableCols())
+    bulkAdder.declareTimestampKey(...dbSpec.timestampTypeCols())
     return bulkAdder
   }
 }
