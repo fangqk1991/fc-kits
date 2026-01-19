@@ -17,8 +17,8 @@
     "@fangcha/tools": "workspace:^",
     "notification-center-js": "workspace:^"
   },
-  "peerDependencies": {
-    "@fangcha/vue": "*"
+  "devDependencies": {
+    "@fangcha/vue": "workspace:^"
   },
   "files": [
     "src/*"
