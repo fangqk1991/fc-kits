@@ -30,6 +30,10 @@ export class LoopPerformer {
     return this._curTimes
   }
 
+  public stop() {
+    this._running = false
+  }
+
   private _running = false
   public async execute(handler: Handler) {
     if (this._running) {
@@ -46,7 +50,7 @@ export class LoopPerformer {
         : () => {
             return this._curTimes < this._options.maxRepeat
           }
-    while (checkTrue()) {
+    while (this._running && checkTrue()) {
       ++this._curTimes
       await performer.perform(async () => {
         await handler()
