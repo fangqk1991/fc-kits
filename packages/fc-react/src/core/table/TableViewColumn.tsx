@@ -27,6 +27,8 @@ interface MultiSelectorProps<T = any> extends NormalProps<T> {
 
 interface MultiSelector2Props<T = any> extends NormalProps<T> {
   options: SelectOption[]
+  includingHint?: string
+  excludingHint?: string
   includingValues?: any[]
   excludingValues?: any[]
   onValuesChanged?: (params: { newIncludingValues: any[]; newExcludingValues: any[] }) => void | Promise<void>
@@ -167,6 +169,8 @@ export class TableViewColumn {
   public static MultiSelector2: React.FC<MultiSelector2Props> = ({
     title,
     options,
+    includingHint,
+    excludingHint,
     includingValues,
     excludingValues,
     onValuesChanged,
@@ -185,7 +189,7 @@ export class TableViewColumn {
             <Divider style={{ margin: '12px 0' }} />
           </>
         )}
-        <h5>包含</h5>
+        <h5>{includingHint || '包含'}</h5>
         <Checkbox.Group
           style={{
             display: 'inline-block',
@@ -201,7 +205,7 @@ export class TableViewColumn {
           }}
         />
         <Divider style={{ margin: '12px 0' }} />
-        <h5>不包含</h5>
+        <h5>{excludingHint || '不包含'}</h5>
         <Checkbox.Group
           style={{
             display: 'inline-block',
