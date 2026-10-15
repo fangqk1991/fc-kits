@@ -27,6 +27,10 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
   const [checkedValues, setCheckedValues] = useState<string[]>(
     options.filter((_) => Math.random() > 0.5).map((item) => item.value as string)
   )
+  const [pickerMapper, setPickerMapper] = useState<{ includingValues: string[]; excludingValues: string[] }>({
+    includingValues: [],
+    excludingValues: [],
+  })
   const [textValue, setTextValue] = useState('')
   return (
     <div>
@@ -81,13 +85,36 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
             options: options,
             checkedValues: checkedValues,
             onCheckedValuesChanged: (newValues) => {
-              message.success(`[${JSON.stringify(newValues)}] checked.`)
+              message.success(`${JSON.stringify(newValues)} checked.`)
               setCheckedValues(newValues)
             },
             render: () => {
               return `checkedValues: ${JSON.stringify(checkedValues)}`
             },
           }),
+
+          TableViewColumn.multiSelector2Column({
+            title: 'MultiSelector2',
+            options: options,
+            includingValues: pickerMapper.includingValues,
+            excludingValues: pickerMapper.excludingValues,
+            onValuesChanged: ({ newIncludingValues, newExcludingValues }) => {
+              console.info('newIncludingValues', newIncludingValues)
+              console.info('newExcludingValues', newExcludingValues)
+              message.success(`newIncludingValues ${JSON.stringify(newIncludingValues)} checked.`)
+              message.success(`newExcludingValues ${JSON.stringify(newExcludingValues)} checked.`)
+              setPickerMapper({
+                includingValues: newIncludingValues,
+                excludingValues: newExcludingValues,
+              })
+            },
+            render: () => {
+              return `including: ${JSON.stringify(pickerMapper.includingValues)}, excluding: ${JSON.stringify(
+                pickerMapper.excludingValues
+              )}`
+            },
+          }),
+
           TableViewColumn.strMultiSelectorColumn({
             title: 'StrMultiSelector',
             options: options,
@@ -100,6 +127,20 @@ export const TestTableView_Filters: React.FC<Props> = ({ version }) => {
               return `multiStrValue: ${multiStrValue}`
             },
           }),
+
+          TableViewColumn.strMultiSelectorColumn({
+            title: 'StrMultiSelector',
+            options: options,
+            value: multiStrValue,
+            onValueChanged: (newValue) => {
+              message.success(`Select "${newValue}"`)
+              setMultiStrValue(newValue)
+            },
+            render: () => {
+              return `multiStrValue: ${multiStrValue}`
+            },
+          }),
+
           TableViewColumn.strMultiSelectorColumn({
             title: 'Many Options',
             options: new Array(20).fill(null).map(() => ({

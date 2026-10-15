@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Checkbox, Input, InputRef, Select, Space } from 'antd'
+import { Button, Checkbox, Divider, Input, InputRef, Select, Space } from 'antd'
 import { SelectOption } from '@fangcha/tools'
 import { SearchOutlined } from '@ant-design/icons'
 
@@ -23,6 +23,13 @@ interface MultiSelectorProps<T = any> extends NormalProps<T> {
   options: SelectOption[]
   checkedValues?: any[]
   onCheckedValuesChanged?: (newValues: any[]) => void | Promise<void>
+}
+
+interface MultiSelector2Props<T = any> extends NormalProps<T> {
+  options: SelectOption[]
+  includingValues?: any[]
+  excludingValues?: any[]
+  onValuesChanged?: (params: { newIncludingValues: any[]; newExcludingValues: any[] }) => void | Promise<void>
 }
 
 interface ColumnAttrs<T = any> {
@@ -139,6 +146,74 @@ export class TableViewColumn {
           value={checkedValues || []}
           onChange={(newValues) => {
             onCheckedValuesChanged && onCheckedValuesChanged(newValues)
+          }}
+        />
+      </div>
+    )
+  }
+
+  public static multiSelector2Column<T = any>(props: MultiSelector2Props<T>): ColumnAttrs<T> {
+    return {
+      ...props,
+      title: props.title,
+      filtered:
+        (!!props.includingValues && props.includingValues.length > 0) ||
+        (!!props.excludingValues && props.excludingValues.length > 0),
+      filterDropdown: <TableViewColumn.MultiSelector2 {...props} />,
+      render: props.render,
+    }
+  }
+
+  public static MultiSelector2: React.FC<MultiSelector2Props> = ({
+    title,
+    options,
+    includingValues,
+    excludingValues,
+    onValuesChanged,
+  }) => {
+    if (includingValues && !Array.isArray(includingValues)) {
+      includingValues = [includingValues]
+    }
+    if (excludingValues && !Array.isArray(excludingValues)) {
+      excludingValues = [excludingValues]
+    }
+    return (
+      <div style={{ padding: '8px' }}>
+        {typeof title === 'string' && (
+          <>
+            <h4 style={{ margin: '0 0 8px' }}>{title}</h4>
+            <Divider style={{ margin: '12px 0' }} />
+          </>
+        )}
+        <h5>包含</h5>
+        <Checkbox.Group
+          style={{
+            display: 'inline-block',
+          }}
+          options={options}
+          value={includingValues || []}
+          onChange={(newValues) => {
+            onValuesChanged &&
+              onValuesChanged({
+                newIncludingValues: newValues,
+                newExcludingValues: excludingValues || [],
+              })
+          }}
+        />
+        <Divider style={{ margin: '12px 0' }} />
+        <h5>不包含</h5>
+        <Checkbox.Group
+          style={{
+            display: 'inline-block',
+          }}
+          options={options}
+          value={excludingValues || []}
+          onChange={(newValues) => {
+            onValuesChanged &&
+              onValuesChanged({
+                newIncludingValues: includingValues || [],
+                newExcludingValues: newValues,
+              })
           }}
         />
       </div>
